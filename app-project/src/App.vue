@@ -1,0 +1,350 @@
+<template>
+  <!-- v-touch:right="handleToRight" -->
+  <div id="app">
+    <transition name="slide-left"> 
+			<keep-alive>
+					<router-view v-if="$route.meta.keepAlive" class="transBox" ></router-view>
+			</keep-alive>
+		</transition>
+			
+		<transition name="slide-left"> 
+				<router-view v-if="!$route.meta.keepAlive" class="transBox" key="trans2"></router-view>
+		</transition>
+  </div>
+</template>
+
+<script>
+import { mapState,mapMutations } from 'vuex'
+import axios from 'axios'
+import sha1 from 'sha1'
+  export default {
+    name:"App",
+    data(){
+      return {
+        token:"",
+        startX: 0,
+        endX: 0
+      }
+    },
+    computed:{
+      ...mapState(['userData','wxTicket']),
+      name(){
+        return this.$route.name
+      }
+    },
+    methods: {
+      ...mapMutations(['getAnswer','getNewAnswer','updatedMessageNum','updateWXTicket']),
+      GetQueryString(name){
+          var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+          var r = window.location.search.substr(1).match(reg);
+          if (r != null) {
+              return unescape(r[2]);
+          }
+          return null;
+      },
+      // 判断如果是在微信内部浏览器 获取openid
+      getopenid(){
+        if(/MicroMessenger/.test(window.navigator.userAgent)){
+          var openid = this.GetQueryString('user_id');
+          this.$store.state.openid = openid
+          console.log('是在微信 OPENID:', this.$store.state.openid)
+            
+          axios.post('api/index/signpackage', {
+            url:window.location.href
+          })
+            .then((res) => {
+              //加载配置
+              wx.config({
+                debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                appId: res.data.appId, // 必填，公众号的唯一标识
+                timestamp: res.data.timestamp , // 必填，生成签名的时间戳
+                nonceStr:  res.data.nonceStr, // 必填，生成签名的随机串
+                signature:  res.data.signature,// 必填，签名
+                jsApiList: ['chooseWXPay'] // 必填，需要使用的JS接口列表
+              });
+            })
+            .catch((err) => {}) 
+        }
+      },
+      handleToRight(){
+        console.log(1)
+        if(localStorage.system == 'iOS' && localStorage.main == 'false'){
+          this.$router.go(-1)
+        }
+      },
+      keepText(message){
+        let timetamp = Date.parse(new Date())
+        let postData = {
+          user_id: this.userData.id,
+          shop_user_id: message.senderUserId,
+          content: message.content.content,
+          attribute: 'left',
+          timetamp: timetamp
+        }
+        console.log(postData)
+
+        axios.post('api/method/storagecontent',postData)
+          .then((res)=>{
+            console.log(res.data)
+            if(res.data.code != 1){
+              this.$toast({
+                message: '发送失败',
+                duration: 1200
+              })
+            }
+          })
+          .catch((err)=>{
+            this.$toast({
+              message: '发送失败',
+              duration: 1200
+            })
+            console.log('storagecontent err',err)
+          })
+      },
+      beforeIm(){
+        let that = this
+        // 连接状态监听器
+        RongIMClient.setConnectionStatusListener({
+          onChanged: function (status) {
+            // status 标识当前连接状态
+            switch (status) {
+              case RongIMLib.ConnectionStatus.CONNECTED:
+                  localStorage.setItem('rongYunStatus','true')
+                  console.log('链接成功');
+                  break;
+              case RongIMLib.ConnectionStatus.CONNECTING:
+                  console.log('正在链接');
+                  break;
+              case RongIMLib.ConnectionStatus.DISCONNECTED:
+                  localStorage.setItem('rongYunStatus','false')
+                  console.log('断开连接');
+                  break;
+              case RongIMLib.ConnectionStatus.KICKED_OFFLINE_BY_OTHER_CLIENT:
+                  localStorage.setItem('rongYunStatus','false')
+                  console.log('其他设备登录');
+                  break;
+              case RongIMLib.ConnectionStatus.DOMAIN_INCORRECT:
+                  localStorage.setItem('rongYunStatus','false')
+                  console.log('域名不正确');
+                  break;
+              case RongIMLib.ConnectionStatus.NETWORK_UNAVAILABLE:
+                  localStorage.setItem('rongYunStatus','false')
+                  console.log('网络不可用');
+                  break;
+              default:
+                  localStorage.setItem('rongYunStatus','false')
+                  console.log('链接状态为',status)
+                  break;
+            }
+          }
+        })
+
+        // 消息监听器
+        RongIMClient.setOnReceiveMessageListener({
+          // 接收到的消息
+          onReceived: function (message) {
+            // 判断消息类型
+            switch(message.messageType){
+              case RongIMClient.MessageType.TextMessage:
+                  // message.content.content => 文字内容
+                  //----------------------------重要-------把获取的消息存放在store中，全局公用homeIm.vue要使用
+                  console.log('8080',message,message.content.content)
+                  let timetamp = Date.parse(new Date())
+                  let say = {
+                    type: 1,
+                    css: 'left',
+                    text: message.content.content,
+                    message: message,
+                    shop_user_id: message.senderUserId,
+                    id: that.userData.id + '',
+                    timetamp: timetamp
+                  }
+                  if(that.$route.name == 'service' && that.$route.query.id == message.senderUserId){
+                    console.log('in service',that.$route)
+                    that.keepText(message)
+                    that.getAnswer(say)
+                  }else{
+                    console.log('out service',that.$route)
+                    that.keepText(message)
+                    that.getNewAnswer(say)
+                    that.updatedMessageNum()
+                  }
+                  break;
+              case RongIMClient.MessageType.VoiceMessage:
+                  // message.content.content => 格式为 AMR 的音频 base64
+                  break;
+              case RongIMClient.MessageType.ImageMessage:
+                  // message.content.content => 图片缩略图 base64
+                  // message.content.imageUri => 原图 URL
+                  break;
+              case RongIMClient.MessageType.LocationMessage:
+                  // message.content.latiude => 纬度
+                  // message.content.longitude => 经度
+                  // message.content.content => 位置图片 base64
+                  break;
+              case RongIMClient.MessageType.RichContentMessage:
+                  // message.content.content => 文本消息内容
+                  // message.content.imageUri => 图片 base64
+                  // message.content.url => 原图 URL
+                  break;
+              case RongIMClient.MessageType.InformationNotificationMessage:
+                  // do something
+                  break;
+              case RongIMClient.MessageType.ContactNotificationMessage:
+                  // do something
+                  break;
+              case RongIMClient.MessageType.ProfileNotificationMessage:
+                  // do something
+                  break;
+              case RongIMClient.MessageType.CommandNotificationMessage:
+                  // do something
+                  break;
+              case RongIMClient.MessageType.CommandMessage:
+                  // do something
+                  break;
+              case RongIMClient.MessageType.UnknownMessage:
+                  // do something
+                  break;
+              default:
+                  // do something
+            }
+          }
+        })
+      },
+      nowIm(){
+        let that = this
+      //连接token
+        RongIMClient.connect(that.token, {
+          onSuccess: function(userId) {
+            console.log('Connect successfully. ' + userId);
+          },
+          onTokenIncorrect: function() {
+            console.log('token 无效');
+          },
+          onError: function(errorCode){
+            var info = '';
+            switch (errorCode) {
+                case RongIMLib.ErrorCode.TIMEOUT:
+                    info = '超时';
+                    break;
+                case RongIMLib.ConnectionState.UNACCEPTABLE_PAROTOCOL_VERSION:
+                    info = '不可接受的协议版本';
+                    break;
+                case RongIMLib.ConnectionState.IDENTIFIER_REJECTED:
+                    info = 'appkey不正确';
+                    break;
+                case RongIMLib.ConnectionState.SERVER_UNAVAILABLE:
+                    info = '服务器不可用';
+                    break;
+            }
+            console.log(info);
+          }
+        });
+      },
+      getToken(){
+        let postData = {
+          user_id: this.userData.id
+        }
+        console.log(postData)
+        axios.post('api/method/getRongYunToken',postData)
+          .then((res)=>{
+            console.log('getRongYunToken',res.data)
+            let data = res.data
+            if(res.data.code == 1){
+              this.token = data.data.token
+            }
+            this.nowIm()
+          })
+          .catch((err)=>{
+            console.log('post get token err:',err)
+          })
+      }
+    },
+    created(){
+      //融云初始化
+      RongIMLib.RongIMClient.init('mgb7ka1nmd5vg');
+      this.beforeIm()   //设置监听，必须先监听，再连接
+    },
+    mounted(){
+      let that = this
+      document.addEventListener('touchstart',function(e){
+        that.startX = e.changedTouches[0].clientX
+      })
+      document.addEventListener('touchend',function(e){
+        that.endX = e.changedTouches[0].clientX
+      })
+
+      this.getopenid()
+    },
+    watch: {
+      endX(){
+        if(localStorage.plusReady == 'true' && localStorage.system == 'iOS'){
+          //屏幕宽度
+          let width = window.screen.width
+          //滑动的距离
+          let swiperDis = this.endX - this.startX
+          //开始滑动的x值必须小于这个值
+          let maxStartWidth = width/8
+          //最小的滑动距离
+          let minSwiperDis = width/5
+          console.log(width,swiperDis,maxStartWidth,minSwiperDis)
+          if(this.startX <= maxStartWidth && swiperDis >= minSwiperDis){
+            this.$router.go(-1)
+          }
+        }
+      },
+      name(){
+        // console.log(0,this.$route.name)
+        if(this.name == 'home'){
+          // console.log(1,this.$route.name)
+          localStorage.setItem('main',true)
+        }else{
+          // console.log(2,this.$route.name)
+          localStorage.setItem('main',false)
+        }
+      },
+      userData(){
+        if(this.userData.id){
+          this.getToken()     //连接融云
+        }
+      }
+    }
+  }
+</script>
+
+<style lang="stylus">
+  @import './assets/font.css'
+  
+  html, body {
+		width: 100%;
+		height: 100%;
+	}
+
+	#app {
+		width: 100%;
+		height: 100%;
+		position: relative;
+	}
+
+	.transBox {
+	
+		position absolute;
+		transition: all 0.3s ease;
+		width: 100%;
+		height: 100%;
+	}
+
+	.slide-left-enter,
+	 .slide-right-leave-active {
+	     opacity: 0;
+	    -webkit-transform: translate(100%, 0);
+	    transform: translate(100%, 0);
+	}
+	
+	.slide-left-leave-active,
+	.slide-right-enter {
+	     opacity: 0;
+	    -webkit-transform: translate(-100%, 0);
+	    transform: translate(-100% 0);
+	}
+</style>

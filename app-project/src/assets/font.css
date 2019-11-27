@@ -1,0 +1,31 @@
+@font-face {  
+  /* 重命名 */
+  font-family: 'hgzt';
+  src: url('coregtd6-2.otf'); 
+  font-weight: normal;  
+  font-style: normal;  
+}
+
+@font-face {  
+  /* 重命名 */
+  font-family: 'PFM';
+  src: url('PingFang Medium.ttf'); 
+  font-weight: normal;  
+  font-style: normal;  
+}
+
+@font-face {  
+  /* 重命名 */
+  font-family: 'PFB';
+  src: url('PingFang Bold.ttf'); 
+  font-weight: normal;  
+  font-style: normal;  
+}
+
+@font-face {  
+  /* 重命名 */
+  font-family: 'PFH';
+  src: url('PingFang Heavy.ttf'); 
+  font-weight: normal;  
+  font-style: normal;  
+}

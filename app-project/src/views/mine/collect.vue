@@ -1,0 +1,64 @@
+<template>
+  <div class="collect-wrapper">
+    <van-nav-bar
+      title="收藏"
+      left-arrow
+      @click-left="handleBack"
+    >
+      <div slot="right">
+        <van-icon name="setting-o"/>
+        <span class='right-text'>管理</span>
+      </div>
+    </van-nav-bar>
+
+    <van-sticky>
+      <van-tabs v-model="active" title-active-color="#FF5756">
+        <van-tab title="商品"></van-tab>
+        <van-tab title="店铺"></van-tab>
+      </van-tabs>
+    </van-sticky>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "Collect",
+  data(){
+    return {
+      active: 0
+    }
+  },
+  methods: {
+    handleBack(){
+      this.$router.go(-1)
+    }
+  }
+}
+</script>
+
+<style lang="stylus" scoped>
+  .collect-wrapper >>> .van-icon-arrow-left
+    color: #FF5756
+    font-size: 5vw
+  
+  .collect-wrapper >>> .van-nav-bar__title
+    color: #000
+    font-size: 4vw
+    font-family: PFH
+
+  .collect-wrapper >>> .van-icon-setting-o
+    color: #666
+    font-size: 5vw
+
+  .collect-wrapper >>> .right-text
+    color: #666
+    margin-left: 1vw
+
+  .collect-wrapper >>> .van-tabs__line
+    background-color: #FF5756 
+
+  .collect-wrapper >>> .van-tab
+    font-size: 3.5vw
+    color: #000
+    font-family: PFB
+</style>

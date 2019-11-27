@@ -16,7 +16,7 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex'
-import DetailItem from '../popup/detailItem'
+import DetailItem from '../../popup/detailItem'
 export default {
   name: "ProductDetail",
   components: {

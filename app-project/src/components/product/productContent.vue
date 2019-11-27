@@ -22,14 +22,7 @@ export default {
     ProductDesc
   },
   computed: {
-    ...mapState(['currentProductData']),
-    // scrollY(){
-    //   if(this.productScroll){
-    //     return this.productScroll.y
-    //   }else{
-    //     return null
-    //   }
-    // }
+    ...mapState(['currentProductData'])
   },
   methods: {
     initScroll(){
@@ -61,14 +54,7 @@ export default {
           this.productScroll.refresh()
         }
       }
-    },
-    // scrollY(){
-    //   if(this.scrollY){
-    //     if(this.productScroll.maxScrollY < (this.scrollY + 20)){
-    //       this.productScroll.refresh()
-    //     }
-    //   }
-    // }
+    }
   }
 }
 </script>
@@ -82,8 +68,8 @@ export default {
     right: 0
     bottom: 12vw
     overflow: hidden
-    // background-color: #F6F7FB
-    background-color: #999
+    background-color: #F6F7FB
+    // background-color: #999
 </style>
 
 

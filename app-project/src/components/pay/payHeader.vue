@@ -1,6 +1,6 @@
 <template>
   <div class="payHeader-wrapper">
-    <van-nav-bar title="结算" left-arrow @click-left="handleBackClick"/>
+    <van-nav-bar title="确认订单" left-arrow @click-left="handleBackClick"/>
   </div>
 </template>
 
@@ -21,6 +21,10 @@ export default {
 
 <style lang="stylus" scoped>
   .payHeader-wrapper >>> .van-icon
-      color: #E31436
-      font-size: 20px
+    color: #ff5756
+    font-size: 5vw
+  
+  .payHeader-wrapper >>> .van-nav-bar__title
+    font-family: PFH
+    font-size: 4vw
 </style>

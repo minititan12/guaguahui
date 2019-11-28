@@ -2,7 +2,9 @@
   <div class="product-wrapper">
     <ProductContent></ProductContent>
 
-    <ProductFooter></ProductFooter>
+    <ProductFooter v-if="showFooter('product')"></ProductFooter>
+
+    <GroupFooter v-if="showFooter('group')"></GroupFooter>
 
     <ProductPopUp></ProductPopUp>
 
@@ -42,6 +44,7 @@
 <script>
 import ProductContent from '../../components/product/productContent'
 import ProductFooter from '../../components/product/productFooter'
+import GroupFooter from '../../components/product/groupFooter'
 import ProductPopUp from '../../components/product/productPopUp'
 import ImgMasking from '../../components/product/imgMasking'
 import ServePopUp from '../../components/product/servePopUp'
@@ -60,6 +63,7 @@ export default {
   components: {
     ProductContent,
     ProductFooter,
+    GroupFooter,
     ProductPopUp,
     ImgMasking,
     ServePopUp,
@@ -71,6 +75,7 @@ export default {
   },
   methods: {
     ...mapMutations(['changeShowSearch','changeCurrentProductData','changeProductDetailData','updateServePopUp','updateSharePopUp','changeLoginStatus','updateUserData','changeCurrentBuyDetail']),
+    //是不是运行在app上
     is_app(){
       if(typeof(plus) == 'object'){
         return true;
@@ -78,9 +83,37 @@ export default {
       
       return false;
     },
+
+    //显示哪个页脚
+    showFooter(type){
+      let flag = null
+      if(this.productData.hasOwnProperty('flag')){
+        flag = this.productData.flag
+      }
+
+      if(flag == 1){
+        if(type == 'product'){
+          return true
+        }else{
+          return false
+        }
+      }else if(flag == 2){
+        if(type == 'group'){
+          return true
+        }else{
+          return false
+        }
+      }else{
+        return false
+      }
+    },
+
+    //跳转到主页
     handleToHome(){
       this.$router.push('/')
     },
+
+    //获取产品数据
     getProductData(){
       // console.log(this.$route)
       let id = this.$route.query.id ? this.$route.query.id : 286
@@ -96,6 +129,8 @@ export default {
           console.log('get product err')
         })
     },
+
+    //返回
     back(){
       // this.changeShowSearch(false)
       console.log(this.$router)
@@ -103,15 +138,21 @@ export default {
         this.$router.go(-1)
       },350)
     },
+
+    //打开分享弹出框
     openSharePopUp(){
       console.log('openSharePopUp')
       this.updateSharePopUp(true)
     },
+
+    //跳转到下载
     handleToDownload(){
       this.$router.push({
         path: "/download"
       })
     },
+
+    //处理检查openid
     handleCheckOpenid(){
       // console.log(this.$route.query.id)
       if(/MicroMessenger/.test(window.navigator.userAgent)){

@@ -35,7 +35,7 @@ export default {
     ...mapState(['login','currentProductData','currentBuyDetail','userData'])
   },
   methods: {
-    ...mapMutations(['openPopup','changeTab','changeCurrentBuyDetail','changeCurrentProductPopUpStock','changeProductPopUpImg','addToConfirmList','countConfirmTotalPrice']),
+    ...mapMutations(['openPopup','closePopup','changeTab','changeCurrentBuyDetail','changeCurrentProductPopUpStock','changeProductPopUpImg','addToConfirmList','countConfirmTotalPrice']),
     //点击商店按钮
     handleToShop(){
       let id = this.currentProductData.user_id
@@ -160,6 +160,7 @@ export default {
         let detail = this.getConfirmDetailData()
         this.addToConfirmList(detail)
         this.countConfirmTotalPrice()
+        this.closePopup()
         this.$router.push('/pay')
       }
     },

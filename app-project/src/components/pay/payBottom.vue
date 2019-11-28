@@ -1,7 +1,7 @@
 <template>
   <div class="payBottom-wrapper">
     <div class="pay-right">
-      <span class="pay-number">共{{numberCount}}件,</span>
+      <span class="pay-number">共{{numberCount}}件</span>
       <span class="pay-text">合计:</span>
       <span class="pay-total">￥{{confirmListTotalPrice}}</span>
       <div class="pay-btn" @click="handleCommitOrder">提交订单</div>
@@ -139,15 +139,15 @@ export default {
                 amount = parseFloat(data[0].amount)
               }
 
-              // this.$router.push({
-              //   path: '/payment',
-              //   name: 'payment',
-              //   params: {
-              //     order_number: order_number,
-              //     amount: amount,
-              //     user_id: data[0].user_id,
-              //   }
-              // })
+              this.$router.push({
+                path: '/payment',
+                name: 'payment',
+                params: {
+                  order_number: order_number,
+                  amount: amount,
+                  user_id: data[0].user_id,
+                }
+              })
 
               // if(!this.is_app()){
               //   this.$router.push({
@@ -197,27 +197,27 @@ export default {
     position: absolute
     bottom: 0
     width: 100%
-    height: 1rem
+    height: 12vw
+    font-family: PFB
     background-color: #fff
     overflow: hidden
     .pay-right
       float: right
       display: flex
       height: 100%
+      font-size: 3.5vw
       flex-direction: row
       align-items: center
       .pay-number
-        color: #979797
-        font-size: .24rem
-        margin-right: .1rem
+        margin-right: 2vw
       .pay-total
-        color: #E41436
+        color: #FE5655
         font-family: hgzt
       .pay-btn
         text-align: center
-        padding: .25rem .35rem
-        background: linear-gradient(to right, #EE3E5C, #E41436);
-        border-radius: .4rem
-        margin: 0 .2rem
-        color: #FAC0CA
+        padding: 3vw 5vw
+        background-color: #ff5756
+        border-radius: 5vw
+        margin: 0 5vw
+        color: #fff
 </style>

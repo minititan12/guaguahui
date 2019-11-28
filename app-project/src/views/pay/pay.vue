@@ -1,8 +1,8 @@
 <template>
   <div class="pay-wrapper">
     <PayHeader></PayHeader>
-    <PayContent1104></PayContent1104>
-    <PayBottom1104></PayBottom1104>
+    <PayContent></PayContent>
+    <PayBottom></PayBottom>
   </div>
 </template>
 
@@ -30,29 +30,15 @@ export default {
       //初始化确认订单总价格
       this.initComfirmTotalPrice()
     }
-  },
-  // beforeRouteEnter (to, from, next) {
-  //   console.log(to,from)
-  //   if(from.name == 'orderPage'){
-  //     this.$router.go(-1)
-  //   }else{
-  //     next()
-  //   }
-  // },
-  // beforeRouteLeave (to, from, next) {
-  //   console.log(to,from)
-  //   this.commitHandle()
-  //   next()
-  // }
+  }
 }
 </script>
 
 <style lang="stylus" scoped>
   .pay-wrapper
-    position: relative
     width: 100%
     height: 100%
-    background-color: #F2F2F2
+    background-color: #F6F7FB
 </style>
 
 

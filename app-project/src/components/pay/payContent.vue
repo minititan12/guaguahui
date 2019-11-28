@@ -73,8 +73,8 @@ export default {
 <style lang="stylus" scoped>
   .payContent-wrapper
     position: absolute 
-    top: .75rem
-    bottom: 1rem
+    top: 46px
+    bottom: 12vw
     left: 0
     right: 0
     overflow: hidden

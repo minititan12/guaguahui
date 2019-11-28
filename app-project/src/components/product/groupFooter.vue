@@ -16,10 +16,10 @@
     </div>
     
     <div class="btn">
-      <div class="btn-left" @click="addCart">
+      <div class="btn-left" @click="addGroup">
         <span class="btn-title">加入拼团</span>
       </div>
-      <div class="btn-right" @click="limitedBuy">
+      <div class="btn-right" @click="startGroup">
         <span class="btn-title">发起拼团</span>
       </div>
     </div>
@@ -35,7 +35,7 @@ export default {
     ...mapState(['login','currentProductData','currentBuyDetail','userData'])
   },
   methods: {
-    ...mapMutations(['openPopup','changeTab','changeCurrentBuyDetail','changeCurrentProductPopUpStock','changeProductPopUpImg','addToConfirmList','countConfirmTotalPrice']),
+    ...mapMutations(['openPopup','changeTab','changeCurrentBuyDetail','changeCurrentProductPopUpStock','changeProductPopUpImg','addToConfirmList','countConfirmTotalPrice','changeGroupDialogState']),
 
     //点击商店按钮
     handleToShop(){
@@ -82,6 +82,21 @@ export default {
       }else{
         this.$router.push('/login')
       }
+    },
+
+    //加入拼团
+    addGroup(){
+      setTimeout(()=>{
+        this.changeGroupDialogState({
+          value: true,
+          type: 'more'
+        })
+      },300)
+    },
+
+    //发起拼团
+    startGroup(){
+
     },
 
     //获取确认订单的数据

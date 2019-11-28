@@ -1,21 +1,23 @@
 <template>
   <div class="payItems-wrapper" v-if="showConfirmItems">
-    <PayItem v-if="confirmList.length > 0" v-for="item of confirmList" :data="item" :noShow="true" :showDel="false" :key="item.id"/>
+    <ShopConfirmItem v-for="item of confirmData" :data="item" :key="item.shop_id"/>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import PayItem from '../../miniComponents/payItem'
+import ShopConfirmItem from '../../miniComponents/shopConfirmItem'
 export default {
   name: "PayItems",
   components: {
-    PayItem
+    PayItem,
+    ShopConfirmItem
   },
   computed: {
-    ...mapState(['confirmList']),
+    ...mapState(['confirmData']),
     showConfirmItems(){
-      if(this.confirmList.length > 0){
+      if(this.confirmData.length > 0){
         return true
       }else{
         return false

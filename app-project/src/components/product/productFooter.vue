@@ -32,12 +32,13 @@ import axios from 'axios'
 export default {
   name: 'ProductFooter',
   computed: {
-    ...mapState(['login','currentProductData','currentBuyDetail','userData'])
+    ...mapState(['login','currentProductData','currentBuyDetail','userData','showPopUp'])
   },
   methods: {
-    ...mapMutations(['openPopup','closePopup','changeTab','changeCurrentBuyDetail','changeCurrentProductPopUpStock','changeProductPopUpImg','addToConfirmList','countConfirmTotalPrice']),
+    ...mapMutations(['openPopup','closePopup','changeTab','changeCurrentBuyDetail','changeCurrentProductPopUpStock','changeProductPopUpImg','addToConfirmList','countConfirmTotalPrice','updatedConfirmData']),
     //点击商店按钮
     handleToShop(){
+      this.closePopup()
       let id = this.currentProductData.user_id
       if(this.login){
         this.$router.push({
@@ -50,13 +51,17 @@ export default {
         this.$router.push('/login')
       }
     },
+
     //点击购物车按钮
     handleToCart(){
+      this.closePopup()
       this.changeTab(4)
       this.$router.push('/')
     },
+
     //点击客服按钮
     handleToService(){
+      this.closePopup()
       let id = this.currentProductData.user_id
       let shopName = this.currentProductData.shop.company
       let shop_img = this.currentProductData.shop.shop_img
@@ -80,41 +85,7 @@ export default {
         this.$router.push('/login')
       }
     },
-    getConfirmDetailData(){
-      if(this.currentProductData.attributes_amount.length > 0){
-        let totalPrice = parseInt(this.currentBuyDetail.number) * parseFloat(this.currentBuyDetail.price)
-        return {
-          attr1_name: this.currentBuyDetail.attr1_name,
-          attr1_value: this.currentBuyDetail.attr1_value,
-          attr2_name: this.currentBuyDetail.attr2_name,
-          attr2_value: this.currentBuyDetail.attr2_value,
-          attr3_name: this.currentBuyDetail.attr3_name,
-          attr3_value: this.currentBuyDetail.attr3_value,
-          goods_attr_id: this.currentBuyDetail.id,
-          goods_id: this.currentBuyDetail.goods_id,
-          imgUrl: this.currentBuyDetail.photo,
-          number: this.currentBuyDetail.number,
-          price: this.currentBuyDetail.price,
-          shop: this.currentProductData.shop.company,
-          title: this.currentProductData.goods_name,
-          totalPrice: totalPrice.toFixed(2),
-          user_id_to: this.currentProductData.user_id
-        }
 
-      }else{
-        let totalPrice = parseInt(this.currentBuyDetail.number) * parseFloat(this.currentBuyDetail.price)
-        return {
-          goods_id: this.currentBuyDetail.goods_id,
-          imgUrl: this.currentBuyDetail.photo,
-          number: this.currentBuyDetail.number,
-          price: this.currentBuyDetail.price,
-          shop: this.currentProductData.shop.company,
-          title: this.currentProductData.goods_name,
-          totalPrice: totalPrice.toFixed(2),
-          user_id_to: this.currentProductData.user_id
-        }
-      }
-    },
     //初始化popup数据
     handleOpenPopup(){
       this.changeCurrentProductPopUpStock('0')
@@ -122,9 +93,10 @@ export default {
       this.changeProductPopUpImg('')
       this.openPopup()
     },
+
     //post的操作
     postHandle(type){
-      //如果点击的是加入购物车
+      //加入购物车操作
       if(type == 'cart'){
         let goods_attr_id = this.currentBuyDetail.hasOwnProperty('id') ? this.currentBuyDetail.id : ''
         let postData = {
@@ -156,66 +128,105 @@ export default {
           .catch((err)=>{
             console.log('post addCart err',err)
           })
-      }else{
-        let detail = this.getConfirmDetailData()
-        this.addToConfirmList(detail)
-        this.countConfirmTotalPrice()
-        this.closePopup()
-        this.$router.push('/pay')
+      }else{//立即购买操作
+        let postData = {
+          user_id: this.userData.id,
+          goods_list:[{
+            goods_attr_id: this.currentBuyDetail.id,
+            number: this.currentBuyDetail.number
+          }]
+        }
+
+        console.log('limitBuy postData:',postData)
+        axios.post('api/method/comfirmOrder',postData)
+          .then((res)=>{
+            console.log('comfirmOrder:',res.data)
+            if(res.data.code == 1){
+              this.updatedConfirmData(res.data.data)
+            }
+          })
+          .catch((err)=>{
+            console.log('comfirmOrder err',err)
+          })
+
+        setTimeout(()=>{
+          this.closePopup()
+          this.$router.push('/pay')
+        },200)
       }
     },
+
     //点击加入购物车按钮
     addCart(){
       console.log('addcart')
-      if(this.login){
-        console.log('login')
-        if(this.currentBuyDetail){
-          let stock = parseFloat(this.currentBuyDetail.stock)
-          if(this.currentBuyDetail.stock && this.currentBuyDetail.stock > 0){
-            stock = this.currentBuyDetail.stock
+      if(this.login){//已登录  
+        if(this.showPopUp){//商品属性框已弹出   
+          if(this.currentBuyDetail){//商品属性已选择  
+            let stock = parseFloat(this.currentBuyDetail.stock)
+            if(this.currentBuyDetail.stock && this.currentBuyDetail.stock > 0){
+              stock = this.currentBuyDetail.stock
+            }else{
+              stock = 0
+            }
+
+            if(stock == 0){
+              this.$toast({
+                message: '该商品属性没有库存',
+                type: "fail",
+                duration: 1200
+              })
+              return 
+            }
+            this.postHandle('cart')
           }else{
-            stock = 0
-          }
-          if(stock == 0){
             this.$toast({
-              message: '该商品属性没有库存',
+              message: '请先选择商品属性',
               type: "fail",
               duration: 1200
             })
-            return 
           }
-          this.postHandle('cart')
         }else{
-          console.log('openpopup')
           this.handleOpenPopup()
         }
-      }else{
+        
+      }else{  //未登录
         this.$router.push('/login')
       }
     },
+
     //点击立即购买按钮
     limitedBuy(){
-      if(this.login){
-        if(this.currentBuyDetail){
-          let stock = parseFloat(this.currentBuyDetail.stock)
-          if(this.currentBuyDetail.stock && this.currentBuyDetail.stock > 0){
-            stock = this.currentBuyDetail.stock
+      if(this.login){//已登录  
+        if(this.showPopUp){//商品属性框已弹出   
+          if(this.currentBuyDetail){//商品属性已选择  
+            let stock = parseFloat(this.currentBuyDetail.stock)
+            if(this.currentBuyDetail.stock && this.currentBuyDetail.stock > 0){
+              stock = this.currentBuyDetail.stock
+            }else{
+              stock = 0
+            }
+
+            if(stock == 0){
+              this.$toast({
+                message: '该商品属性没有库存',
+                type: "fail",
+                duration: 1200
+              })
+              return 
+            }
+            this.postHandle('limitBuy')
           }else{
-            stock = 0
-          }
-          if(stock == 0){
             this.$toast({
-              message: '该商品属性没有库存',
+              message: '请先选择商品属性',
               type: "fail",
               duration: 1200
             })
-            return 
           }
-          this.postHandle('confirm')
         }else{
           this.handleOpenPopup()
         }
-      }else{
+        
+      }else{  //未登录
         this.$router.push('/login')
       }
     }

@@ -15,6 +15,7 @@
 
 <script>
 import { mapState,mapMutations } from 'vuex'
+import axios from 'axios'
 export default {
   name: "CartBottom",
   data() {
@@ -23,21 +24,49 @@ export default {
     }
   },
   computed: {
-    ...mapState(['cart','selectedListTotalPrice','selectedList','selectedAll'])
+    ...mapState(['cart','selectedListTotalPrice','userData','selectedList','selectedAll'])
   },
   methods: {
-    ...mapMutations(['addConfirmList','changeSelectedID','updateSelectedAll','countConfirmTotalPrice']),
+    ...mapMutations(['addConfirmList','changeSelectedID','updateSelectedAll','countConfirmTotalPrice','updatedConfirmData']),
     handleToConfirmClick(){
       if(this.selectedList.length > 0){
         //选择列表转移到待确认列表
-        this.addConfirmList()
-        this.countConfirmTotalPrice()
-        this.$router.push('/pay')
+        // this.addConfirmList()
+        // this.countConfirmTotalPrice()
+        let goods_list = []
+        for(let item of this.selectedList){
+          goods_list.push({
+            goods_attr_id: item.goods_attr_id,
+            number: item.number
+          })
+        }
+
+        let postData = {
+          user_id: this.userData.id,
+          goods_list: goods_list
+        }
+
+        console.log('confirm postData:',postData)
+        axios.post('api/method/comfirmOrder',postData)
+          .then((res)=>{
+            console.log('comfirmOrder:',res.data)
+            if(res.data.code == 1){
+              this.updatedConfirmData(res.data.data)
+            }
+          })
+          .catch((err)=>{
+            console.log('comfirmOrder err',err)
+          })
+
+        setTimeout(()=>{
+          this.$router.push('/pay')
+        },200)
+
       }else{
         this.$toast({
-          message: "请先选择商品",
+          message: "请先选择要支付商品",
           duration: 1200
-        });
+        })
       }
     }
   },

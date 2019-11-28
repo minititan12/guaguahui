@@ -163,6 +163,11 @@ export default {
   },
 
   //confirm
+  //更新确认订单的数据
+  updatedConfirmData(state,data){
+    let result = JSON.parse(JSON.stringify(data))
+    state.confirmData = result
+  },
   //初始化待确认订单列表
   initConfirmList(state){
     state.confirmList = []

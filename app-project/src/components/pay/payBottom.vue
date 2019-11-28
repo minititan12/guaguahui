@@ -3,7 +3,7 @@
     <div class="pay-right">
       <span class="pay-number">共{{numberCount}}件</span>
       <span class="pay-text">合计:</span>
-      <span class="pay-total">￥{{confirmListTotalPrice}}</span>
+      <span class="pay-total">￥{{totalPrice}}</span>
       <div class="pay-btn" @click="handleCommitOrder">提交订单</div>
     </div>
   </div>
@@ -15,14 +15,28 @@ import axios from 'axios'
 export default {
   name: "PayBottom",
   computed: {
-    ...mapState(['confirmListTotalPrice','confirmList','userData','defaultAddress']),
+    ...mapState(['confirmListTotalPrice','confirmData','confirmList','userData','defaultAddress']),
     numberCount(){
-      if(this.confirmList.length > 0){
+      if(this.confirmData.length > 0){
         let count = 0
-        for(let item of this.confirmList){
-          count = count + parseInt(item.number)
+        for(let shopItem of this.confirmData){
+          for(let item of shopItem.good_list){
+            count = count + parseInt(item.number)
+          }
         }
         return count
+      }
+    },
+    totalPrice(){
+      if(this.confirmData.length > 0){
+        let result = 0
+        for(let shopItem of this.confirmData){
+          for(let item of shopItem.good_list){
+            let price = parseInt(item.number) * parseFloat(item.price)
+            result = result + price
+          }
+        }
+        return result.toFixed(2)
       }
     },
     commitData(){

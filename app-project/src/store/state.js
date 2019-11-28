@@ -37,6 +37,7 @@ export default {
 
   //pay数据
   payRadio: "1",  //支付方式
+  confirmData: null,           //确认页面商品数据
   confirmList: [],             //需要用户确认的商品数据列表
   confirmListTotalPrice: 0,    //需要用户确认的商品总价格
   waitPayList: [],             //等待支付的商品数据列表

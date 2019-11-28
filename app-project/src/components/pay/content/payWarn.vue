@@ -16,7 +16,7 @@ import { mapState,mapMutations } from 'vuex'
 export default {
   name: "PayWarn",
   computed: {
-    ...mapState(['confirmList','defaultAddress']),
+    ...mapState(['confirmData','defaultAddress']),
     showAddressWarn(){
       if(this.defaultAddress.code == 0){
         return true
@@ -25,7 +25,7 @@ export default {
       }
     },
     showPayListWarn(){
-      if(this.confirmList.length > 0){
+      if(this.confirmData.length > 0){
         return false
       }else{
         return true

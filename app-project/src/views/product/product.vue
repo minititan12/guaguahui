@@ -60,6 +60,7 @@ export default {
       productData: {}
     }
   },
+
   components: {
     ProductContent,
     ProductFooter,
@@ -70,11 +71,13 @@ export default {
     SharePopUp,
     GroupDialog
   },
+  
   computed:{
     ...mapState(['login','openid'])
   },
+
   methods: {
-    ...mapMutations(['changeShowSearch','changeCurrentProductData','changeProductDetailData','updateServePopUp','updateSharePopUp','changeLoginStatus','updateUserData','changeCurrentBuyDetail']),
+    ...mapMutations(['changeShowSearch','changeCurrentProductData','changeProductDetailData','closePopup','updateServePopUp','updateSharePopUp','changeLoginStatus','updateUserData','changeCurrentBuyDetail','updateAllSpellGroups']),
     //是不是运行在app上
     is_app(){
       if(typeof(plus) == 'object'){
@@ -91,20 +94,19 @@ export default {
         flag = this.productData.flag
       }
 
-      if(flag == 1){
-        if(type == 'product'){
-          return true
-        }else{
-          return false
-        }
-      }else if(flag == 2){
+      if(flag == 2){
         if(type == 'group'){
           return true
         }else{
           return false
         }
+        
       }else{
-        return false
+        if(type == 'product'){
+          return true
+        }else{
+          return false
+        }
       }
     },
 
@@ -184,14 +186,18 @@ export default {
       }
     }
   },
+
   created(){
     // this.changeShowSearch(false)
     this.updateServePopUp(false)
     this.updateSharePopUp(false)
+    this.closePopup()
     this.changeCurrentBuyDetail(null)
     this.changeCurrentProductData({})
+    this.updateAllSpellGroups([])
     this.getProductData()
   },
+
   mounted(){
     if(!this.login){
       if(localStorage.hasOwnProperty('userData')){

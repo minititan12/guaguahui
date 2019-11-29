@@ -77,32 +77,31 @@ export default {
     display: flex
     flex-direction: row
     align-items: center
-    margin-bottom: .2rem
     .header-img
       height: 25vw
       width: 25vw
-      margin: 0 2.5vw
-      border-radius: .1rem
+      margin: 0 4vw 0 3vw
+      border-radius: 2vw
       overflow: hidden
     .header-right
       display: flex
       flex-direction: column
-      span 
-        margin-bottom: .2rem
-      .piece
-        font-size: .2rem
-        color: #777
-      .title
-        font-size: .2rem
+      font-family: PFB
       .price
         font-family: hgzt
-        color: #FF5103
-        margin-bottom: .2rem
+        color: #FF5756
+        margin-bottom: 3vw
         .icon
-          font-size: .2rem
-          margin-right: .1rem
+          font-size: 3vw
         .text
-          font-size: .4rem
+          font-size: 5vw
+      .piece
+        font-size: 3vw
+        color: #777
+        margin-bottom: 2vw
+      .title
+        font-size: 3vw
+        margin-bottom: 3vw
 </style>
 
 

@@ -1,6 +1,6 @@
 <template>
   <div class="footer-wrapper">
-    <div class="footer-left">
+    <div class="footer-left" v-if="!showPopUp">
       <div class="footer-item">
         <span class="iconfont store" @click="handleToShop">&#xe708;</span>
         <span class="title" @click="handleToShop">店铺</span>
@@ -15,7 +15,7 @@
       </div>
     </div>
     
-    <div class="btn">
+    <div class="btn" v-if="!showPopUp">
       <div class="btn-left" @click="addGroup">
         <span class="btn-title">加入拼团</span>
       </div>
@@ -23,6 +23,7 @@
         <span class="btn-title">发起拼团</span>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -32,14 +33,15 @@ import axios from 'axios'
 export default {
   name: 'GroupFooter',
   computed: {
-    ...mapState(['login','currentProductData','currentBuyDetail','userData'])
+    ...mapState(['login','currentProductData','currentBuyDetail','userData','showPopUp'])
   },
   methods: {
-    ...mapMutations(['openPopup','changeTab','changeCurrentBuyDetail','changeCurrentProductPopUpStock','changeProductPopUpImg','addToConfirmList','countConfirmTotalPrice','changeGroupDialogState']),
+    ...mapMutations(['openPopup','closePopup','changeTab','changeCurrentBuyDetail','changeCurrentProductPopUpStock','changeProductPopUpImg','updatedGroupBuyID','addToConfirmList','countConfirmTotalPrice','changeGroupDialogState']),
 
     //点击商店按钮
     handleToShop(){
       let id = this.currentProductData.user_id
+
       if(this.login){
         this.$router.push({
           path: '/shop',
@@ -91,12 +93,12 @@ export default {
           value: true,
           type: 'more'
         })
-      },300)
+      },200)
     },
 
     //发起拼团
     startGroup(){
-
+      this.handleOpenPopup()
     },
 
     //获取确认订单的数据
@@ -253,10 +255,11 @@ export default {
     background-color: #fff
     position: fixed
     bottom: 0
-    z-index: 10
+    z-index: 2
     display: flex
     flex-direction: row
     align-items: center
+    justify-content: space-around
     .footer-left
       width: 45%
       height: 100%

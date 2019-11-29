@@ -32,13 +32,12 @@ import axios from 'axios'
 export default {
   name: 'ProductFooter',
   computed: {
-    ...mapState(['login','currentProductData','currentBuyDetail','userData','showPopUp'])
+    ...mapState(['login','currentProductData','currentBuyDetail'])
   },
   methods: {
-    ...mapMutations(['openPopup','closePopup','changeTab','changeCurrentBuyDetail','changeCurrentProductPopUpStock','changeProductPopUpImg','addToConfirmList','countConfirmTotalPrice','updatedConfirmData']),
+    ...mapMutations(['openPopup','changeTab','changeCurrentBuyDetail','changeCurrentProductPopUpStock','changeProductPopUpImg','updatedConfirmData']),
     //点击商店按钮
     handleToShop(){
-      this.closePopup()
       let id = this.currentProductData.user_id
       if(this.login){
         this.$router.push({
@@ -54,14 +53,12 @@ export default {
 
     //点击购物车按钮
     handleToCart(){
-      this.closePopup()
       this.changeTab(4)
       this.$router.push('/')
     },
 
     //点击客服按钮
     handleToService(){
-      this.closePopup()
       let id = this.currentProductData.user_id
       let shopName = this.currentProductData.shop.company
       let shop_img = this.currentProductData.shop.shop_img
@@ -94,101 +91,11 @@ export default {
       this.openPopup()
     },
 
-    //post的操作
-    postHandle(type){
-      //加入购物车操作
-      if(type == 'cart'){
-        let goods_attr_id = this.currentBuyDetail.hasOwnProperty('id') ? this.currentBuyDetail.id : ''
-        let postData = {
-          user_id: this.userData.id,
-          goods_id: this.currentBuyDetail.goods_id,
-          goods_attr_id: goods_attr_id,
-          number: this.currentBuyDetail.number,
-          price: this.currentBuyDetail.price,
-          user_id_to: this.currentProductData.user_id
-        }
-        console.log('postData',postData)
-        axios.post('api/method/addCart',postData)
-          .then((res)=>{
-            console.log('addCart:',res.data)
-            if(res.data.code == 1){
-              this.$toast({
-                message: '加入购物车成功',
-                type: "success",
-                duration: 1200
-              })
-            }else{
-              this.$toast({
-                message: '加入购物车失败',
-                type: "fail",
-                duration: 1200
-              })
-            }
-          })
-          .catch((err)=>{
-            console.log('post addCart err',err)
-          })
-      }else{//立即购买操作
-        let postData = {
-          user_id: this.userData.id,
-          goods_list:[{
-            goods_attr_id: this.currentBuyDetail.id,
-            number: this.currentBuyDetail.number
-          }]
-        }
-
-        console.log('limitBuy postData:',postData)
-        axios.post('api/method/comfirmOrder',postData)
-          .then((res)=>{
-            console.log('comfirmOrder:',res.data)
-            if(res.data.code == 1){
-              this.updatedConfirmData(res.data.data)
-            }
-          })
-          .catch((err)=>{
-            console.log('comfirmOrder err',err)
-          })
-
-        setTimeout(()=>{
-          this.closePopup()
-          this.$router.push('/pay')
-        },200)
-      }
-    },
-
     //点击加入购物车按钮
     addCart(){
       console.log('addcart')
       if(this.login){//已登录  
-        if(this.showPopUp){//商品属性框已弹出   
-          if(this.currentBuyDetail){//商品属性已选择  
-            let stock = parseFloat(this.currentBuyDetail.stock)
-            if(this.currentBuyDetail.stock && this.currentBuyDetail.stock > 0){
-              stock = this.currentBuyDetail.stock
-            }else{
-              stock = 0
-            }
-
-            if(stock == 0){
-              this.$toast({
-                message: '该商品属性没有库存',
-                type: "fail",
-                duration: 1200
-              })
-              return 
-            }
-            this.postHandle('cart')
-          }else{
-            this.$toast({
-              message: '请先选择商品属性',
-              type: "fail",
-              duration: 1200
-            })
-          }
-        }else{
-          this.handleOpenPopup()
-        }
-        
+        this.handleOpenPopup()       
       }else{  //未登录
         this.$router.push('/login')
       }
@@ -197,35 +104,7 @@ export default {
     //点击立即购买按钮
     limitedBuy(){
       if(this.login){//已登录  
-        if(this.showPopUp){//商品属性框已弹出   
-          if(this.currentBuyDetail){//商品属性已选择  
-            let stock = parseFloat(this.currentBuyDetail.stock)
-            if(this.currentBuyDetail.stock && this.currentBuyDetail.stock > 0){
-              stock = this.currentBuyDetail.stock
-            }else{
-              stock = 0
-            }
-
-            if(stock == 0){
-              this.$toast({
-                message: '该商品属性没有库存',
-                type: "fail",
-                duration: 1200
-              })
-              return 
-            }
-            this.postHandle('limitBuy')
-          }else{
-            this.$toast({
-              message: '请先选择商品属性',
-              type: "fail",
-              duration: 1200
-            })
-          }
-        }else{
-          this.handleOpenPopup()
-        }
-        
+        this.handleOpenPopup()
       }else{  //未登录
         this.$router.push('/login')
       }
@@ -241,7 +120,7 @@ export default {
     background-color: #fff
     position: fixed
     bottom: 0
-    z-index: 10
+    z-index: 2
     display: flex
     flex-direction: row
     align-items: center

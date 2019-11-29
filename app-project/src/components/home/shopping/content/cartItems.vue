@@ -18,21 +18,22 @@
       <div class="cart-item" v-for="item of cart" v-if="showCartList" ref="cartItems">
 
         <div class="item-shop" @click="handleToShop(item.user_id_to)">
-          <van-icon size="20px" class="shopIcon" color="#FD4140" name="wap-home"/>
+          <van-icon size="20px" class="shopIcon" color="#FF5756" name="wap-home"/>
           <span class="shopName">{{item.shop}}</span>
           <van-icon name="arrow" />
         </div>
+
         <div class="item-top">
           <input type="checkbox" :id="item.id" :value="item.id" v-model="checkedNames" v-show="false">
+
           <div @click="handleSelect(item.id)" class="item-input" :class="getStatusOfItem(item.id) ? 'active': 'unactive'">
-            <!-- :for="item.id" -->
             <span class="iconfont">&#xe615;</span>
           </div>
 
           <div class="item-img" @click="handleToProduct(item.goods_id)">
             <van-image
-              width="1.6rem"
-              height="1.6rem"
+              width="22vw"
+              height="22vw"
               fit="contain"
               :src="item.imgUrl"
               style="-webkit-touch-callout: none"
@@ -47,11 +48,17 @@
 
         <div class="item-bottom">
           <span class="item-del" @click="handleDel(item.id)">删除</span>
+
           <span class="item-price">￥{{item.price}}</span>
+
           <div class="item-number">
-            <span class="number-minus" @click="handleNumberMinus(item.id)">-</span>
+            <div class="number-minus" @click="handleNumberMinus(item.id)">
+              <span class="iconfont">&#xe606;</span>
+            </div>
             <span class="number-text">{{item.number}}</span>
-            <span class="number-add" @click="handleNumberAdd(item.id)">+</span>
+            <div class="number-add" @click="handleNumberAdd(item.id)">
+              <span class="iconfont">&#xe608;</span>
+            </div>
           </div>
         </div>
 
@@ -319,111 +326,129 @@ export default {
       min-height: 101%
       .blank
         width: 100%
-        height: .2rem
+        height: 3vw
       .cart-item
-          width: 90%
-          margin: 0 auto 3vw auto
-          background-color: #fff
+        width: 94%
+        margin: 0 auto 3vw auto
+        background-color: #fff
+        display: flex
+        flex-direction: column
+        border-radius: 3vw
+
+        .item-shop
+          width: 100%
+          height: 10vw
           display: flex
-          flex-direction: column
-          border-radius: .4rem
-          // box-shadow: 0 0 .2rem #ddd
-          .item-shop
-            width: 100%
-            height: .6rem
+          align-items: center
+          font-family: PFH
+          font-size: 4vw
+          font-weight: bold
+          padding-left: 11vw
+          color: #000
+          .shopName
+            margin: 0 1vw
+
+        .item-top
+          width: 100%
+          height: 25vw
+          display: flex
+          flex-direction: row
+          align-items: center
+          .item-input
+            display: block
+            width: 5vw
+            height: 5vw
+            margin: 0 3vw
+            line-height: 5vw
+            text-align: center
+            box-sizing: border-box
+            border: .01rem solid rgb(152, 152, 152)
+            border-radius: 3vw
+            background-color: #fff
+            .iconfont
+              color: #fff
+              font-size: 4vw
+          .active
+            background-color: #FF5756
+            border: .01rem solid #FF5756
+          .unactive
+            background-color: #fff
+            border: .01rem solid rgb(152, 152, 152)
+
+          .item-img
+            width: 22vw
+            height: 22vw
+            border-radius: 2vw
+            overflow: hidden
+            box-shadow: 0 0 .2rem .1rem #eee
+          .item-right
+            width: 55%
             display: flex
-            align-items: center
-            font-size: .3rem
-            font-weight: bold
-            padding-left: .75rem
-            padding-top: .1rem
-            .shopIcon
-              margin-right: .1rem
-          .item-top
-            width: 100%
-            height: 2rem
+            flex-direction: column
+            margin-left: 4vw
+            .item-title
+              margin-bottom: 2vw
+              font-size: 3.8vw
+              font-family: PFB
+              line-height: 4.5vw
+              font-weight: bold
+              letter-spacing: .8vw
+              color: #222
+            .item-desc
+              font-family: PFM
+              color: #989898
+          
+        .item-bottom
+          display: flex
+          flex-direction: row
+          justify-content: space-between
+          align-items: center
+          margin: 3vw 0
+          .item-del
+            width: 14vw
+            height: 6vw
+            line-height: 6vw
+            margin-left: 11vw
+            color: #fff
+            font-family: PFH
+            background-color: #FF5756
+            text-align: center
+            border-radius: 3vw
+          .item-price
+            font-family: hgzt
+            font-size: 4vw
+            color: #FF5756
+            margin-left: 6vw
+          .item-number
+            margin-right: 6vw
             display: flex
             flex-direction: row
             align-items: center
-            padding-bottom: .1rem
-            .item-input
-              display: block
-              width: .4rem
-              height: .4rem
-              margin: 0 .2rem
-              box-sizing: border-box
-              border: .01rem solid rgb(152, 152, 152)
-              border-radius: .2rem
-              background-color: #fff
-              .iconfont
-                color: #fff
-                font-size: .4rem
-            .active
-              background-color: #FD4140
-              border: .01rem solid #FD4140
-            .unactive
-              background-color: #fff
-              border: .01rem solid rgb(152, 152, 152)
-            .item-right
-              width: 55%
+            font-size: 4vw
+            background-color: #F2F2F2
+            border-radius: 4vw
+            .number-minus
+              width: 7vw
+              height: 7vw
+              border-radius: 4vw
               display: flex
-              flex-direction: column
-              margin-left: .3rem
-              .item-title
-                margin-bottom: .2rem
-                font-size: .25rem
-                line-height: .35rem
-                font-weight: bold
-                letter-spacing: .05rem
-              .item-desc
-                color: #989898
-            .item-img
-              width: 1.6rem
-              height: 1.6rem
-              border-radius: .25rem
-              overflow: hidden
-              box-shadow: 0 0 .2rem .1rem #eee
-          .item-bottom
-            display: flex
-            flex-direction: row
-            justify-content: space-between
-            align-items: center
-            margin-bottom: .2rem
-            .item-del
-              width: .8rem
-              height: .4rem
-              line-height: .4rem
-              margin-left: .8rem
-              color: #FD4140
-              border: .01rem solid #FD4140
-              text-align: center
-              border-radius: .2rem
-            .item-price
-              font-family: hgzt
-              color: #FD4140
-              margin-left: .5rem
-            .item-number
-              margin-right: .5rem
-              text-align: center
-              display: flex
-              flex-direction: row
               align-items: center
-              line-height: .4rem
-              .number-minus
-                display: inline-block
-                width: .4rem
-                height: .4rem
-                border: .01rem solid #EDEDED
-              .number-text
-                display: inline-block
-                width: .4rem
-                height: .4rem
-                border: .01rem solid #EDEDED
-              .number-add
-                display: inline-block
-                width: .4rem
-                height: .4rem
-                border: .01rem solid #EDEDED
+              justify-content: center
+              border: 1px solid #EDEDED
+              box-sizing: border-box
+              background-color: #fff
+            .number-text
+              margin: 0 2vw
+              font-family: PFH
+            .number-add
+              width: 7vw
+              height: 7vw
+              border-radius: 4vw
+              display: flex
+              align-items: center
+              justify-content: center
+              color: #fff
+              background-color: #FF5756
 </style>
 
 

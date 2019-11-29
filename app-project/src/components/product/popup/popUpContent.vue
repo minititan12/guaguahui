@@ -338,6 +338,10 @@ export default {
           top: false
         }
       })
+
+      this.popUpScroll.on('beforeScrollStart',()=>{
+        this.popUpScroll.refresh()
+      })
     },
 
     addNumber(){
@@ -393,38 +397,40 @@ export default {
   .popup-content-wrapper
     position: absolute 
     top: 30vw
-    bottom: 1rem
+    bottom: 12vw
     left: 0
     right: 0
     overflow: hidden
-    padding: 0 .2rem
+    padding: 0 3vw
     .select-number
       width: 100%
-      height: .8rem
+      height: 10vw
       .number-title
         display: inline-block
-        line-height: .8rem
+        line-height: 10vw
         vertical-align: middle
+        font-size: 3.6vw
+        font-family: PFB
       .number
         display: inline-block
-        line-height: .8rem
+        line-height: 10vw
         float: right
-        margin-right: .2rem
+        margin-right: 2vw
         span 
           vertical-align: middle
         .btn
-          font-size: .3rem
-          color: #787878
+          font-size: 4.3vw
+          color: #444
           display: inline-block
           text-align: center
-          margin-right: .1rem
-          width: .5rem
-          height: .5rem
-          line-height: .5rem
+          margin-right: 2vw
+          width: 7vw
+          height: 7vw
+          line-height: 7vw
           background-color: #F5F5F5
     .blank
       width: 100%
-      height: .5rem
+      height: 2vw
 </style>
 
 

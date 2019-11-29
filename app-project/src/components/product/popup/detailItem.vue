@@ -2,8 +2,9 @@
   <div :class="showBorder ? 'detailItem-wrapper-border' : 'detailItem-wrapper'" v-if="data">
     <div class="detailItem-title">
       <span>{{data.name}}</span>
-      <span style="color: #f13a39; margin-left: .2rem">{{attr}}</span>
+      <span style="color: #FF5756; margin-left: .2rem">{{attr}}</span>
     </div>
+
     <div class="detailItems">
       <div class="detailItem-content" v-if="showColor()" v-for="item of data.value">
         <input v-model="attr" type="radio" :id="popUp ? (item.text + 'popUp') : item.text" :value="item.text" v-show="false"/>
@@ -84,32 +85,36 @@ export default {
     border-bottom: .01rem solid #999
   .detailItem-wrapper
     width: 100%
-    padding: .2rem 0
+    padding: 2vw 0
     .detailItem-title
-      margin-bottom: .2rem
+      font-family: PFH
+      font-size: 3.8vw
+      margin-bottom: 4vw
     .detailItems
       display: flex
       flex-direction: row
       flex-wrap: wrap
       .detailItem-content
         width: 23vw
-        margin: .1rem 0
+        margin: 1vw 0
         .content-item
-          padding: .1rem
-          margin-right: .3rem
-          border: .03rem solid #F6F6F6
-          border-radius: .1rem
+          padding: 1vw
+          margin-right: 3vw
+          border: 1.5px solid #F6F6F6
+          border-radius: 1vw
           background-color: #F6F6F6
           display: flex
           flex-direction: column
           justify-content: center
           align-items: center
+          overflow: hidden
           .item-img
-            margin-bottom: .1rem
+            margin-bottom: 2vw
           .item-text
             vertical-align: middle
-            font-size: .3rem
-            line-height: .32rem
+            font-size: 3.5vw
+            font-family: PFB
+            line-height: 3.5vw
             text-overflow: ellipsis
             display: -webkit-box
             -webkit-line-clamp: 1
@@ -117,22 +122,24 @@ export default {
             -webkit-box-orient: vertical
             overflow: hidden
         .content-item-active
-          padding: .1rem
-          margin-right: .3rem
-          border: .03rem solid #FF5103
-          color: #FF5103
-          border-radius: .1rem
+          padding: 1vw
+          margin-right: 3vw
+          border: 1.5px solid #FF5756
+          color: #FF5756
+          border-radius: 1vw
           background-color: #F6F6F6
           display: flex
           flex-direction: column
           justify-content: center
           align-items: center
+          overflow: hidden
           .item-img
-            margin-bottom: .1rem
+            margin-bottom: 2vw
           .item-text
             vertical-align: middle
-            font-size: .3rem
-            line-height: .32rem
+            font-size: 3.5vw
+            font-family: PFB
+            line-height: 3.5vw
             text-overflow: ellipsis
             display: -webkit-box
             -webkit-line-clamp: 1

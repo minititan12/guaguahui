@@ -1,14 +1,14 @@
 <template>
   <div class="payment-wrapper">
-    <van-nav-bar class="payment-header" title="订单信息" left-arrow @click-left="handleBackClick"/>
+    <van-nav-bar class="payment-header" title="订单信息"/>
     <div class="payment-desc">
-      <div class="payment-ordernumber">
+      <!-- <div class="payment-ordernumber">
         <span class="text">订单号:</span>
         <span>{{orderNumber}}</span>
-      </div>
+      </div> -->
       <div class="payment-amount">
         <span class="text">总金额:</span>
-        <span>￥{{amount}}</span>
+        <span class="amount">￥{{amount}}</span>
       </div>
     </div>
 
@@ -42,6 +42,7 @@
 
 <script>
 import axios from 'axios'
+import { mapState } from 'vuex'
 export default {
   name: "Payment",
   data(){
@@ -55,14 +56,15 @@ export default {
     }
   },
   computed:{
+    ...mapState(['payOrderData']),
     orderNumber(){
       if(this.$route.params.order_number){
         return this.$route.params.order_number
       }
     },
     amount(){
-      if(this.$route.params.amount){
-        return this.$route.params.amount
+      if(this.payOrderData){
+        return this.payOrderData.total_amount
       }
     },
     userId(){
@@ -72,9 +74,6 @@ export default {
     }
   },
   methods: {
-    handleBackClick(){
-      this.$router.go(-2)
-    },
     handlezfbClick(){
       this.radio = '1'
     },
@@ -369,9 +368,6 @@ export default {
         .then((res) => {
           
           console.log('pay', res.data.data.pay_type)
-          // _this.data1=res.data.data.pay_type
-          // _this.data4=res.data.data.order
-          // _this.data5=channel;
         
           plus.payment.request(channel,res.data.data.order, function(result) {
             _this.$toast({
@@ -390,22 +386,13 @@ export default {
             },1200)
             return;
 
-            // _this.data2=result;
-            // outLine('----- 支付成功 -----')
-            // outLine(JSON.stringify(result))
-
           }, function(e) {
-            // let string = JSON.stringify(e)
-            // alert(string)
             _this.$toast({
               message: "支付失败",
               type: "fail",
               duration: 1200
             })
-            return;
-            
-            // _this.data3=e;
-          });
+          })
 
         })
         .catch((err) => {
@@ -445,10 +432,6 @@ export default {
 	  }
   },
   mounted(){
-    console.log(this.$route.params)
-    if(!this.$route.params.hasOwnProperty('order_number')){
-      this.$router.push('/')
-    }
     this.getRunTimeType()
   }
 }
@@ -460,31 +443,36 @@ export default {
     font-size: 20px
   .payment-wrapper >>> .van-nav-bar__title
     color: #fff
+
   .payment-wrapper
     background-color: #f2f2f2
     width: 100vw
     height: 100vh
     .payment-header
       background-color: #07c160
+      font-family: PFB
     .payment-desc
-      height: 20vw
+      height: 15vw
       background-color: #fff
       display: flex
       flex-direction: column
       justify-content: center
-      padding: 0 .3rem
+      padding: 0 4vw
       box-sizing: border-box
-      .payment-ordernumber
-        margin-bottom: .2rem
-        .text
-          font-size: .3rem
-          font-weight: bold
-          margin-right: .2rem
+      // .payment-ordernumber
+      //   margin-bottom: .2rem
+      //   .text
+      //     font-size: .3rem
+      //     font-weight: bold
+      //     margin-right: .2rem
       .payment-amount
         .text
-          font-size: .3rem
-          font-weight: bold
-          margin-right: .2rem
+          font-size: 4vw
+          font-family: PFH
+          margin-right: 3vw
+        .amount
+          font-family: hgzt
+          color: #FF5756
     .zhifubao
       background-color: #fff
       height: 15vw

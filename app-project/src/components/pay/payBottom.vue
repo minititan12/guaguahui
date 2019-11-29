@@ -16,6 +16,7 @@ export default {
   name: "PayBottom",
   computed: {
     ...mapState(['confirmListTotalPrice','confirmData','confirmList','userData','defaultAddress']),
+    //总数量
     numberCount(){
       if(this.confirmData.length > 0){
         let count = 0
@@ -27,6 +28,7 @@ export default {
         return count
       }
     },
+    //总价格
     totalPrice(){
       if(this.confirmData.length > 0){
         let result = 0
@@ -72,7 +74,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['countConfirmTotalPrice','addWaitPayList','updateWaitPayList','initConfirmList','initComfirmTotalPrice','clearCart','clearSelectedID','updateSelectedList']),
+    ...mapMutations(['updatePayOrderData','countConfirmTotalPrice','addWaitPayList','updateWaitPayList','initConfirmList','initComfirmTotalPrice','clearCart','clearSelectedID','updateSelectedList']),
     is_app(){
       if(typeof(plus) == 'object'){
         return true;
@@ -80,6 +82,7 @@ export default {
       
       return false;
     },
+
     commitHandle(){
       //初始化确认订单列表
       this.initConfirmList()
@@ -91,6 +94,7 @@ export default {
       this.updateSelectedList()
       // console.log(1)
     },
+
     //删除上传到未支付的商品
     delSuccessOrder(){
       if(this.confirmList[0].hasOwnProperty('id')){
@@ -116,88 +120,101 @@ export default {
         this.commitHandle()
       }
     },
+
+    //获取提交订单信息
+    getOrderGoods(){
+      let result = []
+
+      for(let shopItem of this.confirmData){
+        let goods_list = []
+        for(let item of shopItem.good_list){
+          goods_list.push({
+            goods_attr_id: item.id,
+            number: item.number
+          })
+        }
+
+        result.push({
+          shop_id: shopItem.shop_id,
+          coupon: 0,
+          goods_list: goods_list
+        })
+      }
+
+      return result
+    },
+
+    //获取地址信息
+    getAddress(){
+      let data = this.defaultAddress.data
+      let buyer_address = data.province + data.city + data.county + data.address
+
+      let result = {
+        buyer_name: data.real_name,
+        buyer_phone: data.phone,
+        buyer_address: buyer_address
+      }
+
+      return result
+    },
+
+    //提交订单
     handleCommitOrder(){
-      let hasConfirmList = this.confirmList.length > 0 ? true : false
+      // let hasConfirmList = this.confirmList.length > 0 ? true : false
       let hasUserData = Object.keys(this.userData).length > 0 ? true : false
       let hasDefaultAddress = this.defaultAddress.code == 1 ? true : false
-      if( hasConfirmList && hasUserData && hasDefaultAddress){
-        //把商品上传到服务器获取订单号
-        let commitObject = {
-          wait_pay_order: this.commitData
-        }
-        console.log(commitObject)
 
-        //上传到待支付列表
-        axios.post('api/method/waitPay',commitObject)
-          .then((res)=>{
-            console.log('waitpay:',res.data)
-            if(res.data.code == 1){
-              //删除上传到未支付的商品
-              this.delSuccessOrder()
-              
-              //整合获取的订单号生成新的支付信息
-              let data = res.data.data.data
-              let order_number = ""
-              let amount = 0
-              if(data.length > 1){
-                for(let i = 0; i < data.length; i++){
-                  if(i > 0){
-                    order_number = order_number + "|" + data[i].ordernumber.order_number
-                  }else{
-                    order_number = data[i].ordernumber.order_number
-                  }
-                  amount = amount + parseFloat(data[i].amount)
-                }
-              }else{
-                order_number = data[0].ordernumber.order_number
-                amount = parseFloat(data[0].amount)
-              }
-
-              this.$router.push({
-                path: '/payment',
-                name: 'payment',
-                params: {
-                  order_number: order_number,
-                  amount: amount,
-                  user_id: data[0].user_id,
-                }
-              })
-
-              // if(!this.is_app()){
-              //   this.$router.push({
-              //     path: "/download"
-              //   })
-              // }else{
-                
-              // }
-            }
-          })
-          .catch((err)=>{
-            console.log('commit data err',err)
-          })
-      }else{
-        if(!hasUserData){
-          this.$toast({
-            message: "请先登录",
-            type: "fail",
-            duration: 1500
-          })
-        }
-        if(!hasDefaultAddress){
-          this.$toast({
-            message: "请先填写默认地址",
-            type: "fail",
-            duration: 1500
-          })
-        }
-        if(!hasConfirmList){
-          this.$toast({
-            message: "请先添加商品",
-            type: "fail",
-            duration: 1500
-          })
-        }
+      if(!hasUserData){
+        this.$toast({
+          message: "请先登录",
+          type: "fail",
+          duration: 1500
+        })
+        return
       }
+      if(!hasDefaultAddress){
+        this.$toast({
+          message: "请先填写默认地址",
+          type: "fail",
+          duration: 1500
+        })
+        return
+      }
+
+      let order_goods = this.getOrderGoods()
+      let address = this.getAddress()
+
+      //把商品上传到服务器获取订单号
+      let commitObject = {
+        user_id: this.userData.id,
+        order_goods: order_goods,
+        address: address
+      }
+      console.log('waitPay commitData',commitObject)
+
+      //上传到待支付列表
+      axios.post('api/method/makeOrder',commitObject)
+        .then((res)=>{
+          console.log('waitpay:',res.data)
+          if(res.data.code == 1){
+            this.updatePayOrderData(res.data.data)
+
+            this.$router.push({
+              path: '/payment'
+            })
+          }
+
+            // if(!this.is_app()){
+            //   this.$router.push({
+            //     path: "/download"
+            //   })
+            // }else{
+              
+            // }
+        })
+        .catch((err)=>{
+          console.log('commit data err',err)
+        })
     }
   },
   mounted(){

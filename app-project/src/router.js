@@ -267,14 +267,6 @@ export default new Router({
         color: '#07C160',
         style: 'light'
       }
-      // beforeEnter: (to,from,next) => {
-      //   // let match = from.name == 'pay' ? true : false
-      //   // if(!match){
-      //   //   next({name: 'home'})
-      //   // }else{
-      //   //   next()
-      //   // }
-      // }
     },
     //下载页面组件
     {

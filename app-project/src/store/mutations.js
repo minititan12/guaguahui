@@ -200,6 +200,11 @@ export default {
 
 
   //pay
+  //更新支付订单信息
+  updatePayOrderData(state,data){
+    let result = JSON.parse(JSON.stringify(data))
+    state.payOrderData = result
+  },
   //添加待支付的商品列表
   addWaitPayList(state){
     state.waitPayList = [...state.waitPayList,...state.confirmList]

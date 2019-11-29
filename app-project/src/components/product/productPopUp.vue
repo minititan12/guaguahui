@@ -2,7 +2,9 @@
   <div class="popup-wrapper" v-if="showPopUp">
     <div class="masking" @click="closePopUpInitData"></div>
     <div class="popup-content">
-      <div class="popup-close" @click="closePopUpInitData"><span>X</span></div>
+      <div class="popup-close" @click="closePopUpInitData">
+        <van-icon name="cross" />
+      </div>
       <PoPUpHeader/>
       <PoPUpContent/>
       <PoPUpFooter/>
@@ -27,9 +29,10 @@ export default {
     ...mapState(['showPopUp'])
   },
   methods: {
-    ...mapMutations(['closePopup','changeCurrentBuyDetail']),
+    ...mapMutations(['closePopup','updatedGroupBuyID','changeCurrentBuyDetail']),
     closePopUpInitData(){
       this.changeCurrentBuyDetail(null)
+      this.updatedGroupBuyID(-1)
       this.closePopup()
     }
   }
@@ -44,28 +47,33 @@ export default {
     right: 0
     bottom: 0
     background-color: rgba(0,0,0,0.7)
-    z-index: 2
+    z-index: 4
+
   .popup-close
-    width: .5rem
-    height: .5rem
-    font-size: .3rem
-    line-height: .5rem
-    text-align: center
+    width: 8vw
+    height: 8vw
+    font-size: 5vw
+    line-height: 8vw
+    display: flex
+    align-items: center
+    justify-content: center
     position: absolute
-    right: .4rem
-    top: .4rem
-    border-radius: .4rem
-    border: .01rem solid #888
+    right: 5vw
+    top: 5vw
+    border-radius: 4vw
+    background-color: #e3dee4
+    color: #727071
+    
   .popup-content
     position: absolute
     bottom: 0
     width: 100%
     height: 70vh
     background-color: white
-    border-top-left-radius:.15rem
-    border-top-right-radius: .15rem
+    border-top-left-radius: 3vw
+    border-top-right-radius: 3vw
     overflow: hidden
-    z-index: 3
+    z-index: 5
 </style>
 
 

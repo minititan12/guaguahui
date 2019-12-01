@@ -5,7 +5,7 @@
       left-arrow
       @click-left="handleBack"
     />
-    <div class="page-wrapper">
+    <div v-if="productDetails.id" class="page-wrapper">
       <BargainProduce @reload="reload" :productDetails="productDetails" :bargainDetails="bargainDetails"></BargainProduce>
       <BargainFriends :friends="friends"></BargainFriends>
     </div>
@@ -24,7 +24,7 @@ export default {
       // 砍价详情
       bargainDetails:{},
       // 砍价的好友列表
-      friends:[],
+      friends:null,
       // 砍价活动ID 
       bargin_item_id:"",
       // 商品ID

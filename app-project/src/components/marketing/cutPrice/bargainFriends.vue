@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div v-if="friends" class="wrapper">
       <div class="title">帮你砍价的好友</div>
       <div v-if="friends.length > 0" class="list">
         <div class="fridens" v-for="(item,index) in friends" :key="index">
@@ -32,7 +32,7 @@
 <script>
 export default {
   props:{
-    friends: Array
+    friends:[null,Array]
   }  
 }
 </script>

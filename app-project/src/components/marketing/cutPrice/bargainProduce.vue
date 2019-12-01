@@ -127,7 +127,7 @@ export default {
     return {
       // 是否显示砍价成功
       // showPop:false,
-      showPop:true,
+      showPop:false,
       // 是否显示分享弹窗
       sharePop:false,
       // 砍价信息

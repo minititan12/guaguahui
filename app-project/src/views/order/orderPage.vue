@@ -17,9 +17,13 @@ export default {
   },
   beforeRouteLeave (to, from, next) {
     console.log(to,from)
-    if(to.name == 'pay'){
-      this.changeTab(1)
-      this.$router.push('/')
+    if(to.name == 'payment'){
+      if(to.query.type == 'payFromOrder'){
+        next()
+      }else{
+        this.changeTab(1)
+        this.$router.push('/')
+      }
     }else{
       next()
     }

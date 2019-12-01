@@ -6,12 +6,10 @@
 
 <script>
 import { mapState } from 'vuex'
-import PayItem from '../../miniComponents/payItem'
 import ShopConfirmItem from '../../miniComponents/shopConfirmItem'
 export default {
   name: "PayItems",
   components: {
-    PayItem,
     ShopConfirmItem
   },
   computed: {

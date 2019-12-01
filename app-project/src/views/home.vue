@@ -77,35 +77,6 @@ export default {
   },
   methods: {
     ...mapMutations(['updateUserData','changeLoginStatus']),
-    initUserData(){
-      if(localStorage.hasOwnProperty('userData')){
-        this.changeLoginStatus(true)
-        let userData = JSON.parse(localStorage.userData)
-        let userID = {
-          user_id: userData.id
-        }
-        console.log('userID:',userID)
-        axios.post('api/method/get_user_id',userID)
-          .then((res)=>{
-            console.log('get_user_id:',res.data)
-            if(res.data.code == 1){
-              this.updateUserData(res.data.data)
-              localStorage.removeItem('userData')
-              localStorage.userData = JSON.stringify(res.data.data)
-              this.changeLoginStatus(true)
-            }else{
-              localStorage.removeItem('userData')
-              this.changeLoginStatus(false)
-            }
-          })
-          .catch((err)=>[
-            console.log('post userid err' + err)
-          ])
-      }else{
-        console.log('localstorage:',localStorage)
-        this.changeLoginStatus(false)
-      }
-    },
     handleCheckOpenid(){
       if(/MicroMessenger/.test(window.navigator.userAgent)){
         if(!this.openid){
@@ -125,7 +96,6 @@ export default {
     }
   },
   created(){
-    this.initUserData()
     this.handleCheckOpenid()
   }
 };

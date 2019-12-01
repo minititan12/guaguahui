@@ -31,6 +31,6 @@ export default {
     left: 0
     right: 0
     bottom: 12vw
-    background-color: #F4F4F4
+    background-color: #F6F7FB
 </style>
 

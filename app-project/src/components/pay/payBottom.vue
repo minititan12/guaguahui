@@ -40,37 +40,6 @@ export default {
         }
         return result.toFixed(2)
       }
-    },
-    commitData(){
-      let hasConfirmList = this.confirmList.length > 0 ? true : false
-      let hasUserData = Object.keys(this.userData).length > 0 ? true : false
-      let hasConfirmListTotalPrice = parseFloat(this.confirmListTotalPrice) > 0 ? true : false
-      let hasDefaultAddress = this.defaultAddress.code == 1 ? true : false
-
-      if(hasConfirmList && hasConfirmListTotalPrice && hasUserData && hasDefaultAddress){
-        let result = []
-        for(let item of this.confirmList){
-          result.push({
-            goods_id: item.goods_id,
-            number: item.number,
-            user_id: this.userData.id,
-            amount: item.totalPrice,
-            goods_attr_id: item.hasOwnProperty('goods_attr_id') ? item.goods_attr_id : '',
-            buyer_address: this.defaultAddress.data,
-            user_id_to: item.user_id_to,
-            attr1_name: item.hasOwnProperty('attr1_name') ? item.attr1_name : '',
-            attr1_value: item.hasOwnProperty('attr1_value') ? item.attr1_value : '',
-            attr2_name: item.hasOwnProperty('attr2_name') ? item.attr2_name : '',
-            attr2_value: item.hasOwnProperty('attr2_value') ? item.attr2_value : '',
-            attr3_name: item.hasOwnProperty('attr3_name') ? item.attr3_name : '',
-            attr3_value: item.hasOwnProperty('attr3_value') ? item.attr3_value : '',
-            price: item.price,
-            goods_name: item.title
-          })
-        }
-
-        return result
-      }
     }
   },
   methods: {
@@ -158,9 +127,21 @@ export default {
       return result
     },
 
+    //获取支付来源
+    getIsCart(){
+      let val = this.$route.query.is_cart
+      return val
+    },
+
     //提交订单
     handleCommitOrder(){
-      // let hasConfirmList = this.confirmList.length > 0 ? true : false
+      // if(!this.is_app()){
+      //   this.$router.push({
+      //     path: "/download"
+      //   })
+      // }else{
+        
+      // }
       let hasUserData = Object.keys(this.userData).length > 0 ? true : false
       let hasDefaultAddress = this.defaultAddress.code == 1 ? true : false
 
@@ -183,19 +164,21 @@ export default {
 
       let order_goods = this.getOrderGoods()
       let address = this.getAddress()
+      let is_cart = this.getIsCart()
 
       //把商品上传到服务器获取订单号
       let commitObject = {
         user_id: this.userData.id,
         order_goods: order_goods,
-        address: address
+        address: address,
+        is_cart: is_cart
       }
-      console.log('waitPay commitData',commitObject)
+      console.log('makeOrder commitObject',commitObject)
 
       //上传到待支付列表
       axios.post('api/method/makeOrder',commitObject)
         .then((res)=>{
-          console.log('waitpay:',res.data)
+          console.log('makeOrder:',res.data)
           if(res.data.code == 1){
             this.updatePayOrderData(res.data.data)
 
@@ -204,13 +187,6 @@ export default {
             })
           }
 
-            // if(!this.is_app()){
-            //   this.$router.push({
-            //     path: "/download"
-            //   })
-            // }else{
-              
-            // }
         })
         .catch((err)=>{
           console.log('commit data err',err)

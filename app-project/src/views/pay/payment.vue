@@ -56,20 +56,26 @@ export default {
     }
   },
   computed:{
-    ...mapState(['payOrderData']),
+    ...mapState(['payOrderData','userData']),
     orderNumber(){
-      if(this.$route.params.order_number){
-        return this.$route.params.order_number
+      if(this.payOrderData){
+        let result = []
+        for(let item of this.payOrderData.order_no){
+          result.push(item.order_no)
+        }
+
+        return result.join('|')
       }
     },
     amount(){
       if(this.payOrderData){
-        return this.payOrderData.total_amount
+        let result = parseFloat(this.payOrderData.total_amount)
+        return result.toFixed(2)
       }
     },
     userId(){
-      if(this.$route.params.user_id){
-        return this.$route.params.user_id
+      if(this.userData){
+        return this.userData.id
       }
     }
   },
@@ -303,7 +309,7 @@ export default {
     },
 
     wxExternalPay(){
-      //微信外部 H5 网页支付
+      //H5 网页支付
       let payData = {
         pay_type: 5,
         order_number: this.orderNumber,
@@ -315,7 +321,7 @@ export default {
       
       axios.post('api/method/pay', payData)
         .then((res) => {
-          var mweb_url=res.data.data.order.mweb_url;
+          var mweb_url=res.data.data.order.mweb_url
         
           if(mweb_url){
             window.location.href = mweb_url
@@ -339,6 +345,7 @@ export default {
       //app支付
       let payType = parseInt(this.radio)
 
+      //提交的支付信息
       let payData = {
         pay_type: payType,
         order_number: this.orderNumber,
@@ -350,8 +357,9 @@ export default {
       var _this = this
       var channel = null
       var payID = payType == 1 ? 'alipay' : 'wxpay'
-		
-      if(true){
+    
+      //获取支付通道
+      if(plus){
         plus.payment.getChannels(function(channels){
           for(let item of channels){
             if(item.id == payID){
@@ -363,13 +371,17 @@ export default {
           console.log('获取支付通道失败')
         });  
       }
-		
+    
+      //提交支付
       axios.post('api/method/pay', payData)
         .then((res) => {
           
           console.log('pay', res.data.data.pay_type)
+          let string = JSON.stringify(res.data)
+          alert(string)
         
-          plus.payment.request(channel,res.data.data.order, function(result) {
+          plus.payment.request(channel,res.data.data.order, function(result) {  //支付成功回调函数
+
             _this.$toast({
               message: "支付成功",
               type: "success",
@@ -384,14 +396,22 @@ export default {
                 }
               })
             },1200)
-            return;
 
-          }, function(e) {
+          }, function(e) {  //支付失败回调函数
             _this.$toast({
               message: "支付失败",
               type: "fail",
               duration: 1200
             })
+
+            setTimeout(()=>{
+              _this.$router.push({
+                path: "/orderPage",
+                query:{
+                  orderID: 0
+                }
+              })
+            },1200)
           })
 
         })
@@ -399,27 +419,29 @@ export default {
           console.log('pay err', err)
         })
     },
+
+    //处理支付订单的操作
     handlePayOrder() {
 
-      if(this.type == 'aliWeb'){
+      if(this.type == 'aliWeb'){  //支付宝内部支付
         // alert('aliWeb pay')
         this.aliWebPay()
         return
       }
 
-      if(this.type == 'wxWeb'){
+      if(this.type == 'wxWeb'){ //微信内部支付
         // alert('wxweb pay')
         this.wxWebPay()
         return
       }
 
-      if(this.type == 'app'){
+      if(this.type == 'app'){ //app支付
         // alert('app pay')
         this.appPay()
         return
       }
 
-      if(this.type == 'h5'){
+      if(this.type == 'h5'){  //h5网页支付
         // alert('h5 pay')
         if(this.radio == '1'){
           this.aliExternalPay()

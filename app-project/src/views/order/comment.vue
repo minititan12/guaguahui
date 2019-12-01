@@ -9,7 +9,7 @@
       <span class="warn-text">您没有可评论的订单</span>
     </div>
 
-    <PayItem 
+    <OrderItem 
       style="margin-top: .2rem" 
       :data="item" 
       :showComment="true" 
@@ -23,13 +23,13 @@
 </template>
 
 <script>
-import PayItem from '../../components/miniComponents/payItem'
+import OrderItem from '../../components/miniComponents/orderItem'
 import axios from 'axios'
 import { mapState } from 'vuex'
 export default {
   name: "Comment",
   components: {
-    PayItem
+    OrderItem
   },
   data(){
     return {

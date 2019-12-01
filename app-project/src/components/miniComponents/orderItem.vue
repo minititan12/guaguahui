@@ -1,38 +1,39 @@
 <template>
   <div class="oderItem" v-if="data">
     <div class="oderItem-shop">
-      <!-- <span class="shop-text">店铺: </span> -->
-      <van-icon color="#B9B9B9" name="shop-o" />
-      <span class="shop-name" @click="handleShopClick">{{data.shop}}</span>
+      <div class="shop-left">
+        <van-icon color="#B9B9B9" name="shop-o" />
+        <span class="shop-name" @click="handleToShop(data.goodsList[0].user_id_to)">{{data.goodsList[0].shop}}</span>
+      </div>
       <span class="shop-status">{{statusText}}</span>
     </div>
 
-    <div class="oderItem-content">
-      <div class="oderItem-img" @click= "handleImgClick">
+    <div class="oderItem-content" v-for="item of data.goodsList">
+      <div class="oderItem-img" @click="handleToProduct(item.goods_id)">
         <van-image
           width="25vw"
           height="25vw"
           fit="contain"
-          :src="data.imgUrl"
+          :src="item.photo"
           style="-webkit-touch-callout: none"
         />
       </div>
 
       <div class="content-middle">
-        <span class="oderItem-title" @click= "handleTitleClick">{{data.title}}</span>
-        <span class="oderItem-desc">{{getDesc(data)}}</span>
+        <span class="oderItem-title" @click="handleToProduct(item.goods_id)">{{item.goods_name}}</span>
+        <span class="oderItem-desc">{{getDesc(item)}}</span>
       </div>
 
       <div class="content-right">
         <div>
           <span class="right-icon">￥</span>
-          <span class="right-price">{{data.price}}</span>
+          <span class="right-price">{{item.amount}}</span>
         </div>
-        <span class="right-number">x{{data.number}}</span>
+        <span class="right-number">x{{item.number}}</span>
       </div>
     </div>
 
-    <div :class="noShow ? 'oderItem-bottom-end':'oderItem-bottom-be'">
+    <div class='oderItem-bottom'>
 
       <!-- 底下按钮 -->
       <div class="bottom-btns">
@@ -53,10 +54,10 @@
 
       <!-- 底下价格数量描述 -->
       <div class="bottom-desc">
-        <span class="bottom-number">共 {{data.number}} 件</span>
+        <span class="bottom-number">共 {{getAllNumber()}} 件</span>
         <span class="bottom-text">小计:</span>
         <span class="bottom-icon">￥</span>
-        <span class="bottom-price">{{data.totalPrice}}</span>
+        <span class="bottom-price">{{getAllAmount()}}</span>
       </div>
     </div>
   </div>
@@ -64,7 +65,7 @@
 
 <script>
 export default {
-  name: "PayItem",
+  name: "OrderItem",
   props: {
     data: Object,
     showDel: Boolean,
@@ -78,6 +79,29 @@ export default {
     showLogistics: Boolean
   },
   methods: {
+    //获取该订单总数量
+    getAllNumber(){
+      let result = 0
+      if(this.data){
+        for(let item of this.data.goodsList){
+          result = result + parseInt(item.number)
+        }
+      }
+
+      return result
+    },
+    //获取该订单总价格
+    getAllAmount(){
+      let result = 0
+
+      if(this.data){
+        for(let item of this.data.goodsList){
+          result = result + parseInt(item.number)*parseFloat(item.amount)
+        }
+      }
+
+      return result.toFixed(2)
+    },
     //点击删除按钮
     handleDel(){
       this.$emit('del')
@@ -106,14 +130,23 @@ export default {
     handleToLogistics(){
       this.$emit('logistics')
     },
-    handleImgClick(){
-      this.$emit('imgClick')
+    //处理跳转到商店详情页面
+    handleToShop(shopID){
+      this.$router.push({
+        path: '/shop',
+        query: {
+          shopID: shopID
+        }
+      })
     },
-    handleTitleClick(){
-      this.$emit('titleClick')
-    },
-    handleShopClick(){
-      this.$emit('shopClick')
+    //处理跳转到产品详情页面
+    handleToProduct(id){
+      this.$router.push({
+        path: '/product',
+        query: {
+          id: id
+        }
+      })
     },
     //获取描述
     getDesc(data){
@@ -154,18 +187,24 @@ export default {
       line-height: 10vw
       display: flex
       align-items: center
-      .van-icon-shop-o
-        font-size: 5vw
-        margin-right: 1vw
-      .shop-name
-        font-size: 4vw
+      justify-content: space-between
+      .shop-left
+        display: flex
+        flex-direction: row
+        align-items: center
+        .van-icon-shop-o
+          font-size: 5vw
+          margin-right: 1vw
+        .shop-name
+          font-size: 4vw
       .shop-status
-        float: right
-        color: #E41436
+        font-size: 3.8vw
+        color: #FF5655
 
 
     .oderItem-content
       width: 100%
+      margin-bottom: 2vw
       display: flex
       flex-direction: row
       justify-content: space-around
@@ -177,7 +216,7 @@ export default {
         box-shadow: 0 0 2vw 1vw #eee
       .content-middle
         width: 50%
-        font-size: 3.3vw
+        font-size: 3.5vw
         display: flex
         margin-left: 2vw
         flex-direction: column
@@ -193,7 +232,6 @@ export default {
         display: flex
         flex-direction: column
         align-items: flex-end
-        // margin-top: 2vw
         .right-icon
           font-size: 3vw
         .right-price
@@ -203,44 +241,8 @@ export default {
           color: #B9B9B9
           font-family: PFM
 
-
-    .oderItem-bottom-end
+    .oderItem-bottom
       line-height: 12vw
-      display: flex
-      flex-direction: row
-      justify-content: flex-end
-      align-items: center
-      .bottom-btns
-        height: 100%
-        .bottom-del
-          margin-right: 1vw
-        .bottom-cancel
-          margin-right: 1vw
-        .bottom-comment
-          margin-right: 1vw
-        .bottom-confirm
-          margin-right: 1vw
-        .bottom-refund
-          margin-right: 1vw
-        .bottom-logistics
-          margin-right: 1vw
-      .bottom-desc
-        .bottom-number
-          font-size: 3vw
-          margin-right: 2vw
-        .bottom-icon
-          font-size: 3vw
-          padding-top: 1vw
-          margin-left: 1vw
-          color: #FE5655
-        .bottom-price
-          font-size: 4vw
-          font-family: hgzt
-          color: #FE5655
-
-
-    .oderItem-bottom-be
-      line-height: 14vw
       display: flex
       flex-direction: row
       justify-content: space-between
@@ -268,9 +270,9 @@ export default {
           font-size: 2.5vw
           padding-top: 2vw
           margin-left: 2vw
-          color: #FE5655
+          color: #FF5655
         .bottom-price
           font-size: 4vw
           font-family: hgzt
-          color: #FE5655
+          color: #FF5655
 </style>

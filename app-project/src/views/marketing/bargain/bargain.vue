@@ -5,16 +5,35 @@
       left-arrow
       @click-left="handleBack"
     />
-    <div class="page-wrapper">
-      <BargainProduce @reload="reload" :productDetails="productDetails" :bargainDetails="bargainDetails"></BargainProduce>
-      <BargainFriends :friends="friends"></BargainFriends>
+    <div class="content-wrapper" ref="wrapper">
+      <div>
+        <div class="page-wrapper">
+          <BargainProduce @reload="reload" :productDetails="productDetails" :bargainDetails="bargainDetails"></BargainProduce>
+          <BargainFriends :friends="friends"></BargainFriends>
+        </div>
+        
+        <TitleShop />
+        <van-image
+          width="94vw"
+          style="padding:0 3vw;margin-bottom:2vw"
+          src="/public/static/bargin/bargin_icon_1.png"
+        />
+        <ProductComment></ProductComment>
+        <ProductDesc></ProductDesc>
+        <ProductPopUp></ProductPopUp>
+      </div>
     </div>
   </div>
 </template>
 <script>
 import BargainFriends from '../../../components/marketing/cutPrice/bargainFriends'
 import BargainProduce from '../../../components/marketing/cutPrice/bargainProduce'
+import ProductDesc from '../../../components/product/content/productDesc'
+import TitleShop from '../../../components/product/content/title/titleShop'
+import ProductComment from '../../../components/product/content/title/productComment'
+import ProductPopUp from '../../../components/product/productPopUp'
 import axios from 'axios'
+import Bscroll from 'better-scroll'
 import { mapState,mapMutations } from 'vuex'
 export default {
   data(){
@@ -46,10 +65,31 @@ export default {
     this.getBargain();
   },
   components:{
-    BargainProduce,BargainFriends
+    BargainProduce,BargainFriends,ProductDesc,TitleShop,ProductComment,ProductPopUp
+  },
+  mounted(){
+    this.initScroll()
   },
   methods:{
     ...mapMutations(['changeCurrentProductData']),
+    initScroll(){
+      let el = this.$refs.wrapper
+      this.productScroll = new Bscroll(el,{
+        click: true,
+        eventPassthrough: 'horizontal',
+        bounce:{
+          top: false,
+          bottom: true
+        }
+      })
+
+      let that = this
+
+      this.productScroll.on('beforeScrollStart',function(){
+          console.log('beforeScrollStart')
+          that.productScroll.refresh()
+      })
+    },
     handleBack(){
       this.$router.go(-1)
     },
@@ -101,12 +141,26 @@ export default {
     color: #000
     font-size: 4vw
     font-family: PFH
+  .van-nav-bar
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    z-index 2!important
 
+  .content-wrapper
+    position absolute
+    top 46px
+    left 0
+    right 0
+    bottom 0
+    overflow hidden
+    background #f6f7fb
   .page-wrapper
     background-image url('/public/static/bargin/bargin_bg.png')
     width 100%
     padding 2vw 0
     overflow-y auto
     box-sizing border-box
-    height calc(100% - 46px)
+    // padding-top 56px
 </style>

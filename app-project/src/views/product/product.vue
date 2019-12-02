@@ -1,10 +1,13 @@
 <template>
   <div class="product-wrapper">
-    <ProductContent></ProductContent>
+    <!-- <ProductContent></ProductContent>
 
     <ProductFooter v-if="showFooter('product')"></ProductFooter>
 
-    <GroupFooter v-if="showFooter('group')"></GroupFooter>
+    <GroupFooter v-if="showFooter('group')"></GroupFooter> -->
+    <NormalProduct v-if="type == 1"></NormalProduct>
+
+    <GroupProduct v-if="type ==2"></GroupProduct>
 
     <ProductPopUp></ProductPopUp>
 
@@ -42,9 +45,8 @@
 </template>
 
 <script>
-import ProductContent from '../../components/product/productContent'
-import ProductFooter from '../../components/product/productFooter'
-import GroupFooter from '../../components/product/groupFooter'
+import NormalProduct from './normalProduct'
+import GroupProduct from './groupProduct'
 import ProductPopUp from '../../components/product/productPopUp'
 import ImgMasking from '../../components/product/imgMasking'
 import ServePopUp from '../../components/product/servePopUp'
@@ -57,14 +59,13 @@ export default {
   name: "Product",
   data(){
     return {
-      productData: {}
+      type: 0
     }
   },
 
   components: {
-    ProductContent,
-    ProductFooter,
-    GroupFooter,
+    NormalProduct,
+    GroupProduct,
     ProductPopUp,
     ImgMasking,
     ServePopUp,
@@ -77,7 +78,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations(['changeShowSearch','changeCurrentProductData','changeProductDetailData','closePopup','updateServePopUp','updateSharePopUp','changeLoginStatus','updateUserData','changeCurrentBuyDetail','updateAllSpellGroups']),
+    ...mapMutations(['changeCurrentProductData','closePopup','updateServePopUp','updateSharePopUp','changeCurrentBuyDetail','updateAllSpellGroups']),
     //是不是运行在app上
     is_app(){
       if(typeof(plus) == 'object'){
@@ -85,29 +86,6 @@ export default {
       }
       
       return false;
-    },
-
-    //显示哪个页脚
-    showFooter(type){
-      let flag = null
-      if(this.productData.hasOwnProperty('flag')){
-        flag = this.productData.flag
-      }
-
-      if(flag == 2){
-        if(type == 'group'){
-          return true
-        }else{
-          return false
-        }
-        
-      }else{
-        if(type == 'product'){
-          return true
-        }else{
-          return false
-        }
-      }
     },
 
     //跳转到主页
@@ -123,7 +101,7 @@ export default {
         .then((res)=>{
           console.log('getGoodsInfo',res.data)
           if(res.data.code == 1){
-            this.productData = res.data.data
+            this.type = res.data.data.flag
             this.changeCurrentProductData(res.data.data)
           }
         })
@@ -134,7 +112,6 @@ export default {
 
     //返回
     back(){
-      // this.changeShowSearch(false)
       console.log(this.$router)
       setTimeout(()=>{
         this.$router.go(-1)
@@ -188,7 +165,6 @@ export default {
   },
 
   created(){
-    // this.changeShowSearch(false)
     this.updateServePopUp(false)
     this.updateSharePopUp(false)
     this.closePopup()
@@ -199,13 +175,6 @@ export default {
   },
 
   mounted(){
-    if(!this.login){
-      if(localStorage.hasOwnProperty('userData')){
-        this.changeLoginStatus(true)
-        let data = JSON.parse(localStorage.userData)
-        this.updateUserData(data)
-      }
-    }
     this.handleCheckOpenid()
   }
 }

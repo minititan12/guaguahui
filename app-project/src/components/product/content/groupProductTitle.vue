@@ -19,24 +19,38 @@
           <span class="price-cancel" v-if="showCancel">原价: {{currentProductData.second_price}}</span>
         </div>
 
-        <!-- 优惠劵 -->
-        <div class="coupon">
-          <div class="icons">
-            <span>下单立减20元</span>
-            <span>满400减20</span>
+        <!-- 拼团 -->
+        <div class="groupBuy">
+          <div class="groupBuy-num">
+            <span>累计已拼2.8万件</span>
           </div>
+          <div class="icons">
+            <div class="icon">
+              <van-image width="6vw" fit="contain" src="/images/tzkt.png"/>
+              <span class="icon-text">团长开团</span>
+            </div>
+            <van-image class="icon-jt" width="4vw" fit="contain" src="/images/jt.png"/>
 
-          <div class="more-coupon">
-            <span>更多优惠劵</span>
-            <van-icon name="arrow" />
+            <div class="icon">
+              <van-image width="6vw" fit="contain" src="/images/yqhy.png"/>
+              <span class="icon-text">邀请好友</span>
+            </div>
+            <van-image class="icon-jt" width="4vw" fit="contain" src="/images/jt.png"/>
+
+            <div class="icon">
+              <van-image width="6vw" fit="contain" src="/images/ptcg.png"/>
+              <span class="icon-text">拼团成功</span>
+            </div>
           </div>
         </div>
 
       </div>
 
-      <ProductProps />
+      <GroupRules />
 
       <TitleShop />
+
+      <GroupList />
 
       <Serve/>
 
@@ -51,17 +65,19 @@
 <script>
 import axios from 'axios'
 import ProductComment from './title/productComment'
-import ProductProps from './title/productProps'
 import TitleShop from './title/titleShop'
+import GroupList from './title/groupList'
+import GroupRules from './title/groupRules'
 import Serve from './title/serve'
 import BackHome from './title/backHome'
 import { mapMutations, mapState } from 'vuex'
 export default {
-  name: "ProductTitle",
+  name: "GroupProductTitle",
   components: {
     ProductComment,
-    ProductProps,
     TitleShop,
+    GroupList,
+    GroupRules,
     Serve,
     BackHome
   },
@@ -102,10 +118,10 @@ export default {
     //是不是在app中
     is_app(){
       if(typeof(plus) == 'object'){
-        return true;
+        return true
       }
       
-      return false;
+      return false
     }
   },
 
@@ -133,12 +149,14 @@ export default {
     margin-top: 2vw
     position: relative
     z-index: 1
+
     .top
       width: 94%
       padding: 2vw 0
       background-color: #fff
       margin: 0 auto
       border-radius: 3vw
+
       .title
         margin: 0 4vw
         padding-bottom: 2vw
@@ -152,6 +170,7 @@ export default {
         -webkit-box-orient: vertical
         line-height: 6vw
         min-height: 8vw
+
       .price
         color: #FF4D51
         margin: 0 4vw 2vw 4vw
@@ -166,28 +185,7 @@ export default {
           font-family: PFM
           margin-left: 4vw
           text-decoration: line-through
-      .coupon
-        margin: 4vw 4vw 2vw 4vw
-        display: flex
-        flex-direction: row
-        justify-content: space-between
-        align-items: center
-        .icons
-          span 
-            display: inline-block
-            color: #fff
-            background-color: #FF5756
-            margin-right: 2vw
-            font-size: 3.5vw
-            padding: 2vw 3vw
-            border-radius: 3vw
-        .more-coupon
-          display: flex
-          flex-direction: row
-          align-items: center
-          font-family: PFB
-          font-size: 3.5vw
-          color: #969799
+
       .groupBuy
         margin: 3vw 4vw 2vw 4vw
         .groupBuy-num

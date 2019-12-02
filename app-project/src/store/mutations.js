@@ -448,6 +448,12 @@ export default {
     state.groupBuyData = result
   },
 
+  //更新拼团中的产品信息
+  updatedGroupGoodsDes(state,data){
+    let result = JSON.parse(JSON.stringify(data))
+    state.groupGoodsDes = result
+  },
+
   //更新拼团产品页中选择的拼团id
   updatedGroupBuyID(state,id){
     state.groupBuyID = id

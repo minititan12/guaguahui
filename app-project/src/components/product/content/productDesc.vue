@@ -33,7 +33,6 @@ export default {
     }
   },
   created(){
-    debugger;
     if(this.currentProductData && this.currentProductData.content != undefined){
       this.loading = false
     }    

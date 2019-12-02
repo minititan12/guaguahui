@@ -69,7 +69,9 @@ export default {
   //营销功能
   //拼团
   groupBuyData: {},                //拼团首页总数据
+  groupGoodsDes: null,          //拼团产品信息
   groupBuyID: -1,               //拼团产品页中的拼单选择
+
   allSpellGroups: [],           //所有这个拼团商品已有的拼单
   showGroupDialog:{ value: false },            //显示拼团的弹窗
 
@@ -78,4 +80,5 @@ export default {
   bargainData:{},
   // 分享的信息
   shareInfo:{},
+
 }

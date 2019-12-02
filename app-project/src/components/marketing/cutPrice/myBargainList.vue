@@ -26,41 +26,34 @@
         <div class="price">原价:{{item.price}}元</div>
         <div class="operate">
           <div @click.stop="order(item)" class="order">立即下单</div>
-          <div v-if="is_app()" @click.stop="share" class="share"></div>
+          <div v-if="is_app()" @click.stop="share(item)" class="share"></div>
         </div>
       </div>
     </div>
-    <SharePop v-model="sharePop"></SharePop>
+    
   </div>
 </template>
 <script>
-import SharePop from './popup/sharePop'
+
 import { mapState } from 'vuex'
 export default {
-  data(){
-    return {
-      sharePop:false
-    }
-  },
   props:{
     cutPriceList:Array
-  },
-  components:{
-    SharePop,
   },
   computed: {
     ...mapState(['login'])
   },
   methods:{
     is_app(){
-      if(typeof(plus) == 'object'){
-        return true;
-      }
-      return false;
+      // if(typeof(plus) == 'object'){
+      //   return true;
+      // }
+      // return false;
+      return true;
     },
     // 点击分享
-    share(){
-      this.sharePop = true;
+    share(item){
+      this.$emit("share",item);
     },
     goBargainProduct(item){
       this.$router.push(`/bargainProduct?goods_id=${item.goods_id}`);

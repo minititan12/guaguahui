@@ -1,7 +1,7 @@
 <template>
-  <div class="share-wrapper" v-if="value">
-    <div class="masking" @click="closeSharePopUp"></div>
-    <div class="shareContent">
+  <div @click="closeSharePopUp" class="share-wrapper" v-if="value">
+    <div class="masking" ></div>
+    <div @click.stop="stopSpread" class="shareContent">
       <div class="share-item" v-if="false">
         <span class="iconfont qq">&#xe7cc;</span>
         <span class="text">分享QQ</span>
@@ -26,8 +26,8 @@ import { mapState } from 'vuex'
 export default {
   props:{
     value:Boolean,
-    productDetails:Object,
     bargin_item_id:{},
+    goods_id:{},
   },
   data(){
     return {
@@ -51,6 +51,9 @@ export default {
     closeSharePopUp(){
       this.$emit('input',false);
     },
+    stopSpread(){
+
+    },
     shareToPyq(){
       this.closeSharePopUp();
       if(this.shares[0] && this.shares[0].authenticated){
@@ -60,7 +63,7 @@ export default {
           content: '呱呱汇商品',
           thumbs: [this.currentProductData.cover_img],
           pictures: [this.currentProductData.cover_img],
-          href: process.env.VUE_APP_SHARE_HOST +'#/bargain?goods_id='+ this.currentProductData.id +'&&bargin_item_id=' + this.bargin_item_id,
+          href: process.env.VUE_APP_SHARE_HOST +'#/bargain?goods_id='+ this.goods_id +'&&bargin_item_id=' + this.bargin_item_id,
           extra: {
             scene: 'WXSceneTimeline'
           }
@@ -80,7 +83,7 @@ export default {
           content: '呱呱汇商品',
           thumbs: [this.currentProductData.cover_img],
           pictures: [this.currentProductData.cover_img],
-          href: process.env.VUE_APP_SHARE_HOST + '#/bargain?goods_id='+ this.currentProductData.id +'&&bargin_item_id=' + this.bargin_item_id,
+          href: process.env.VUE_APP_SHARE_HOST + '#/bargain?goods_id='+ this.goods_id +'&&bargin_item_id=' + this.bargin_item_id,
           extra: {
             scene: 'WXSceneSession'
           }

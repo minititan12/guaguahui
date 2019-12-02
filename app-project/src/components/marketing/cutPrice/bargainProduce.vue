@@ -110,7 +110,7 @@
       </div>
     </div>
     <BargainPop :bargin_item_id="bargainDetails.bargin_item_id" :productDetails="productDetails" :bargainInfo="bargainInfo" v-model="showPop"></BargainPop>
-    <SharePop :bargin_item_id="bargainDetails.bargin_item_id" v-model="sharePop"></SharePop>
+    <SharePop :goods_id="productDetails.id" :bargin_item_id="bargainDetails.bargin_item_id" v-model="sharePop"></SharePop>
   </div>
 </template>
 <script>

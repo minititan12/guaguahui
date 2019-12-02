@@ -388,8 +388,9 @@ export default {
   },
 
   //更新订单列表
-  updateOrderList(state,list){
-    state.orderList = list
+  updateOrderData(state,data){
+    let result = JSON.parse(JSON.stringify(data))
+    state.orderData = result
   },
 
   //更新订单标题

@@ -2,76 +2,64 @@
   <div class="orderItems-wrapper" v-if="showItems">
 
     <!-- 全部商品项 -->
-    <PayItem v-if="orderActive == 0 && list.length > 0" 
+    <OrderItem v-if="orderActive == 0 && list.length > 0" 
       v-for= "item of list" 
       :data= "item" 
-      :statusText= "getStatusText(item.status)"
-      :key= "item.id" 
-      :showDel= "showDel(item.status)"
-      :showCancel= "item.status == 0 ? true : false"
-      :showRefund= "showRefund(item.status)" 
-      :showPay= "item.status == 0 ? true : false"
-      :showConfirm= "item.status == 3 ? true : false" 
-      :showLogistics = "item.status == 3 ? true : false"
+      :statusText= "getStatusText(item.goodsList[0].status)"
+      :key= "item.orderNumber" 
+      :showDel= "showDel(item.goodsList[0].status)"
+      :showCancel= "item.goodsList[0].status == 0 ? true : false"
+      :showRefund= "showRefund(item.goodsList[0].status)" 
+      :showPay= "item.goodsList[0].status == 0 ? true : false"
+      :showConfirm= "item.goodsList[0].status == 3 ? true : false" 
+      :showLogistics = "item.goodsList[0].status == 3 ? true : false"
       @del= "handleDelItem(item.orderNumber)"
       @cancel= "handleCancelOrder(item.orderNumber)"
       @pay= "handlePayOrder(item)"
       @refund= "handleRefund(item.orderNumber)"
       @confirm= "handleConfirm(item.orderNumber)"
       @logistics= "handleToLogistics(item)"
-      @imgClick= "handleGoodClick(item.goods_id)"
-      @titleClick= "handleGoodClick(item.goods_id)"
-      @shopClick= "handleShopClick(item.user_id_to)"
     />
     
     <!-- 待付款的商品项 -->
-    <PayItem v-if="orderActive == 1 && list.length > 0" 
+    <OrderItem v-if="orderActive == 1 && list.length > 0" 
       v-for= "item of list" 
       :data= "item" 
-      :key= "item.id" 
-      :statusText= "getStatusText(item.status)"
-      :showPay= "true" 
+      :key= "item.orderNumber" 
+      :statusText= "getStatusText(item.goodsList[0].status)"
+      :showPay= "true"
       :showCancel= "true"
       @pay= "handlePayOrder(item)" 
       @cancel= "handleCancelOrder(item.orderNumber)"
-      @imgClick= "handleGoodClick(item.goods_id)"
-      @titleClick= "handleGoodClick(item.goods_id)"
-      @shopClick= "handleShopClick(item.user_id_to)"
     />
 
     <!-- 待发货的商品项 -->
-    <PayItem v-if="orderActive == 2 && list.length > 0" 
+    <OrderItem v-if="orderActive == 2 && list.length > 0" 
       v-for= "item of list" 
       :data= "item" 
-      :statusText= "getStatusText(item.status)"
-      :key= "item.id" 
+      :statusText= "getStatusText(item.goodsList[0].status)"
+      :key= "item.orderNumber" 
       :showRefund= "true"
       @refund= "handleRefund(item.orderNumber)"
-      @imgClick= "handleGoodClick(item.goods_id)"
-      @titleClick= "handleGoodClick(item.goods_id)"
-      @shopClick= "handleShopClick(item.user_id_to)"
     />
 
     <!-- 待收货的商品项 -->
-    <PayItem v-if="orderActive == 3 && list.length > 0" 
+    <OrderItem v-if="orderActive == 3 && list.length > 0" 
       v-for= "item of list" 
       :data= "item" 
-      :key= "item.id"
-      :statusText= "getStatusText(item.status)"
+      :key= "item.orderNumber"
+      :statusText= "getStatusText(item.goodsList[0].status)"
       :showConfirm = "true" 
       :showLogistics = "true"
       @confirm= "handleConfirm(item.orderNumber)"
       @logistics= "handleToLogistics(item)"
-      @imgClick= "handleGoodClick(item.goods_id)"
-      @titleClick= "handleGoodClick(item.goods_id)"
-      @shopClick= "handleShopClick(item.user_id_to)"
     />
   </div>
 
 </template>
 
 <script>
-import PayItem from '../miniComponents/payItem'
+import OrderItem from '../miniComponents/orderItem'
 import { mapState,mapMutations } from 'vuex'
 import axios from 'axios'
 export default {
@@ -82,35 +70,23 @@ export default {
     }
   },
   components: {
-    PayItem
+    OrderItem
   },
   computed: {
-    ...mapState(['orderList','orderActive','userData']),
+    ...mapState(['orderData','orderActive','userData']),
+    //订单列表
     list(){
       let result = []
-      for(let item of this.orderList){
-        result.push({
-          originData: item,
-          attr1_name: item.attr1_name,
-          attr1_value: item.attr1_value,
-          attr2_name: item.attr2_name,
-          attr2_value: item.attr2_value,
-          attr3_name: item.attr3_name,
-          attr3_value: item.attr3_value,
-          imgUrl: item.photo.photo,
-          price: item.price,
-          totalPrice: item.amount,
-          shop: item.shop.company,
-          number: item.number,
-          title: item.title.goods_name,
-          orderNumber: item.order_number,
-          goods_id: item.goods_id,
-          goods_attr_id: item.goods_attr_id,
-          user_id: item.user_id,
-          user_id_to: item.user_id_to,
-          status: item.status
-        })
+
+      if(this.orderData && Object.keys(this.orderData).length > 0){
+        for(let key in this.orderData){
+          result.push({
+            orderNumber: key,
+            goodsList: this.orderData[key]
+          })
+        }
       }
+
       return result
     }
   },
@@ -118,24 +94,17 @@ export default {
     orderActive(newActive,oldActive){
       console.log(newActive,oldActive)
       this.$emit('hideWarn')
-      this.updateOrderList([])
+      this.updateOrderData(null)
       this.$toast({
         type: "loading",
         duration: 3000
       })
       this.getOrderData()
-    },
-    // orderList(){
-    //   if(this.orderList.length > 0){
-    //     this.showItems = true
-    //   }else{
-    //     this.showItems = false
-    //     this.$emit('showWarn')
-    //   }
-    // }
+    }
   },
   methods: {
-    ...mapMutations(['addToConfirmList','updateOrderList']),
+    ...mapMutations(['updateOrderData','updatePayOrderData']),
+    //获取订单信息
     getOrderData(){
       let status = 0
       switch(this.orderActive){
@@ -164,10 +133,12 @@ export default {
           console.log(res.data)
           this.$toast.clear()
           if(res.data.code == 1){
-            this.updateOrderList(res.data.data)
+            this.updateOrderData(res.data.data)
           }
           this.$nextTick(()=>{
-            if(this.orderList.length > 0){
+            let result = Object.keys(this.orderData)
+
+            if(result.length > 0){
               this.showItems = true
             }else{
               this.showItems = false
@@ -183,6 +154,7 @@ export default {
         })
     },
 
+    //获取订单状态
     getStatusText(status){
       switch(status){
         case 0:
@@ -233,6 +205,7 @@ export default {
       }
     },
 
+    //处理请求
     handleAxios(action,postData){
       let postUrl = ''
       if(action == 'del'){
@@ -284,19 +257,30 @@ export default {
         })
     },
 
-    handlePayOrder(orderItem){
+    //处理支付订单
+    handlePayOrder(shopItem){
       console.log('payorder')
+
+      let allAmount = 0
+      for(let item of shopItem.goodsList){
+        allAmount = allAmount + parseFloat(item.amount)
+      }
+
+      let data = {
+        order_no: [{order_no: shopItem.orderNumber}],
+        total_amount: allAmount 
+      }
+      this.updatePayOrderData(data)
+
       this.$router.push({
         path: '/payment',
-        name: 'payment',
-        params: {
-          order_number: orderItem.orderNumber,
-          amount: orderItem.totalPrice,
-          user_id: orderItem.user_id
+        query: {
+          type: 'payFromOrder'
         }
       })
     },
 
+    //处理确认订单
     handleConfirm(orderNumber){
       this.$dialog.alert({
         title: '确认收货',
@@ -331,24 +315,7 @@ export default {
       })
     },
 
-    handleGoodClick(goods_id){
-      this.$router.push({
-        path: '/product',
-        query: {
-          id: goods_id
-        }
-      })
-    },
-
-    handleShopClick(user_id_to){
-      this.$router.push({
-        path: '/shop',
-        query: {
-          shopID: user_id_to
-        }
-      })
-    },
-
+    //取消订单
     handleCancelOrder(orderNumber){
       this.$dialog.alert({
         title: '取消订单',
@@ -371,6 +338,7 @@ export default {
         })
     },
 
+    //申请退款
     handleRefund(orderNumber){
       this.$dialog.alert({
         title: '申请退款',
@@ -391,7 +359,7 @@ export default {
     }
   },
   created(){
-    this.updateOrderList([])
+    this.updateOrderData(null)
   },
   mounted(){
     this.$nextTick(()=>{

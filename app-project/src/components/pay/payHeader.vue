@@ -9,10 +9,7 @@ import { mapMutations } from 'vuex'
 export default {
   name: "PayHeader",
   methods: {
-    ...mapMutations(['initConfirmList','initComfirmTotalPrice']),
     handleBackClick(){
-      this.initConfirmList()
-      this.initComfirmTotalPrice()
       this.$router.go(-1)
     }
   }

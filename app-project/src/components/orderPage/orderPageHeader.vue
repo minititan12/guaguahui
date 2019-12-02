@@ -1,14 +1,12 @@
 <template>
   <div class="header-wrapper">
     <van-nav-bar title="订单" left-arrow @click-left="handleBackClick"/>
-    <van-sticky>
-      <van-tabs v-model="active" title-active-color="#FF5756">
-        <van-tab title="全部"></van-tab>
-        <van-tab title="待付款"></van-tab>
-        <van-tab title="待发货"></van-tab>
-        <van-tab title="待收货"></van-tab>
-      </van-tabs>
-    </van-sticky>
+    <van-tabs v-model="active" title-active-color="#FF5756">
+      <van-tab title="全部"></van-tab>
+      <van-tab title="待付款"></van-tab>
+      <van-tab title="待发货"></van-tab>
+      <van-tab title="待收货"></van-tab>
+    </van-tabs>
   </div>
 </template>
 
@@ -66,4 +64,10 @@ export default {
     font-size: 3.5vw
     color: #000
     font-family: PFB
+
+  // .header-wrapper
+  //   position: absolute 
+  //   top: 0
+  //   left: 0
+  //   width: 100%
 </style>

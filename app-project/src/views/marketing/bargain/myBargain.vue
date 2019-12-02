@@ -19,7 +19,6 @@
         </div>
       </div>
     </div>
-    <SharePop :goods_id="shareInfo.goods_id" :bargin_item_id="shareInfo.bargin_item_id" v-model="sharePop"></SharePop>
   </div>
 </template>
 <script>
@@ -27,7 +26,6 @@ import axios from 'axios'
 import { mapState } from 'vuex'
 import Bscroll from 'better-scroll'
 import MyBargainList from '../../../components/marketing/cutPrice/myBargainList'
-import SharePop from '../../../components/marketing/cutPrice/popup/sharePop'
 export default {
   data(){
     return {
@@ -43,7 +41,7 @@ export default {
     ...mapState(['userData'])
   },
   components:{
-    MyBargainList,SharePop
+    MyBargainList
   },
   created(){
     this.getMyBargain();

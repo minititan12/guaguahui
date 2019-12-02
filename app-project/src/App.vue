@@ -42,6 +42,7 @@ import sha1 from 'sha1'
           let userID = {
             user_id: userData.id
           }
+          this.updateUserData(userData)
           console.log('userID:',userID)
           axios.post('api/method/get_user_id',userID)
             .then((res)=>{

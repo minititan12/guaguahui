@@ -71,5 +71,11 @@ export default {
   groupBuyData: {},                //拼团首页总数据
   groupBuyID: -1,               //拼团产品页中的拼单选择
   allSpellGroups: [],           //所有这个拼团商品已有的拼单
-  showGroupDialog:{ value: false }            //显示拼团的弹窗
+  showGroupDialog:{ value: false },            //显示拼团的弹窗
+
+  // 砍价功能
+  // 砍价商品数据
+  bargainData:{},
+  // 分享的信息
+  shareInfo:{},
 }

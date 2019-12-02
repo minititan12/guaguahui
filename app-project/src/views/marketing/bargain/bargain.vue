@@ -5,7 +5,7 @@
       left-arrow
       @click-left="handleBack"
     />
-    <div class="content-wrapper" ref="wrapper">
+    <div class="page" ref="page">
       <div>
         <div class="page-wrapper">
           <BargainProduce @reload="reload" :productDetails="productDetails" :bargainDetails="bargainDetails"></BargainProduce>
@@ -20,9 +20,11 @@
         />
         <ProductComment></ProductComment>
         <ProductDesc></ProductDesc>
-        <ProductPopUp></ProductPopUp>
       </div>
     </div>
+
+    <ProductPopUp></ProductPopUp>
+    <SharePop></SharePop>
   </div>
 </template>
 <script>
@@ -32,6 +34,7 @@ import ProductDesc from '../../../components/product/content/productDesc'
 import TitleShop from '../../../components/product/content/title/titleShop'
 import ProductComment from '../../../components/product/content/title/productComment'
 import ProductPopUp from '../../../components/product/productPopUp'
+import SharePop from '../../../components/sharePop/sharePop'
 import axios from 'axios'
 import Bscroll from 'better-scroll'
 import { mapState,mapMutations } from 'vuex'
@@ -51,7 +54,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['userData'])
+    ...mapState(['userData',])
   },
   created(){
     if(this.$route.query.goods_id){
@@ -60,20 +63,29 @@ export default {
     if(this.$route.query.bargin_item_id){
       this.bargin_item_id = this.$route.query.bargin_item_id;
     }
-    
+
+    this.updateSharePopUp(false)
+    this.closePopup()
+    this.changeCurrentBuyDetail(null)
+    this.updateBargainData({});
+    this.changeCurrentProductData(null);
+
     this.getProduct();
     this.getBargain();
   },
   components:{
-    BargainProduce,BargainFriends,ProductDesc,TitleShop,ProductComment,ProductPopUp
+    BargainProduce,BargainFriends,ProductDesc,TitleShop,ProductComment,ProductPopUp,SharePop
   },
   mounted(){
-    this.initScroll()
+    this.initScroll();
   },
   methods:{
-    ...mapMutations(['changeCurrentProductData']),
+    ...mapMutations(['changeCurrentBuyDetail','closePopup','updateSharePopUp','changeCurrentProductData','updateBargainData','updateShareInfo']),
+    handleBack(){
+      this.$router.go(-1)
+    },
     initScroll(){
-      let el = this.$refs.wrapper
+      let el = this.$refs.page;
       this.productScroll = new Bscroll(el,{
         click: true,
         eventPassthrough: 'horizontal',
@@ -86,12 +98,9 @@ export default {
       let that = this
 
       this.productScroll.on('beforeScrollStart',function(){
-          console.log('beforeScrollStart')
-          that.productScroll.refresh()
+        console.log('beforeScrollStart')
+        that.productScroll.refresh()
       })
-    },
-    handleBack(){
-      this.$router.go(-1)
     },
     // 砍价完重新请求页面
     reload(bargin_item_id){
@@ -125,6 +134,7 @@ export default {
         if(res.data.data.bargin_friend_list){
           this.friends = res.data.data.bargin_friend_list;
         }
+        this.updateBargainData(res.data.data);
       }).catch((err)=>{
         console.log('barginGoodsDetail err')
       })
@@ -136,7 +146,6 @@ export default {
   .bargain-wrapper >>> .van-icon
     color: #FF5756
     font-size: 5vw
-  
   .bargain-wrapper >>> .van-nav-bar__title
     color: #000
     font-size: 4vw
@@ -147,15 +156,15 @@ export default {
     top: 0;
     right: 0;
     z-index 2!important
-
-  .content-wrapper
-    position absolute
-    top 46px
-    left 0
-    right 0
-    bottom 0
-    overflow hidden
-    background #f6f7fb
+  .page
+    width: 100%
+    position: fixed
+    top: 46px
+    left: 0
+    right: 0
+    bottom: 0
+    overflow: hidden
+    background-color: #F6F7FB
   .page-wrapper
     background-image url('/public/static/bargin/bargin_bg.png')
     width 100%

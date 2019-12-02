@@ -462,5 +462,15 @@ export default {
   //拼团弹窗是否显示
   changeGroupDialogState(state,obj){
     state.showGroupDialog = obj
-  }
+  },
+
+  // 砍价商品数据
+  updateBargainData(state,obj){
+    state.bargainData = obj;
+  },
+
+  // 设置分享信息
+  updateShareInfo(state,obj){
+    state.shareInfo = obj;
+  } 
 }

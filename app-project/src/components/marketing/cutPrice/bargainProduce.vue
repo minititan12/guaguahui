@@ -110,12 +110,11 @@
       </div>
     </div>
     <BargainPop :bargin_item_id="bargainDetails.bargin_item_id" :productDetails="productDetails" :bargainInfo="bargainInfo" v-model="showPop"></BargainPop>
-    <SharePop :goods_id="productDetails.id" :bargin_item_id="bargainDetails.bargin_item_id" v-model="sharePop"></SharePop>
+    
   </div>
 </template>
 <script>
 import BargainPop from './popup/bargainPop'
-import SharePop from './popup/sharePop'
 import axios from 'axios'
 import { mapState,mapMutations } from 'vuex'
 export default {
@@ -126,10 +125,7 @@ export default {
   data(){
     return {
       // 是否显示砍价成功
-      // showPop:false,
       showPop:false,
-      // 是否显示分享弹窗
-      sharePop:false,
       // 砍价信息
       bargainInfo:{},
       // 砍价的活动ID,避免用户首次自己砍一刀后分享给别人后无此ID
@@ -137,13 +133,13 @@ export default {
     }
   },
   computed: {
-    ...mapState(['userData','login'])
+    ...mapState(['userData','login','bargainData','currentProductData'])
   },
   components:{
-    BargainPop,SharePop
+    BargainPop
   },
   methods:{
-    ...mapMutations(['openPopup','changeTab','changeCurrentBuyDetail','changeCurrentProductPopUpStock','changeProductPopUpImg','updatedConfirmData']),
+    ...mapMutations(['openPopup','changeTab','changeCurrentBuyDetail','changeCurrentProductPopUpStock','changeProductPopUpImg','updatedConfirmData','updateSharePopUp','updateShareInfo']),
     is_app(){
       if(typeof(plus) == 'object'){
         return true;
@@ -181,7 +177,15 @@ export default {
     },
     // 点击分享
     share(){
-      this.sharePop = true;
+      let data = {
+        title:this.currentProductData.goods_name,
+        content:"呱呱汇商品",
+        thumbs:this.currentProductData.cover_img,
+        pictures:this.currentProductData.cover_img,
+        href: process.env.VUE_APP_SHARE_HOST +'#/bargain?goods_id='+ this.productDetails.goods_id +'&&bargin_item_id=' + this.bargainData.bargin_item_id,
+      }
+      this.updateShareInfo(data);
+      this.updateSharePopUp(true);
     },
     // 点击下单
     order(){

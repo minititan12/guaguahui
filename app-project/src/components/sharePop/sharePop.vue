@@ -1,6 +1,6 @@
 <template>
-  <div @click="closeSharePopUp" class="share-wrapper" v-if="value">
-    <div class="masking" ></div>
+  <div @click="closeSharePopUp" class="share-wrapper" v-if="sharePopUp">
+    <div class="masking"></div>
     <div @click.stop="stopSpread" class="shareContent">
       <div class="share-item" v-if="false">
         <span class="iconfont qq">&#xe7cc;</span>
@@ -22,20 +22,10 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
+import { mapState,mapMutations } from 'vuex'
 export default {
-  props:{
-    value:Boolean,
-    bargin_item_id:{},
-    goods_id:{},
-  },
-  data(){
-    return {
-      shares: []
-    }
-  },
   computed:{
-    ...mapState(['currentProductData'])
+    ...mapState(['sharePopUp','shareInfo'])
   },
   mounted(){
     let that = this
@@ -48,8 +38,9 @@ export default {
     }
   },
   methods:{
+    ...mapMutations(['updateSharePopUp']),
     closeSharePopUp(){
-      this.$emit('input',false);
+      this.updateSharePopUp(false);
     },
     stopSpread(){
 
@@ -59,11 +50,11 @@ export default {
       if(this.shares[0] && this.shares[0].authenticated){
         this.shares[0].send({
           type: 'web',
-          title: this.currentProductData.goods_name,
-          content: '呱呱汇商品',
-          thumbs: [this.currentProductData.cover_img],
-          pictures: [this.currentProductData.cover_img],
-          href: process.env.VUE_APP_SHARE_HOST +'#/bargain?goods_id='+ this.goods_id +'&&bargin_item_id=' + this.bargin_item_id,
+          title: this.shareInfo.title,
+          content: this.shareInfo.content,
+          thumbs: [this.shareInfo.thumbs],
+          pictures: [this.shareInfo.pictures],
+          href: this.this.shareInfo.href,
           extra: {
             scene: 'WXSceneTimeline'
           }
@@ -79,11 +70,11 @@ export default {
       if(this.shares[0] && this.shares[0].authenticated){
         this.shares[0].send({
           type: 'web',
-          title: this.currentProductData.goods_name,
-          content: '呱呱汇商品',
-          thumbs: [this.currentProductData.cover_img],
-          pictures: [this.currentProductData.cover_img],
-          href: process.env.VUE_APP_SHARE_HOST + '#/bargain?goods_id='+ this.goods_id +'&&bargin_item_id=' + this.bargin_item_id,
+          title: this.shareInfo.title,
+          content: this.shareInfo.content,
+          thumbs: [this.shareInfo.thumbs],
+          pictures: [this.shareInfo.pictures],
+          href: this.this.shareInfo.href,
           extra: {
             scene: 'WXSceneSession'
           }

@@ -26,22 +26,17 @@
         <div class="price">原价:{{item.price}}元</div>
         <div class="operate">
           <div class="order">立即下单</div>
-          <div v-if="is_app()" @click.stop="share" class="share"></div>
+          <div v-if="is_app()" @click.stop="share(item)" class="share"></div>
         </div>
       </div>
     </div>
-    <SharePop v-model="sharePop"></SharePop>
+    <SharePop></SharePop>
   </div>
 </template>
 <script>
-import SharePop from './popup/sharePop'
-import { mapState } from 'vuex'
+import SharePop from '../../sharePop/sharePop'
+import { mapState,mapMutations } from 'vuex'
 export default {
-  data(){
-    return {
-      sharePop:false
-    }
-  },
   props:{
     cutPriceList:Array
   },
@@ -52,6 +47,7 @@ export default {
     ...mapState(['login'])
   },
   methods:{
+    ...mapMutations(['updateSharePopUp','updateShareInfo']),
     is_app(){
       if(typeof(plus) == 'object'){
         return true;
@@ -59,8 +55,16 @@ export default {
       return false;
     },
     // 点击分享
-    share(){
-      this.sharePop = true;
+    share(item){
+      let data = {
+        title:item.goods_name,
+        content:"呱呱汇商品",
+        thumbs:item.cover_img,
+        pictures:item.cover_img,
+        href: process.env.VUE_APP_SHARE_HOST +'#/bargain?goods_id='+ item.goods_id +'&&bargin_item_id=' + item.bargin_item_id,
+      }
+      this.updateShareInfo(data);
+      this.updateSharePopUp(true);
     },
     goBargain(item){
       this.$router.push(`/bargain?goods_id=${item.goods_id}`);
@@ -71,6 +75,7 @@ export default {
         this.$router.push('/login');
         return;
       }
+
     }
   }
 }

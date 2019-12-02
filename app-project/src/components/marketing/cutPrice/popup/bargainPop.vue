@@ -12,11 +12,12 @@
         <div v-if="is_app()" @click="share" class="help">喊好友帮你砍一刀</div>
       </div>
     </div>
-    <SharePop :bargin_item_id="bargin_item_id" v-model="sharePop"></SharePop>
+    <SharePop ></SharePop>
   </div>
 </template>
 <script>
-import SharePop from './sharePop'
+import SharePop from '../../../sharePop/sharePop'
+import { mapState,mapMutations } from 'vuex'
 export default {
   props:{
     value:Boolean,
@@ -28,10 +29,14 @@ export default {
       sharePop:false
     }
   },
+  computed: {
+    ...mapState(['showPopUp','currentBuyDetail'])
+  },
   components:{
     SharePop
   },
   methods:{
+    ...mapMutations(['updateSharePopUp','updateShareInfo']),
     closePop(){
       this.$emit('input',false);
     },
@@ -43,7 +48,15 @@ export default {
     },
     // 点击分享
     share(){
-      this.sharePop = true;
+      let data = {
+        title:this.currentProductData.goods_name,
+        content:"呱呱汇商品",
+        thumbs:this.currentProductData.cover_img,
+        pictures:this.currentProductData.cover_img,
+        href: process.env.VUE_APP_SHARE_HOST +'#/bargain?goods_id='+ this.productDetails.goods_id +'&&bargin_item_id=' + this.bargainData.bargin_item_id,
+      }
+      this.updateShareInfo(data);
+      this.updateSharePopUp(true);
     },
     stopSpread(){
 

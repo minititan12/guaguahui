@@ -33,7 +33,8 @@ export default {
     }
   },
   created(){
-    if(this.descHtml){
+    debugger;
+    if(this.currentProductData && this.currentProductData.content != undefined){
       this.loading = false
     }    
   },

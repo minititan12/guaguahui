@@ -78,7 +78,7 @@ export default {
   },
   methods:{
     getData(){
-      if(this.currentProductData.hasOwnProperty('comment')){
+      if(this.currentProductData&&this.currentProductData.hasOwnProperty('comment')){
         if(this.currentProductData.comment.count > 0){
           let comment = this.currentProductData.comment
           this.count = comment.count

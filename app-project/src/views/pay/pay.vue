@@ -21,15 +21,6 @@ export default {
     PayContent,
     PayContent1104,
     PayBottom1104
-  },
-  methods:{
-    ...mapMutations(['initConfirmList','initComfirmTotalPrice','changeTab']),
-    commitHandle(){
-      //初始化确认订单列表
-      this.initConfirmList()
-      //初始化确认订单总价格
-      this.initComfirmTotalPrice()
-    }
   }
 }
 </script>

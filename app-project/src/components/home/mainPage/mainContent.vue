@@ -156,15 +156,16 @@ export default {
         .then((res)=>{
           console.log('hotlist:',res.data)
           let data = res.data
+          this.$toast.clear()
           if(data.code == 1){
             this.todayHotList = data.data
             this.$nextTick(()=>{
-              this.$toast.clear()
               this.scroll.refresh()
             })
           }
         })
         .catch((err)=>{
+          this.$toast.clear()
           console.log('get hotlist err' + err)
         })
     },

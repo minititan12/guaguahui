@@ -1,5 +1,5 @@
 <template>
-  <div class="orderItems-wrapper" ref="orderItems" v-if="showItems">
+  <div class="orderItems-wrapper" ref="orderItems" v-show="showItems">
 
     <div>
       <div class="blank"></div>
@@ -163,6 +163,7 @@ export default {
             this.updateOrderData(res.data.data)
           }
           this.$nextTick(()=>{
+            this.orderScroll.refresh()
             let result = Object.keys(this.orderData)
 
             if(result.length > 0){

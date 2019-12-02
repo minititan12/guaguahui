@@ -1,65 +1,72 @@
 <template>
-  <div class="orderItems-wrapper" v-if="showItems">
+  <div class="orderItems-wrapper" ref="orderItems" v-if="showItems">
 
-    <!-- 全部商品项 -->
-    <OrderItem v-if="orderActive == 0 && list.length > 0" 
-      v-for= "item of list" 
-      :data= "item" 
-      :statusText= "getStatusText(item.goodsList[0].status)"
-      :key= "item.orderNumber" 
-      :showDel= "showDel(item.goodsList[0].status)"
-      :showCancel= "item.goodsList[0].status == 0 ? true : false"
-      :showRefund= "showRefund(item.goodsList[0].status)" 
-      :showPay= "item.goodsList[0].status == 0 ? true : false"
-      :showConfirm= "item.goodsList[0].status == 3 ? true : false" 
-      :showLogistics = "item.goodsList[0].status == 3 ? true : false"
-      @del= "handleDelItem(item.orderNumber)"
-      @cancel= "handleCancelOrder(item.orderNumber)"
-      @pay= "handlePayOrder(item)"
-      @refund= "handleRefund(item.orderNumber)"
-      @confirm= "handleConfirm(item.orderNumber)"
-      @logistics= "handleToLogistics(item)"
-    />
-    
-    <!-- 待付款的商品项 -->
-    <OrderItem v-if="orderActive == 1 && list.length > 0" 
-      v-for= "item of list" 
-      :data= "item" 
-      :key= "item.orderNumber" 
-      :statusText= "getStatusText(item.goodsList[0].status)"
-      :showPay= "true"
-      :showCancel= "true"
-      @pay= "handlePayOrder(item)" 
-      @cancel= "handleCancelOrder(item.orderNumber)"
-    />
+    <div>
+      <div class="blank"></div>
+      <!-- 全部商品项 -->
+      <OrderItem v-if="orderActive == 0 && list.length > 0" 
+        v-for= "item of list" 
+        :data= "item" 
+        :statusText= "getStatusText(item.goodsList[0].status)"
+        :key= "item.orderNumber" 
+        :showDel= "showDel(item.goodsList[0].status)"
+        :showCancel= "item.goodsList[0].status == 0 ? true : false"
+        :showRefund= "showRefund(item.goodsList[0].status)" 
+        :showPay= "item.goodsList[0].status == 0 ? true : false"
+        :showConfirm= "item.goodsList[0].status == 3 ? true : false" 
+        :showLogistics = "item.goodsList[0].status == 3 ? true : false"
+        @del= "handleDelItem(item.orderNumber)"
+        @cancel= "handleCancelOrder(item.orderNumber)"
+        @pay= "handlePayOrder(item)"
+        @refund= "handleRefund(item.orderNumber)"
+        @confirm= "handleConfirm(item.orderNumber)"
+        @logistics= "handleToLogistics(item)"
+      />
+      
+      <!-- 待付款的商品项 -->
+      <OrderItem v-if="orderActive == 1 && list.length > 0" 
+        v-for= "item of list" 
+        :data= "item" 
+        :key= "item.orderNumber" 
+        :statusText= "getStatusText(item.goodsList[0].status)"
+        :showPay= "true"
+        :showCancel= "true"
+        @pay= "handlePayOrder(item)" 
+        @cancel= "handleCancelOrder(item.orderNumber)"
+      />
 
-    <!-- 待发货的商品项 -->
-    <OrderItem v-if="orderActive == 2 && list.length > 0" 
-      v-for= "item of list" 
-      :data= "item" 
-      :statusText= "getStatusText(item.goodsList[0].status)"
-      :key= "item.orderNumber" 
-      :showRefund= "true"
-      @refund= "handleRefund(item.orderNumber)"
-    />
+      <!-- 待发货的商品项 -->
+      <OrderItem v-if="orderActive == 2 && list.length > 0" 
+        v-for= "item of list" 
+        :data= "item" 
+        :statusText= "getStatusText(item.goodsList[0].status)"
+        :key= "item.orderNumber" 
+        :showRefund= "true"
+        @refund= "handleRefund(item.orderNumber)"
+      />
 
-    <!-- 待收货的商品项 -->
-    <OrderItem v-if="orderActive == 3 && list.length > 0" 
-      v-for= "item of list" 
-      :data= "item" 
-      :key= "item.orderNumber"
-      :statusText= "getStatusText(item.goodsList[0].status)"
-      :showConfirm = "true" 
-      :showLogistics = "true"
-      @confirm= "handleConfirm(item.orderNumber)"
-      @logistics= "handleToLogistics(item)"
-    />
+      <!-- 待收货的商品项 -->
+      <OrderItem v-if="orderActive == 3 && list.length > 0" 
+        v-for= "item of list" 
+        :data= "item" 
+        :key= "item.orderNumber"
+        :statusText= "getStatusText(item.goodsList[0].status)"
+        :showConfirm = "true" 
+        :showLogistics = "true"
+        @confirm= "handleConfirm(item.orderNumber)"
+        @logistics= "handleToLogistics(item)"
+      />
+
+      <div class="blank"></div>
+    </div>
+
   </div>
 
 </template>
 
 <script>
 import OrderItem from '../miniComponents/orderItem'
+import Bscroll from 'better-scroll'
 import { mapState,mapMutations } from 'vuex'
 import axios from 'axios'
 export default {
@@ -104,6 +111,26 @@ export default {
   },
   methods: {
     ...mapMutations(['updateOrderData','updatePayOrderData']),
+    //初始化滚动
+    initScroll(){
+      let el = this.$refs.orderItems
+      this.orderScroll = new Bscroll(el,{
+        click: true,
+        eventPassthrough: 'horizontal',
+        bounce:{
+          top: false,
+          bottom: true
+        }
+      })
+
+      let that = this
+
+      this.orderScroll.on('beforeScrollStart',function(){
+        console.log('beforeScrollStart')
+        that.orderScroll.refresh()
+      })
+    },
+
     //获取订单信息
     getOrderData(){
       let status = 0
@@ -310,7 +337,7 @@ export default {
         path: '/logistics',
         query: {
           orderNumber: data.orderNumber,
-          imgUrl: data.imgUrl
+          imgUrl: data.goodsList[0].photo
         }
       })
     },
@@ -362,6 +389,8 @@ export default {
     this.updateOrderData(null)
   },
   mounted(){
+    this.initScroll()
+
     this.$nextTick(()=>{
       console.log(this.orderActive)
       this.$toast({
@@ -376,5 +405,13 @@ export default {
 
 <style lang="stylus" scoped>
 .orderItems-wrapper
-  padding: .2rem 0
+  position: absolute
+  top: 90px
+  left: 0
+  right: 0
+  bottom: 0
+  overflow: hidden
+  .blank
+    width: 100%
+    height: 2vw
 </style>

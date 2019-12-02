@@ -110,14 +110,14 @@
       </div>
     </div>
     <BargainPop :bargin_item_id="bargainDetails.bargin_item_id" :productDetails="productDetails" :bargainInfo="bargainInfo" v-model="showPop"></BargainPop>
-    <SharePop :bargin_item_id="bargainDetails.bargin_item_id" v-model="sharePop"></SharePop>
+    <SharePop :goods_id="productDetails.id" :bargin_item_id="bargainDetails.bargin_item_id" v-model="sharePop"></SharePop>
   </div>
 </template>
 <script>
 import BargainPop from './popup/bargainPop'
 import SharePop from './popup/sharePop'
 import axios from 'axios'
-import { mapState } from 'vuex'
+import { mapState,mapMutations } from 'vuex'
 export default {
   props:{
     productDetails:Object,
@@ -143,6 +143,7 @@ export default {
     BargainPop,SharePop
   },
   methods:{
+    ...mapMutations(['openPopup','changeTab','changeCurrentBuyDetail','changeCurrentProductPopUpStock','changeProductPopUpImg','updatedConfirmData']),
     is_app(){
       if(typeof(plus) == 'object'){
         return true;
@@ -188,6 +189,11 @@ export default {
         this.$router.push('/login');
         return;
       }
+
+      this.changeCurrentProductPopUpStock('0')
+      this.changeCurrentBuyDetail(null)
+      this.changeProductPopUpImg('')
+      this.openPopup()
     }
   }
 }

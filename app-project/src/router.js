@@ -29,7 +29,10 @@ const LimitBuy = () => import('./views/marketing/limitBuy.vue')
 const GroupBuy = () => import('./views/marketing/groupBuy.vue')
 const Activities = () => import('./views/marketing/activities.vue')
 const IntergralShop = () => import('./views/marketing/integralShop.vue')
-const CutPrice = () => import('./views/marketing/cutPrice.vue')
+const CutPrice = () => import('./views/marketing/bargain/cutPrice.vue')
+const Bargain = () => import('./views/marketing/bargain/bargain.vue')
+const MyBargain = () =>import('./views/marketing/bargain/myBargain.vue')
+
 
 //product文件夹
 const Service = () => import('./views/product/service.vue')
@@ -468,6 +471,32 @@ export default new Router({
       path: '/cutPrice',
       name: 'cutPrice',
       component: CutPrice,
+      meta:{
+        index: 2,
+        keepAlive: false,
+        isImmersion: true,
+        color: '#ffffff',
+        style: 'dark'
+      }
+    },
+    // 砍价商品详情组件
+    {
+      path: '/bargain',
+      name: 'bargain',
+      component: Bargain,
+      meta:{
+        index: 2,
+        keepAlive: false,
+        isImmersion: true,
+        color: '#ffffff',
+        style: 'dark'
+      }
+    },
+    // 我的砍价商品列表组件
+    {
+      path: '/myBargain',
+      name: 'myBargain',
+      component: MyBargain,
       meta:{
         index: 2,
         keepAlive: false,

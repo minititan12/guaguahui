@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div @click="goBargainProduct(item)" class="item" v-for="(item,index) in cutPriceList" :key="index">
+    <div @click="goBargain(item)" class="item" v-for="(item,index) in cutPriceList" :key="index">
       <van-image 
         width="30vw" 
         height="36vw" 
@@ -25,7 +25,7 @@
         </div>
         <div class="price">原价:{{item.price}}元</div>
         <div class="operate">
-          <div @click.stop="order(item)" class="order">立即下单</div>
+          <div class="order">立即下单</div>
           <div v-if="is_app()" @click.stop="share" class="share"></div>
         </div>
       </div>
@@ -62,8 +62,8 @@ export default {
     share(){
       this.sharePop = true;
     },
-    goBargainProduct(item){
-      this.$router.push(`/bargainProduct?goods_id=${item.goods_id}`);
+    goBargain(item){
+      this.$router.push(`/bargain?goods_id=${item.goods_id}`);
     },
     // 点击下单
     order(item){

@@ -7,7 +7,7 @@
     />
     <div class="cut-price" ref="cutPrice">
       <div>
-        <MyBargainList :cutPriceList="cutPriceList"></MyBargainList>
+        <MyBargainList @share="share" :cutPriceList="cutPriceList"></MyBargainList>
         <div class="group-loading" v-show="showLoading && cutPriceList.length > 10">
           <van-loading color="#fff" size="24px">
             <span>加载中...</span>
@@ -19,6 +19,7 @@
         </div>
       </div>
     </div>
+    <SharePop :goods_id="shareInfo.goods_id" :bargin_item_id="shareInfo.bargin_item_id" v-model="sharePop"></SharePop>
   </div>
 </template>
 <script>
@@ -26,19 +27,23 @@ import axios from 'axios'
 import { mapState } from 'vuex'
 import Bscroll from 'better-scroll'
 import MyBargainList from '../../../components/marketing/cutPrice/myBargainList'
+import SharePop from '../../../components/marketing/cutPrice/popup/sharePop'
 export default {
   data(){
     return {
       showLoading: true,
       page: 1,
       cutPriceList:[],
+      sharePop:false,
+      // 分享需要的参数  商品ID  活动ID
+      shareInfo:{},
     }
   },
   computed: {
     ...mapState(['userData'])
   },
   components:{
-    MyBargainList
+    MyBargainList,SharePop
   },
   created(){
     this.getMyBargain();
@@ -49,6 +54,10 @@ export default {
   methods:{
     handleBack(){
       this.$router.go(-1)
+    },
+    share(item){
+      this.shareInfo = item;
+      this.sharePop = true;
     },
     // 获取我的砍价列表
     getMyBargain(){

@@ -32,6 +32,11 @@ export default {
       }
     }
   },
+  created(){
+    if(this.descHtml){
+      this.loading = false
+    }    
+  },
   watch:{
     descHtml(){
       if(this.descHtml){

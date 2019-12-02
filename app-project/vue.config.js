@@ -1,4 +1,7 @@
 module.exports = {
+
+  indexPath: 'index1.html',
+
   assetsDir: 'static',
   publicPath: './',
   devServer: {

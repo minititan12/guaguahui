@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div @click="goBargainProduct(item)" class=item v-for="item of cutPriceList" :key="item.goods_id">
+    <div @click="goBargain(item)" class=item v-for="item of cutPriceList" :key="item.goods_id">
       <div class="item-left">
         <van-image 
           width="30vw" 
@@ -28,7 +28,7 @@
         <div class="price"> 
           <span>原价:{{item.price}}元</span>
         </div>
-        <div @click.stop="goBargain(item)" class="take">砍价{{item.low_price}}元拿</div>
+        <div class="take">砍价{{item.low_price}}元拿</div>
       </div>
     </div>
   </div>
@@ -43,9 +43,6 @@ export default {
     goBargain(item){
       this.$router.push(`/bargain?goods_id=${item.goods_id}`);
     },
-    goBargainProduct(item){
-      this.$router.push(`/bargainProduct?goods_id=${item.goods_id}`);
-    }
   }  
 }
 </script>

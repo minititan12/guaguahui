@@ -2,7 +2,7 @@
   <div class="bottom-wrapper">
     <div class="select-all">
       <!-- <input type="checkbox" v-model="allChecked"> -->
-      <van-checkbox checked-color="#FD4140" v-model="allChecked" />
+      <van-checkbox icon-size="6vw" checked-color="#FF5756" v-model="allChecked" />
       <span class="select-text">全选</span>
     </div>
     <div class="all-price">
@@ -52,15 +52,20 @@ export default {
             console.log('comfirmOrder:',res.data)
             if(res.data.code == 1){
               this.updatedConfirmData(res.data.data)
+
+              this.$nextTick(()=>{
+                this.$router.push({
+                  path: '/pay',
+                  query: {
+                    is_cart: 1
+                  }
+                })
+              })
             }
           })
           .catch((err)=>{
             console.log('comfirmOrder err',err)
           })
-
-        setTimeout(()=>{
-          this.$router.push('/pay')
-        },200)
 
       }else{
         this.$toast({
@@ -113,7 +118,7 @@ export default {
 <style lang="stylus" scoped>
   .bottom-wrapper
     width: 100%
-    height: 10vw
+    height: 12vw
     position: absolute
     bottom: 0
     z-index: 2
@@ -123,7 +128,7 @@ export default {
     align-items: center
     justify-content: space-between
     box-sizing: border-box
-    border-top: .01rem solid #ccc
+    border-top: 1px solid #eee
     .select-all
       display: flex
       flex-direction: row
@@ -131,25 +136,28 @@ export default {
       align-items: center
       .select-text
         color: #AFAFAF
-        margin-left: .2rem
+        margin-left: 3vw
+        font-family: PFM
     .all-price
       height: 100%
       display: flex
       flex-direction: row
       align-items: center
+      font-family: PFB
       .price-number
         font-family: hgzt
-        color: #FD4140
+        color: #ff5756
       .price-btn
-        width: 1.2rem
-        height: .6rem
+        width: 18vw
+        height: 8vw
+        font-size: 3.6vw
+        font-family: PFB
         text-align: center
-        line-height: .6rem
-        // background: linear-gradient(to right, #EE3E5C, #E41436);
-        background-color: #FD4140
-        margin: 0 .2rem
-        border-radius: .3rem
-        color: #FAC0CA
+        line-height: 8vw
+        background-color: #ff5756
+        margin: 0 3vw
+        border-radius: 4vw
+        color: #fff
     .bottom-warn
       position: absolute 
       width: 2rem

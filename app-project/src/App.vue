@@ -33,7 +33,38 @@ import sha1 from 'sha1'
       }
     },
     methods: {
-      ...mapMutations(['getAnswer','getNewAnswer','updatedMessageNum','updateWXTicket']),
+      ...mapMutations(['getAnswer','getNewAnswer','updatedMessageNum','updateWXTicket','changeLoginStatus','updateUserData']),
+      //更新用户信息
+      initUserData(){
+        if(localStorage.hasOwnProperty('userData')){
+          this.changeLoginStatus(true)
+          let userData = JSON.parse(localStorage.userData)
+          let userID = {
+            user_id: userData.id
+          }
+          console.log('userID:',userID)
+          axios.post('api/method/get_user_id',userID)
+            .then((res)=>{
+              console.log('get_user_id:',res.data)
+              if(res.data.code == 1){
+                this.updateUserData(res.data.data)
+                localStorage.removeItem('userData')
+                localStorage.userData = JSON.stringify(res.data.data)
+                this.changeLoginStatus(true)
+              }else{
+                localStorage.removeItem('userData')
+                this.changeLoginStatus(false)
+              }
+            })
+            .catch((err)=>[
+              console.log('post userid err' + err)
+            ])
+        }else{
+          console.log('localstorage:',localStorage)
+          this.changeLoginStatus(false)
+        }
+      },
+
       GetQueryString(name){
           var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
           var r = window.location.search.substr(1).match(reg);
@@ -42,6 +73,7 @@ import sha1 from 'sha1'
           }
           return null;
       },
+
       // 判断如果是在微信内部浏览器 获取openid
       getopenid(){
         if(/MicroMessenger/.test(window.navigator.userAgent)){
@@ -66,12 +98,16 @@ import sha1 from 'sha1'
             .catch((err) => {}) 
         }
       },
+
+      //向右滑动跳转
       handleToRight(){
         console.log(1)
         if(localStorage.system == 'iOS' && localStorage.main == 'false'){
           this.$router.go(-1)
         }
       },
+
+      //缓存聊天信息
       keepText(message){
         let timetamp = Date.parse(new Date())
         let postData = {
@@ -241,6 +277,7 @@ import sha1 from 'sha1'
           }
         });
       },
+      //获取融云token
       getToken(){
         let postData = {
           user_id: this.userData.id
@@ -261,6 +298,7 @@ import sha1 from 'sha1'
       }
     },
     created(){
+      this.initUserData()
       //融云初始化
       RongIMLib.RongIMClient.init('mgb7ka1nmd5vg');
       this.beforeIm()   //设置监听，必须先监听，再连接

@@ -73,15 +73,25 @@ export default {
             console.log('comfirmOrder:',res.data)
             if(res.data.code == 1){
               this.updatedConfirmData(res.data.data)
+              this.$nextTick(()=>{
+                this.$router.push({
+                  path: '/pay',
+                  query: {
+                    is_cart: 2
+                  }
+                })
+              })
+            }else{
+              this.$toast({
+                message: '购买失败',
+                type: 'fail',
+                duration: 1000
+              })
             }
           })
           .catch((err)=>{
             console.log('comfirmOrder err',err)
           })
-
-        setTimeout(()=>{
-          this.$router.push('/pay')
-        },200)
       }
     },
 

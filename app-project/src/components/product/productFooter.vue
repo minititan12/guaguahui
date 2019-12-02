@@ -95,7 +95,9 @@ export default {
     addCart(){
       console.log('addcart')
       if(this.login){//已登录  
-        this.handleOpenPopup()       
+        setTimeout(()=>{
+          this.handleOpenPopup()
+        },200)       
       }else{  //未登录
         this.$router.push('/login')
       }
@@ -104,7 +106,9 @@ export default {
     //点击立即购买按钮
     limitedBuy(){
       if(this.login){//已登录  
-        this.handleOpenPopup()
+        setTimeout(()=>{
+          this.handleOpenPopup()
+        },200)
       }else{  //未登录
         this.$router.push('/login')
       }

@@ -320,7 +320,7 @@ export default {
     top: 0
     left: 0
     right: 0
-    bottom: 10vw
+    bottom: 12vw
     overflow: hidden
     .cart-items
       min-height: 101%
@@ -342,7 +342,6 @@ export default {
           align-items: center
           font-family: PFH
           font-size: 4vw
-          font-weight: bold
           padding-left: 11vw
           color: #000
           .shopName
@@ -356,13 +355,13 @@ export default {
           align-items: center
           .item-input
             display: block
-            width: 5vw
-            height: 5vw
-            margin: 0 3vw
-            line-height: 5vw
+            width: 6vw
+            height: 6vw
+            margin: 0 2vw
+            line-height: 6vw
             text-align: center
             box-sizing: border-box
-            border: .01rem solid rgb(152, 152, 152)
+            border: .01rem solid #ddd
             border-radius: 3vw
             background-color: #fff
             .iconfont
@@ -373,7 +372,7 @@ export default {
             border: .01rem solid #FF5756
           .unactive
             background-color: #fff
-            border: .01rem solid rgb(152, 152, 152)
+            border: .01rem solid #ddd
 
           .item-img
             width: 22vw
@@ -391,7 +390,6 @@ export default {
               font-size: 3.8vw
               font-family: PFB
               line-height: 4.5vw
-              font-weight: bold
               letter-spacing: .8vw
               color: #222
             .item-desc

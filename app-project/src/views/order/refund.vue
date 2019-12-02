@@ -12,7 +12,7 @@
       </van-tabs>
     </van-sticky>
 
-    <PayItem 
+    <OrderItem 
       v-if= "orderList.length > 0" 
       v-for= "item of list" 
       :data= "item" 
@@ -28,12 +28,12 @@
 
 <script>
 import axios from 'axios'
-import PayItem from '../../components/miniComponents/payItem'
+import OrderItem from '../../components/miniComponents/orderItem'
 import { mapState } from 'vuex'
 export default {
   name: "Refund",
   components:{
-    PayItem
+    OrderItem
   },
   data(){
     return {

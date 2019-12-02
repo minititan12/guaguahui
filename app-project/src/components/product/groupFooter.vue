@@ -86,6 +86,14 @@ export default {
       }
     },
 
+    //初始化popup数据
+    handleOpenPopup(){
+      this.changeCurrentProductPopUpStock('0')
+      this.changeCurrentBuyDetail(null)
+      this.changeProductPopUpImg('')
+      this.openPopup()
+    },
+
     //加入拼团
     addGroup(){
       setTimeout(()=>{
@@ -99,150 +107,6 @@ export default {
     //发起拼团
     startGroup(){
       this.handleOpenPopup()
-    },
-
-    //获取确认订单的数据
-    getConfirmDetailData(){
-      if(this.currentProductData.attributes_amount.length > 0){
-        let totalPrice = parseInt(this.currentBuyDetail.number) * parseFloat(this.currentBuyDetail.price)
-        return {
-          attr1_name: this.currentBuyDetail.attr1_name,
-          attr1_value: this.currentBuyDetail.attr1_value,
-          attr2_name: this.currentBuyDetail.attr2_name,
-          attr2_value: this.currentBuyDetail.attr2_value,
-          attr3_name: this.currentBuyDetail.attr3_name,
-          attr3_value: this.currentBuyDetail.attr3_value,
-          goods_attr_id: this.currentBuyDetail.id,
-          goods_id: this.currentBuyDetail.goods_id,
-          imgUrl: this.currentBuyDetail.photo,
-          number: this.currentBuyDetail.number,
-          price: this.currentBuyDetail.price,
-          shop: this.currentProductData.shop.company,
-          title: this.currentProductData.goods_name,
-          totalPrice: totalPrice.toFixed(2),
-          user_id_to: this.currentProductData.user_id
-        }
-
-      }else{
-        let totalPrice = parseInt(this.currentBuyDetail.number) * parseFloat(this.currentBuyDetail.price)
-        return {
-          goods_id: this.currentBuyDetail.goods_id,
-          imgUrl: this.currentBuyDetail.photo,
-          number: this.currentBuyDetail.number,
-          price: this.currentBuyDetail.price,
-          shop: this.currentProductData.shop.company,
-          title: this.currentProductData.goods_name,
-          totalPrice: totalPrice.toFixed(2),
-          user_id_to: this.currentProductData.user_id
-        }
-      }
-    },
-
-    //初始化popup数据
-    handleOpenPopup(){
-      this.changeCurrentProductPopUpStock('0')
-      this.changeCurrentBuyDetail(null)
-      this.changeProductPopUpImg('')
-      this.openPopup()
-    },
-
-    //post的操作
-    postHandle(type){
-      //如果点击的是加入购物车
-      if(type == 'cart'){
-        let goods_attr_id = this.currentBuyDetail.hasOwnProperty('id') ? this.currentBuyDetail.id : ''
-        let postData = {
-          user_id: this.userData.id,
-          goods_id: this.currentBuyDetail.goods_id,
-          goods_attr_id: goods_attr_id,
-          number: this.currentBuyDetail.number,
-          price: this.currentBuyDetail.price,
-          user_id_to: this.currentProductData.user_id
-        }
-        console.log('postData',postData)
-        axios.post('api/method/addCart',postData)
-          .then((res)=>{
-            console.log('addCart:',res.data)
-            if(res.data.code == 1){
-              this.$toast({
-                message: '加入购物车成功',
-                type: "success",
-                duration: 1200
-              })
-            }else{
-              this.$toast({
-                message: '加入购物车失败',
-                type: "fail",
-                duration: 1200
-              })
-            }
-          })
-          .catch((err)=>{
-            console.log('post addCart err',err)
-          })
-      }else{
-        let detail = this.getConfirmDetailData()
-        this.addToConfirmList(detail)
-        this.countConfirmTotalPrice()
-        this.$router.push('/pay')
-      }
-    },
-
-    //点击加入购物车按钮
-    addCart(){
-      console.log('addcart')
-      if(this.login){
-        console.log('login')
-        if(this.currentBuyDetail){
-          let stock = parseFloat(this.currentBuyDetail.stock)
-          if(this.currentBuyDetail.stock && this.currentBuyDetail.stock > 0){
-            stock = this.currentBuyDetail.stock
-          }else{
-            stock = 0
-          }
-          if(stock == 0){
-            this.$toast({
-              message: '该商品属性没有库存',
-              type: "fail",
-              duration: 1200
-            })
-            return 
-          }
-          this.postHandle('cart')
-        }else{
-          console.log('openpopup')
-          this.handleOpenPopup()
-        }
-      }else{
-        this.$router.push('/login')
-      }
-    },
-    
-    //点击立即购买按钮
-    limitedBuy(){
-      if(this.login){
-        if(this.currentBuyDetail){
-          let stock = parseFloat(this.currentBuyDetail.stock)
-          if(this.currentBuyDetail.stock && this.currentBuyDetail.stock > 0){
-            stock = this.currentBuyDetail.stock
-          }else{
-            stock = 0
-          }
-          if(stock == 0){
-            this.$toast({
-              message: '该商品属性没有库存',
-              type: "fail",
-              duration: 1200
-            })
-            return 
-          }
-          this.postHandle('confirm')
-        }else{
-          this.handleOpenPopup()
-        }
-      }else{
-        this.$router.push('/login')
-      }
     }
   }
 }

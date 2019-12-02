@@ -58,7 +58,7 @@ export default {
   newAnswer: {},               //存储监听到的新消息,用于message页面的数量统计
 
   //订单页面
-  orderList:[],                //订单页面的订单列表数据
+  orderData: null,                //订单页面的订单列表数据
   orderActive: 0,              //订单页面的tab选择
 
   //微信数据

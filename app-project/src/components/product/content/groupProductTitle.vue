@@ -16,13 +16,13 @@
         <div class="price">
           <span class="price-icon">￥</span>
           <span class="price-text">{{price}}</span>
-          <span class="price-cancel" v-if="showCancel">原价: {{currentProductData.second_price}}</span>
+          <span class="price-cancel">原价: {{originPrice}}</span>
         </div>
 
         <!-- 拼团 -->
         <div class="groupBuy">
           <div class="groupBuy-num">
-            <span>累计已拼2.8万件</span>
+            <span>累计已拼{{groupNum}}件</span>
           </div>
           <div class="icons">
             <div class="icon">
@@ -89,20 +89,25 @@ export default {
   },
 
   computed:{
-    ...mapState(['currentProductData']),
+    ...mapState(['currentProductData','groupGoodsDes']),
     //产品价格
     price(){
-      if(this.currentProductData){
-        return this.currentProductData.price
+      if(this.groupGoodsDes){
+        return this.groupGoodsDes.group_price
       }
     },
 
     //是否显示产品原价
-    showCancel(){
-      if(this.currentProductData && this.currentProductData.hasOwnProperty('second_price')){
-        return true
-      }else{
-        return false
+    originPrice(){
+      if(this.groupGoodsDes){
+        return this.groupGoodsDes.price
+      }
+    },
+
+    //该产品已经拼团的数量
+    groupNum(){
+      if(this.groupGoodsDes){
+        return this.groupGoodsDes.already_group_success
       }
     },
 
@@ -115,6 +120,7 @@ export default {
   },
 
   methods:{
+    ...mapMutations(['updatedGroupGoodsDes']),
     //是不是在app中
     is_app(){
       if(typeof(plus) == 'object'){
@@ -122,6 +128,23 @@ export default {
       }
       
       return false
+    },
+    //获取拼团产品信息
+    getGroupProductData(){
+      let postData = {
+        goods_id: this.$route.query.id,
+        activity_spell_group_id: this.$route.query.group_id
+      }
+      axios.post('api/method/getGroupGoodsdec',postData)
+        .then((res)=>{
+          console.log('getGroupGoodsdec',res.data)
+          if(res.data.code == 1){
+            this.updatedGroupGoodsDes(res.data.data)
+          }
+        })
+        .catch((err)=>{
+          console.log('getGroupGoodsdec err',err)
+        })
     }
   },
 
@@ -131,6 +154,10 @@ export default {
         this.loading = false
       }
     }
+  },
+
+  created(){
+    this.getGroupProductData()
   },
 
   mounted(){
@@ -184,7 +211,7 @@ export default {
           color: #aaa
           font-family: PFM
           margin-left: 4vw
-          text-decoration: line-through
+          // text-decoration: line-through
 
       .groupBuy
         margin: 3vw 4vw 2vw 4vw

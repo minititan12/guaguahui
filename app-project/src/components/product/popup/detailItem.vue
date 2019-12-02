@@ -1,14 +1,14 @@
 <template>
-  <div :class="showBorder ? 'detailItem-wrapper-border' : 'detailItem-wrapper'" v-if="data">
+  <div class="detailItem-wrapper" v-if="data">
     <div class="detailItem-title">
-      <span>{{data.name}}</span>
+      <span>{{data.attr_name}}</span>
       <span style="color: #FF5756; margin-left: .2rem">{{attr}}</span>
     </div>
 
     <div class="detailItems">
-      <div class="detailItem-content" v-if="showColor()" v-for="item of data.value">
-        <input v-model="attr" type="radio" :id="popUp ? (item.text + 'popUp') : item.text" :value="item.text" v-show="false"/>
-        <label :class="attr == item.text ? 'content-item-active' : 'content-item'" :for="popUp ? (item.text + 'popUp') : item.text">
+      <div class="detailItem-content" v-if="showColor()" v-for="item of data.attr_value">
+        <input v-model="attr" type="radio" :id="item.text" :value="item.text" v-show="false"/>
+        <label :class="attr == item.text ? 'content-item-active' : 'content-item'" :for="item.text">
           <van-image
             class="item-img"
             width="15vw"
@@ -20,9 +20,9 @@
         </label>
       </div>
 
-      <div class="detailItem-content" v-if="!showColor()" v-for="item of data.value">
-        <input v-model="attr" type="radio" :id="popUp ? (item + 'popUp') : item" :value="item" v-show="false"/>
-        <label :class="attr == item ? 'content-item-active' : 'content-item'" :for="popUp ? (item + 'popUp') : item">
+      <div class="detailItem-content" v-if="!showColor()" v-for="item of data.attr_value">
+        <input v-model="attr" type="radio" :id="item" :value="item" v-show="false"/>
+        <label :class="attr == item ? 'content-item-active' : 'content-item'" :for="item">
           <span class="item-text">{{item}}</span>
         </label>
       </div>
@@ -35,9 +35,7 @@
 export default {
   name: "DetailItem",
   props: {
-    data: Object,
-    showBorder: Boolean,
-    popUp: Boolean
+    data: Object
   },
   data(){
     return {
@@ -62,7 +60,7 @@ export default {
       }
       if(this.data && this.data.hasOwnProperty('is_color')){
         let img = ""
-        for(let item of this.data.value){
+        for(let item of this.data.attr_value){
           if(item.text == this.attr){
             img = item.photo
           }
@@ -79,10 +77,6 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  .detailItem-wrapper-border
-    width: 100%
-    padding: .2rem 0
-    border-bottom: .01rem solid #999
   .detailItem-wrapper
     width: 100%
     padding: 2vw 0

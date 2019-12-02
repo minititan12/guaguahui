@@ -29,12 +29,24 @@ export default {
     }
   },
   computed: {
-    ...mapState(['currentProductPopUpImg','currentProductData','currentProductPopUpStock','currentBuyDetail']),
+    ...mapState(['currentProductPopUpImg','currentProductData','currentProductPopUpStock','currentBuyDetail','groupGoodsDes']),
     price(){
-      if(this.currentBuyDetail){
-        return this.currentBuyDetail.price
-      }else if (this.currentProductData){
-        return this.currentProductData.price
+      if(this.currentProductData){
+        let flag = this.currentProductData.flag
+
+        if(flag == 1){
+          if(this.currentBuyDetail){
+            return this.currentBuyDetail.price
+          }else{
+            return this.currentProductData.price
+          }
+        }
+
+        if(flag == 2){
+          if(this.groupGoodsDes){
+            return this.groupGoodsDes.group_price
+          }
+        }
       }else{
         return 0
       }

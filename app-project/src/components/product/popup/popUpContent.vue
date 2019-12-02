@@ -3,23 +3,20 @@
     <div>
 
       <DetailItem 
-        v-if="productDetailData.attr1" 
+        v-if="productDetailData.attr1.attr_name.length > 0" 
         :data="productDetailData.attr1" 
-        :popUp="true" 
         @selected="handleAttr1Selected" @changePopUpImg="handleChangeImg"
       />
 
       <DetailItem 
-        v-if="productDetailData.attr2" 
+        v-if="productDetailData.attr2.attr_name.length > 0" 
         :data="productDetailData.attr2" 
-        :popUp="true" 
         @selected="handleAttr2Selected" @changePopUpImg="handleChangeImg"
       />
 
       <DetailItem 
-        v-if="productDetailData.attr3" 
+        v-if="productDetailData.attr3.attr_name.length > 0" 
         :data="productDetailData.attr3" 
-        :popUp="true" 
         @selected="handleAttr3Selected" @changePopUpImg="handleChangeImg"
       />
 
@@ -49,7 +46,7 @@ export default {
   data(){
     return {
       number: 1,
-      productDetailData: {},
+      productDetailData: null,
       selectedAttr1: '',
       selectedAttr2: '',
       selectedAttr3: ''
@@ -60,157 +57,55 @@ export default {
   },
   methods: {
     ...mapMutations(['changeProductPopUpImg','changeCurrentProductPopUpStock','changeCurrentBuyDetail']),
+    //颜色属性获取图片
+    getPhoto(attr,name){
+      let attributes_amount = this.currentProductData.attributes_amount
+      let val = []
+
+      for(let attrItem of attr.attr_value){
+        for(let item of attributes_amount){
+          if(item[name] == attrItem){
+            val.push({
+              text: attrItem,
+              photo: item.photo
+            })
+            break
+          }
+        }
+      }
+
+      return val
+    },
+
     //获取产品细节属性数据
     getProductDetailData(){
-      let attributes = this.currentProductData.attributes_amount
+      let attributes_amount = this.currentProductData.attributes_amount
+      let attr = JSON.parse(JSON.stringify(this.currentProductData.attr))
 
-      let attr1 = {}
-      let attr2 = {}
-      let attr3 = {}
-      //先判断有没有属性1，2，3,初始化name属性
-      if(attributes[0].attr1_name.length > 0){
-        attr1.name = attributes[0].attr1_name
-        attr1.value = []
-        if(/颜色/.test(attr1.name)){
-          attr1.is_color = true
-        }
-      }else{
-        attr1 = null
-      }
-      if(attributes[0].attr2_name.length > 0){
-        attr2.name = attributes[0].attr2_name
-        attr2.value = []
-        if(/颜色/.test(attr2.name)){
-          attr2.is_color = true
-        }
-      }else{
-        attr2 = null
-      }
-      if(attributes[0].attr3_name.length > 0){
-        attr3.name = attributes[0].attr3_name
-        attr3.value = []
-        if(/颜色/.test(attr3.name)){
-          attr3.is_color = true
-        }
-      }else{
-        attr3 = null
+      if(/颜色/.test(attr.attr1.attr_name)){
+        attr.attr1.is_color = true
+
+        let val = this.getPhoto(attr.attr1,'attr1_value')
+        attr.attr1.attr_value = val
       }
 
-      //再丰富属性里面的值
-      for(let item of attributes){
-        //属性1赋值
-        if(attr1){
-          if(attr1.hasOwnProperty('is_color')){
-            attr1.value.push({
-              text: item.attr1_value,
-              photo: item.photo
-            })
-          }else{
-            attr1.value.push(item.attr1_value)
-          }
-        }
+      if(/颜色/.test(attr.attr2.attr_name)){
+        attr.attr2.is_color = true
 
-        //属性2赋值
-        if(attr2){
-          if(attr2.hasOwnProperty('is_color')){
-            attr2.value.push({
-              text: item.attr2_value,
-              photo: item.photo
-            })
-          }else{
-            attr2.value.push(item.attr2_value)
-          }
-        }
-
-        //属性3赋值
-        if(attr3){
-          let is_color = /颜色/.test(attr3.name)
-          if(attr3.hasOwnProperty('is_color')){
-            attr3.value.push({
-              text: item.attr3_value,
-              photo: item.photo
-            })
-          }else{
-            attr3.value.push(item.attr3_value)
-          }
-        }
+        let val = this.getPhoto(attr.attr2,'attr2_value')
+        attr.attr2.attr_value = val
       }
 
-      let result = {
-        attr1: attr1,
-        attr2: attr2,
-        attr3: attr3
+      if(/颜色/.test(attr.attr3.attr_name)){
+        attr.attr3.is_color = true
+
+        let val = this.getPhoto(attr.attr3,'attr1_value')
+        attr.attr3.attr_value = val
       }
       
-      this.productDetailData = result
+      this.productDetailData = attr
     },
-    //去重函数
-    clearTheSame(data){
-      let result = []
-
-      if(data.hasOwnProperty('is_color')){
-        let colrList = []
-        for(let item of data.value){
-          if(colrList.indexOf(item.text) == -1){
-            colrList.push(item.text)
-            result.push(item)
-          }
-        }
-      }else{
-        for(let item of data.value){
-          if(result.indexOf(item) == -1){
-            result.push(item)
-          }
-        }
-      }
-
-      return result
-    },
-
-    //优化产品细节属性数据
-    optimizeProductDetailData(){
-      let result = {}
-      //有属性1
-      if(this.productDetailData.attr1){
-        let newAttr1 = {} 
-        if(this.productDetailData.attr1.hasOwnProperty('is_color')){
-          newAttr1.is_color = true
-        }
-        newAttr1.name = this.productDetailData.attr1.name
-        newAttr1.value = this.clearTheSame(this.productDetailData.attr1)
-        result.attr1 = newAttr1
-      }else{
-        result.attr1 = null
-      }
-
-      //有属性2
-      if(this.productDetailData.attr2){
-        let newAttr2 = {}
-        if(this.productDetailData.attr2.hasOwnProperty('is_color')){
-          newAttr2.is_color = true
-        }
-        newAttr2.name = this.productDetailData.attr2.name
-        newAttr2.value = this.clearTheSame(this.productDetailData.attr2)
-        result.attr2 = newAttr2
-      }else{
-        result.attr2 = null
-      }
-
-      //有属性3
-      if(this.productDetailData.attr3){
-        let newAttr3 = {}
-        if(this.productDetailData.attr3.hasOwnProperty('is_color')){
-          newAttr3.is_color = true
-        }
-        newAttr3.name = this.productDetailData.attr3.name
-        newAttr3.value = this.clearTheSame(this.productDetailData.attr3)
-        result.attr3 = newAttr3
-      }else{
-        result.attr3 = null
-      }
-
-      this.productDetailData = result
-    },
+    
 
     //attr1选择
     handleAttr1Selected(attr){
@@ -240,19 +135,19 @@ export default {
       let stock = '0'
       let attributes = this.currentProductData.attributes_amount
 
-      if(this.productDetailData.attr1){
+      if(this.productDetailData.attr1.attr_name.length > 0){
         if(this.selectedAttr1.length > 0){
           attr1 = this.selectedAttr1
         }
       }
 
-      if(this.productDetailData.attr2){
+      if(this.productDetailData.attr2.attr_name.length > 0){
         if(this.selectedAttr2.length > 0){
           attr2 = this.selectedAttr2
         }
       }
 
-      if(this.productDetailData.attr3){
+      if(this.productDetailData.attr3.attr_name.length > 0){
         if(this.selectedAttr3.length > 0){
           attr3 = this.selectedAttr3
         }
@@ -280,19 +175,19 @@ export default {
       let buyDetail = null
       let attributes = this.currentProductData.attributes_amount
 
-      if(this.productDetailData.attr1){
+      if(this.productDetailData.attr1.attr_name.length > 0){
         if(this.selectedAttr1.length > 0){
           attr1 = this.selectedAttr1
         }
       }
 
-      if(this.productDetailData.attr2){
+      if(this.productDetailData.attr2.attr_name.length > 0){
         if(this.selectedAttr2.length > 0){
           attr2 = this.selectedAttr2
         }
       }
 
-      if(this.productDetailData.attr3){
+      if(this.productDetailData.attr3.attr_name.length > 0){
         if(this.selectedAttr3.length > 0){
           attr3 = this.selectedAttr3
         }
@@ -308,6 +203,7 @@ export default {
             number: this.number,
             ...detail
           }
+          break
         }
       }
 
@@ -344,9 +240,11 @@ export default {
       })
     },
 
+    //数量增加
     addNumber(){
       this.number++
     },
+    //数量减少
     minusNumber(){
       if(this.number > 1){
         this.number--
@@ -377,7 +275,6 @@ export default {
   created(){
     if(this.currentProductData && this.currentProductData.attributes_amount.length > 0){
       this.getProductDetailData()
-      this.optimizeProductDetailData()
     }else{
       let stock = this.currentProductData.amount + ''
       this.changeCurrentProductPopUpStock(stock)
@@ -386,9 +283,6 @@ export default {
   },
   mounted(){
     this.initPoPUpScroll()
-  },
-  updated(){
-    this.popUpScroll.refresh()
   }
 }
 </script>

@@ -2,7 +2,7 @@
   <div class="popup-footer">
     <span v-if="type == 1 || type == 3" class="btn-left" @click="postCart">加入购物车</span>
     <span v-if="type == 1 || type == 3" class="btn-right" @click="immediatePay">立即购买</span>
-    <span v-if="type == 2" class="btn-confirm" @click="immediatePay">确认</span>
+    <span v-if="type == 2" class="btn-confirm" @click="groupConfirm">确认</span>
     <span v-if="type == 4" class="btn-confirm" @click="immediatePay">立即购买</span>
   </div>
 </template>
@@ -13,7 +13,7 @@ import axios from 'axios'
 export default {
   name: "PoPUpFooter",
   computed: {
-    ...mapState(['currentBuyDetail','userData','currentProductData']),
+    ...mapState(['currentBuyDetail','userData','currentProductData','groupBuyID']),
     type(){
       if(this.currentProductData){
         return this.currentProductData.flag
@@ -21,7 +21,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['updatedConfirmData']),
+    ...mapMutations(['updatedConfirmData','updateGroupBuyData']),
     //post的操作
     postHandle(type){
       //加入购物车操作
@@ -150,6 +150,72 @@ export default {
       }
 
       this.postHandle('limitBuy')
+    },
+
+    //拼团确认
+    groupConfirm(){
+      if(!this.currentBuyDetail){
+        this.$toast({
+          message: '请先选择商品属性',
+          duration: 1200
+        })
+        return
+      }
+
+      let stock = parseFloat(this.currentBuyDetail.stock)
+      if(this.currentBuyDetail.stock && this.currentBuyDetail.stock > 0){
+        stock = this.currentBuyDetail.stock
+      }else{
+        stock = 0
+      }
+      if(stock == 0){
+        this.$toast({
+          message: '该商品属性没有库存',
+          type: "fail",
+          duration: 1200
+        })
+        return 
+      }
+
+      let postData = {
+        user_id: this.userData.id,
+        goods_list:[{
+          goods_attr_id: this.currentBuyDetail.id,
+          number: this.currentBuyDetail.number
+        }]
+      }
+
+      console.log('limitBuy postData:',postData)
+      axios.post('api/method/comfirmOrder',postData)
+        .then((res)=>{
+          console.log('comfirmOrder:',res.data)
+          if(res.data.code == 1){
+            this.updatedConfirmData(res.data.data)
+            this.$nextTick(()=>{
+              this.$router.push({
+                path: '/pay',
+                name: 'pay',
+                query: {
+                  is_cart: 2
+                },
+                params: {
+                  groupBuyID: this.groupBuyID,
+                  goods_id: this.$route.query.id,
+                  group_id: this.$route.query.group_id
+                }
+              })
+            })
+          }else{
+            this.$toast({
+              message: '购买失败',
+              type: 'fail',
+              duration: 1000
+            })
+          }
+        })
+        .catch((err)=>{
+          console.log('comfirmOrder err',err)
+        })
     }
   }
 }

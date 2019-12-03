@@ -2,9 +2,13 @@
   <div class="GroupBuy-wrapper">
     <van-nav-bar
       title="火热拼团"
+      right-text="我的"
       left-arrow
       @click-left="handleBack"
-    />
+      @click-right="onClickRight"
+    >
+      <!-- <van-icon name="cart-o" slot="right" /> -->
+    </van-nav-bar>
 
     <!-- 火热拼团内容 -->
     <div class="groupBuy-content" ref="groupBuyContent">
@@ -71,7 +75,8 @@
 <script>
 import axios from 'axios'
 import Bscroll from 'better-scroll'
-import GroupList from '../../components/marketing/groupBuy/groupList'
+import GroupList from '../../../components/marketing/groupBuy/groupList'
+import { mapMutations } from 'vuex'
 export default {
   name: "GroupBuy",
   components: {
@@ -88,9 +93,21 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['changeTab']),
+    //处理返回我的页面
     handleBack(){
-      this.$router.go(-1)
+      this.changeTab(5)
+      this.$router.push({
+        path: '/'
+      })
     },
+    //处理右侧点击
+    onClickRight(){
+      this.$router.push({
+        path: "/mineGroup"
+      })
+    },
+    //获取今天的日期
     getTodayDate(){
       let date = new Date()
       let result = date.getMonth() + '月' + date.getDate() + '日'
@@ -206,6 +223,11 @@ export default {
     color: #000
     font-size: 4vw
     font-family: PFH
+  
+  .GroupBuy-wrapper >>> .van-nav-bar__text
+    font-family: PFH
+    font-size: 3.6vw
+    color: #FF5756
   
   .GroupBuy-wrapper >>> .blank
     height: 4vw

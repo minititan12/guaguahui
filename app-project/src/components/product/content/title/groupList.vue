@@ -9,7 +9,7 @@
     </div>
 
     <div class="list-content">
-      <div class="list-item" v-for="item of list.slice(0,3)">
+      <div class="list-item" v-for="item of list.slice(0,2)">
         <div class="item-left">
           <van-image round width="12vw" height="12vw" :src="item.head_img"/>
           <span class="left-text">{{item.nickname}}</span>

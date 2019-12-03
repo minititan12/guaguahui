@@ -182,9 +182,21 @@ export default {
           if(res.data.code == 1){
             this.updatePayOrderData(res.data.data)
 
-            this.$router.push({
-              path: '/payment'
-            })
+            if(this.$route.params.groupBuyID){
+              this.$router.push({
+                path: '/payment',
+                name: 'payment',
+                params: {
+                  groupBuyID: this.$route.params.groupBuyID,
+                  goods_id: this.$route.params.goods_id,
+                  group_id: this.$route.params.group_id
+                }
+              })
+            }else{
+              this.$router.push({
+                path: '/payment'
+              })
+            }
           }
 
         })
@@ -194,6 +206,7 @@ export default {
     }
   },
   mounted(){
+    console.log(this.$route)
     this.countConfirmTotalPrice()
   }
 }

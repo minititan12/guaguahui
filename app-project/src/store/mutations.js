@@ -442,10 +442,9 @@ export default {
 
   //营销功能
   //拼团
-  //更新拼团总数据
+  //更新拼团购买数据
   updateGroupBuyData(state,data){
-    let result = JSON.parse(JSON.stringify(data))
-    state.groupBuyData = result
+    state.groupBuyData = data
   },
 
   //更新拼团中的产品信息

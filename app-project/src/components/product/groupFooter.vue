@@ -33,10 +33,10 @@ import axios from 'axios'
 export default {
   name: 'GroupFooter',
   computed: {
-    ...mapState(['login','currentProductData','currentBuyDetail','userData','showPopUp'])
+    ...mapState(['login','currentProductData','currentBuyDetail','showPopUp','allSpellGroups'])
   },
   methods: {
-    ...mapMutations(['openPopup','closePopup','changeTab','changeCurrentBuyDetail','changeCurrentProductPopUpStock','changeProductPopUpImg','updatedGroupBuyID','addToConfirmList','countConfirmTotalPrice','changeGroupDialogState']),
+    ...mapMutations(['openPopup','changeTab','changeCurrentBuyDetail','changeCurrentProductPopUpStock','changeProductPopUpImg','changeGroupDialogState']),
 
     //点击商店按钮
     handleToShop(){
@@ -96,12 +96,20 @@ export default {
 
     //加入拼团
     addGroup(){
-      setTimeout(()=>{
-        this.changeGroupDialogState({
-          value: true,
-          type: 'more'
+      if(this.allSpellGroups.length > 0){
+        setTimeout(()=>{
+          this.changeGroupDialogState({
+            value: true,
+            type: 'more'
+          })
+        },200)
+      }else{
+        this.$toast({
+          message: '无可加入的拼团',
+          type: 'fail',
+          duration: 1200
         })
-      },200)
+      }
     },
 
     //发起拼团

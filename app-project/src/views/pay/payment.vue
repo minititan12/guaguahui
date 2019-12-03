@@ -385,17 +385,32 @@ export default {
             _this.$toast({
               message: "支付成功",
               type: "success",
-              duration: 1500
+              duration: 1200
             })
 
-            setTimeout(()=>{
-              _this.$router.push({
-                path: "/orderPage",
-                query:{
-                  orderID: 1
-                }
-              })
-            },1200)
+            if(this.$route.params.groupBuyID){
+              setTimeout(()=>{
+                _this.$router.push({
+                  path: "/groupPaySuccess",
+                  name: 'groupPaySuccess',
+                  params: {
+                    groupBuyID: this.$route.params.groupBuyID,
+                    goods_id: this.$route.params.goods_id,
+                    group_id: this.$route.params.group_id,
+                    order_number: this.orderNumber
+                  }
+                })
+              },1200)
+            }else{
+              setTimeout(()=>{
+                _this.$router.push({
+                  path: "/orderPage",
+                  query:{
+                    orderID: 1
+                  }
+                })
+              },1200)
+            }
 
           }, function(e) {  //支付失败回调函数
             _this.$toast({
@@ -454,6 +469,7 @@ export default {
 	  }
   },
   mounted(){
+    console.log(this.$route)
     this.getRunTimeType()
   }
 }

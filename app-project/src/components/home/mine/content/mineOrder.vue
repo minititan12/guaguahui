@@ -38,7 +38,7 @@
         <span class="item-num" v-if="receiving > 0">{{receiving}}</span>
       </div>
 
-      <div class="order-item" @click="handleToWaitShare">
+      <!-- <div class="order-item" @click="handleToWaitShare">
         <van-image 
           class="item-image" 
           width="7vw" 
@@ -46,7 +46,7 @@
         />
         <span class="item-text">待分享</span>
         <span class="item-num" v-if="false">{{receiving}}</span>
-      </div>
+      </div> -->
 
       <div class="order-item" @click="handleToComment">
         <van-image 
@@ -98,11 +98,11 @@ export default {
         path: '/refund'
       })
     },
-    handleToWaitShare(){
-      this.$router.push({
-        path: '/waitShare'
-      })
-    },
+    // handleToWaitShare(){
+    //   this.$router.push({
+    //     path: '/waitShare'
+    //   })
+    // },
     initCount(){
       let postData = {
         user_id: this.userData.id

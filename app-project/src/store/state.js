@@ -68,7 +68,7 @@ export default {
 
   //营销功能
   //拼团
-  groupBuyData: {},                //拼团首页总数据
+  groupBuyData: null,                //拼团产品购买的数据
   groupGoodsDes: null,          //拼团产品信息
   groupBuyID: -1,               //拼团产品页中的拼单选择
 

@@ -30,7 +30,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['showPopUp','currentBuyDetail'])
+    ...mapState(['showPopUp','currentBuyDetail','currentProductData','bargainData'])
   },
   components:{
     SharePop
@@ -53,7 +53,7 @@ export default {
         content:"呱呱汇商品",
         thumbs:this.currentProductData.cover_img,
         pictures:this.currentProductData.cover_img,
-        href: process.env.VUE_APP_SHARE_HOST +'#/bargain?goods_id='+ this.productDetails.goods_id +'&&bargin_item_id=' + this.bargainData.bargin_item_id,
+        href: process.env.VUE_APP_SHARE_HOST +'#/bargain?goods_id='+ this.currentProductData.id +'&&bargin_item_id=' + this.bargainData.bargin_item_id,
       }
       this.updateShareInfo(data);
       this.updateSharePopUp(true);

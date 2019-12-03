@@ -78,7 +78,7 @@
         </div>
       </div>
       <!-- 未帮好友砍价 -->
-      <div v-else>
+      <div v-if="bargainDetails.have_help_bargin === 0">
         <!-- 已砍到底价 -->
         <div v-if="bargainDetails.is_complete === 1">
           <div class="success-tip">好友砍价已完成!</div>

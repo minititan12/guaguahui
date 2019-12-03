@@ -19,6 +19,8 @@
         </div>
       </div>
     </div>
+
+    <SharePop></SharePop>
   </div>
 </template>
 <script>
@@ -26,6 +28,8 @@ import axios from 'axios'
 import { mapState } from 'vuex'
 import Bscroll from 'better-scroll'
 import MyBargainList from '../../../components/marketing/cutPrice/myBargainList'
+import SharePop from '../../../components/sharePop/sharePop'
+import { mapMutations } from 'vuex'
 export default {
   data(){
     return {
@@ -41,15 +45,17 @@ export default {
     ...mapState(['userData'])
   },
   components:{
-    MyBargainList
+    MyBargainList,SharePop
   },
   created(){
+    this.updateSharePopUp(false);
     this.getMyBargain();
   },
   mounted(){
     this.initGroupScroll();
   },
   methods:{
+    ...mapMutations(['updateSharePopUp']),
     handleBack(){
       this.$router.go(-1)
     },

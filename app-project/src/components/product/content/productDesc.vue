@@ -25,7 +25,8 @@ export default {
   computed:{
     ...mapState(['currentProductData']),
     descHtml(){
-      if(this.currentProductData){
+      if(this.currentProductData && this.currentProductData.content != undefined){
+        this.loading = false
         return this.currentProductData.content
       }else{
         return null
@@ -33,16 +34,13 @@ export default {
     }
   },
   created(){
-    if(this.currentProductData && this.currentProductData.content != undefined){
-      this.loading = false
-    }    
   },
   watch:{
-    descHtml(){
-      if(this.descHtml){
-        this.loading = false
-      }
-    }
+    // descHtml(){
+    //   if(this.descHtml){
+    //     this.loading = false
+    //   }
+    // }
   }
 }
 </script>

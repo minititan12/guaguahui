@@ -30,7 +30,7 @@
         </div>
       </div>
     </div>
-    <SharePop></SharePop>
+    
   </div>
 </template>
 <script>

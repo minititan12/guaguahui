@@ -54,7 +54,7 @@ export default {
           content: this.shareInfo.content,
           thumbs: [this.shareInfo.thumbs],
           pictures: [this.shareInfo.pictures],
-          href: this.this.shareInfo.href,
+          href: this.shareInfo.href,
           extra: {
             scene: 'WXSceneTimeline'
           }
@@ -74,7 +74,7 @@ export default {
           content: this.shareInfo.content,
           thumbs: [this.shareInfo.thumbs],
           pictures: [this.shareInfo.pictures],
-          href: this.this.shareInfo.href,
+          href: this.shareInfo.href,
           extra: {
             scene: 'WXSceneSession'
           }

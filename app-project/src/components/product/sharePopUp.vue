@@ -47,19 +47,11 @@ export default {
       this.closeSharePopUp()
 
       if(this.shares[0] && this.shares[0].authenticated){
-        // this.shares[0].send({
-        //   type: 'web',
-        //   title: this.currentProductData.goods_name,
-        //   content: '呱呱汇商品',
-        //   thumbs: [this.currentProductData.cover_img],
-        //   pictures: [this.currentProductData.cover_img],
-        //   href: 'http://test.gghbuy.com/index1.html#/product?id='+ this.currentProductData.id,
-        //   extra: {
-        //     scene: 'WXSceneTimeline'
-        //   }
-        // },function(){
-        //   alert('分享成功!')
-        // })
+        if(!this.shareData){
+          alert('没有分享信息')
+          return
+        }
+
         this.shares[0].send({
           type: 'web',
           title: this.shareData.title,
@@ -79,9 +71,13 @@ export default {
     },
     shareToFriend(){
       this.closeSharePopUp()
-      let thumbsImg = this.currentProductData.cover_img
 
       if(this.shares[0] && this.shares[0].authenticated){
+        if(!this.shareData){
+          alert('没有分享信息')
+          return
+        }
+
         this.shares[0].send({
           type: 'web',
           title: this.shareData.title,

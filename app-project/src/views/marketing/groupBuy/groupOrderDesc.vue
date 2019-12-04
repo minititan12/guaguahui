@@ -78,17 +78,23 @@
       <van-image v-for="n in number" class="image" src="/images/wz.png" width="12vw" height="12vw" round/>
     </div>
 
-    <div class="inviteGroup" @click="handleInviteGroup">
+    <div class="inviteGroup" @click="openSharePopUp">
       <span>邀请好友拼团</span>
     </div>
+
+    <SharePopUp :shareData="shareData"></SharePopUp>
   </div>
 </template>
 
 <script>
 import axios from "axios"
-import { mapState } from 'vuex'
+import SharePopUp from '../../../components/product/sharePopUp'
+import { mapState, mapMutations } from 'vuex'
 export default {
-  name: "GroupOrderShare",
+  name: "GroupOrderDesc",
+  components: {
+    SharePopUp
+  },
   data(){
     return {
       currentGroupData: null,
@@ -99,9 +105,20 @@ export default {
     }
   },
   computed: {
-    ...mapState(['payOrderData','userData'])
+    ...mapState(['payOrderData','userData']),
+    shareData(){
+      if(this.currentGroupData){
+        return {
+          title: this.currentGroupData.goods_name,
+          content: '呱呱汇拼团商品',
+          photo: this.currentGroupData.cover_img,
+          href: 'http://test.gghbuy.com/index1.html#/product?id='+ this.currentGroupData.goods_id
+        }
+      }
+    }
   },
   methods: {
+    ...mapMutations(['updateSharePopUp']),
     handleBack(){
       this.$router.go(-1)
     },
@@ -199,9 +216,9 @@ export default {
           console.log('getShareSpellGroupDes err',err)
         })
     },
-    //处理邀请好友拼团
-    handleInviteGroup(){
-
+    //打开分享弹窗
+    openSharePopUp(){
+      this.updateSharePopUp(true)
     }
   },
   created(){

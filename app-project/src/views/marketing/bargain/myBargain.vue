@@ -96,7 +96,7 @@ export default {
           stop: 0
         },
         click: true,
-        eventPassthrough: 'horizontal'
+        // eventPassthrough: 'horizontal'
       })
 
       this.cutPriceScroll.on('beforeScrollStart',()=>{

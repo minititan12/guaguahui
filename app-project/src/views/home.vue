@@ -96,7 +96,7 @@ export default {
     }
   },
   created(){
-    this.handleCheckOpenid()
+    // this.handleCheckOpenid()
   }
 };
 </script>

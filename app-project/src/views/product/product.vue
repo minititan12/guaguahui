@@ -187,7 +187,7 @@ export default {
   },
 
   mounted(){
-    this.handleCheckOpenid()
+    // this.handleCheckOpenid()
   }
 }
 </script>

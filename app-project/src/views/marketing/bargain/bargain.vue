@@ -88,7 +88,7 @@ export default {
       let el = this.$refs.page;
       this.productScroll = new Bscroll(el,{
         click: true,
-        eventPassthrough: 'horizontal',
+        // eventPassthrough: 'horizontal',
         bounce:{
           top: false,
           bottom: true

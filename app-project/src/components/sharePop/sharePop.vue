@@ -1,6 +1,6 @@
 <template>
-  <div @click="closeSharePopUp" class="share-wrapper" v-if="sharePopUp">
-    <div class="masking"></div>
+  <div  class="share-wrapper" v-if="sharePopUp">
+    <div @click="closeSharePopUp" class="masking"></div>
     <div @click.stop="stopSpread" class="shareContent">
       <div class="share-item" v-if="false">
         <span class="iconfont qq">&#xe7cc;</span>

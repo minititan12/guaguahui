@@ -27,7 +27,7 @@ import sha1 from 'sha1'
       }
     },
     computed:{
-      ...mapState(['userData','wxTicket']),
+      ...mapState(['userData','wxTicket','openid']),
       name(){
         return this.$route.name
       }
@@ -75,10 +75,42 @@ import sha1 from 'sha1'
           return null;
       },
 
+      // 微信浏览器里面设置授权
+      authorization(){
+        if(/MicroMessenger/.test(window.navigator.userAgent)){
+          if(!this.openid){
+            let pageUrl = window.location.href;
+            let str = "index1.html#";
+            let indexOf = pageUrl.indexOf(str);
+            if(indexOf == -1){
+              return;
+            }
+            let path = pageUrl.slice(indexOf+str.length);
+            axios.post('/index/index/getWxcode',{
+              url: encodeURIComponent(path)
+            }).then((res)=>{
+              console.log('getOpenid',res.data)
+            })
+            .catch((err)=>{
+              console.log('getOpenid err',err)
+            })
+            this.$dialog.alert({
+              title: '授权',
+              message: '是否授权呱呱汇访问微信用户信息',
+              showCancelButton: true   
+            }).then(()=>{
+              window.location.href= '/index/index/index2?url='+ encodeURIComponent(path);
+            }).catch(()=>{
+              WeixinJSBridge.call('closeWindow');
+            })
+          }
+        }
+      },
+
       // 判断如果是在微信内部浏览器 获取openid
       getopenid(){
         if(/MicroMessenger/.test(window.navigator.userAgent)){
-          var openid = this.GetQueryString('user_id');
+          var openid = this.GetQueryString('openid');
           this.$store.state.openid = openid
           console.log('是在微信 OPENID:', this.$store.state.openid)
             
@@ -313,7 +345,8 @@ import sha1 from 'sha1'
         that.endX = e.changedTouches[0].clientX
       })
 
-      this.getopenid()
+      this.getopenid();
+      this.authorization();
     },
     watch: {
       endX(){

@@ -30,6 +30,7 @@ const GroupBuy = () => import('./views/marketing/groupBuy/groupBuy.vue')
 const GroupPaySuccess = () => import('./views/marketing/groupBuy/groupPaySuccess.vue')
 const MineGroup = () => import('./views/marketing/groupBuy/mineGroup.vue')
 const GroupOrderDesc = () => import('./views/marketing/groupBuy/groupOrderDesc.vue')
+const GroupOrderShare = () => import('./views/marketing/groupBuy/groupOrderShare.vue')
 const Activities = () => import('./views/marketing/activities.vue')
 const IntergralShop = () => import('./views/marketing/integralShop.vue')
 const CutPrice = () => import('./views/marketing/bargain/cutPrice.vue')
@@ -474,6 +475,19 @@ export default new Router({
       path: '/groupOrderDesc',
       name: 'groupOrderDesc',
       component: GroupOrderDesc,
+      meta:{
+        index: 2,
+        keepAlive: false,
+        isImmersion: true,
+        color: '#ffffff',
+        style: 'dark'
+      }
+    },
+    //分享出去的加入拼团页面
+    {
+      path: '/groupOrderShare',
+      name: 'groupOrderShare',
+      component: GroupOrderShare,
       meta:{
         index: 2,
         keepAlive: false,

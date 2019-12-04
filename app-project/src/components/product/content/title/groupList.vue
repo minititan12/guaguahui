@@ -1,5 +1,5 @@
 <template>
-  <div class="groupList-wrapper" v-if="list.length > 0">
+  <div class="groupList-wrapper" v-if="showGroupList">
     <div class="list-top">
       <span>{{list.length}}人在拼单,可直接参与</span>
       <div class="more" @click="handleShowMore">
@@ -9,7 +9,7 @@
     </div>
 
     <div class="list-content">
-      <div class="list-item" v-for="item of list.slice(0,2)">
+      <div class="list-item" v-for="item of list">
         <div class="item-left">
           <van-image round width="12vw" height="12vw" :src="item.head_img"/>
           <span class="left-text">{{item.nickname}}</span>
@@ -26,7 +26,7 @@
 
 <script>
 import axios from 'axios'
-import { mapMutations } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 export default {
   name: "GroupList",
   data(){
@@ -34,8 +34,32 @@ export default {
       list: []
     }
   },
+  computed: {
+    ...mapState(['userData']),
+    showGroupList(){
+      if(this.list.length > 0 && !this.$route.query.team_id){
+        return true
+      }else{
+        return false
+      }
+    }
+  },
   methods: {
     ...mapMutations(['updatedGroupBuyID','openPopup','updateAllSpellGroups','changeGroupDialogState']),
+    //获取可拼单列表
+    getList(data){
+      let result = []
+      let d = JSON.parse(JSON.stringify(data))
+
+      for(let item of d){
+        if(item.user_id != this.userData.id){
+          result.push(item)
+        }
+      }
+
+      this.updateAllSpellGroups(result)
+      this.list = result.slice(0,2)
+    },
     getGroupListData(){
       let merchant_id = this.$route.query.shop_id
       let activity_spell_group_id = this.$route.query.group_id
@@ -49,8 +73,7 @@ export default {
         .then((res)=>{
           console.log('getAllSpellGroups:',res.data)
           if(res.data.code == 1){
-            this.list = res.data.data
-            this.updateAllSpellGroups(res.data.data)
+            this.getList(res.data.data)
           }
         })
         .catch((err)=>{

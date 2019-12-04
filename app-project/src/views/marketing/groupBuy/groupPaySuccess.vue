@@ -42,30 +42,54 @@
     </div>
 
     <div class="images">
-      <van-image class="image" :src="getHeaderImg()" width="12vw" height="12vw" round/>
+      <van-image v-for="item of getHeaderImg()" class="image" :src="item" width="12vw" height="12vw" round/>
       <van-image v-for="n in getNumber()" class="image" src="/images/wz.png" width="12vw" height="12vw" round/>
     </div>
 
     <div class="inviteGroup" @click="handleInviteGroup">
       <span>邀请好友拼团</span>
     </div>
+
+    <SharePopUp :shareData="shareData"></SharePopUp>
   </div>
 </template>
 
 <script>
 import axios from "axios"
-import { mapState } from 'vuex'
+import SharePopUp from '../../../components/product/sharePopUp'
+import { mapState, mapMutations } from 'vuex'
 export default {
   name: "GroupPaySuccess",
+  components: {
+    SharePopUp
+  },
   data(){
     return {
       currentGroupData: null
     }
   },
   computed: {
-    ...mapState(['payOrderData','userData'])
+    ...mapState(['payOrderData','userData']),
+    type(){
+      if(this.$route.query.team_id == -1){//发起
+        return 1
+      }else{//加入
+        return 2
+      }
+    },
+    shareData(){
+      if(this.currentGroupData){
+        return {
+          title: this.currentGroupData.goods_name,
+          content: '呱呱汇拼团商品',
+          photo: this.currentGroupData.cover_img,
+          href: 'http://test.gghbuy.com/index1.html#/groupOrderShare?team_id='+ this.currentGroupData.group
+        }
+      }
+    }
   },
   methods: {
+    ...mapMutations(['updateSharePopUp']),
     handleBack(){
       this.$router.push({
         path: "/groupBuy"
@@ -82,7 +106,20 @@ export default {
     getHeaderImg(){ 
       if(this.currentGroupData){
         let data = this.currentGroupData
-        return data.head_img
+        if(this.currentGroupData.hasOwnProperty('group_userinfos')){
+          let result = []
+          for(let item of this.currentGroupData.group_userinfos){
+            if(item.header == 1){
+              result.unshift(item.head_img)
+            }else{
+              result.push(item.head_img)
+            }
+          }
+
+          return result
+        }else{
+          return [data.head_img]
+        }
       }
     },
     //获取倒计时
@@ -96,39 +133,65 @@ export default {
         return t-now
       }
     },
+
+    //请求操作
+    handlePost(postData){
+      let a = JSON.stringify(postData)
+      alert(a)
+      //url路径
+      let url = this.type == 1 ? "api/method/userDoSpellGroup" : "api/method/userPartSpellGroup"
+
+      axios.post(url,postData)
+        .then((res)=>{
+          console.log('getCurrentGroupData:',res.data)
+          let b = JSON.stringify(res.data)
+          alert(b)
+          if(res.data.code == 1){
+            this.currentGroupData = res.data.data
+          }
+        })
+        .catch((err)=>{
+          alert('err')
+          console.log('getCurrentGroupData err',err)
+        })
+    },
+
     //获取订单完成后的拼团信息
     getGroupData(){
-      // if(this.$route.params.groupBuyID == -1){
+      //发起拼团
+      if(this.type == 1){
         let postData = {
           user_id: this.userData.id,
-          // goods_id: this.$route.params.goods_id,
-          // activity_spell_group_id: this.$route.params.group_id,
-          // order_number: this.$route.params.order_number,
-          goods_id: 1,
-          activity_spell_group_id: 5,
-          order_number: "20191203020157495924"
+          goods_id: this.$route.query.goods_id,
+          activity_spell_group_id: this.$route.query.group_id,
+          order_number: this.$route.query.order_number,
+          // goods_id: 1,
+          // activity_spell_group_id: 5,
+          // order_number: "20191203020157495924"
         }
-        axios.post("api/method/userDoSpellGroup",postData)
-          .then((res)=>{
-            console.log('userDoSpellGroup:',res.data)
-            if(res.data.code == 1){
-              this.currentGroupData = res.data.data
-            }
-          })
-          .catch((err)=>{
-            console.log('userDoSpellGroup err',err)
-          })
-      // }else{
 
-      // }
+        this.handlePost(postData)
+      }else{//加入拼团
+        let postData = {
+          user_id: this.userData.id,
+          goods_id: this.$route.query.goods_id,
+          activity_spell_group_id: this.$route.query.group_id,
+          order_number: this.$route.query.order_number,
+          speelgroup_record_id: this.$route.query.team_id
+        }
+        
+        this.handlePost(postData)
+      }
     },
     //处理邀请好友拼团
     handleInviteGroup(){
-
+      this.updateSharePopUp(true)
     }
   },
   created(){
-    
+    // console.log(this.$route)
+    let a = JSON.stringify(this.$route.query)
+    alert(a)
     this.getGroupData()
   }
 }

@@ -182,15 +182,12 @@ export default {
           if(res.data.code == 1){
             this.updatePayOrderData(res.data.data)
 
-            if(this.$route.params.groupBuyID){
+            if(this.$route.params.team_id){
+              let params = JSON.parse(JSON.stringify(this.$route.params))
               this.$router.push({
                 path: '/payment',
                 name: 'payment',
-                params: {
-                  groupBuyID: this.$route.params.groupBuyID,
-                  goods_id: this.$route.params.goods_id,
-                  group_id: this.$route.params.group_id
-                }
+                params: params
               })
             }else{
               this.$router.push({

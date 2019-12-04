@@ -19,9 +19,6 @@
       <div class="btn-left" @click="addGroup">
         <span class="btn-title">加入拼团</span>
       </div>
-      <div class="btn-right" @click="startGroup">
-        <span class="btn-title">发起拼团</span>
-      </div>
     </div>
 
   </div>
@@ -31,12 +28,12 @@
 import { mapState,mapMutations } from 'vuex'
 import axios from 'axios'
 export default {
-  name: 'GroupFooter',
+  name: 'JoinGroupFooter',
   computed: {
-    ...mapState(['login','currentProductData','currentBuyDetail','allSpellGroups'])
+    ...mapState(['login','currentProductData','currentBuyDetail'])
   },
   methods: {
-    ...mapMutations(['openPopup','changeTab','changeCurrentBuyDetail','changeCurrentProductPopUpStock','changeProductPopUpImg','changeGroupDialogState']),
+    ...mapMutations(['openPopup','changeTab','changeCurrentBuyDetail','changeCurrentProductPopUpStock','changeProductPopUpImg']),
 
     //点击商店按钮
     handleToShop(){
@@ -96,24 +93,6 @@ export default {
 
     //加入拼团
     addGroup(){
-      if(this.allSpellGroups.length > 0){
-        setTimeout(()=>{
-          this.changeGroupDialogState({
-            value: true,
-            type: 'more'
-          })
-        },200)
-      }else{
-        this.$toast({
-          message: '无可加入的拼团',
-          type: 'fail',
-          duration: 1200
-        })
-      }
-    },
-
-    //发起拼团
-    startGroup(){
       this.handleOpenPopup()
     }
   }
@@ -157,26 +136,19 @@ export default {
       width: 55%
       display: flex
       flex-direction: row
-      justify-content: space-around
+      justify-content: center
       align-items: center
       font-family: PFB
       font-size: 3.5vw
       line-height: 10vw
       letter-spacing: .1vw
       .btn-left
+        width: 80%
         display: inline-block
+        text-align: center
         color: #000
         border-radius: 5vw
-        padding: 0 4vw
-        // background: linear-gradient(to right, #FEC903, #FF9506);
         background-color: #FFCF27
-      .btn-right
-        display: inline-block
-        color: #fff
-        border-radius: 5vw
-        padding: 0 4vw
-        // background: linear-gradient(to right, #FEC903, #FF9506);
-        background-color: #FF5756
 </style>
 
 

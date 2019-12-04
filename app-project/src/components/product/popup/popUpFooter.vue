@@ -192,6 +192,8 @@ export default {
           if(res.data.code == 1){
             this.updatedConfirmData(res.data.data)
             this.$nextTick(()=>{
+
+              let team_id = this.$route.query.team_id ? this.$route.query.team_id : this.groupBuyID
               this.$router.push({
                 path: '/pay',
                 name: 'pay',
@@ -199,7 +201,7 @@ export default {
                   is_cart: 2
                 },
                 params: {
-                  groupBuyID: this.groupBuyID,
+                  team_id: team_id,
                   goods_id: this.$route.query.id,
                   group_id: this.$route.query.group_id
                 }

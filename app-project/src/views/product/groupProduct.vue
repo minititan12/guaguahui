@@ -1,18 +1,30 @@
 <template>
   <div class="GroupProduct-wrapper">
     <GroupProductContent></GroupProductContent>
-    <GroupFooter></GroupFooter>
+    <GroupFooter v-if="!showJoinFooter"></GroupFooter>
+    <JoinGroupFooter v-if="showJoinFooter"></JoinGroupFooter>
   </div>
 </template>
 
 <script>
 import GroupProductContent from '../../components/product/groupProductContent'
 import GroupFooter from '../../components/product/groupFooter'
+import JoinGroupFooter from '../../components/product/joinGroupFooter'
 export default {
   name: "GroupProduct",
   components: {
     GroupProductContent,
-    GroupFooter
+    GroupFooter,
+    JoinGroupFooter
+  },
+  computed: {
+    showJoinFooter(){
+      if(this.$route.query.team_id){
+        return true
+      }else{
+        return false
+      }
+    }
   }
 }
 </script>

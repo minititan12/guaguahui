@@ -352,7 +352,9 @@ export default {
         amount: this.amount,
         user_id: this.userId
       }
-      console.log('payData177',payData)
+      // console.log('payData177',payData)
+      let a = JSON.stringify(payData)
+      alert(a)
       
       var _this = this
       var channel = null
@@ -388,16 +390,15 @@ export default {
               duration: 1200
             })
 
-            if(this.$route.params.groupBuyID){
+            if(_this.$route.params.team_id){
+              let params = JSON.parse(JSON.stringify(_this.$route.params))
               setTimeout(()=>{
                 _this.$router.push({
                   path: "/groupPaySuccess",
                   name: 'groupPaySuccess',
-                  params: {
-                    groupBuyID: this.$route.params.groupBuyID,
-                    goods_id: this.$route.params.goods_id,
-                    group_id: this.$route.params.group_id,
-                    order_number: this.orderNumber
+                  query: {
+                    ...params,
+                    order_number: _this.orderNumber
                   }
                 })
               },1200)

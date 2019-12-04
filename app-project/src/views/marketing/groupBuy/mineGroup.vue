@@ -99,7 +99,7 @@ export default {
       this.$router.push({
         path: '/groupOrderDesc',
         query: {
-          group_id: item.group
+          team_id: item.group
         }
       })
     }

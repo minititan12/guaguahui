@@ -1,13 +1,11 @@
 <template>
-  <div class="groupOrderDesc-wrapper">
+  <div class="groupOrderShare-wrapper">
     <van-nav-bar
-      title="拼团详情"
-      left-arrow
-      @click-left="handleBack"
+      title="加入拼团"
     />
 
     <div class="order-desc" v-if="orderDesc">
-      <div class="top">
+      <div class="top" @click="joinGroup">
         <van-image class="top-img" width="22vw" :src="orderDesc.cover_img"/>
         <div class="top-right">
           <div class="top-order">
@@ -78,23 +76,17 @@
       <van-image v-for="n in number" class="image" src="/images/wz.png" width="12vw" height="12vw" round/>
     </div>
 
-    <div class="inviteGroup" @click="openSharePopUp">
-      <span>邀请好友拼团</span>
+    <div class="inviteGroup" @click="joinGroup">
+      <span>加入拼团</span>
     </div>
-
-    <SharePopUp :shareData="shareData"></SharePopUp>
   </div>
 </template>
 
 <script>
 import axios from "axios"
-import SharePopUp from '../../../components/product/sharePopUp'
 import { mapState, mapMutations } from 'vuex'
 export default {
-  name: "GroupOrderDesc",
-  components: {
-    SharePopUp
-  },
+  name: "GroupOrderShare",
   data(){
     return {
       currentGroupData: null,
@@ -105,23 +97,12 @@ export default {
     }
   },
   computed: {
-    ...mapState(['payOrderData','userData']),
-    shareData(){
-      if(this.currentGroupData){
-        return {
-          title: this.currentGroupData.goods_name,
-          content: '呱呱汇拼团商品',
-          photo: this.currentGroupData.cover_img,
-          href: 'http://test.gghbuy.com/index1.html#/groupOrderShare?team_id='+ this.currentGroupData.group
-        }
-      }
-    }
+    ...mapState(['payOrderData','userData'])
   },
   methods: {
-    ...mapMutations(['updateSharePopUp']),
-    handleBack(){
-      this.$router.go(-1)
-    },
+    // handleBack(){
+    //   this.$router.go(-1)
+    // },
     //获取不够的人数
     getNumber(){
       if(this.currentGroupData){
@@ -195,7 +176,7 @@ export default {
         this.orderDesc = result
       }
     },
-    //获取订单完成后的拼团信息
+    //获取对应队伍id的拼团信息
     getGroupData(){
       let postData = {
         speelgroup_record_id: this.$route.query.team_id
@@ -216,9 +197,16 @@ export default {
           console.log('getShareSpellGroupDes err',err)
         })
     },
-    //打开分享弹窗
-    openSharePopUp(){
-      this.updateSharePopUp(true)
+    joinGroup(){
+      this.$router.push({
+        path: '/product',
+        query: {
+          id: this.currentGroupData.goods_id,
+          group_id: this.currentGroupData.activity_spell_group_id,
+          shop_id: this.currentGroupData.merchant_id,
+          team_id: this.currentGroupData.group
+        }
+      })
     }
   },
   created(){
@@ -229,16 +217,16 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  .groupOrderDesc-wrapper >>> .van-icon
+  .groupOrderShare-wrapper >>> .van-icon
     color: #FF5756
     font-size: 5vw
   
-  .groupOrderDesc-wrapper >>> .van-nav-bar__title
+  .groupOrderShare-wrapper >>> .van-nav-bar__title
     color: #000
     font-size: 4vw
     font-family: PFH
 
-  .groupOrderDesc-wrapper
+  .groupOrderShare-wrapper
     width: 100%
     height: 100%
     color: #000

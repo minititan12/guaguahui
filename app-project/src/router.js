@@ -29,7 +29,7 @@ const LimitBuy = () => import('./views/marketing/limitBuy.vue')
 const GroupBuy = () => import('./views/marketing/groupBuy/groupBuy.vue')
 const GroupPaySuccess = () => import('./views/marketing/groupBuy/groupPaySuccess.vue')
 const MineGroup = () => import('./views/marketing/groupBuy/mineGroup.vue')
-const GroupOrderShare = () => import('./views/marketing/groupBuy/groupOrderShare.vue')
+const GroupOrderDesc = () => import('./views/marketing/groupBuy/groupOrderDesc.vue')
 const Activities = () => import('./views/marketing/activities.vue')
 const IntergralShop = () => import('./views/marketing/integralShop.vue')
 const CutPrice = () => import('./views/marketing/bargain/cutPrice.vue')
@@ -471,9 +471,9 @@ export default new Router({
     },
     //拼团订单详情页面
     {
-      path: '/groupOrderShare',
-      name: 'groupOrderShare',
-      component: GroupOrderShare,
+      path: '/groupOrderDesc',
+      name: 'groupOrderDesc',
+      component: GroupOrderDesc,
       meta:{
         index: 2,
         keepAlive: false,

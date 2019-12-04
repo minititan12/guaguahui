@@ -43,11 +43,11 @@
 
       <van-count-down :time="time">
         <template v-slot="timeData">
-          <span class="item">{{ timeData.hours }}</span>
+          <span class="item">{{ getDescTime(timeData.hours) }}</span>
           <span class="item-middle">:</span>
-          <span class="item">{{ timeData.minutes }}</span>
+          <span class="item">{{ getDescTime(timeData.minutes) }}</span>
           <span class="item-middle">:</span>
-          <span class="item">{{ timeData.seconds }}</span>
+          <span class="item">{{ getDescTime(timeData.seconds) }}</span>
         </template>
       </van-count-down>
     </div>
@@ -127,6 +127,15 @@ export default {
         }
 
         this.imgList = result
+      }
+    },
+    //获取两位数的时间
+    getDescTime(num){
+      let n = parseInt(num)
+      if(num < 10){
+        return '0' + n
+      }else{
+        return n
       }
     },
     //获取倒计时

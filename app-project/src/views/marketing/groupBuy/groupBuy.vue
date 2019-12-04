@@ -110,7 +110,8 @@ export default {
     //获取今天的日期
     getTodayDate(){
       let date = new Date()
-      let result = date.getMonth() + '月' + date.getDate() + '日'
+      let month = date.getMonth() + 1
+      let result = month + '月' + date.getDate() + '日'
       this.date = result
     },
     //获取今日必拼数据

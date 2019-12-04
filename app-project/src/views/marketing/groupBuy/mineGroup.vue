@@ -97,7 +97,7 @@ export default {
     handleToShareGroup(item){
       // console.log(item.group)
       this.$router.push({
-        path: '/groupOrderShare',
+        path: '/groupOrderDesc',
         query: {
           group_id: item.group
         }

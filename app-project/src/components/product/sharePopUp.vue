@@ -29,9 +29,11 @@ export default {
   name:"SharePopUp",
   data(){
     return {
-      serveData: '',
       shares: []
     }
+  },
+  props: {
+    shareData: Object
   },
   computed:{
     ...mapState(['sharePopUp','currentProductData'])
@@ -42,16 +44,29 @@ export default {
       this.updateSharePopUp(false)
     },
     shareToPyq(){
-      this.updateSharePopUp(false)
+      this.closeSharePopUp()
 
       if(this.shares[0] && this.shares[0].authenticated){
+        // this.shares[0].send({
+        //   type: 'web',
+        //   title: this.currentProductData.goods_name,
+        //   content: '呱呱汇商品',
+        //   thumbs: [this.currentProductData.cover_img],
+        //   pictures: [this.currentProductData.cover_img],
+        //   href: 'http://test.gghbuy.com/index1.html#/product?id='+ this.currentProductData.id,
+        //   extra: {
+        //     scene: 'WXSceneTimeline'
+        //   }
+        // },function(){
+        //   alert('分享成功!')
+        // })
         this.shares[0].send({
           type: 'web',
-          title: this.currentProductData.goods_name,
-          content: '呱呱汇商品',
-          thumbs: [this.currentProductData.cover_img],
-          pictures: [this.currentProductData.cover_img],
-          href: 'http://www.gghbuy.com/index1.html#/product?id='+ this.currentProductData.id,
+          title: this.shareData.title,
+          content: this.shareData.content,
+          thumbs: [this.shareData.photo],
+          pictures: [this.shareData.photo],
+          href: this.shareData.href,
           extra: {
             scene: 'WXSceneTimeline'
           }
@@ -63,17 +78,17 @@ export default {
       }
     },
     shareToFriend(){
-      this.updateSharePopUp(false)
+      this.closeSharePopUp()
       let thumbsImg = this.currentProductData.cover_img
 
       if(this.shares[0] && this.shares[0].authenticated){
         this.shares[0].send({
           type: 'web',
-          title: this.currentProductData.goods_name,
-          content: '呱呱汇商品',
-          thumbs: [this.currentProductData.cover_img],
-          pictures: [this.currentProductData.cover_img],
-          href: 'http://www.gghbuy.com/index1.html#/product?id='+ this.currentProductData.id,
+          title: this.shareData.title,
+          content: this.shareData.content,
+          thumbs: [this.shareData.photo],
+          pictures: [this.shareData.photo],
+          href: this.shareData.href,
           extra: {
             scene: 'WXSceneSession'
           }
@@ -96,24 +111,24 @@ export default {
       })
     }
   },
-  watch:{
-    currentProductData(){
-      if(this.currentProductData){
-        let that = this
-        wx.ready(function () {      //需在用户可能点击分享按钮前就先调用
-          wx.updateTimelineShareData({ 
-            title: that.currentProductData.goods_name, // 分享标题
-            link: 'http://www.gghbuy.com/index1.html#/product?id='+ that.currentProductData.id, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-            imgUrl: that.currentProductData.cover_img, // 分享图标
-            success: function () {
-              // 设置成功
-              console.log('分享成功')
-            }
-          })
-        })
-      }
-    }
-  }
+  // watch:{
+  //   currentProductData(){
+  //     if(this.currentProductData){
+  //       let that = this
+  //       wx.ready(function () {      //需在用户可能点击分享按钮前就先调用
+  //         wx.updateTimelineShareData({ 
+  //           title: that.currentProductData.goods_name, // 分享标题
+  //           link: 'http://www.gghbuy.com/index1.html#/product?id='+ that.currentProductData.id, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+  //           imgUrl: that.currentProductData.cover_img, // 分享图标
+  //           success: function () {
+  //             // 设置成功
+  //             console.log('分享成功')
+  //           }
+  //         })
+  //       })
+  //     }
+  //   }
+  // }
 }
 </script>
 

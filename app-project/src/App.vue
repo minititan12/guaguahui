@@ -88,7 +88,7 @@ import sha1 from 'sha1'
             let path = pageUrl.slice(indexOf+str.length);
             path = path.replace('&','|');
             axios.post('/index/index/getWxcode',{
-              url: encodeURIComponent(path)
+              url: path
             }).then((res)=>{
               console.log('getOpenid',res.data)
             })
@@ -100,7 +100,7 @@ import sha1 from 'sha1'
               message: '是否授权呱呱汇访问微信用户信息',
               showCancelButton: true   
             }).then(()=>{
-              window.location.href= '/index/index/index2?url='+ encodeURIComponent(path);
+              window.location.href= '/index/index/index2?url='+ path;
             }).catch(()=>{
               WeixinJSBridge.call('closeWindow');
             })

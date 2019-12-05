@@ -42,7 +42,7 @@
 
 <script>
 import axios from 'axios'
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 export default {
   name: "Payment",
   data(){
@@ -80,6 +80,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['changeTab']),
     handlezfbClick(){
       this.radio = '1'
     },
@@ -469,8 +470,23 @@ export default {
       // alert(window.navigator.userAgent)
 	  }
   },
+  beforeRouteEnter(to,from,next){
+    console.log(to,from)
+    let fromPay = from.name == 'pay' ? true: false
+    let fromOrderPage = to.query.type == "payFromOrder" ? true : false
+    
+    if(fromPay || fromOrderPage){
+      next()
+    }else{
+      this.changeTab(5)
+      this.$router.push({
+        path: '/'
+      })
+    }
+  },
   mounted(){
-    console.log(this.$route)
+    // console.log(this.$route)
+    console.log(1)
     this.getRunTimeType()
   }
 }

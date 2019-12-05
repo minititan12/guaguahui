@@ -81,7 +81,7 @@ export default {
           title: this.currentProductData.goods_name,
           content: '呱呱汇商品',
           photo: this.currentProductData.cover_img,
-          href: 'http://test.gghbuy.com/index1.html#/product?id='+ this.currentProductData.id
+          href: 'http://www.gghbuy.com/index1.html#/product?id='+ this.currentProductData.id
         }
       }
     }

@@ -83,7 +83,7 @@ export default {
           title: this.currentGroupData.goods_name,
           content: '呱呱汇拼团商品',
           photo: this.currentGroupData.cover_img,
-          href: 'http://test.gghbuy.com/index1.html#/groupOrderShare?team_id='+ this.currentGroupData.group
+          href: 'http://www.gghbuy.com/index1.html#/groupOrderShare?team_id='+ this.currentGroupData.group
         }
       }
     }

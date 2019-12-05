@@ -7,11 +7,11 @@ module.exports = {
   devServer: {
     proxy: {
       '/api':{
-        target:'http://test.gghbuy.com',
+        target:'http://www.gghbuy.com',
         changeOrigin: true
       },
       '/public':{
-        target:'http://test.gghbuy.com',
+        target:'http://www.gghbuy.com',
         changeOrigin: true
       }
     }

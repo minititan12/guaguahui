@@ -9,7 +9,7 @@
       <div>
         <div class="page-wrapper">
           <BargainProduce @reload="reload" :productDetails="productDetails" :bargainDetails="bargainDetails"></BargainProduce>
-          <BargainFriends :friends="friends"></BargainFriends>
+          <BargainFriends></BargainFriends>
         </div>
         
         <TitleShop />
@@ -45,8 +45,6 @@ export default {
       productDetails:{},
       // 砍价详情
       bargainDetails:{},
-      // 砍价的好友列表
-      friends:[],
       // 砍价活动ID 
       bargin_item_id:"",
       // 商品ID
@@ -131,8 +129,8 @@ export default {
           return;
         }
         this.bargainDetails = res.data.data;
-        if(res.data.data.bargin_friend_list){
-          this.friends = res.data.data.bargin_friend_list;
+        if(!res.data.data.bargin_friend_list){
+          res.data.data.bargin_friend_list = [];
         }
         this.updateBargainData(res.data.data);
       }).catch((err)=>{

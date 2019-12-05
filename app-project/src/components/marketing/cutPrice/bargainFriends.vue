@@ -1,8 +1,8 @@
 <template>
-  <div class="wrapper">
+  <div v-if="bargainData.bargin_friend_list" class="wrapper">
       <div class="title">帮你砍价的好友</div>
-      <div v-if="friends.length > 0" class="list">
-        <div class="fridens" v-for="(item,index) in friends" :key="index">
+      <div v-if="bargainData.bargin_friend_list.length > 0" class="list">
+        <div class="fridens" v-for="(item,index) in bargainData.bargin_friend_list" :key="index">
           <van-image 
             width="10vw" 
             height="10vw" 
@@ -30,10 +30,11 @@
   </div>
 </template>
 <script>
+import { mapState,mapMutations } from 'vuex'
 export default {
-  props:{
-    friends:Array
-  }  
+  computed: {
+    ...mapState(['bargainData'])
+  },  
 }
 </script>
 <style lang="stylus" scoped>

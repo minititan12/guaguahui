@@ -415,6 +415,9 @@ export default {
             }
 
           }, function(e) {  //支付失败回调函数
+            let a = JSON.stringify(e)
+            alert(a)
+
             _this.$toast({
               message: "支付失败",
               type: "fail",

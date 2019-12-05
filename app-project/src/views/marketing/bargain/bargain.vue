@@ -8,7 +8,7 @@
     <div class="page" ref="page">
       <div>
         <div class="page-wrapper">
-          <BargainProduce @reload="reload" :productDetails="productDetails" :bargainDetails="bargainDetails"></BargainProduce>
+          <BargainProduce @reload="reload"></BargainProduce>
           <BargainFriends></BargainFriends>
         </div>
         
@@ -41,10 +41,6 @@ import { mapState,mapMutations } from 'vuex'
 export default {
   data(){
     return {
-      // 商品详情
-      productDetails:{},
-      // 砍价详情
-      bargainDetails:{},
       // 砍价活动ID 
       bargin_item_id:"",
       // 商品ID
@@ -111,7 +107,6 @@ export default {
         if(res.data.code != 1){
           return;
         }
-        this.productDetails = res.data.data;
         this.changeCurrentProductData(res.data.data);
       }).catch((err)=>{
         console.log('get product err')
@@ -128,7 +123,6 @@ export default {
         if(res.data.code != 1){
           return;
         }
-        this.bargainDetails = res.data.data;
         if(!res.data.data.bargin_friend_list){
           res.data.data.bargin_friend_list = [];
         }

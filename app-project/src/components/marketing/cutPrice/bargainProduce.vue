@@ -1,33 +1,33 @@
 <template>
-  <div class="wrapper">
+  <div v-if="currentProductData" class="wrapper">
     <div @click="goBargainProduct" class="info">
       <van-image 
         width="32vw" 
         height="36vw" 
         fit="contain"
-        :src="productDetails.cover_img"
+        :src="currentProductData.cover_img"
       />
       <div class="content">
-        <div class="details">{{productDetails.goods_name}}</div>
+        <div class="details">{{currentProductData.goods_name}}</div>
         <div>
-          <div class="reserve-price">￥<span>{{bargainDetails.low_price}}</span>底价</div>
+          <div class="reserve-price">￥<span>{{bargainData.low_price}}</span>底价</div>
           <div class="related">
-            <div class="price">原价:{{productDetails.price}}元</div>
-            <div class="take">{{bargainDetails.low_buyer_num}}人已{{bargainDetails.low_price}}元拿</div>
+            <div class="price">原价:{{currentProductData.price}}元</div>
+            <div class="take">{{bargainData.low_buyer_num}}人已{{bargainData.low_price}}元拿</div>
           </div>
         </div>
       </div>
     </div>
 
     <!-- 用户 -->
-    <div v-if="bargainDetails.help === 0">
+    <div v-if="bargainData.help === 0">
       <!-- 已砍到低价 -->
-      <div v-if="bargainDetails.is_complete === 1">
+      <div v-if="bargainData.is_complete === 1">
         <div class="success-tip">恭喜你,砍价成功!</div>
         <div class="people">
-          <div class="num" :class="item<=bargainDetails.have_bargin_num?'active':''" v-for="(item,index) in bargainDetails.bargin_num" :key="index">
+          <div class="num" :class="item<=bargainData.have_bargin_num?'active':''" v-for="(item,index) in bargainData.bargin_num" :key="index">
             <van-image
-              v-if="item<=bargainDetails.have_bargin_num" 
+              v-if="item<=bargainData.have_bargin_num" 
               fit="contain"
               src="/public/static/bargin/person_icon_2.png"
             />
@@ -44,11 +44,11 @@
       </div>
       <!-- 未砍到低价 -->
       <div v-else>
-        <div class="tip">砍<span class="num">{{bargainDetails.bargin_num}}</span>刀,<span class="low-price">{{bargainDetails.low_price}}</span>元得该商品,马上发起砍价吧!</div>
+        <div class="tip">砍<span class="num">{{bargainData.bargin_num}}</span>刀,<span class="low-price">{{bargainData.low_price}}</span>元得该商品,马上发起砍价吧!</div>
         <div class="people">
-          <div class="num" :class="item<=bargainDetails.have_bargin_num?'active':''" v-for="(item,index) in bargainDetails.bargin_num" :key="index">
+          <div class="num" :class="item<=bargainData.have_bargin_num?'active':''" v-for="(item,index) in bargainData.bargin_num" :key="index">
             <van-image
-              v-if="item<=bargainDetails.have_bargin_num" 
+              v-if="item<=bargainData.have_bargin_num" 
               fit="contain"
               src="/public/static/bargin/person_icon_2.png"
             />
@@ -60,9 +60,9 @@
           </div>
         </div>
         <!-- 首次用户自己砍价 -->
-        <div @click="bargain" v-if="bargainDetails.have_bargin===0" class="self">先自砍一刀</div>
+        <div @click="bargain" v-if="bargainData.have_bargin===0" class="self">先自砍一刀</div>
         <!-- 首次用户砍完价后 -->
-        <div class="operate" v-if="bargainDetails.have_bargin===1">
+        <div class="operate" v-if="bargainData.have_bargin===1">
           <div v-if="is_app()" class="share" @click="share">喊好友帮你砍一刀</div>
           <div @click="order" class="order">马上下单</div>
         </div>
@@ -71,16 +71,16 @@
     <!-- 好友 -->
     <div v-else>
       <!-- 已帮好友砍价 -->
-      <div v-if="bargainDetails.have_help_bargin === 1">
+      <div v-if="bargainData.have_help_bargin === 1">
         <div class="success-tip">恭喜你,帮好友砍价成功!</div>
         <div class="operate">
           <div @click="examine" class="examine">查看更多砍价活动</div>
         </div>
       </div>
       <!-- 未帮好友砍价 -->
-      <div v-if="bargainDetails.have_help_bargin === 0">
+      <div v-if="bargainData.have_help_bargin === 0">
         <!-- 已砍到底价 -->
-        <div v-if="bargainDetails.is_complete === 1">
+        <div v-if="bargainData.is_complete === 1">
           <div class="success-tip">好友砍价已完成!</div>
           <div class="operate">
             <div @click="examine" class="examine">查看更多砍价活动</div>
@@ -88,11 +88,11 @@
         </div>
         <!-- 未砍到底价 -->
         <div v-else>
-          <div class="tip">砍<span class="num">{{bargainDetails.bargin_num}}</span>刀,<span class="low-price">{{bargainDetails.low_price}}</span>元得该商品,马上发起砍价吧!</div>
+          <div class="tip">砍<span class="num">{{bargainData.bargin_num}}</span>刀,<span class="low-price">{{bargainData.low_price}}</span>元得该商品,马上发起砍价吧!</div>
           <div class="people">
-            <div class="num" :class="item<=bargainDetails.have_bargin_num?'active':''" v-for="(item,index) in bargainDetails.bargin_num" :key="index">
+            <div class="num" :class="item<=bargainData.have_bargin_num?'active':''" v-for="(item,index) in bargainData.bargin_num" :key="index">
               <van-image
-                v-if="item<=bargainDetails.have_bargin_num" 
+                v-if="item<=bargainData.have_bargin_num" 
                 fit="contain"
                 src="/public/static/bargin/person_icon_2.png"
               />
@@ -109,7 +109,7 @@
         </div>
       </div>
     </div>
-    <BargainPop :bargin_item_id="bargainDetails.bargin_item_id" :productDetails="productDetails" :bargainInfo="bargainInfo" v-model="showPop"></BargainPop>
+    <BargainPop :bargainInfo="bargainInfo" v-model="showPop"></BargainPop>
     
   </div>
 </template>
@@ -118,10 +118,6 @@ import BargainPop from './popup/bargainPop'
 import axios from 'axios'
 import { mapState,mapMutations } from 'vuex'
 export default {
-  props:{
-    productDetails:Object,
-    bargainDetails:Object,
-  },
   data(){
     return {
       // 是否显示砍价成功
@@ -147,7 +143,7 @@ export default {
       return false;
     },
     goBargainProduct(){
-      this.$router.push(`/bargainProduct?goods_id=${this.productDetails.id}`);
+      this.$router.push(`/bargainProduct?goods_id=${this.currentProductData.id}`);
     },
     // 查看更多砍价活动
     examine(){
@@ -160,8 +156,8 @@ export default {
         return;
       }
       axios.post('/api/method/doBargin',{
-        goods_id: this.productDetails.id,
-        bargin_item_id: this.bargainDetails.bargin_item_id,
+        goods_id: this.currentProductData.id,
+        bargin_item_id: this.bargainData.bargin_item_id,
         user_id: this.userData.id,
       }).then(res=>{
         if(res.data.code != 1){
@@ -182,7 +178,7 @@ export default {
         content:"呱呱汇商品",
         thumbs:this.currentProductData.cover_img,
         pictures:this.currentProductData.cover_img,
-        href: process.env.VUE_APP_SHARE_HOST +'#/bargain?goods_id='+ this.productDetails.goods_id +'&&bargin_item_id=' + this.bargainData.bargin_item_id,
+        href: process.env.VUE_APP_SHARE_HOST +'#/bargain?goods_id='+ this.currentProductData.id +'&&bargin_item_id=' + this.bargainData.bargin_item_id,
       }
       this.updateShareInfo(data);
       this.updateSharePopUp(true);

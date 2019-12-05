@@ -22,7 +22,6 @@ export default {
   props:{
     value:Boolean,
     bargainInfo:Object,
-    bargin_item_id:{},
   },
   data(){
     return {

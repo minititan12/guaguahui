@@ -86,6 +86,7 @@ import sha1 from 'sha1'
               return;
             }
             let path = pageUrl.slice(indexOf+str.length);
+            path = path.replace('&','|');
             axios.post('/index/index/getWxcode',{
               url: encodeURIComponent(path)
             }).then((res)=>{

@@ -11,13 +11,14 @@
           v-if="mineGroupList.length > 0"
         >
           <div class="top">
-            <van-image class="top-img" width="20vw" :src="item.cover_img"/>
+            <van-image class="top-img" width="25vw" :src="item.cover_img"/>
             <div class="top-right">
               <div class="top-order">
                 <span style="color: #FF5756; margin-right: 2vw">订单号:</span>
                 <span>{{item.order_number}}</span>
               </div>
               <div class="top-name">{{item.goods_name}}</div>
+              <div class="top-desc">{{getDesc(item)}}</div>
             </div>
           </div>
 
@@ -94,6 +95,25 @@ export default {
           console.log('getShareSpellGroup err',err)
         })
     },
+    getDesc(data){
+      if(data){
+        let attr1 = ''
+        let attr2 = ''
+        let attr3 = ''
+
+        if(data.attr1_name){
+          attr1 = data.attr1_name + ':' + data.attr1_value + ' '
+        }
+        if(data.attr2_name){
+          attr2 = data.attr2_name + ':' + data.attr2_value + ' '
+        }
+        if(data.attr3_name){
+          attr3 = data.attr3_name + ':' + data.attr3_value + ' '
+        }
+
+        return attr1 + attr2 + attr3
+      }
+    },
     handleToShareGroup(item){
       // console.log(item.group)
       this.$router.push({
@@ -145,14 +165,20 @@ export default {
             margin: 3vw
           .top-right
             max-width: 70%
+            padding-right: 2vw
+            box-sizing: border-box
             .top-order
-              margin-bottom: 3vw
+              margin-bottom: 2vw
               font-family: PFH
               font-size: 3.8vw
             .top-name
               font-size: 3.6vw
               line-height: 5vw
-              color: #555
+              color: #222
+              margin-bottom: 1vw
+            .top-desc
+              color: #999
+              font-size: 3.3vw
 
         .bottom
           width: 100%

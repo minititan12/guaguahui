@@ -10,12 +10,15 @@
       <div class="top">
         <van-image class="top-img" width="22vw" :src="orderDesc.cover_img"/>
         <div class="top-right">
-          <div class="top-order">
-            <span style="color: #FF5756; margin-right: 2vw">订单号:</span>
-            <span>{{orderDesc.order_number}}</span>
+          <div class="top-status">
+            <div class="top-nickname">
+              <span style="margin-right: 2vw">团长:</span>
+              <span>{{orderDesc.nickname}}</span>
+            </div>
+            <span class="top-statusText">拼团进行中</span>
           </div>
           <div class="top-name">{{orderDesc.goods_name}}</div>
-          <div class="top-desc">{{orderDesc.desc}}</div>
+          <!-- <div class="top-desc">{{orderDesc.desc}}</div> -->
         </div>
       </div>
 
@@ -74,7 +77,14 @@
 
     <!-- 用户头像 -->
     <div class="images">
-      <van-image v-for="img of imgList" class="image" :src="img" width="12vw" height="12vw" round/>
+      <div class="image">
+        <van-image :src="imgList[0]" width="12vw" height="12vw" round />
+        <div class="leader">
+          <span>团长</span>
+        </div>
+      </div>
+
+      <van-image v-for="img of imgList.slice(1)" class="image" :src="img" width="12vw" height="12vw" round/>
       <van-image v-for="n in number" class="image" src="/images/wz.png" width="12vw" height="12vw" round/>
     </div>
 
@@ -172,25 +182,26 @@ export default {
 
       if(this.currentGroupData){
         let data = this.currentGroupData
-        let attr1 = ''
-        let attr2 = ''
-        let attr3 = ''
+        // let attr1 = ''
+        // let attr2 = ''
+        // let attr3 = ''
         result.order_number = data.order_number
         result.goods_name = data.goods_name
         result.cover_img = data.cover_img
         result.order_add_time = data.order_add_time
+        result.nickname = data.data.userInfo[0].nickname
 
-        if(data.attr1_name){
-          attr1 = data.attr1_name + ':' + data.attr1_value + ' '
-        }
-        if(data.attr2_name){
-          attr2 = data.attr2_name + ':' + data.attr2_value + ' '
-        }
-        if(data.attr3_name){
-          attr3 = data.attr3_name + ':' + data.attr3_value + ' '
-        }
+        // if(data.attr1_name){
+        //   attr1 = data.attr1_name + ':' + data.attr1_value + ' '
+        // }
+        // if(data.attr2_name){
+        //   attr2 = data.attr2_name + ':' + data.attr2_value + ' '
+        // }
+        // if(data.attr3_name){
+        //   attr3 = data.attr3_name + ':' + data.attr3_value + ' '
+        // }
 
-        result.desc = attr1 + attr2 + attr3
+        // result.desc = attr1 + attr2 + attr3
 
         this.orderDesc = result
       }
@@ -258,10 +269,17 @@ export default {
           margin: 4vw 3vw
         .top-right
           max-width: 70%
-          .top-order
-            margin-bottom: 2vw
+          padding-right: 2vw
+          box-sizing: border-box
+          .top-status
+            margin-bottom: 3.5vw
             font-family: PFH
             font-size: 3.8vw
+            display: flex
+            flex-direction: row
+            justify-content: space-between
+            .top-statusText
+              color: #FF5756
           .top-name
             margin-bottom: 1vw
             font-size: 3.6vw
@@ -277,6 +295,7 @@ export default {
         align-items: center
         padding: 1vw 3vw 3vw 3vw
         box-sizing: border-box
+        font-family: PFB
         .warn
           display: flex
           align-items: center
@@ -339,6 +358,17 @@ export default {
       margin-top: 5vw
       .image
         margin: 0 2vw
+        position: relative
+        .leader
+          position: absolute 
+          bottom: 0
+          right: -1vw
+          background-color: yellow 
+          color: #000
+          font-size: 3vw
+          font-family: PFB
+          padding: 1vw
+          border-radius: 2vw
     
     .inviteGroup
       width: 60%

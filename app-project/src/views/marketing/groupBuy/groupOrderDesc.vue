@@ -110,9 +110,9 @@ export default {
       if(this.currentGroupData){
         return {
           title: this.currentGroupData.goods_name,
-          content: '呱呱汇拼团商品',
+          content: 'www.gghbuy.com',
           photo: this.currentGroupData.cover_img,
-          href: 'http://www.gghbuy.com/index1.html#/groupOrderShare?team_id='+ this.currentGroupData.group
+          href: process.env.VUE_APP_SHARE_HOST + '#/groupOrderShare?team_id=' + this.currentGroupData.group
         }
       }
     }
@@ -218,6 +218,7 @@ export default {
     },
     //打开分享弹窗
     openSharePopUp(){
+      console.log(this.shareData)
       this.updateSharePopUp(true)
     }
   },

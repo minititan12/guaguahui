@@ -83,7 +83,7 @@ export default {
           title: this.currentGroupData.goods_name,
           content: '呱呱汇拼团商品',
           photo: this.currentGroupData.cover_img,
-          href: process.env.VUE_APP_SHARE_HOST + '#/groupOrderShare?team_id='+ this.currentGroupData.group
+          href: process.env.VUE_APP_SHARE_HOST + '#/groupOrderShare?team_id='+ this.currentGroupData.speelgroup_record_id
         }
       }
     }

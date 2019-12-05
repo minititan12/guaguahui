@@ -474,7 +474,7 @@ export default {
     console.log(to,from)
     let fromPay = from.name == 'pay' ? true: false
     let fromOrderPage = to.query.type == "payFromOrder" ? true : false
-    
+
     if(fromPay || fromOrderPage){
       next()
     }else{
@@ -485,8 +485,7 @@ export default {
     }
   },
   mounted(){
-    // console.log(this.$route)
-    console.log(1)
+    console.log(this.$route)
     this.getRunTimeType()
   }
 }

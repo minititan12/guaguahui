@@ -93,7 +93,11 @@ export default {
 
     //加入拼团
     addGroup(){
-      this.handleOpenPopup()
+      if(this.login){
+        this.handleOpenPopup()
+      }else{
+        this.$router.push('/login')
+      }
     }
   }
 }

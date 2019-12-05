@@ -92,7 +92,7 @@ export default {
         width: 23vw
         margin: 1vw 0
         .content-item
-          padding: 1vw
+          padding: 1vw 2vw
           margin-right: 3vw
           border: 1.5px solid #F6F6F6
           border-radius: 1vw
@@ -105,10 +105,11 @@ export default {
           .item-img
             margin-bottom: 2vw
           .item-text
+            width: 100%
             vertical-align: middle
             font-size: 3.5vw
             font-family: PFB
-            line-height: 3.5vw
+            line-height: 5.5vw
             text-overflow: ellipsis
             display: -webkit-box
             -webkit-line-clamp: 1
@@ -116,7 +117,7 @@ export default {
             -webkit-box-orient: vertical
             overflow: hidden
         .content-item-active
-          padding: 1vw
+          padding: 1vw 2vw
           margin-right: 3vw
           border: 1.5px solid #FF5756
           color: #FF5756
@@ -130,10 +131,11 @@ export default {
           .item-img
             margin-bottom: 2vw
           .item-text
+            width: 100%
             vertical-align: middle
             font-size: 3.5vw
             font-family: PFB
-            line-height: 3.5vw
+            line-height: 5.5vw
             text-overflow: ellipsis
             display: -webkit-box
             -webkit-line-clamp: 1

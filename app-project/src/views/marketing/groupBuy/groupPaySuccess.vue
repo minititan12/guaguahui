@@ -185,6 +185,8 @@ export default {
     },
     //处理邀请好友拼团
     handleInviteGroup(){
+      let string = JSON.stringify(this.shareData)
+      alert(string)
       this.updateSharePopUp(true)
     }
   },

@@ -479,20 +479,20 @@ export default {
       // alert(window.navigator.userAgent)
 	  }
   },
-  // beforeRouteEnter(to,from,next){
-  //   console.log(to,from)
-  //   let fromPay = from.name == 'pay' ? true: false
-  //   let fromOrderPage = to.query.type == "payFromOrder" ? true : false
+  beforeRouteEnter(to,from,next){
+    console.log(to,from)
+    let fromPay = from.name == 'pay' ? true: false
+    let fromOrderPage = to.query.type == "payFromOrder" ? true : false
 
-  //   if(fromPay || fromOrderPage){
-  //     next()
-  //   }else{
-  //     this.changeTab(5)
-  //     this.$router.push({
-  //       path: '/'
-  //     })
-  //   }
-  // },
+    if(fromPay || fromOrderPage){
+      next()
+    }else{
+      next({
+        path: '/',
+        name: 'home'
+      })
+    }
+  },
   mounted(){
     console.log(this.$route)
     // let string = JSON.stringify(this.$route.query)

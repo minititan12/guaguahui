@@ -110,6 +110,7 @@ import sha1 from 'sha1'
 
       // 判断如果是在微信内部浏览器 获取openid
       getopenid(){
+        console.log(this);
         if(/MicroMessenger/.test(window.navigator.userAgent)){
           var openid = this.GetQueryString('openid');
           this.$store.state.openid = openid
@@ -117,19 +118,94 @@ import sha1 from 'sha1'
             
           axios.post('api/index/signpackage', {
             url:window.location.href
-          })
-            .then((res) => {
-              //加载配置
-              wx.config({
-                debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-                appId: res.data.appId, // 必填，公众号的唯一标识
-                timestamp: res.data.timestamp , // 必填，生成签名的时间戳
-                nonceStr:  res.data.nonceStr, // 必填，生成签名的随机串
-                signature:  res.data.signature,// 必填，签名
-                jsApiList: ['chooseWXPay'] // 必填，需要使用的JS接口列表
+          }).then((res) => {
+            //加载配置
+            wx.config({
+              debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+              appId: res.data.appId, // 必填，公众号的唯一标识
+              timestamp: res.data.timestamp , // 必填，生成签名的时间戳
+              nonceStr:  res.data.nonceStr, // 必填，生成签名的随机串
+              signature:  res.data.signature,// 必填，签名
+              jsApiList: ['chooseWXPay','onMenuShareTimeline','onMenuShareAppMessage','onMenuShareQQ','onMenuShareWeibo','onMenuShareQZone'] // 必填，需要使用的JS接口列表
+            });
+
+            setTimeout(()=>{
+              wx.ready(()=>{
+                let imgurl = "http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLJ4ibmvr2p5gd35hj7roEibUoAcrUGyuDiaYVUIyusNnxAokycBP39yW1aHnDDQKn0Jz9BpKiccRGvrQ/132";
+                let title = "哈哈哈";
+                let desc = "我是描述";
+                let url = process.env.VUE_APP_SHARE_HOST+"#"+this.$route.fullPath;
+                console.log(url);
+                wx.onMenuShareTimeline({
+                  title: title, // 分享标题
+                  desc: desc, // 分享描述
+                  link: url, // 分享链接
+                  imgUrl: imgurl, // 分享图标
+                  success: function () {
+                      // 用户确认分享后执行的回调函数
+                  },
+                  cancel: function () {
+                      // 用户取消分享后执行的回调函数
+                  }
+                });
+        
+                wx.onMenuShareAppMessage({
+                  title: title, // 分享标题
+                  desc: desc, // 分享描述
+                  link: url, // 分享链接
+                  imgUrl: imgurl, // 分享图标
+                  type: '', // 分享类型,music、video或link，不填默认为link
+                  dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                  success: function () {
+                      // 用户确认分享后执行的回调函数
+                  },
+                  cancel: function () {
+                      // 用户取消分享后执行的回调函数
+                  }
+                });
+        
+                wx.onMenuShareQQ({
+                  title: title, // 分享标题
+                  desc: desc, // 分享描述
+                  link: url, // 分享链接
+                  imgUrl: imgurl, // 分享图标
+                  success: function () {
+                    // 用户确认分享后执行的回调函数
+                  },
+                  cancel: function () {
+                    // 用户取消分享后执行的回调函数
+                  }
+                }); 
+
+                wx.onMenuShareWeibo({
+                  title: title, // 分享标题
+                  desc: desc, // 分享描述
+                  link: url, // 分享链接
+                  imgUrl: imgurl, // 分享图标
+                  success: function () {
+                    // 用户确认分享后执行的回调函数
+                  },
+                  cancel: function () {
+                    // 用户取消分享后执行的回调函数
+                  }
+                }); 
+
+                wx.onMenuShareQZone({
+                  title: title, // 分享标题
+                  desc: desc, // 分享描述
+                  link: url, // 分享链接
+                  imgUrl: imgurl, // 分享图标
+                  success: function () {
+                    // 用户确认分享后执行的回调函数
+                  },
+                  cancel: function () {
+                    // 用户取消分享后执行的回调函数
+                  }
+                }); 
               });
-            })
-            .catch((err) => {}) 
+            },50)
+            
+          }).catch((err) => {}) 
         }
       },
 

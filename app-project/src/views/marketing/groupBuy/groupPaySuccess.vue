@@ -115,9 +115,8 @@ export default {
     showGroupDone(){
       if(this.currentGroupData){
         let data = this.currentGroupData
-        let num =  data.all_group_num - data.already_group_num
 
-        if(num == 0){
+        if(data.all_group_num == data.already_group_num){
           return true
         }else{
           return false

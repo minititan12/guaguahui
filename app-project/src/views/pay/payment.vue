@@ -247,7 +247,7 @@ export default {
         openid: openid
       }
       
-      var _this=this
+      let _this=this
       
       axios.post('api/method/pay', payData)
         .then((res) => {
@@ -287,22 +287,6 @@ export default {
       // alert('wxweb inside pay')
 
       if(!this.$store.state.openid){
-        //获取openid  一般情况是不用获取的 首页的时候已经获取到
-        // window.location.href='/index/index/index2'
-        // axios.get('/index/index/index2')
-        // .then((res)=>{
-        //   this.err = res.data
-        //   // let string = JSON.stringify(res.data)
-        //   // alert(string)
-        //   openid = res.data.openid
-        //   this.postPay(openid)
-        // })
-        // .catch((err)=>{
-        //   this.err = err
-        //   // let string = JSON.stringify(err)
-        //   // alert(string)
-        //   console.log('getOpenid err',err)
-        // })
         alert('not has openid')
       }
 
@@ -488,7 +472,10 @@ export default {
   //   }
   // },
   mounted(){
-    console.log(this.$route)
+    // console.log(this.$route)
+    let string = JSON.stringify(this.$route.query)
+    alert(string)
+
     this.getRunTimeType()
   }
 }

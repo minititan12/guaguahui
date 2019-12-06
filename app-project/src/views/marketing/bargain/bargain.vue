@@ -48,7 +48,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['userData',])
+    ...mapState(['userData','currentProductData'])
   },
   created(){
     if(this.$route.query.goods_id){
@@ -127,10 +127,37 @@ export default {
           res.data.data.bargin_friend_list = [];
         }
         this.updateBargainData(res.data.data);
+        this.configWXShare();
       }).catch((err)=>{
         console.log('barginGoodsDetail err')
       })
-    }
+    },
+    //配置微信内网页分享
+    configWXShare(){
+      if(/MicroMessenger/.test(window.navigator.userAgent)){
+        wx.ready(function () {   //需在用户可能点击分享按钮前就先调用 
+          wx.updateAppMessageShareData({ 
+            title: this.currentProductData.goods_name, // 分享标题
+            desc: '呱呱汇拼团商品', // 分享描述
+            link: process.env.VUE_APP_SHARE_HOST +'#/bargain?goods_id='+ this.currentProductData.id +'&&bargin_item_id=' + this.bargin_item_id, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            imgUrl: this.currentProductData.cover_img, // 分享图标
+            success: function () {
+              // 设置成功
+            }
+          })
+
+          wx.updateTimelineShareData({ 
+            title: this.currentProductData.goods_name, // 分享标题
+            link: process.env.VUE_APP_SHARE_HOST +'#/bargain?goods_id='+ this.currentProductData.id +'&&bargin_item_id=' + this.bargin_item_id, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            desc: '呱呱汇拼团商品', // 分享描述
+            imgUrl: this.currentProductData.cover_img, // 分享图标
+            success: function () {
+              // 设置成功
+            }
+          })
+        })
+      }
+    },
   }
 }
 </script>

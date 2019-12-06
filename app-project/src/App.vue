@@ -126,85 +126,9 @@ import sha1 from 'sha1'
               timestamp: res.data.timestamp , // 必填，生成签名的时间戳
               nonceStr:  res.data.nonceStr, // 必填，生成签名的随机串
               signature:  res.data.signature,// 必填，签名
-              jsApiList: ['chooseWXPay','onMenuShareTimeline','onMenuShareAppMessage','onMenuShareQQ','onMenuShareWeibo','onMenuShareQZone','updateAppMessageShareData','updateTimelineShareData'] // 必填，需要使用的JS接口列表
+              jsApiList: ['chooseWXPay','updateAppMessageShareData','updateTimelineShareData'] // 必填，需要使用的JS接口列表
             });
-
-            setTimeout(()=>{
-              wx.ready(()=>{
-                let imgurl = "http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLJ4ibmvr2p5gd35hj7roEibUoAcrUGyuDiaYVUIyusNnxAokycBP39yW1aHnDDQKn0Jz9BpKiccRGvrQ/132";
-                let title = "哈哈哈";
-                let desc = "我是描述";
-                let url = process.env.VUE_APP_SHARE_HOST+"#"+this.$route.fullPath;
-                console.log(url);
-                wx.onMenuShareTimeline({
-                  title: title, // 分享标题
-                  desc: desc, // 分享描述
-                  link: url, // 分享链接
-                  imgUrl: imgurl, // 分享图标
-                  success: function () {
-                      // 用户确认分享后执行的回调函数
-                  },
-                  cancel: function () {
-                      // 用户取消分享后执行的回调函数
-                  }
-                });
         
-                wx.onMenuShareAppMessage({
-                  title: title, // 分享标题
-                  desc: desc, // 分享描述
-                  link: url, // 分享链接
-                  imgUrl: imgurl, // 分享图标
-                  type: '', // 分享类型,music、video或link，不填默认为link
-                  dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-                  success: function () {
-                      // 用户确认分享后执行的回调函数
-                  },
-                  cancel: function () {
-                      // 用户取消分享后执行的回调函数
-                  }
-                });
-        
-                wx.onMenuShareQQ({
-                  title: title, // 分享标题
-                  desc: desc, // 分享描述
-                  link: url, // 分享链接
-                  imgUrl: imgurl, // 分享图标
-                  success: function () {
-                    // 用户确认分享后执行的回调函数
-                  },
-                  cancel: function () {
-                    // 用户取消分享后执行的回调函数
-                  }
-                }); 
-
-                wx.onMenuShareWeibo({
-                  title: title, // 分享标题
-                  desc: desc, // 分享描述
-                  link: url, // 分享链接
-                  imgUrl: imgurl, // 分享图标
-                  success: function () {
-                    // 用户确认分享后执行的回调函数
-                  },
-                  cancel: function () {
-                    // 用户取消分享后执行的回调函数
-                  }
-                }); 
-
-                wx.onMenuShareQZone({
-                  title: title, // 分享标题
-                  desc: desc, // 分享描述
-                  link: url, // 分享链接
-                  imgUrl: imgurl, // 分享图标
-                  success: function () {
-                    // 用户确认分享后执行的回调函数
-                  },
-                  cancel: function () {
-                    // 用户取消分享后执行的回调函数
-                  }
-                }); 
-              });
-            },50)
-            
           }).catch((err) => {}) 
         }
       },

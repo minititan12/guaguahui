@@ -51,6 +51,11 @@
     </div>
 
     <SharePopUp :shareData="shareData"></SharePopUp>
+
+    <div class="warn" v-if="showWarn">
+      <span class="text">请点击箭头指引的按钮并分享</span>
+      <span class="iconfont">&#xe604;</span>
+    </div>
   </div>
 </template>
 
@@ -65,7 +70,8 @@ export default {
   },
   data(){
     return {
-      currentGroupData: null
+      currentGroupData: null,
+      showWarn: false
     }
   },
   computed: {
@@ -85,11 +91,28 @@ export default {
           photo: this.currentGroupData.cover_img,
           href: process.env.VUE_APP_SHARE_HOST + '#/groupOrderShare?team_id='+ this.currentGroupData.speelgroup_record_id
         }
+      }else{
+        return null
       }
     }
   },
   methods: {
     ...mapMutations(['updateSharePopUp']),
+    //app运行环境
+    is_app(){
+      //localStorage.plusReady == 'true' 
+      if(typeof(plus) == 'object'){
+        return true;
+      }
+      return false;
+    },
+    //微信web
+    is_wxWebPay(){
+      if(/MicroMessenger/.test(window.navigator.userAgent)){
+        return true;
+      }
+      return false;	
+    },
     handleBack(){
       this.$router.push({
         path: "/groupBuy"
@@ -134,6 +157,35 @@ export default {
       }
     },
 
+    //配置微信内网页分享
+    configWXShare(){
+      let _this = this
+      wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
+
+        if(_this.shareData){
+          wx.updateAppMessageShareData({ 
+            title: _this.shareData.title, // 分享标题
+            desc: _this.shareData.content, // 分享描述
+            link: _this.shareData.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            imgUrl: _this.shareData.photo, // 分享图标
+            success: function () {
+              // 设置成功
+            }
+          })
+
+          wx.updateTimelineShareData({ 
+            title: _this.shareData.title, // 分享标题
+            link: _this.shareData.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            imgUrl: _this.shareData.photo, // 分享图标
+            success: function () {
+              // 设置成功
+            }
+          })
+        }
+
+      })
+    },
+
     //请求操作
     handlePost(postData){
       let a = JSON.stringify(postData)
@@ -148,6 +200,9 @@ export default {
           alert(b)
           if(res.data.code == 1){
             this.currentGroupData = res.data.data
+            if(this.is_wxWebPay()){
+              this.configWXShare()
+            }
           }
         })
         .catch((err)=>{
@@ -187,7 +242,14 @@ export default {
     handleInviteGroup(){
       let string = JSON.stringify(this.shareData)
       alert(string)
-      this.updateSharePopUp(true)
+      if(this.is_app()){
+        this.updateSharePopUp(true)
+        return 
+      }
+
+      if(this.is_wxWebPay()){
+        this.showWarn = true
+      }
     }
   },
   created(){
@@ -281,5 +343,16 @@ export default {
       font-family: PFM
       color: #fff
       border-radius: 5vw
+
+    .warn
+      position: absolute 
+      top: 5vw
+      right: 8vw
+      z-index:2
+      .text
+        color: #000
+      .iconfont
+        font-size: 7vw
+        color: red
 
 </style>

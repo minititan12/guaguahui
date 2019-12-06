@@ -263,13 +263,35 @@ export default {
             success: function (res) {
               // alert(JSON.stringify(res))
                 // 支付成功后的回调函数
-              
-              _this.$router.push({
-                path: "/orderPage",
-                query: {
-                  orderID: 1
-                }
+              _this.$toast({
+                message: '支付成功',
+                type: 'success',
+                duration: 1200
               })
+
+              if(_this.$route.params.team_id){
+                let params = JSON.parse(JSON.stringify(_this.$route.params))
+                setTimeout(()=>{
+                  _this.$router.push({
+                    path: "/groupPaySuccess",
+                    name: 'groupPaySuccess',
+                    query: {
+                      ...params,
+                      order_number: _this.orderNumber
+                    }
+                  })
+                },1200)
+              }else{
+                setTimeout(()=>{
+                  _this.$router.push({
+                    path: "/orderPage",
+                    query:{
+                      orderID: 1
+                    }
+                  })
+                },1200)
+              }
+
             }
           });
 		     
@@ -472,7 +494,7 @@ export default {
   //   }
   // },
   mounted(){
-    // console.log(this.$route)
+    console.log(this.$route)
     let string = JSON.stringify(this.$route.query)
     alert(string)
 

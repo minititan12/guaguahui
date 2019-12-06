@@ -6,7 +6,7 @@
       @click-left="handleBack"
     />
 
-    <div class="undone-wrapper" v-if="!showGroupDone">
+    <div class="undone-wrapper" v-show="!showGroupDone">
       <div class="human-num" >
         <span>再邀{{getNumber()}}人,立即成团</span>
       </div>
@@ -68,7 +68,7 @@
       <span class="iconfont">&#xe604;</span>
     </div>
 
-    <div class="done-wrapper" v-if="showGroupDone">
+    <div class="done-wrapper" v-show="showGroupDone">
       <div class="done-text">拼团成功</div>
       <div class="done-btn" @click="handleToOrder">查看订单</div>
     </div>
@@ -121,6 +121,8 @@ export default {
         }else{
           return false
         }
+      }else{
+        return false
       }
     }
   },

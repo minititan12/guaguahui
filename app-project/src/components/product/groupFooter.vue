@@ -32,8 +32,13 @@ import { mapState,mapMutations } from 'vuex'
 import axios from 'axios'
 export default {
   name: 'GroupFooter',
+  data(){
+    return {
+      hasGroup: false
+    }
+  },
   computed: {
-    ...mapState(['login','currentProductData','currentBuyDetail','allSpellGroups'])
+    ...mapState(['login','currentProductData','currentBuyDetail','allSpellGroups','userData'])
   },
   methods: {
     ...mapMutations(['openPopup','changeTab','changeCurrentBuyDetail','changeCurrentProductPopUpStock','changeProductPopUpImg','changeGroupDialogState']),
@@ -96,26 +101,76 @@ export default {
 
     //加入拼团
     addGroup(){
-      if(this.allSpellGroups.length > 0){
-        setTimeout(()=>{
-          this.changeGroupDialogState({
-            value: true,
-            type: 'more'
+      if(this.login){
+        if(this.allSpellGroups.length > 0){
+          setTimeout(()=>{
+            this.changeGroupDialogState({
+              value: true,
+              type: 'more'
+            })
+          },200)
+        }else{
+          this.$toast({
+            message: '该商品无可加入的拼团',
+            type: 'fail',
+            duration: 1200
           })
-        },200)
+        }
       }else{
-        this.$toast({
-          message: '无可加入的拼团',
-          type: 'fail',
-          duration: 1200
-        })
+        this.$router.push('/login')
       }
     },
 
     //发起拼团
     startGroup(){
-      this.handleOpenPopup()
-    }
+      if(this.login){
+        if(this.hasGroup){
+          this.$toast({
+            message: "该商品您正在拼团",
+            type: "fail",
+            duration: 1200
+          })
+          return 
+        }
+
+        this.handleOpenPopup()
+      }else{
+        this.$router.push('/login')
+      }
+    },
+
+    confirmHasGroup(list){
+      if(this.currentProductData){
+        for(let item of list){
+          if(item.goods_id == this.currentProductData.id){
+            this.hasGroup = true
+            return
+          }
+        }
+      }
+    },
+
+    //获取我的所有拼团信息
+    getMineGroupData(){
+      let postData = {
+        user_id: this.userData.id
+      }
+
+      axios.post('api/method/getShareSpellGroup',postData)
+        .then((res)=>{
+          console.log('getShareSpellGroup',res.data)
+          if(res.data.code == 1){
+            // this.mineGroupList = res.data.data
+            this.confirmHasGroup(res.data.data)
+          }
+        })
+        .catch((err)=>{
+          console.log('getShareSpellGroup err',err)
+        })
+    },
+  },
+  created(){
+    this.getMineGroupData()
   }
 }
 </script>

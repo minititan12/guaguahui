@@ -495,9 +495,8 @@ export default {
   // },
   mounted(){
     console.log(this.$route)
-    let string = JSON.stringify(this.$route.query)
-    alert(string)
-
+    // let string = JSON.stringify(this.$route.query)
+    // alert(string)
     this.getRunTimeType()
   }
 }

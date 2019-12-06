@@ -189,7 +189,12 @@ export default {
         result.goods_name = data.goods_name
         result.cover_img = data.cover_img
         result.order_add_time = data.order_add_time
-        result.nickname = data.data.userInfo[0].nickname
+        for(let item of data.data.userInfo){
+          if(item.header == 1){
+            result.nickname = item.nickname
+            break
+          }
+        }
 
         // if(data.attr1_name){
         //   attr1 = data.attr1_name + ':' + data.attr1_value + ' '

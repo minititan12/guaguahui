@@ -238,6 +238,8 @@ export default {
           alert(b)
           if(res.data.code == 1){
             this.currentGroupData = res.data.data
+            let s = JSON.stringify(res.data.data)
+            alert(s)
             if(this.is_wxWebPay()){
               this.configWXShare()
             }

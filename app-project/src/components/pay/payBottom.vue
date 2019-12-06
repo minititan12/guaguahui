@@ -184,12 +184,14 @@ export default {
 
             if(this.$route.params.team_id){
               let params = JSON.parse(JSON.stringify(this.$route.params))
+              console.log(params)
               this.$router.push({
                 path: '/payment',
                 name: 'payment',
                 params: params
               })
             }else{
+              console.log(1)
               this.$router.push({
                 path: '/payment'
               })
@@ -203,7 +205,7 @@ export default {
     }
   },
   mounted(){
-    console.log(this.$route)
+    // console.log(this.$route)
     this.countConfirmTotalPrice()
   }
 }

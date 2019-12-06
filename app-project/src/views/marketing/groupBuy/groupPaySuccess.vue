@@ -416,6 +416,7 @@ export default {
         margin-top: 15vw
         font-family: PFH
         font-size: 7vw
+        color: #fff
       .done-btn
         width: 50%
         margin: 10vw auto

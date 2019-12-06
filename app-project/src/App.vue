@@ -80,7 +80,7 @@ import sha1 from 'sha1'
         if(/MicroMessenger/.test(window.navigator.userAgent)){
           if(!this.openid){
             let pageUrl = window.location.href;
-            let str = "index1.html#";
+            let str = "#";
             let indexOf = pageUrl.indexOf(str);
             if(indexOf == -1){
               return;

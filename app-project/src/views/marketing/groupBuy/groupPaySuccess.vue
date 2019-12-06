@@ -169,6 +169,7 @@ export default {
       if(this.currentGroupData){
         let data = this.currentGroupData
         if(this.currentGroupData.hasOwnProperty('group_userinfos')){
+          console.log('has userinfos')
           let result = []
           for(let item of this.currentGroupData.group_userinfos){
             if(item.header == 1){
@@ -227,20 +228,19 @@ export default {
 
     //请求操作
     handlePost(postData){
-      let a = JSON.stringify(postData)
-      alert(a)
+      // let a = JSON.stringify(postData)
+      // alert(a)
       //url路径
       let url = this.type == 1 ? "api/method/userDoSpellGroup" : "api/method/userPartSpellGroup"
 
       axios.post(url,postData)
         .then((res)=>{
           console.log('getCurrentGroupData:',res.data)
-          let b = JSON.stringify(res.data)
-          alert(b)
+          // let b = JSON.stringify(res.data)
+          // alert(b)
           if(res.data.code == 1){
             this.currentGroupData = res.data.data
-            let s = JSON.stringify(res.data.data)
-            alert(s)
+            this.getHeaderImg()
             if(this.is_wxWebPay()){
               this.configWXShare()
             }
@@ -281,8 +281,8 @@ export default {
     },
     //处理邀请好友拼团
     handleInviteGroup(){
-      let string = JSON.stringify(this.shareData)
-      alert(string)
+      // let string = JSON.stringify(this.shareData)
+      // alert(string)
       if(this.is_app()){
         this.updateSharePopUp(true)
         return 
@@ -295,8 +295,8 @@ export default {
   },
   created(){
     // console.log(this.$route)
-    let a = JSON.stringify(this.$route.query)
-    alert(a)
+    // let a = JSON.stringify(this.$route.query)
+    // alert(a)
     this.getGroupData()
   }
 }

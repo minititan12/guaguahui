@@ -188,8 +188,8 @@ export default {
 
   mounted(){
     // this.handleCheckOpenid()
-    let string = JSON.stringify(this.$route.query)
-    alert(string)
+    // let string = JSON.stringify(this.$route.query)
+    // alert(string)
   }
 }
 </script>

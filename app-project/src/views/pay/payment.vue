@@ -360,8 +360,8 @@ export default {
         user_id: this.userId
       }
       // console.log('payData177',payData)
-      let a = JSON.stringify(payData)
-      alert(a)
+      // let a = JSON.stringify(payData)
+      // alert(a)
       
       var _this = this
       var channel = null
@@ -386,8 +386,8 @@ export default {
         .then((res) => {
           
           console.log('pay', res.data.data.pay_type)
-          let string = JSON.stringify(res.data)
-          alert(string)
+          // let string = JSON.stringify(res.data)
+          // alert(string)
         
           plus.payment.request(channel,res.data.data.order, function(result) {  //支付成功回调函数
 

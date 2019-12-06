@@ -135,7 +135,7 @@ export default {
     //配置微信内网页分享
     configWXShare(){
       if(/MicroMessenger/.test(window.navigator.userAgent)){
-        wx.ready(function () {   //需在用户可能点击分享按钮前就先调用 
+        wx.ready(()=> {   //需在用户可能点击分享按钮前就先调用 
           wx.updateAppMessageShareData({ 
             title: this.currentProductData.goods_name, // 分享标题
             desc: '呱呱汇拼团商品', // 分享描述

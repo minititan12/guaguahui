@@ -1,13 +1,10 @@
 <template>
   <div class="product-wrapper">
-    <!-- <ProductContent></ProductContent>
+    <NormalProduct v-if="type == 1"></NormalProduct>
 
-    <ProductFooter v-if="showFooter('product')"></ProductFooter>
-
-    <GroupFooter v-if="showFooter('group')"></GroupFooter> -->
-    <NormalProduct v-if="type != 2"></NormalProduct>
-
-    <GroupProduct v-if="type ==2"></GroupProduct>
+    <GroupProduct v-if="type == 2"></GroupProduct>
+    
+    <SeckillProduct v-if="type == 3"></SeckillProduct>
 
     <ProductPopUp></ProductPopUp>
 
@@ -47,6 +44,7 @@
 <script>
 import NormalProduct from './normalProduct'
 import GroupProduct from './groupProduct'
+import SeckillProduct from './seckillProduct'
 import ProductPopUp from '../../components/product/productPopUp'
 import ImgMasking from '../../components/product/imgMasking'
 import ServePopUp from '../../components/product/servePopUp'
@@ -66,6 +64,7 @@ export default {
   components: {
     NormalProduct,
     GroupProduct,
+    SeckillProduct,
     ProductPopUp,
     ImgMasking,
     ServePopUp,

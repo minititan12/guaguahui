@@ -48,6 +48,10 @@ export default {
           }
         }
 
+        if(flag == 3){
+          return this.currentProductData.spike_price
+        }
+
         if(flag == 4){
           if(this.bargainData){
             return this.bargainData.bargin_price

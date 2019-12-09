@@ -30,7 +30,7 @@
     </div>
 
     <div class="limit-content">
-      <div class="content-item" v-if="contentList" v-for="item of contentList" @click="handleToProduct(item.goods_id)">
+      <div class="content-item" v-if="contentList" v-for="item of contentList" @click="handleToProduct(item)">
         <van-image class="item-img" width="100%" height="30vw" fit="contain" :src="item.cover_img"/>
         <span class="item-name">{{item.goods_name}}</span>
         <div class="item-bottom">
@@ -81,11 +81,12 @@ export default {
       }
     },
     //跳转到产品页面
-    handleToProduct(id){
+    handleToProduct(data){
       this.$router.push({
         path: "/product",
         query: {
-          id: id
+          id: data.goods_id,
+          seckill_id: data.seckill_id
         }
       })
     },

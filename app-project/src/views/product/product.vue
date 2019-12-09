@@ -5,7 +5,7 @@
     <ProductFooter v-if="showFooter('product')"></ProductFooter>
 
     <GroupFooter v-if="showFooter('group')"></GroupFooter> -->
-    <NormalProduct v-if="type == 1"></NormalProduct>
+    <NormalProduct v-if="type != 2"></NormalProduct>
 
     <GroupProduct v-if="type ==2"></GroupProduct>
 

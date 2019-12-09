@@ -31,8 +31,8 @@ export default {
   computed: {
     ...mapState(['currentProductData']),
     attr1(){
-      if(this.currentProductData){
-        let name = this.currentProductData.attributes_amount[0].attr1_name
+      if(this.currentProductData && this.currentProductData.hasOwnProperty('attr')){
+        let name = this.currentProductData.attr.attr1.attr_name
 
         if(name.length > 0){
           return name
@@ -44,8 +44,8 @@ export default {
       }
     },
     attr1_desc(){
-      if(this.currentProductData){
-        let name = this.currentProductData.attributes_amount[0].attr1_name
+      if(this.currentProductData && this.currentProductData.hasOwnProperty('attr')){
+        let name = this.currentProductData.attr.attr1.attr_name
         let attributes = this.currentProductData.attributes_amount
 
         if(name.length > 0){
@@ -56,12 +56,6 @@ export default {
             }
           }
 
-          // let str = result.join()
-          // if(str.length > 20){
-          //   result = result.slice(0,1)
-          //   str = result.join() + '...'
-          // }
-
           return result.join(', ')
         }else{
           return ''
@@ -69,8 +63,8 @@ export default {
       }
     },
     attr2(){
-      if(this.currentProductData){
-        let name = this.currentProductData.attributes_amount[0].attr2_name
+      if(this.currentProductData && this.currentProductData.hasOwnProperty('attr')){
+        let name = this.currentProductData.attr.attr2.attr_name
 
         if(name.length > 0){
           return name
@@ -82,8 +76,8 @@ export default {
       }
     },
     attr2_desc(){
-      if(this.currentProductData){
-        let name = this.currentProductData.attributes_amount[0].attr1_name
+      if(this.currentProductData && this.currentProductData.hasOwnProperty('attr')){
+        let name = this.currentProductData.attr.attr2.attr_name
         let attributes = this.currentProductData.attributes_amount
 
         if(name.length > 0){
@@ -107,8 +101,8 @@ export default {
       }
     },
     attr3(){
-      if(this.currentProductData){
-        let name = this.currentProductData.attributes_amount[0].attr3_name
+      if(this.currentProductData && this.currentProductData.hasOwnProperty('attr')){
+        let name = this.currentProductData.attr.attr3.attr_name
 
         if(name.length > 0){
           return name
@@ -120,8 +114,8 @@ export default {
       }
     },
     attr3_desc(){
-      if(this.currentProductData){
-        let name = this.currentProductData.attributes_amount[0].attr1_name
+      if(this.currentProductData && this.currentProductData.hasOwnProperty('attr')){
+        let name = this.currentProductData.attr.attr3.attr_name
         let attributes = this.currentProductData.attributes_amount
 
         if(name.length > 0){

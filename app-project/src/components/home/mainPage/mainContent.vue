@@ -14,7 +14,7 @@
       <MainIcons :iconsList="iconsList"></MainIcons>
       <TodayHot :todayHotList="todayHotList"></TodayHot>
       <LimitMore></LimitMore>
-      <LimitShopping></LimitShopping>
+      <LimitShopping :seckillData="seckillData"></LimitShopping>
       <BrandAD :brandADList="brandADList"></BrandAD>
       <ProductAD :productADList="productADList"></ProductAD>
       <MainActivity :activityList="activityList"></MainActivity>
@@ -55,6 +55,7 @@ export default {
     return {
       swiperList: [],
       iconsList: [],
+      seckillData: null,
       activityList: [],
       productsList: [],
       // recommendList:[],
@@ -78,6 +79,7 @@ export default {
       this.getIconsList()
       this.getActivityList()
       this.getProductsList(true)
+      this.getlimitShoppingData()
       // this.getRecommendData()
       this.getTodayHotList()
     },
@@ -183,6 +185,19 @@ export default {
           console.log('get activity err' + err)
         })
     },
+    //获取秒杀产品数据
+    getlimitShoppingData(){
+      axios.get('api/method/checkSeckill')
+        .then((res)=>{
+          console.log('checkSeckill',res.data)
+          if(res.data.code == 1){
+            this.seckillData = res.data.data
+          }
+        })
+        .catch((err)=>{
+          console.log('checkSeckill',err)
+        })
+    },
     //获取首页产品的数据
     getProductsList(refresh){
       let postData = {
@@ -251,6 +266,7 @@ export default {
     this.changeSearchText('')
     this.getSwiperList()
     this.getIconsList()
+    this.getlimitShoppingData()
     this.getActivityList()
     this.getProductsList(true)
     // this.getRecommendData()
@@ -330,7 +346,8 @@ export default {
     right: 0
     z-index: 2
     .all-wrapper
-      background: linear-gradient(to bottom, #fff, #F6F7FB 300vw, #F6F7FB);
+      background: linear-gradient(to bottom, #fff, #F6F7FB 300vw, #F6F7FB)
+      // background-color: #999
       .content-refresh
         width: 100%
         display: flex

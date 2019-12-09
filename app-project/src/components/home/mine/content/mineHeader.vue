@@ -27,17 +27,17 @@
     </div>
 
     <div class="bottom">
-      <div @click="handleToCollect">
+      <div class="bottom-item" @click="handleToCollect">
         <span>收藏</span>
         <span class="num">0</span>
       </div>
 
-      <div @click="handleToHistory">
+      <div class="bottom-item" @click="handleToHistory">
         <span>足迹</span>
         <span class="num">0</span>
       </div>
 
-      <div @click="handleToCoupon">
+      <div class="bottom-item" @click="handleToCoupon">
         <span>优惠劵</span>
         <span class="num">0</span>
       </div>
@@ -151,9 +151,13 @@ export default {
       justify-content: space-around
       align-items: center
       color: #fff
-      .num
-        font-size: 5vw
-        margin-left: 2vw
+      .bottom-item
+        display: flex
+        align-items: center
+        .num
+          font-size: 5vw
+          margin-left: 2vw
+          font-family: hgzt
 
     // .header-desc
     //   display: flex

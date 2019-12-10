@@ -477,5 +477,11 @@ export default {
   // 设置分享信息
   updateShareInfo(state,obj){
     state.shareInfo = obj;
-  } 
+  },
+  
+  //更新秒杀产品信息
+  updatedSeckillData(state,data){
+    let result = JSON.parse(JSON.stringify(data))
+    state.seckillData = result
+  }
 }

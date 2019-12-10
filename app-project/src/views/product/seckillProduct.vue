@@ -1,18 +1,18 @@
 <template>
   <div class="GroupProduct-wrapper">
     <SeckillProductContent></SeckillProductContent>
-    <ProductFooter></ProductFooter>
+    <SeckillFooter></SeckillFooter>
   </div>
 </template>
 
 <script>
 import SeckillProductContent from '../../components/product/seckillProductContent'
-import ProductFooter from '../../components/product/productFooter'
+import SeckillFooter from '../../components/product/seckillFooter'
 export default {
   name: "SeckillProduct",
   components: {
     SeckillProductContent,
-    ProductFooter
+    SeckillFooter
   }
 }
 </script>

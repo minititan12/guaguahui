@@ -24,10 +24,23 @@
               <span class="price-text">{{price}}</span>
               <span class="price-cancel">原价: {{originPrice}}</span>
             </div>
+            <div class="num">
+              <span>限购{{limitNum}}件</span>
+            </div>
           </div>
 
           <div class="bottom-right">
+            <span class="text">距结束还剩</span>
 
+            <van-count-down :time="time">
+              <template v-slot="timeData">
+                <span class="item">{{ getTwoNumber(timeData.hours) }}</span>
+                <span class="item-middle">:</span>
+                <span class="item">{{ getTwoNumber(timeData.minutes) }}</span>
+                <span class="item-middle">:</span>
+                <span class="item">{{ getTwoNumber(timeData.seconds) }}</span>
+              </template>
+            </van-count-down>
           </div>
         </div>
         
@@ -71,12 +84,12 @@ export default {
   data(){
     return {
       loading: true,
-      seckillData: null
+      time: 30000
     }
   },
 
   computed:{
-    ...mapState(['currentProductData']),
+    ...mapState(['currentProductData','seckillData']),
     //产品价格
     price(){
       if(this.seckillData){
@@ -114,7 +127,7 @@ export default {
   },
 
   methods:{
-    ...mapMutations(['updatedGroupGoodsDes']),
+    ...mapMutations(['updatedSeckillData']),
     //是不是在app中
     is_app(){
       if(typeof(plus) == 'object'){
@@ -123,6 +136,23 @@ export default {
       
       return false
     },
+    //获取倒计时
+    getTime(){
+      if(this.seckillData){
+        let t = new Date()
+        let hour = t.getHours()
+        console.log(hour)
+        if(hour == this.seckillData.times){
+          console.log('1')
+          let minutes = 60 - t.getMinutes()
+          this.time = minutes*60*1000
+        }else{
+          console.log('2')
+          this.time = 0
+        }
+      }
+    },
+    //获取秒杀数据
     getSeckillData(){
       let postData = {
         goods_id: this.$route.query.id,
@@ -133,13 +163,23 @@ export default {
         .then((res)=>{
           console.log('getSeckillGoodsDes',res.data)
           if(res.data.code == 1){
-            this.seckillData = res.data.data
+            // this.seckillData = res.data.data
+            this.updatedSeckillData(res.data.data)
+            this.getTime()
           }
         })
         .catch((err)=>{
           console.log('getSeckillGoodsDes err',err)
         })
-    }
+    },
+    //获取两位数的时间表示
+    getTwoNumber(num){
+      if(num < 10){
+        return '0' + num
+      }else{ 
+        return num
+      }
+    },
   },
 
   watch: {
@@ -181,7 +221,7 @@ export default {
       .title
         width: 100%
         height: 12vw
-        padding: 0 4vw
+        padding: 0 3vw
         margin-bottom: 2vw
         box-sizing: border-box
         font-family: PFH
@@ -193,20 +233,56 @@ export default {
         -webkit-line-clamp: 2
         -webkit-box-orient: vertical
         line-height: 6vw
+      
+      .warn
+        padding: 0 4vw
+        box-sizing: border-box
+        font-family: PFM
+        margin-bottom: 3vw
+        color: #999
 
-      .price
-        color: #FF4D51
-        margin: 0 4vw 2vw 4vw
-        .price-icon
-          font-size: 3.5vw
-          font-family: hgzt
-        .price-text
-          font-size: 5vw
-          font-family: hgzt
-        .price-cancel
-          color: #aaa
-          font-family: PFM
-          margin-left: 4vw
+      .top-bottom
+        display: flex
+        flex-direction: row
+        justify-content: space-between
+        align-items: center
+        padding: 0 4vw
+        box-sizing: border-box
+        .bottom-left
+          .price
+            color: #FF4D51
+            .price-icon
+              font-size: 4.5vw
+              font-family: hgzt
+            .price-text
+              font-size: 6vw
+              font-family: hgzt
+            .price-cancel
+              color: #aaa
+              font-family: PFM
+              margin-left: 3vw
+          .num
+            margin-top: 2vw
+            font-family: PFM
+        .bottom-right
+          .text
+            display: inline-block
+            margin-bottom: 1vw
+            font-family: PFM
+          .van-count-down
+            .item
+              display: inline-block
+              width: 6vw
+              height: 6vw
+              line-height: 6vw
+              background-color: #ff5756
+              text-align: center
+              color: #fff
+              border-radius: 1vw
+            .item-middle
+              margin: 0 1vw
+              font-size: 5vw
+              color: #ff5756
 </style>
 
 

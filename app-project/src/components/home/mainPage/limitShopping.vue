@@ -1,5 +1,5 @@
 <template>
-  <div class="limitShopping-wrapper">
+  <div class="limitShopping-wrapper" v-show="showSeckill">
     <div class="limit-title">
 
       <div class="title-left">
@@ -12,7 +12,7 @@
         </div>
       </div>
 
-      <van-count-down :time="time">
+      <van-count-down :time="time" @finish="timeFinish">
         <template v-slot="timeData">
           <span class="item">{{ getTwoNumber(timeData.hours) }}</span>
           <span class="item-middle">:</span>
@@ -53,25 +53,42 @@ export default {
   },
   data(){
     return {
+      time: 5000
     }
   },
   computed: {
     contentList(){
       if(this.seckillData){
-        return this.seckillData.list.val
+        if(this.seckillData.hasOwnProperty('list')){
+          return this.seckillData.list.val
+        }else{
+          return null
+        }
       }else{
         return null
       }
     },
-    time(){
+    showSeckill(){
+      if(this.seckillData){
+        if(this.seckillData.hasOwnProperty('list')){
+          return true
+        }else{
+          return false
+        }
+      }else{
+        return false
+      }
+    }
+  },
+  methods: {
+    //获取倒计时时间
+    getTime(){
       let t = new Date()
       let minutes = t.getMinutes()
       let result = (60 - minutes)*60*1000
 
-      return result
-    }
-  },
-  methods: {
+      this.time = result
+    },
     //获取两位数的时间表示
     getTwoNumber(num){
       if(num < 10){
@@ -92,8 +109,23 @@ export default {
     },
     //跳转到更多秒杀
     handleTomore(){
-      this.$router.push('/limitBuy')
+      this.$router.push({
+        path: '/limitBuy',
+        query: {
+          seckill_id: this.seckillData.seckill_id
+        }
+      })
+    },
+    //计时结束
+    timeFinish(){
+      console.log('timeOver')
+      // this.$emit('timeFinish')
+      this.getTime()
     }
+  },
+
+  created(){
+    this.getTime()
   }
 }
 </script>

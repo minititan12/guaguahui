@@ -29,7 +29,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['currentProductPopUpImg','currentProductData','currentProductPopUpStock','currentBuyDetail','groupGoodsDes','bargainData']),
+    ...mapState(['currentProductPopUpImg','currentProductData','currentProductPopUpStock','currentBuyDetail','groupGoodsDes','bargainData','seckillData']),
     price(){
       if(this.currentProductData){
         let flag = this.currentProductData.flag
@@ -49,7 +49,7 @@ export default {
         }
 
         if(flag == 3){
-          return this.currentProductData.spike_price
+          return this.seckillData.seckill_price
         }
 
         if(flag == 4){

@@ -17,6 +17,10 @@ export default {
 
 <style lang="stylus" scoped>
   .limitBuy-header >>> .van-icon
-    color: #E31436
-    font-size: 20px
+    color: #FF5756
+    font-size: 6vw
+  .limitBuy-header >>> .van-nav-bar__title
+    color: #000
+    font-size: 4vw
+    font-family: PFH
 </style>

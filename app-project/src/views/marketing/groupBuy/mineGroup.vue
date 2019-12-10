@@ -4,6 +4,7 @@
     
     <div class="mineGroupList" ref="mineGroupList">
       <div>
+
         <div 
           class="mineGroupItem"
           @click="handleToShareGroup(item)" 
@@ -32,10 +33,12 @@
               <span>分享拼团</span>
             </div>
           </div>
-          
         </div>
+
       </div>
     </div>
+
+    <div></div>
   </div>
 </template>
 

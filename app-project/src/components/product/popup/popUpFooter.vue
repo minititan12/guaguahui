@@ -209,7 +209,7 @@ export default {
             })
           }else{
             this.$toast({
-              message: '购买失败',
+              message: '获取订单失败',
               type: 'fail',
               duration: 1000
             })

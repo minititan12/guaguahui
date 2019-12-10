@@ -81,4 +81,6 @@ export default {
   // 分享的信息
   shareInfo:{},
 
+  //秒杀产品数据
+  seckillData: null,
 }

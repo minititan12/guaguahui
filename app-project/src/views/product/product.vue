@@ -87,7 +87,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations(['changeCurrentProductData','closePopup','updateServePopUp','updateSharePopUp','changeCurrentBuyDetail','updateAllSpellGroups','updatedGroupBuyID','updateGroupBuyData']),
+    ...mapMutations(['changeCurrentProductData','closePopup','updateServePopUp','updateSharePopUp','changeCurrentBuyDetail','updateAllSpellGroups','updatedGroupBuyID','updateGroupBuyData','updatedSeckillData']),
     //是不是运行在app上
     is_app(){
       if(typeof(plus) == 'object'){
@@ -182,6 +182,7 @@ export default {
     this.updateAllSpellGroups([])
     this.updatedGroupBuyID(-1)
     this.updateGroupBuyData(null)
+    this.updatedSeckillData(null)
     this.getProductData()
   },
 

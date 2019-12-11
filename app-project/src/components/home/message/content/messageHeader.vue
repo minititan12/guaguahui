@@ -22,6 +22,5 @@ export default {
     font-family: PFH
     color: #000
     font-weight: 400
-    border-bottom: .01rem solid #999
     box-sizing: border-box
 </style>

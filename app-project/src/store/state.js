@@ -81,6 +81,9 @@ export default {
   // 分享的信息
   shareInfo:{},
 
+  // 消息的未读数
+  unread:null,
+
   //秒杀产品数据
   seckillData: null,
 }

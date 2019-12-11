@@ -20,7 +20,7 @@
         <span class="iconfont">&#xe72c;</span>
       </div>
       <span class="title">消息</span>
-      <span v-if="messageNum > 0" class="num">{{messageNum}}</span>
+      <span v-if="unreadNum > 0" class="num">{{unreadNum}}</span>
     </div>
 
     <div class="footer-item" :class="this.currentTab == 4 ? 'activeItem' : 'unactiveItem'" @click="handleTabClick(4)">
@@ -41,13 +41,34 @@
 
 <script>
 import { mapMutations, mapState } from 'vuex'
+import {getMsgRedtotal} from '@/utils/axios/request'
 export default {
   name: 'HomeFooter',
   computed: {
-    ...mapState(['currentTab','login','messageNum'])
+    ...mapState(['currentTab','login','messageNum','unread']),
+    unreadNum(){
+      let num = this.messageNum;
+      if(this.unread){
+        if(this.unread[0]){
+          num += this.unread[0].un_total;
+        }
+        if(this.unread[1]){
+          num += this.unread[1].un_total
+        }
+      }
+      if(num > 99){
+        return '99+'
+      }
+      return num;
+    },
+  },
+  created(){
+    getMsgRedtotal().then(res=>{
+      this.updateUnread(res.data.data);
+    }).catch(res=>{});
   },
   methods: {
-    ...mapMutations(['changeTab','updatedToTop','changeShowSearch']),
+    ...mapMutations(['changeTab','updatedToTop','changeShowSearch','updateUnread']),
     handleTabClick(index){
       if(this.currentTab == index){
         this.changeShowSearch(false)
@@ -58,7 +79,10 @@ export default {
       }else{
         this.changeTab(index)
       }
-
+      if(index == 4 && !this.login){
+        this.$router.push('/login')
+        this.changeTab(1)
+      }      
       if(index == 5 && !this.login){
         this.$router.push('/login')
         this.changeTab(1)

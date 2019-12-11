@@ -11,7 +11,11 @@ import 'swiper/dist/css/swiper.css'
 import 'vue-area-linkage/dist/index.css'
 import store from './store'
 import touch from 'vue-directive-touch'
+<<<<<<< HEAD
 import { Lazyload, Swipe, SwipeItem, Loading, Toast, Button, NavBar, Tab, Tabs,Sticky,Circle,AddressEdit,Area,Dialog,Icon,RadioGroup,Radio,Checkbox,Image,Tag,Field,Cell,CellGroup,Search,Uploader,Popup,Divider,Stepper,Skeleton,Rate,ImagePreview,ActionSheet,SwipeCell,Step, Steps, CountDown, Progress} from 'vant'
+=======
+import { Lazyload, Swipe, SwipeItem, Loading, Toast, Button, NavBar, Tab, Tabs,Sticky,Circle,AddressEdit,Area,Dialog,Icon,RadioGroup,Radio,Checkbox,Image,Tag,Field,Cell,CellGroup,Search,Uploader,Popup,Divider,Stepper,Skeleton,Rate,ImagePreview,ActionSheet,SwipeCell,Step, Steps, CountDown, Progress,DatetimePicker,Overlay } from 'vant'
+>>>>>>> 32399f0c22d72e15154bef921ce1ee54801bcda6
 import 'vant/lib/index.css';
 
 Vue.prototype.HOST='/api'
@@ -52,6 +56,8 @@ Vue.use(SwipeCell)
 Vue.use(Step).use(Steps)
 Vue.use(CountDown)
 Vue.use(Progress)
+Vue.use(DatetimePicker)
+Vue.use(Overlay)
 
 localStorage.setItem('plusReady','false')
 

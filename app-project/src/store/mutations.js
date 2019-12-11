@@ -470,15 +470,20 @@ export default {
   },
 
   // 砍价商品数据
-  updateBargainData(state,obj){
-    state.bargainData = obj;
+  updateBargainData(state,bargainData){
+    state.bargainData = bargainData;
   },
 
   // 设置分享信息
-  updateShareInfo(state,obj){
-    state.shareInfo = obj;
+  updateShareInfo(state,shareInfo){
+    state.shareInfo = shareInfo;
   },
   
+  // 设置消息的未读数
+  updateUnread(state,unread){
+    state.unread = unread
+  },
+
   //更新秒杀产品信息
   updatedSeckillData(state,data){
     let result = JSON.parse(JSON.stringify(data))

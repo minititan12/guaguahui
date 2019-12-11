@@ -41,9 +41,9 @@
         type="number"
         placeholder="请输入银行预留手机号" 
       />
-      <div class="agree">
+      <!-- <div class="agree">
         <van-checkbox icon-size="12" checked-color="#ff5756" v-model="agree" shape="square">同意《快捷支付服务协议》</van-checkbox>
-      </div>
+      </div> -->
       <div class="bind" @click="bind">验证并绑卡</div>
       <van-action-sheet 
         v-model="showBankList"
@@ -62,7 +62,7 @@ export default {
   data(){
     return {
       // 是否同意协议
-      agree:true,
+      // agree:true,
       // 持卡人
       bank_name:"",
       // bank_no
@@ -107,13 +107,13 @@ export default {
       this.showBankList = false;
     },
     bind(){
-      if(!this.agree){
-        this.$toast({
-          message: "请同意支付协议",
-          duration: 1200
-        })
-        return
-      }
+      // if(!this.agree){
+      //   this.$toast({
+      //     message: "请同意支付协议",
+      //     duration: 1200
+      //   })
+      //   return
+      // }
       if(!this.bank_name.length){
         this.$toast({
           message: "请填写持卡人姓名",
@@ -154,6 +154,8 @@ export default {
         }
         this.$toast("添加成功");
         this.handleBack();
+      }).catch(res=>{
+      
       });
     },
   }

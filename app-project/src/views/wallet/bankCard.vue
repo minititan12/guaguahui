@@ -5,11 +5,12 @@
       left-arrow
       @click-left="handleBack"
     />
+    <BankCardList></BankCardList>
     <div @click="goAddBankCard" class="add">+添加银行</div>
   </div>
 </template>
 <script>
-import {myBindBank} from '@/utils/axios/request'
+import BankCardList from '@/components/wallet/bankCardList'
 export default {
   data(){
     return {
@@ -17,14 +18,8 @@ export default {
       bankCardList:[],
     }
   },
-  created(){
-    myBindBank().then(res=>{
-      if(res.data.code != 1){
-        this.$toast(res.data.message);
-        return;
-      }
-      this.bankCardList = res.data.data;
-    });
+  components:{
+    BankCardList
   },
   methods:{
     handleBack(){

@@ -1,3 +1,4 @@
+const path = require('path');
 module.exports = {
 
   indexPath: 'index1.html',
@@ -17,6 +18,11 @@ module.exports = {
     }
   },
   configureWebpack:{
+    resolve: {  // 配置解析别名
+      alias: {
+        '@': path.resolve(__dirname, './src'),
+      }
+    },
     module:{
         rules:[
         {

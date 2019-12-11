@@ -1,9 +1,9 @@
 <template>
-  <div class="systemMessage-wrapper">
-    <van-nav-bar title="系统消息列表" left-arrow @click-left="handleBackClick"/>
-    <div class="systemMessage" ref="systemMessage">
+  <div class="orderMessage-wrapper">
+    <van-nav-bar title="订单消息列表" left-arrow @click-left="handleBackClick"/>
+    <div class="orderMessage" ref="orderMessage">
       <div>
-        <sysMessageList :messageList="messageList"></sysMessageList>
+        <orderMessageList :messageList="messageList"></orderMessageList>
         <div class="group-loading" v-show="showLoading && messageList.length > 10">
           <van-loading color="#fff" size="24px">
             <span>加载中...</span>
@@ -20,9 +20,9 @@
 <script>
 import {getMsgList} from '@/utils/axios/request'
 import Bscroll from 'better-scroll'
-import sysMessageList from '@/components/message/sysMessageList'
+import orderMessageList from '@/components/message/orderMessageList'
 export default {
-  name:"SystemMessage",
+  name:"OrderMessage",
   data(){
     return {
       page: 1,
@@ -31,7 +31,7 @@ export default {
     }
   },
   components:{
-    sysMessageList
+    orderMessageList
   },
   created(){
     this.getMessageList();
@@ -46,7 +46,7 @@ export default {
     // 获取消息列表
     getMessageList(){
       getMsgList({
-        flag:2,
+        flag:1,
         page:this.page
       }).then(res=>{
         if(res.data.code != 1){
@@ -65,8 +65,8 @@ export default {
     },
     //初始化疯狂砍价滚动条
     initGroupScroll(){
-      let el = this.$refs.systemMessage;
-      this.systemMessage = new Bscroll(el,{
+      let el = this.$refs.orderMessage;
+      this.orderMessage = new Bscroll(el,{
         bounce: {
           top: false
         },
@@ -78,11 +78,11 @@ export default {
         // eventPassthrough: 'horizontal'
       })
 
-      this.systemMessage.on('beforeScrollStart',()=>{
-        this.systemMessage.refresh()
+      this.orderMessage.on('beforeScrollStart',()=>{
+        this.orderMessage.refresh()
       })
 
-      this.systemMessage.on('pullingUp',()=>{
+      this.orderMessage.on('pullingUp',()=>{
         this.getMessageList()
       })
     },
@@ -91,16 +91,16 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  .systemMessage-wrapper >>> .van-icon
+  .orderMessage-wrapper >>> .van-icon
     color: #E31436
     font-size: 20px
 
-  .systemMessage-wrapper
+  .orderMessage-wrapper
     width: 100vw
     min-height: 100vh
     background-color: #eee
 
-  .systemMessage
+  .orderMessage
     position absolute
     top 46px
     left 0

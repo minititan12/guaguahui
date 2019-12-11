@@ -2,8 +2,8 @@
   <div class="serviceHeader-wrapper">
     <van-nav-bar :title="title" left-arrow @click-left="handleBackClick">
       <div class="right-wrapper" slot="right">
-        <span class="iconfont">&#xe67f;</span>
-        <span class="right-text" @click="handleToShop">店铺</span>
+        <!-- <span class="iconfont">&#xe67f;</span> -->
+        <span class="goShop" @click="handleToShop">店铺</span>
       </div>
     </van-nav-bar>
     <div class="br"></div>
@@ -58,6 +58,14 @@ export default {
     top: 0
     left: 0
     width: 100%
+    .goShop
+      background #ff5756
+      color white
+      height 8vw
+      line-height 8vw
+      font-size 3vw
+      padding 0 3vw
+      border-radius 4vw
     .br
       width: 100%
       height: .01rem

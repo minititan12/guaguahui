@@ -23,6 +23,7 @@ const Logistics = () => import('./views/order/logistics.vue')
 const Refund = () => import('./views/order/refund.vue')
 const RequestRefund = () => import ('./views/order/requestRefund.vue')
 const WaitShare = () => import('./views/order/waitShare.vue')
+const OrderDetails = () => import('./views/order/orderDetails.vue')
 
 //marketing文件夹
 const LimitBuy = () => import('./views/marketing/limitBuy.vue')
@@ -50,12 +51,22 @@ const Complaint = () => import('./views/mine/complaint.vue')
 const Collect = () => import('./views/mine/collect.vue')
 const History = () => import('./views/mine/history.vue')
 const Coupon = () => import('./views/mine/coupon.vue')
-const Wallet = () => import('./views/mine/wallet.vue')
+
+
+// 我的钱包
+const Wallet = () => import('./views/wallet/wallet.vue')
+const BankCard = () => import('./views/wallet/bankCard.vue')
+const AddBankCard = () => import('./views/wallet/addBankCard.vue')
+const Withdraw = () => import('./views/wallet/withdraw.vue')
+
 
 //message文件夹
 const SystemMessage = () => import('./views/message/systemMessage.vue')
 const DealMessage = () => import('./views/message/dealMessage.vue')
 const GoodActivity = () => import('./views/message/goodActivity.vue')
+const InteractiveMessage = () =>import('./views/message/interactiveMessage.vue')
+const OrderMessage = () => import('./views/message/orderMessage.vue')
+const SysMsgDetails = () => import('./views/message/sysMsgDetails.vue')
 
 const Goods = () => import('./views/goods.vue')
 const Apply = () => import('./views/apply.vue')
@@ -176,6 +187,19 @@ export default new Router({
       path: '/orderPage',
       name: 'orderPage',
       component: OrderPage,
+      meta:{
+        index: 2,
+        keepAlive: false,
+        isImmersion: true,
+        color: '#ffffff',
+        style: 'dark'
+      }
+    },
+    //订单详情页面组件
+    {
+      path: '/orderDetails',
+      name: 'orderDetails',
+      component: OrderDetails,
       meta:{
         index: 2,
         keepAlive: false,
@@ -431,6 +455,45 @@ export default new Router({
         style: 'dark'
       }
     },
+    //系统消息页面组件
+    {
+      path: '/sysMsgDetails',
+      name: 'sysMsgDetails',
+      component: SysMsgDetails,
+      meta:{
+        index: 2,
+        keepAlive: false,
+        isImmersion: true,
+        color: '#ffffff',
+        style: 'dark'
+      }
+    },
+    //订单消息页面组件
+    {
+      path: '/orderMessage',
+      name: 'orderMessage',
+      component: OrderMessage,
+      meta:{
+        index: 2,
+        keepAlive: false,
+        isImmersion: true,
+        color: '#ffffff',
+        style: 'dark'
+      }
+    },
+    // 互动消息列表
+    {
+      path: '/interactiveMessage',
+      name: 'interactiveMessage',
+      component: InteractiveMessage,
+      meta:{
+        index: 2,
+        keepAlive: false,
+        isImmersion: true,
+        color: '#ffffff',
+        style: 'dark'
+      }
+    },
     //拼团页面组件
     {
       path: '/groupBuy',
@@ -625,6 +688,45 @@ export default new Router({
         color: '#ffffff',
         style: 'dark'
       }
-    }
+    },
+    //银行卡页面组件
+    {
+      path: '/bankCard',
+      name: 'bankCard',
+      component: BankCard,
+      meta:{
+        index: 2,
+        keepAlive: false,
+        isImmersion: true,
+        color: '#ffffff',
+        style: 'dark'
+      }
+    },
+    //添加银行卡页面组件
+    {
+      path: '/addBankCard',
+      name: 'addBankCard',
+      component: AddBankCard,
+      meta:{
+        index: 2,
+        keepAlive: false,
+        isImmersion: true,
+        color: '#ffffff',
+        style: 'dark'
+      }
+    },
+    //提现页面组件
+    {
+      path: '/withdraw',
+      name: 'withdraw',
+      component: Withdraw,
+      meta:{
+        index: 2,
+        keepAlive: false,
+        isImmersion: true,
+        color: '#ffffff',
+        style: 'dark'
+      }
+    },
   ]
 })

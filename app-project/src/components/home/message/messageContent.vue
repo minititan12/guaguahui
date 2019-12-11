@@ -3,21 +3,17 @@
     <van-sticky>
       <MessageHeader></MessageHeader>
     </van-sticky>
-    <MessageIcons></MessageIcons>
-    <MessageItems></MessageItems>
+    <MessageContent></MessageContent>
   </div>
 </template>
 
 <script>
 import MessageHeader from './content/messageHeader'
-import MessageItems from './content/messageItems'
-import MessageIcons from './content/messageIcons'
+import MessageContent from './content/MessageContent'
 export default {
-  name: "MessageContent",
   components: {
     MessageHeader,
-    MessageItems,
-    MessageIcons
+    MessageContent,
   }
 }
 </script>

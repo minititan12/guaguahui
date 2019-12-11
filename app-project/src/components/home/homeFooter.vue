@@ -58,7 +58,10 @@ export default {
       }else{
         this.changeTab(index)
       }
-
+      if(index == 4 && !this.login){
+        this.$router.push('/login')
+        this.changeTab(1)
+      }      
       if(index == 5 && !this.login){
         this.$router.push('/login')
         this.changeTab(1)

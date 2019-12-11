@@ -77,7 +77,7 @@ export default {
         if(this.page == 0 && res.data.data.length < 10 && this.cutPriceScroll){
           this.cutPriceScroll.closePullUp();
         }
-        this.page = this.page + 1;
+        this.page++;
         this.cutPriceList = [...this.cutPriceList,...res.data.data,];
 
       }).catch((err)=>{

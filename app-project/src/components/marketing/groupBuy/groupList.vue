@@ -41,7 +41,7 @@ export default {
         path: '/product',
         query:{
           id: item.goods_id,
-          groupId: item.id,
+          group_id: item.id,
           shop_id: item.user_id
         }
       })

@@ -36,6 +36,15 @@
 
     </div>
 
+    <!-- <van-divider /> -->
+
+    <van-cell 
+      title="优惠劵" 
+      is-link icon="coupon" 
+      value="可用5张"
+      @click="handleToAccessCoupon(data)"
+    />
+
     <!-- 底下价格数量描述 -->
     <div class="shopItem-bottom">
       <span class="bottom-number">共 {{getAllNumber(data.good_list)}} 件</span>
@@ -103,6 +112,13 @@ export default {
       
       let desc = attr1Desc + attr2Desc + attr3Desc
       return desc
+    },
+
+    //进入获取优惠劵页面
+    handleToAccessCoupon(){
+      this.$router.push({
+        path: "/accessCoupon"
+      })
     }
   }
 }
@@ -173,6 +189,20 @@ export default {
           .right-number
             color: #B9B9B9
             font-family: PFM
+
+    .van-divider
+      margin: 1vw 0 0 0
+
+    .van-cell
+      padding: 2vw 3vw
+      font-size: 3.5vw
+      color: #000
+      .van-icon-coupon
+        font-size: 5vw
+        color: #FE5655
+      .van-cell__value
+        color: #000
+        
 
 
     .shopItem-bottom

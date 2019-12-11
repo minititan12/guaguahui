@@ -9,7 +9,7 @@
     </van-nav-bar>
 
     <van-sticky>
-      <van-tabs v-model="active" title-active-color="#FF5756">
+      <van-tabs v-model="active" title-active-color="#FF5756" @change="handleActiveChange">
         <van-tab title="全部"></van-tab>
         <van-tab title="未使用"></van-tab>
         <van-tab title="已使用"></van-tab>
@@ -86,16 +86,38 @@
 
 <script>
 import BScroll from "better-scroll"
+import axios from 'axios'
+import { mapState } from 'vuex'
 export default {
   name: "Coupon",
   data(){
     return {
-      active: 0
+      active: 0,
+      page: 1,
+      couponList:[]
     }
+  },
+  computed: {
+    ...mapState(['userData'])
   },
   methods: {
     handleBack(){
       this.$router.go(-1)
+    },
+    getCouponData(){
+      let postData = {
+        page: this.page,
+        user_id: this.userData.id,
+        status: 1,
+        keyword: ''
+      }
+      axios.post('api/method/getMyCoupons',postData)
+        .then((res)=>{
+          console.log('getMyCoupons',res.data)
+        })
+        .catch((err)=>{
+          console.log('getMyCoupons err',err)
+        })
     },
     //初始化优惠券列表滚动
     initCouponScroll(){
@@ -107,10 +129,17 @@ export default {
         eventPassthrough:'horizontal'
       })
 
+      this.couponScroll.on('pullingUp',()=>{
+        console.log(this.couponScroll)
+        console.log('pulling up get')
+        // this.getSeckillGoodsData()
+      })
+
       this.couponScroll.on('beforeScrollStart',()=>{
         this.couponScroll.refresh()
       })
     },
+    //根据价格获取优惠劵的图片
     getCouponImg(num){
       if(num <= 100){
         return "/public/static/coupon/icon_red.png"
@@ -123,7 +152,14 @@ export default {
       if(num > 200){
         return "/public/static/coupon/icon_blue.png"
       }
-    }
+    },
+    //active改变
+    handleActiveChange(name,title){
+      // console.log(name,title)
+    },
+  },
+  created(){
+    this.getCouponData()
   },
   mounted(){
     this.initCouponScroll()

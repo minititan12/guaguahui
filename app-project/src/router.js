@@ -6,6 +6,7 @@ const Product = () => import('./views/product/product')
 //pay文件夹
 const Pay = () => import('./views/pay/pay.vue')
 const Payment = () => import('./views/pay/payment.vue')
+const AccessCoupon = () => import('./views/pay/accessCoupon.vue')
 
 //login文件夹
 const Login = () => import('./views/login/login.vue')
@@ -297,6 +298,19 @@ export default new Router({
         isImmersion: true,
         color: '#07C160',
         style: 'light'
+      }
+    },
+    //可用优惠劵页面组件
+    {
+      path: '/accessCoupon',
+      name: 'accessCoupon',
+      component: AccessCoupon,
+      meta:{
+        index: 2,
+        keepAlive: false,
+        isImmersion: true,
+        color: '#ffffff',
+        style: 'dark'
       }
     },
     //下载页面组件

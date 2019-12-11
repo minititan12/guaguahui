@@ -44,7 +44,7 @@
               </div>
 
               <div class="item-bottom">
-                <span class="item-price">￥{{parseInt(item.group_price)}}</span>
+                <span class="item-price">￥{{item.group_price}}</span>
                 <span class="item-originPrice">原价:{{item.price}}</span>
               </div>
 
@@ -339,7 +339,7 @@ export default {
               .item-price
                 font-family: hgzt
                 color: #FC4E4D
-                font-size: 4vw
+                font-size: 3.8vw
                 margin-right: 2vw
               .item-originPrice
                 font-size: 3vw

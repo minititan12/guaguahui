@@ -7,8 +7,12 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name:"LimitMore",
+  props: {
+    seckillData: Object
+  },
   data(){
     return {
       moreImg: "/public/uploads/miaosha.png"
@@ -18,7 +22,12 @@ export default {
     //点击图片跳转限购页面
     handleTomore(){
       // console.log('查看更多')
-      this.$router.push('/limitBuy')
+      this.$router.push({
+        path: '/limitBuy',
+        query: {
+          seckill_id: this.seckillData.seckill_id
+        }
+      })
     }
   }
 }

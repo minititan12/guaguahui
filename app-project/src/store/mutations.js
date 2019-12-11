@@ -483,5 +483,5 @@ export default {
   updatedSeckillData(state,data){
     let result = JSON.parse(JSON.stringify(data))
     state.seckillData = result
-  }
+  },
 }

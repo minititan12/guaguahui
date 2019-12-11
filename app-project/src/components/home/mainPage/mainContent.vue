@@ -13,7 +13,7 @@
       <MainSwiper :swiperList="swiperList"></MainSwiper>
       <MainIcons :iconsList="iconsList"></MainIcons>
       <TodayHot :todayHotList="todayHotList"></TodayHot>
-      <LimitMore></LimitMore>
+      <LimitMore :seckillData="seckillData"></LimitMore>
       <LimitShopping :seckillData="seckillData"></LimitShopping>
       <BrandAD :brandADList="brandADList"></BrandAD>
       <ProductAD :productADList="productADList"></ProductAD>

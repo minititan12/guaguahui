@@ -11,7 +11,7 @@ import 'swiper/dist/css/swiper.css'
 import 'vue-area-linkage/dist/index.css'
 import store from './store'
 import touch from 'vue-directive-touch'
-import { Lazyload, Swipe, SwipeItem, Loading, Toast, Button, NavBar, Tab, Tabs,Sticky,Circle,AddressEdit,Area,Dialog,Icon,RadioGroup,Radio,Checkbox,Image,Tag,Field,Cell,CellGroup,Search,Uploader,Popup,Divider,Stepper,Skeleton,Rate,ImagePreview,ActionSheet,SwipeCell,Step, Steps, CountDown, Progress } from 'vant'
+import { Lazyload, Swipe, SwipeItem, Loading, Toast, Button, NavBar, Tab, Tabs,Sticky,Circle,AddressEdit,Area,Dialog,Icon,RadioGroup,Radio,Checkbox,Image,Tag,Field,Cell,CellGroup,Search,Uploader,Popup,Divider,Stepper,Skeleton,Rate,ImagePreview,ActionSheet,SwipeCell,Step, Steps, CountDown, Progress} from 'vant'
 import 'vant/lib/index.css';
 
 Vue.prototype.HOST='/api'

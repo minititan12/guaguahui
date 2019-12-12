@@ -31,4 +31,16 @@ export default {
   // 用户解绑银行卡
   // http://showdoc.gghbuy.com/web/#/1?page_id=46
   unbindBank: baseUrl + '/api/method/unbindBank',
+  // 订单详情
+  // http://showdoc.gghbuy.com/web/#/1?page_id=69
+  orderDetail: baseUrl + '/api/method/orderDetail',
+  // 取消订单
+  cancelOrder: baseUrl + '/api/method/cancelOrder',
+  // 删除订单
+  delOrder: baseUrl + '/api/method/delOrder',
+  // 确认收货
+  receipt: baseUrl + '/api/method/receipt',
+  // 物流消息
+  // http://showdoc.gghbuy.com/web/#/1?page_id=67
+  logisticsDetails: baseUrl + '/api/method/logisticsDetails',
 }

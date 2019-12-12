@@ -30,10 +30,11 @@
     <div class="detail">
       <div class="statistics">支出 ￥{{commissionDetails.withdraw}}    收入 ￥{{commissionDetails.income}}</div>
       <div class="list" :key="index" v-for="(item,index) in commissionDetails.list">
-        <van-image v-if="item.type==2" src="/public/static/wallet/wallet_expenditure.png" />
         <van-image v-if="item.type==1" src="/public/static/wallet/wallet_income.png" />
+        <van-image v-if="item.type==2" src="/public/static/wallet/wallet_expenditure.png" />
+        <van-image v-if="item.type==3" src="/public/static/wallet/wallet_expenditure.png" />
         <div class="content">
-          <div class="type">{{item.type==1?"收入":""}}{{item.type==2?"提现":""}}</div>
+          <div class="type">{{item.type==1?"收入":""}}{{item.type==2?"提现":""}}{{item.type==3?"提现失败":""}}</div>
           <div class="time">{{item.create_at}}</div>
         </div>
         <div :class="{'income':item.type==1}" class="money">{{item.money}}</div>
@@ -130,7 +131,7 @@ export default {
     },
     // 跳转至提现页面
     goWithdraw(){
-        this.$router.push({
+      this.$router.push({
         path: "/withdraw"
       })    
     }

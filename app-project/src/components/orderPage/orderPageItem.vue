@@ -93,7 +93,6 @@ export default {
           })
         }
       }
-
       return result
     }
   },

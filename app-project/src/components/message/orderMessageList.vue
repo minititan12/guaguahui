@@ -34,7 +34,10 @@ export default {
 
       });
       this.$router.push({
-        path: "/orderDetails"
+        path: "/orderDetails",
+        query:{
+          order_number:item.order_number
+        }
       })
     }
   }

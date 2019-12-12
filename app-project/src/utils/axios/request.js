@@ -45,3 +45,28 @@ export const commissionLog = (param = {}) => {
 export const unbindBank = (param = {}) => {
   return httpPost(api.unbindBank,param);
 }
+
+// 订单详情
+export const orderDetail = (param = {}) => {
+  return httpGet(api.orderDetail,param);
+}
+
+// 取消订单
+export const cancelOrder = (param = {}) => {
+  return httpPost(api.cancelOrder,param);
+}
+
+// 删除订单
+export const delOrder = (param = {}) => {
+  return httpPost(api.delOrder,param);
+}
+
+// 确认收货
+export const receipt = (param = {}) => {
+  return httpPost(api.receipt,param);
+}
+
+// 物流信息
+export const logisticsDetails = (param = {}) => {
+  return httpPost(api.logisticsDetails,param);
+}

@@ -1,5 +1,5 @@
 <template>
-  <div class="oderItem" v-if="data">
+  <div @click="goOrderDetails" class="oderItem" v-if="data">
     <div class="oderItem-shop">
       <div class="shop-left">
         <van-icon color="#B9B9B9" name="shop-o" />
@@ -8,8 +8,8 @@
       <span class="shop-status">{{statusText}}</span>
     </div>
 
-    <div class="oderItem-content" v-for="item of data.goodsList">
-      <div class="oderItem-img" @click="handleToProduct(item.goods_id)">
+    <div :key="index" class="oderItem-content" v-for="(item,index) of data.goodsList">
+      <div class="oderItem-img" @click.stop="handleToProduct(item.goods_id)">
         <van-image
           width="25vw"
           height="25vw"
@@ -20,7 +20,7 @@
       </div>
 
       <div class="content-middle">
-        <span class="oderItem-title" @click="handleToProduct(item.goods_id)">{{item.goods_name}}</span>
+        <span class="oderItem-title" @click.stop="handleToProduct(item.goods_id)">{{item.goods_name}}</span>
         <span class="oderItem-desc">{{getDesc(item)}}</span>
       </div>
 
@@ -37,19 +37,19 @@
 
       <!-- 底下按钮 -->
       <div class="bottom-btns">
-        <van-button plain  class="bottom-del" type="danger" size="small" @click="handleDel" v-if="showDel">删除订单</van-button>
+        <van-button plain  class="bottom-del" type="danger" size="small" @click.stop="handleDel" v-if="showDel">删除订单</van-button>
 
-        <van-button plain  class="bottom-comment" type="warning" size="small" @click="handleComment" v-if="showComment">评价</van-button>
+        <van-button plain  class="bottom-comment" type="warning" size="small" @click.stop="handleComment" v-if="showComment">评价</van-button>
 
-        <van-button plain v-if="showCancel"  class="bottom-cancel" type="warning" size="small" @click="handleCancel">取消订单</van-button>
+        <van-button plain v-if="showCancel"  class="bottom-cancel" type="warning" size="small" @click.stop="handleCancel">取消订单</van-button>
 
-        <van-button plain v-if="showConfirm"  class="bottom-confirm" type="primary" size="small" @click="handleConfirm">确认收货</van-button>
+        <van-button plain v-if="showConfirm"  class="bottom-confirm" type="primary" size="small" @click.stop="handleConfirm">确认收货</van-button>
 
-        <van-button plain v-if="showPay"  class="bottom-pay" type="primary" size="small" @click="handlePay">付款</van-button>
+        <van-button plain v-if="showPay"  class="bottom-pay" type="primary" size="small" @click.stop="handlePay">付款</van-button>
 
-        <van-button plain v-if="showRefund"  class="bottom-refund" type="warning" size="small" @click="handleRefund">申请退款</van-button>
+        <van-button plain v-if="showRefund"  class="bottom-refund" type="warning" size="small" @click.stop="handleRefund">申请退款</van-button>
 
-        <van-button plain v-if="showLogistics"  class="bottom-logistics" type="primary" size="small" @click="handleToLogistics">物流信息</van-button>
+        <van-button plain v-if="showLogistics"  class="bottom-logistics" type="primary" size="small" @click.stop="handleToLogistics">物流信息</van-button>
       </div>
 
       <!-- 底下价格数量描述 -->
@@ -79,6 +79,15 @@ export default {
     showLogistics: Boolean
   },
   methods: {
+    // 跳转到订单详情
+    goOrderDetails(){
+      this.$router.push({
+        path: "/orderDetails",
+        query:{
+          order_number:this.data.orderNumber
+        }
+      })  
+    },
     //获取该订单总数量
     getAllNumber(){
       let result = 0

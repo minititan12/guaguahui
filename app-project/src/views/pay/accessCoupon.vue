@@ -7,10 +7,19 @@
 <script>
 export default {
   name: "AccessCoupon",
+  data(){
+    return {
+      couponData: null
+    }
+  },
   methods: {
     handleBackClick(){
       this.$router.go(-1)
     }
+  },
+  created(){
+    console.log(this.$route)
+    this.couponData = JSON.parse(this.$route.params.data)
   }
 }
 </script>

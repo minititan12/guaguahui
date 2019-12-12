@@ -52,6 +52,7 @@ const Complaint = () => import('./views/mine/complaint.vue')
 const Collect = () => import('./views/mine/collect.vue')
 const History = () => import('./views/mine/history.vue')
 const Coupon = () => import('./views/mine/coupon.vue')
+const CouponSearch = () => import('./views/mine/couponSearch.vue')
 
 
 // 我的钱包
@@ -682,6 +683,19 @@ export default new Router({
       path: '/coupon',
       name: 'coupon',
       component: Coupon,
+      meta:{
+        index: 2,
+        keepAlive: false,
+        isImmersion: true,
+        color: '#ffffff',
+        style: 'dark'
+      }
+    },
+    //优惠券搜索页面组件
+    {
+      path: '/couponSearch',
+      name: 'couponSearch',
+      component: CouponSearch,
       meta:{
         index: 2,
         keepAlive: false,

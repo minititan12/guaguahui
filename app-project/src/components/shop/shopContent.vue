@@ -1,19 +1,9 @@
 <template>
   <div class="shopContent-wrapper">
     <div class="shopHeader">
-      <!-- <img :src="backImg" alt=""> -->
-      <!-- <van-image
-        class="header-img"
-        width="100vw"
-        height="120px"
-        fit="cover"
-        :src="header_img"
-        style="-webkit-touch-callout: none"
-      /> -->
       <div class="masking">
         <div class="header-top">
-          <!-- <span>{{title}}</span> -->
-          <span class="top-name">耐克旗舰店</span>
+          <span class="top-name">{{title}}</span>
           <div class="top-right">
             <div class="collectShop">
               <span>收藏店铺</span>
@@ -27,6 +17,7 @@
         <div class="header-middle">
           <span>店铺评分</span>
           <span class="middle-num">4.9</span>
+          <span class="coupon">领取优惠券</span>
         </div>
 
         <div class="header-tabs">
@@ -58,22 +49,6 @@
           </div>
         </div>
 
-        <!-- <van-sticky @scroll="handleSticky" ref="vanSticky">
-          <van-tabs style="margin-bottom: .2rem" v-model="active">
-            <van-tab title="综合"></van-tab>
-            <van-tab title="销量"></van-tab>
-            <van-tab>
-              <div slot="title">
-                价格<van-icon name="arrow-up" />
-              </div>
-            </van-tab>
-            <van-tab>
-              <div slot="title">
-                价格<van-icon name="arrow-down" />
-              </div>
-            </van-tab>
-          </van-tabs>
-        </van-sticky> -->
       </div>
     </div>
 
@@ -147,31 +122,24 @@ export default {
           console.log('getshopgoods',res.data)
           if(res.data.code == 1){
             this.title = res.data.company.company
-            // this.header_img = res.data.company.shop_img
-            if(type == 'pullingup'){
-              if(res.data.data.length == 0){
-                this.showLoading = false
-                this.showNoMore = true
-              }else{
-                this.goodsList = [...this.goodsList,...res.data.data]
 
-                this.$nextTick(()=>{
+            if(res.data.data.length > 0){
+              this.goodsList = [...this.goodsList,...res.data.data]
+              this.$nextTick(()=>{
+                this.showLoading = true
+                this.showNoMore = false
+                this.page = this.page + 1
+                if(this.shopScroll){
                   this.shopScroll.finishPullUp()
-                  this.shopScroll.refresh()
-                })
-              }
+                }
+              })
             }else{
-              this.goodsList = res.data.data
+              this.showLoading = false
+              this.showNoMore = true
               if(this.shopScroll){
-                this.$nextTick(()=>{
-                  this.shopScroll.scrollTo(0,0)
-                  this.shopScroll.finishPullUp()
-                  this.shopScroll.refresh()
-                })
+                this.shopScroll.closePullUp()
               }
             }
-            
-            this.page = this.page + 1
           }
         })
         .catch((err)=>{
@@ -181,12 +149,15 @@ export default {
     //上拉处理函数
     onPullingUp(){
       console.log('pullingup')
-      this.getShopData('pullingup')
+      this.getShopData()
     },
     //初始化商店产品滚动
     initShopScroll(){
       let el = this.$refs.shopGoodsWrapper
       this.shopScroll = new Bscroll(el,{
+        bounce: {
+          top: false
+        },
         pullUpLoad: {
           threshold: 60,
           stop: 0
@@ -206,6 +177,13 @@ export default {
     handleChangeActive(val){
       if(this.active != val){
         this.active = val
+        this.page = 1
+        this.showLoading = false
+        this.showNoMore = false
+        this.shopScroll.closePullUp()
+        this.goodsList = []
+        this.shopScroll.scrollTo(0,0)
+        this.getShopData()
       }
     },
     //跳转商品详情页面
@@ -216,19 +194,10 @@ export default {
     handleBackClick(){
       this.$router.go(-1)
     },
-    // handleSticky(event){
-    //   // console.log(event.isFixed)
-    //   if(event.isFixed){
-    //     this.$refs.vanSticky.style.backgroundColor = '#E31436'
-    //   }
-    // }
   },
   mounted(){
     this.initShopScroll()
-    this.getShopData('init')
-  },
-  activated(){
-    this.shopScroll.refresh()
+    this.getShopData()
   },
   watch:{
     '$route'(to,from){
@@ -244,20 +213,6 @@ export default {
         this.active = 0
         this.getShopData('init')
       }
-    },
-    goodsList(){
-      if(this.goodsList.length >= 10){
-        this.showLoading = true
-      }else{
-        this.showLoading = false
-      }
-    },
-    active(){
-      console.log('active change')
-      this.page = 1
-      this.showNoMore = false
-      this.goodsList = []
-      this.getShopData('init')
     }
   }
 }
@@ -328,12 +283,19 @@ export default {
               justify-content: center
         .header-middle
           font-family: PFM
-          margin-bottom: 3vw
+          margin-bottom: 2vw
           font-size: 3.5vw
+          display: flex
+          align-items: center
           .middle-num
             margin-left: 2vw
             font-family: hgzt
             color: #FF5756
+          .coupon
+            font-size: 3vw
+            background-color: #FF5756
+            padding: 1vw
+            margin-left: 2vw
         .header-tabs
           display: flex
           flex-direction: row

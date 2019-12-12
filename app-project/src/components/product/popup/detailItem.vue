@@ -110,6 +110,7 @@ export default {
             font-size: 3.5vw
             font-family: PFB
             line-height: 5.5vw
+            text-align: center
             text-overflow: ellipsis
             display: -webkit-box
             -webkit-line-clamp: 1
@@ -137,6 +138,7 @@ export default {
             font-family: PFB
             line-height: 5.5vw
             text-overflow: ellipsis
+            text-align: center
             display: -webkit-box
             -webkit-line-clamp: 1
             /*! autoprefixer: off */

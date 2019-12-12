@@ -1,30 +1,17 @@
 <template>
-  <div class="coupon-wrapper">
-    <van-nav-bar
-      title="优惠劵"
-      left-arrow
-      @click-left="handleBack"
-      @click-right="handleToSearch"
-    >
-      <van-icon name="search" slot="right" />
-    </van-nav-bar>
-
-    <van-sticky>
-      <van-tabs v-model="active" title-active-color="#FF5756" @change="handleActiveChange">
-        <van-tab title="全部"></van-tab>
-        <van-tab title="未使用"></van-tab>
-        <van-tab title="已使用"></van-tab>
-        <van-tab title="已过期"></van-tab>
-      </van-tabs>
-    </van-sticky>
-
-    <div class="coupon-items" ref="couponItems">
+  <div class="search-wrapper">
+    <div class="search-header">
+      <van-icon name="arrow-left" @click="handleBack"/>
+      <van-search placeholder="请输入关键词搜索优惠券" v-model="value" @search="onSearch"/>
+    </div>
+    
+    <div class="search-items" ref="searchCoupon">
       <div>
 
         <div class="blank"></div>
 
-        <CouponItem :data="item" v-for="item of couponList" />
-
+        <CouponItem v-if="searchList.length > 0" :data="item" v-for="item of searchList"/>
+        
         <div class="loading" v-show="showLoading">
           <van-loading color="#FF5756" size="24px">
             <img class="loading-img" src="/public/uploads/home/load.png" alt="">
@@ -38,7 +25,7 @@
 
         <div class="warn" v-show="showWarn">
           <span class="iconfont">&#xe605;</span>
-          <span>该状态没有优惠券</span>
+          <span>未搜索到优惠券</span>
         </div>
 
       </div>
@@ -48,82 +35,31 @@
 
 <script>
 import BScroll from "better-scroll"
-import CouponItem from '../../components/miniComponents/couponItem'
 import axios from 'axios'
+import CouponItem from '../../components/miniComponents/couponItem'
 import { mapState } from 'vuex'
 export default {
-  name: "Coupon",
+  name: "CouponSearch",
   components: {
     CouponItem,
   },
   data(){
     return {
-      active: 0,
+      value: '',
       page: 1,
-      couponList:[],
-      status: -1,
+      searchList:[],
       showLoading: false,
       showNoMore: false,
       showWarn: false
     }
   },
-  computed: {
+  computed:{
     ...mapState(['userData'])
   },
   methods: {
-    handleBack(){
-      this.$router.go(-1)
-    },
-
-    //跳转优惠券搜索页面
-    handleToSearch(){
-      console.log('search')
-      this.$router.push({
-        path: '/couponSearch'
-      })
-    },
-
-    //获取优惠劵信息
-    getCouponData(){
-      let postData = {
-        page: this.page,
-        user_id: this.userData.id,
-        status: this.status,
-        keyword: ''
-      }
-      axios.post('api/method/getMyCoupons',postData)
-        .then((res)=>{
-          console.log('getMyCoupons',res.data)
-          if(res.data.code == 1){
-            if(res.data.data.list.length > 0){
-              this.couponList = [...this.couponList,...res.data.data.list]
-              this.page = this.page + 1
-              this.$nextTick(()=>{
-                this.showLoading = true
-                this.showNoMore = false
-                this.couponScroll.finishPullUp()
-              })
-            }else{
-              if(this.couponList.length > 0){
-                this.showLoading = false
-                this.showNoMore = true
-                this.couponScroll.closePullUp()
-              }else{
-                this.showLoading = false
-                this.showNoMore = false
-                this.showWarn = true
-              }
-            }
-          }
-        })
-        .catch((err)=>{
-          console.log('getMyCoupons err',err)
-        })
-    },
-
-    //初始化优惠券列表滚动
+    //初始化优惠券搜索列表滚动
     initCouponScroll(){
-      this.couponScroll = new BScroll(this.$refs.couponItems,{
+      this.searchCouponScroll = new BScroll(this.$refs.searchCoupon,{
         bounce: {
           top: false
         },
@@ -135,29 +71,66 @@ export default {
         eventPassthrough:'horizontal'
       })
 
-      this.couponScroll.on('pullingUp',()=>{
-        console.log(this.couponScroll)
+      this.searchCouponScroll.on('pullingUp',()=>{
+        // console.log(this.searchCouponScroll)
         console.log('pulling up get')
         this.getCouponData()
       })
 
-      this.couponScroll.on('beforeScrollStart',()=>{
-        this.couponScroll.refresh()
+      this.searchCouponScroll.on('beforeScrollStart',()=>{
+        this.searchCouponScroll.refresh()
       })
     },
-    
-    //active改变
-    handleActiveChange(name,title){
-      // console.log(name,title)
-      this.status = name - 1
+    //获取优惠劵数据
+    getCouponData(){
+      let postData = {
+        page: this.page,
+        user_id: this.userData.id,
+        status: -1,
+        keyword: this.value
+      }
+      axios.post('api/method/getMyCoupons',postData)
+        .then((res)=>{
+          console.log('getMyCoupons',res.data)
+          if(res.data.code == 1){
+            if(res.data.data.list.length > 0){
+              this.searchList = [...this.searchList,...res.data.data.list]
+              this.page = this.page + 1
+              this.$nextTick(()=>{
+                this.showLoading = true
+                this.showNoMore = false
+                this.searchCouponScroll.finishPullUp()
+              })
+            }else{
+              if(this.searchList.length > 0){
+                this.showLoading = false
+                this.showNoMore = true
+                this.searchCouponScroll.closePullUp()
+              }else{
+                this.showLoading = false
+                this.showNoMore = false
+                this.showWarn = true
+              }
+              
+            }
+          }
+        })
+        .catch((err)=>{
+          console.log('getMyCoupons err',err)
+        })
+    },
+    //搜索
+    onSearch(){
       this.page = 1
+      this.searchList = []
       this.showLoading = false
       this.showNoMore = false
       this.showWarn = false
-      this.couponScroll.closePullUp()
-      this.couponList = []
       this.getCouponData()
     },
+    handleBack(){
+      this.$router.go(-1)
+    }
   },
   created(){
     this.getCouponData()
@@ -169,35 +142,27 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  .coupon-wrapper >>> .van-icon-arrow-left
-    color: #FF5756
-    font-size: 5vw
-  
-  .coupon-wrapper >>> .van-nav-bar__title
-    color: #000
-    font-size: 4vw
-    font-family: PFH
-  
-  .coupon-wrapper >>> .van-icon-search
-    font-size: 4.5vw
-    color: #999
-
-  .coupon-wrapper >>> .van-tabs__line
-    background-color: #FF5756 
-
-  .coupon-wrapper >>> .van-tab
-    font-size: 3.5vw
-    color: #000
-    font-family: PFB
-  
-  .coupon-wrapper
+  .search-wrapper
     width: 100%
-    .coupon-items
+
+    .search-header
+      width: 100%
+      display: flex
+      flex-direction: row
+      align-items: center
+      padding: 0 3vw
+      .van-icon-arrow-left
+        font-size: 5vw
+        color: #FF5756
+      .van-search
+        width: 90%
+
+    .search-items
       position: absolute 
-      top: 90px
-      bottom: 0
+      top: 54px
       left: 0
       right: 0
+      bottom: 0
       background-color: #F6F7FB
       overflow: hidden
 

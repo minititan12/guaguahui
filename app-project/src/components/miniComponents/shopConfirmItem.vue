@@ -41,8 +41,9 @@
     <van-cell 
       title="优惠劵" 
       is-link icon="coupon" 
-      value="可用5张"
+      :value="getCouponVal()"
       @click="handleToAccessCoupon(data)"
+      v-show="showCoupon"
     />
 
     <!-- 底下价格数量描述 -->
@@ -56,10 +57,22 @@
 </template>
 
 <script>
+import axios from 'axios'
+import { mapState } from 'vuex'
 export default {
   name: "ShopConfirmItem",
   props: {
     data: Object
+  },
+  data(){
+    return {
+      couponVal: '',
+      couponData: null,
+      showCoupon: true
+    }
+  },
+  computed: {
+    ...mapState(['userData'])
   },
   methods: {
     handleImgClick(){
@@ -114,11 +127,89 @@ export default {
       return desc
     },
 
+    //获取优惠劵描述
+    getCouponVal(){
+      if(this.couponData){
+        if(this.data.hasOwnProperty('coupon')){
+          let result = '-￥' + coupon.value
+
+          return result
+        }else{
+          let num = this.couponData.list.length
+          let result = '可用' + num + '张'
+          
+          return result
+        }
+      }
+    },
+
     //进入获取优惠劵页面
     handleToAccessCoupon(){
+      let data = {
+        ...this.couponData,
+        shop_id: this.data.shop_id
+      }
+
+      let s = JSON.stringify(data)
       this.$router.push({
-        path: "/accessCoupon"
+        path: "/accessCoupon",
+        name: 'accessCoupon',
+        params: {
+          data: s
+        }
       })
+    },
+
+    //获取strs属性
+    getStrs(){
+      let result = []
+      for(let item of this.data.good_list){
+        result.push({
+          goods_attr_id: item.id,
+          num: item.number
+        })
+      }
+
+      return result
+    },
+
+    //获取goods_id属性
+    getGoodsID(){
+      let result = []
+      for(let item of this.data.good_list){
+        result.push(item.goods_id)
+      }
+
+      return result.join(',')
+    },
+
+    //获取可用优惠劵信息
+    getAccessCouponData(){
+      let postData = {
+        user_id: this.userData.id,
+        company_id: this.data.good_list[0].shop_id,
+        strs: this.getStrs(),
+        goods_id: this.getGoodsID()
+      }
+      axios.post('api/method/getShopCoupons',postData)
+        .then((res)=>{
+          console.log('getShopCoupons',res.data)
+          if(res.data.code == 1){
+            if(res.data.data.list.length > 0){
+              this.couponData = res.data.data
+            }else{
+              this.showCoupon = false
+            }
+          }
+        })
+        .catch((err)=>{
+          console.log('getShopCoupons err',err)
+        })
+    }
+  },
+  created(){
+    if(this.data){
+      this.getAccessCouponData()
     }
   }
 }

@@ -39,7 +39,7 @@
 
       <div class="bottom-item" @click="handleToCoupon">
         <span>优惠劵</span>
-        <span class="num">0</span>
+        <span class="num">{{couponNum}}</span>
       </div>
     </div>
 
@@ -47,9 +47,15 @@
 </template>
 
 <script>
+import axios from 'axios'
 import { mapState, mapMutations } from 'vuex'
 export default {
   name: "MineHeader",
+  data(){
+    return {
+      couponNum: 0,
+    }
+  },
   computed: {
     ...mapState(['userData'])
   },
@@ -81,6 +87,7 @@ export default {
         path: '/coupon'
       })
     },
+    //跳转编辑头像页面
     handleToEditImg(){
       this.$router.push({
         path: '/setPage',
@@ -88,7 +95,28 @@ export default {
           type: 1
         }
       })
+    },
+    //获取可用优惠券总数
+    getAllCouponNum(){
+      let postData = {
+        user_id: this.userData.id,
+        status: 0
+      }
+
+      axios.post('api/method/getUserCouponsTotal',postData)
+        .then((res)=>{
+          console.log('getUserCouponsTotal',res.data)
+          if(res.data.code == 1){
+            this.couponNum = res.data.data.total
+          }
+        })
+        .catch((err)=>{
+          console.log('getUserCouponsTotal err',err)
+        })
     }
+  },
+  created(){
+    this.getAllCouponNum()
   }
 }
 </script>

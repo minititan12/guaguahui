@@ -10,7 +10,7 @@
 
         <div class="blank"></div>
 
-        <CouponItem v-if="searchList.length > 0" :data="item" v-for="item of searchList"/>
+        <CouponItem v-if="searchList.length > 0" :showStatus="true" :data="item" v-for="item of searchList"/>
         
         <div class="loading" v-show="showLoading">
           <van-loading color="#FF5756" size="24px">
@@ -81,6 +81,28 @@ export default {
         this.searchCouponScroll.refresh()
       })
     },
+
+    //排序下优惠券
+    sortCouponList(){
+      let unusedList = []
+      let usedList = []
+      let pastList = []
+
+      for(let item of this.searchList){
+        if(item.status == 0){
+          unusedList.push(item)
+        }
+        if(item.status == 1){
+          usedList.push(item)
+        }
+        if(item.status == 2){
+          pastList.push(item)
+        }
+      }
+
+      this.searchList = unusedList.concat(usedList,pastList)
+    },
+
     //获取优惠劵数据
     getCouponData(){
       let postData = {
@@ -97,9 +119,15 @@ export default {
               this.searchList = [...this.searchList,...res.data.data.list]
               this.page = this.page + 1
               this.$nextTick(()=>{
-                this.showLoading = true
-                this.showNoMore = false
-                this.searchCouponScroll.finishPullUp()
+                this.sortCouponList()
+                if(this.searchList.length > 6){
+                  this.showLoading = true
+                  this.showNoMore = false
+                  this.searchCouponScroll.finishPullUp()
+                }else{
+                  this.showLoading = false
+                  this.showNoMore = false
+                }
               })
             }else{
               if(this.searchList.length > 0){

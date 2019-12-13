@@ -22,11 +22,12 @@
         <!-- 优惠劵 -->
         <div class="coupon">
           <div class="icons">
-            <span>下单立减20元</span>
-            <span>满400减20</span>
+            <span v-for="item of couponDesc">
+              {{item}}
+            </span>
           </div>
 
-          <div class="more-coupon">
+          <div class="more-coupon" @click="handleToGetCoupon">
             <span>更多优惠劵</span>
             <van-icon name="arrow" />
           </div>
@@ -68,7 +69,9 @@ export default {
 
   data(){
     return {
-      loading: true 
+      loading: true,
+      goodCouponData: null,
+      couponDesc: []
     }
   },
 
@@ -106,6 +109,50 @@ export default {
       }
       
       return false;
+    },
+    //获取优惠券描述
+    getCouponDesc(){
+      if(this.goodCouponData){
+        let result = []
+
+        for(let item of this.goodCouponData.list){
+          let desc = '满'+ item.full + '减' + item.value 
+          result.push(desc)
+        }
+
+        this.couponDesc = result.slice(0,2)
+      }
+    },
+    //获取商店优惠券列表
+    getGoodCouponData(){
+      let postData = {
+        company_id: this.currentProductData.user_id,
+        goods_id: this.currentProductData.id
+      }
+
+      axios.post('api/method/getAllShopsCoupons',postData)
+        .then((res)=>{
+          console.log('getAllShopsCoupons',res.data)
+          if(res.data.code ==1){
+            this.goodCouponData = res.data.data
+            this.$nextTick(()=>{
+              this.getCouponDesc()
+            })
+          }
+        })
+        .catch((err)=>{
+          console.log('getAllShopsCoupons err',err)
+        })
+    },
+    //跳转领取优惠券
+    handleToGetCoupon(){
+      this.$router.push({
+        path: '/getCoupon',
+        query:{
+          shop_id: this.currentProductData.user_id,
+          good_id: this.currentProductData.id
+        }
+      })
     }
   },
 
@@ -115,6 +162,10 @@ export default {
         this.loading = false
       }
     }
+  },
+
+  created(){
+    this.getGoodCouponData()
   },
 
   mounted(){
@@ -188,6 +239,7 @@ export default {
           font-family: PFB
           font-size: 3.5vw
           color: #969799
+          padding: 2vw 0
       .groupBuy
         margin: 3vw 4vw 2vw 4vw
         .groupBuy-num

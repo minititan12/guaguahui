@@ -1,6 +1,6 @@
 <template>
   <div class="payment-wrapper">
-    <van-nav-bar class="payment-header" title="订单信息"/>
+    <van-nav-bar left-arrow @click-left="handleBack" class="payment-header" title="订单信息"/>
     <div class="payment-desc">
       <!-- <div class="payment-ordernumber">
         <span class="text">订单号:</span>
@@ -81,6 +81,9 @@ export default {
   },
   methods: {
     ...mapMutations(['changeTab']),
+    handleBack(){
+      this.$router.go(-1)
+    },
     handlezfbClick(){
       this.radio = '1'
     },
@@ -491,6 +494,15 @@ export default {
         path: '/',
         name: 'home'
       })
+    }
+  },
+  beforeRouteLeave(to,from,next){
+    console.log(to,from)
+    if(to.name == 'pay'){
+      // console.log(this.$router)
+      this.$router.go(-1)
+    }else{
+      next()
     }
   },
   mounted(){

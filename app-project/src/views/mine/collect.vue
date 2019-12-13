@@ -12,7 +12,7 @@
     </van-nav-bar>
 
     <van-sticky>
-      <van-tabs v-model="active" title-active-color="#FF5756">
+      <van-tabs @change="handleActiveChange" v-model="active" title-active-color="#FF5756">
         <van-tab title="商品"></van-tab>
         <van-tab title="店铺"></van-tab>
       </van-tabs>
@@ -21,17 +21,48 @@
 </template>
 
 <script>
+import axios from 'axios'
+import { mapState } from 'vuex'
 export default {
   name: "Collect",
   data(){
     return {
-      active: 0
+      active: 0,
+      flag: 1,
+      collectList: [],
+      page: 1
     }
+  },
+  computed: {
+    ...mapState(['userData']),
   },
   methods: {
     handleBack(){
       this.$router.go(-1)
+    },
+    //获取收藏列表
+    getCollectList(){
+      let postData = {
+        page: this.page,
+        flag: this.flag,
+        user_id: this.userData.id
+      }
+
+      axios.post('api/method/getCollects',postData)
+        .then((res)=>{
+          console.log('getCollects',res.data)
+        })
+        .catch((err)=>{
+          console.log('getCollects err',err)
+        })
+    },
+    handleActiveChange(name,title){
+      console.log(name,title)
+      this.flag = name + 1
     }
+  },
+  created(){
+    this.getCollectList()
   }
 }
 </script>

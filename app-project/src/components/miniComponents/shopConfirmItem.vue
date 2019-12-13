@@ -86,9 +86,9 @@ export default {
     },
 
     //获取总数量
-    getAllNumber(data){
+    getAllNumber(list){
       let result = 0
-      for(let item of data){
+      for(let item of list){
         result = result + item.number
       }
 
@@ -96,11 +96,14 @@ export default {
     },
 
     //获取总价格
-    getTotalPrice(data){
+    getTotalPrice(list){
       let result = 0
-      for(let item of data){
+      for(let item of list){
         let total = parseInt(item.number) * parseFloat(item.price)
         result = result + total
+      }
+      if(this.data.hasOwnProperty('coupon')){
+        result = result - this.data.coupon.value
       }
 
       return result.toFixed(2)
@@ -131,7 +134,7 @@ export default {
     getCouponVal(){
       if(this.couponData){
         if(this.data.hasOwnProperty('coupon')){
-          let result = '-￥' + coupon.value
+          let result = '-￥' + this.data.coupon.value
 
           return result
         }else{

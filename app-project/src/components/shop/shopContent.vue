@@ -5,7 +5,7 @@
         <div class="header-top">
           <span class="top-name">{{title}}</span>
           <div class="top-right">
-            <div class="collectShop">
+            <div class="collectShop" @click="handleToCollectShop">
               <span>收藏店铺</span>
             </div>
             <div class="header-cross" @click="handleBackClick">
@@ -17,7 +17,7 @@
         <div class="header-middle">
           <span>店铺评分</span>
           <span class="middle-num">4.9</span>
-          <span class="coupon">领取优惠券</span>
+          <span class="coupon" @click="getCoupon">领取优惠券</span>
         </div>
 
         <div class="header-tabs">
@@ -85,6 +85,7 @@
 import axios from 'axios'
 import Bscroll from 'better-scroll'
 import ProductItem from '../miniComponents/productItem'
+import { mapState } from 'vuex'
 export default {
   name: 'ShopContent',
   components:{
@@ -103,9 +104,7 @@ export default {
     }
   },
   computed:{
-    // shopID(){
-    //   return this.$route.query.shopID
-    // }
+    ...mapState(['userData'])
   },
   methods:{
     //获取商店商品数据
@@ -194,6 +193,31 @@ export default {
     handleBackClick(){
       this.$router.go(-1)
     },
+    //领取优惠券
+    getCoupon(){
+      this.$router.push({
+        path: '/getCoupon',
+        query: {
+          shop_id: this.$route.query.shopID
+        }
+      })
+    },
+    //收藏店铺
+    handleToCollectShop(){
+      let postData = {
+        flag: 2,
+        ids: this.$route.query.shopID,
+        user_id: this.userData.id
+      }
+
+      axios.post('api/method/doCollect',postData)
+        .then((res)=>{
+          console.log('doCollect',res.data)
+        })
+        .catch((err)=>{
+          console.log('doCollect err',err)
+        })
+    }
   },
   mounted(){
     this.initShopScroll()

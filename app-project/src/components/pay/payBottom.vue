@@ -33,10 +33,17 @@ export default {
       if(this.confirmData.length > 0){
         let result = 0
         for(let shopItem of this.confirmData){
+          let shopAllPrice = 0
           for(let item of shopItem.good_list){
             let price = parseInt(item.number) * parseFloat(item.price)
-            result = result + price
+            shopAllPrice = shopAllPrice + price
           }
+
+          if(shopItem.hasOwnProperty('coupon')){
+            shopAllPrice = shopAllPrice - shopItem.coupon.value
+          }
+
+          result = result + shopAllPrice
         }
         return result.toFixed(2)
       }
@@ -105,7 +112,7 @@ export default {
 
         result.push({
           shop_id: shopItem.shop_id,
-          coupon: 0,
+          coupon: shopItem.coupon ? shopItem.coupon.id : 0,
           goods_list: goods_list
         })
       }

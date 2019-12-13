@@ -23,7 +23,7 @@
 
         <div class="blank"></div>
 
-        <CouponItem :data="item" v-for="item of couponList" />
+        <CouponItem :showStatus="true" :data="item" v-for="item of couponList" />
 
         <div class="loading" v-show="showLoading">
           <van-loading color="#FF5756" size="24px">
@@ -83,6 +83,27 @@ export default {
       })
     },
 
+    //排序下优惠券
+    sortCouponList(){
+      let unusedList = []
+      let usedList = []
+      let pastList = []
+
+      for(let item of this.couponList){
+        if(item.status == 0){
+          unusedList.push(item)
+        }
+        if(item.status == 1){
+          usedList.push(item)
+        }
+        if(item.status == 2){
+          pastList.push(item)
+        }
+      }
+
+      this.couponList = unusedList.concat(usedList,pastList)
+    },
+
     //获取优惠劵信息
     getCouponData(){
       let postData = {
@@ -99,9 +120,15 @@ export default {
               this.couponList = [...this.couponList,...res.data.data.list]
               this.page = this.page + 1
               this.$nextTick(()=>{
-                this.showLoading = true
-                this.showNoMore = false
-                this.couponScroll.finishPullUp()
+                this.sortCouponList()
+                if(this.couponList.length > 6){
+                  this.showLoading = true
+                  this.showNoMore = false
+                  this.couponScroll.finishPullUp()
+                }else{
+                  this.showLoading = false
+                  this.showNoMore = false
+                }
               })
             }else{
               if(this.couponList.length > 0){

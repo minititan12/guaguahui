@@ -43,6 +43,7 @@ const MyBargain = () =>import('./views/marketing/bargain/myBargain.vue')
 //product文件夹
 const Service = () => import('./views/product/service.vue')
 const Shop = () => import('./views/product/shop.vue')
+const GetCoupon = () => import('./views/product/getCoupon.vue')
 const AllComment = () => import('./views/product/allComment.vue')
 
 //mine文件夹
@@ -286,6 +287,19 @@ export default new Router({
         isImmersion: true,
         color: '#310E0A',
         style: 'light'
+      }
+    },
+    //领取优惠券页面组件
+    {
+      path: '/getCoupon',
+      name: 'getCoupon',
+      component: GetCoupon,
+      meta:{
+        index: 3,
+        keepAlive: false,
+        isImmersion: true,
+        color: '#fff',
+        style: 'dark'
       }
     },
     //支付页面组件

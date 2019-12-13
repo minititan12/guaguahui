@@ -1,5 +1,5 @@
 <template>
-  <div class="couponItem" v-if="data">
+  <div class="couponItem" v-if="data" @click="handleCouponClick">
     <div class="item-img">
       <van-image width="100%" height="25vw" :src="getCouponImg()"/>
       <div class="img-content">
@@ -17,12 +17,20 @@
           <span class="item-title">{{data.title}}</span>
           <span class="item-time">{{getTime()}}</span>
         </div>
-        <span class="item-status">{{getStatus()}}</span>
+        <span class="item-status" v-show="showStatus">{{getStatus()}}</span>
       </div>
       
       <van-divider :dashed="true"/>
 
-      <span class="desc">{{data.dsecs}}</span>
+      <div class="item-bottom">
+        <span class="desc">{{data.dsecs}}</span>
+        <span @click="handleBtnClick" class="btn" v-show="showBtn">领取</span>
+        <span class="use-time" v-show="showUseTime">{{data.use_time}}使用</span>
+      </div>
+
+      <div class="selected-icon" v-show="select">
+        <van-icon name="success" />
+      </div>
     </div>
   </div>
 </template>
@@ -31,7 +39,28 @@
 export default {
   name: 'CouponItem',
   props: {
-    data: Object
+    data: Object,
+    showStatus: Boolean,
+    showBtn: Boolean,
+    selected: Boolean
+  },
+  data(){
+    return {
+      select: false
+    }
+  },
+  computed:{
+    showUseTime(){
+      if(this.data.hasOwnProperty('use_time')){
+        if(this.data.status == 1 && this.data.use_time.length > 0){
+          return true
+        }else{
+          return false
+        }
+      }else{
+        return false
+      }
+    }
   },
   methods: {
     //获取状态描述
@@ -85,6 +114,17 @@ export default {
       if(this.data.color == '3'){
         return "/public/static/coupon/icon_blue.png"
       }
+    },
+    //优惠券点击选取
+    handleCouponClick(){
+      if(this.selected){
+        this.select = true
+        this.$emit('select')
+      }
+    },
+    //领取按钮点击
+    handleBtnClick(){
+      this.$emit('get')
     }
   }
 }
@@ -129,7 +169,7 @@ export default {
     .item-right
       width: calc(100% - 25vw)
       height: 25vw
-      // background-color: green
+      position: relative
       box-sizing: border-box
       border-top: 1px solid #eee
       border-right: 1px solid #eee
@@ -164,6 +204,37 @@ export default {
           margin-left: 2vw
       .van-divider
         margin: 2vw 0
-      .desc
-        color: #999
+
+      .item-bottom
+        display: flex
+        justify-content: space-between
+        align-items: center
+        .desc
+          color: #999
+        .btn
+          flex-shrink: 0
+          padding: 1vw 3vw
+          font-size: 3vw
+          background-color: #FF5756
+          color: #fff
+          border-radius: 3vw
+        .use-time
+          color: #FF5756
+          font-size: 3vw
+          text-align: right
+      .selected-icon
+        width: 7vw
+        height: 6vw
+        position: absolute 
+        z-index: 2
+        right: 0
+        top: 0
+        background-color: #FF5756
+        font-size: 5vw
+        display: flex
+        align-items: center
+        justify-content: center
+        border-bottom-left-radius: 3vw 
+        .van-icon-success
+          color: #fff
 </style>

@@ -18,6 +18,16 @@
 
     <div class="collect-items" ref="collectItems">
       <div>
+
+        <transition name="fade">
+          <div class="collect-refresh" v-if="showRefresh">
+            <van-loading color="#FF5756" size="24px">
+              <img class="loading-img" src="/public/uploads/home/load.png" alt="">
+              <span class="text">加载中...</span>
+            </van-loading>
+          </div>
+        </transition>
+
         <div class="blank"></div>
 
         <!-- 商品收藏框 -->
@@ -103,7 +113,8 @@ export default {
       page: 1,
       showLoading: false,
       showNoMore: false,
-      showWarn: false
+      showWarn: false,
+      showRefresh: false
     }
   },
   computed: {
@@ -135,8 +146,9 @@ export default {
     initCollectScroll(){
       let el = this.$refs.collectItems
       this.collectScroll = new Bscroll(el,{
-        bounce: {
-          top: false
+        pullDownRefresh: {
+          threshold: 50,
+          stop: 0
         },
         pullUpLoad: {
           threshold: 10,
@@ -148,6 +160,17 @@ export default {
 
       this.collectScroll.on('beforeScrollStart',()=>{
         this.collectScroll.refresh()
+      })
+
+      this.collectScroll.on('pullingDown',()=>{
+        console.log('pulling down')
+        this.showRefresh = true
+        this.reGetCollectData()
+        this.getCollectList('init')
+        setTimeout(()=>{
+          this.collectScroll.finishPullDown()
+          this.showRefresh = false
+        },1500)
       })
 
       this.collectScroll.on('pullingUp',()=>{
@@ -162,16 +185,16 @@ export default {
       this.showNoMore = false
       this.showWarn = false
       this.collectScroll.closePullUp()
-      this.collectList = []
-      this.getCollectList()
     },
     //改变active
     handleChangeActive(val){
       this.active = val
       this.reGetCollectData()
+      this.collectList = []
+      this.getCollectList()
     },
     //获取收藏列表
-    getCollectList(){
+    getCollectList(type){
       let postData = {
         page: this.page,
         flag: this.active,
@@ -183,7 +206,12 @@ export default {
           console.log('getCollects',res.data)
           if(res.data.code == 1){
             if(res.data.data.list.length > 0){
-              this.collectList = [...this.collectList,...res.data.data.list]
+              if(type == 'init'){
+                this.collectList = [...res.data.data.list]
+              }else{
+                this.collectList = [...this.collectList,...res.data.data.list]
+              }
+              
               this.page = this.page + 1
               this.$nextTick(()=>{
                 if(this.collectList.length > 6){
@@ -192,7 +220,7 @@ export default {
                   this.collectScroll.finishPullUp()
                 }else{
                   this.showLoading = false
-                  this.showNoMore = false
+                  this.showNoMore = true
                 }
               })
             }else{
@@ -237,6 +265,7 @@ export default {
               duration: 1200
             })
             this.reGetCollectData()
+            this.getCollectList('init')
           }
         })
         .catch((err)=>{
@@ -268,6 +297,16 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+  .fade-leave
+    height: 16vw
+    opacity: 1
+  .fade-leave-active
+    transition: all .5s ease
+    // transition: opacity .5s ease
+  .fade-leave-to
+    height: 0
+    opacity: 0
+
   .collect-wrapper >>> .van-icon-arrow-left
     color: #FF5756
     font-size: 5vw
@@ -276,14 +315,6 @@ export default {
     color: #000
     font-size: 4vw
     font-family: PFH
-
-  // .collect-wrapper >>> .van-icon-setting-o
-  //   color: #666
-  //   font-size: 5vw
-
-  // .collect-wrapper >>> .right-text
-  //   color: #666
-  //   margin-left: 1vw
 
   .collect-wrapper
     width: 100%
@@ -315,6 +346,25 @@ export default {
       bottom: 0
       overflow: hidden
       background-color: #f5f7fa
+
+      .collect-refresh
+        width: 100%
+        display: flex
+        justify-content: center
+        background-color: #f5f7fa
+        .van-loading
+          // height: 16vw
+          display: flex
+          justify-content: center
+          align-items: center
+          .loading-img
+            width: 6vw
+            margin-right: 2vw
+          .text
+            display: inline-block
+            font-size: 3.5vw
+            line-height: 6vw
+            padding: 5vw 0
 
       .blank
         width: 100%

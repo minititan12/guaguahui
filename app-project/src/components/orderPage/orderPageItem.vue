@@ -4,58 +4,67 @@
     <div>
       <div class="blank"></div>
       <!-- 全部商品项 -->
-      <OrderItem v-if="orderActive == 0 && list.length > 0" 
-        v-for= "item of list" 
-        :data= "item" 
-        :statusText= "getStatusText(item.goodsList[0].status)"
-        :key= "item.orderNumber" 
-        :showDel= "showDel(item.goodsList[0].status)"
-        :showCancel= "item.goodsList[0].status == 0 ? true : false"
-        :showRefund= "showRefund(item.goodsList[0].status)" 
-        :showPay= "item.goodsList[0].status == 0 ? true : false"
-        :showConfirm= "item.goodsList[0].status == 3 ? true : false" 
-        :showLogistics = "item.goodsList[0].status == 3 ? true : false"
-        @del= "handleDelItem(item.orderNumber)"
-        @cancel= "handleCancelOrder(item.orderNumber)"
-        @pay= "handlePayOrder(item)"
-        @refund= "handleRefund(item.orderNumber)"
-        @confirm= "handleConfirm(item.orderNumber)"
-        @logistics= "handleToLogistics(item)"
-      />
+      <div v-if="orderActive == 0 && list.length > 0">
+        <OrderItem  
+          v-for= "item of list" 
+          :data= "item" 
+          :statusText= "getStatusText(item.goodsList[0].status)"
+          :key= "item.orderNumber" 
+          :showDel= "showDel(item.goodsList[0].status)"
+          :showCancel= "item.goodsList[0].status == 0 ? true : false"
+          :showRefund= "showRefund(item.goodsList[0].status)" 
+          :showPay= "item.goodsList[0].status == 0 ? true : false"
+          :showConfirm= "item.goodsList[0].status == 3 ? true : false" 
+          :showLogistics = "item.goodsList[0].status == 3 ? true : false"
+          :showComment = "item.goodsList[0].status == 1 ? true : false"
+          @del= "handleDelItem(item.orderNumber)"
+          @cancel= "handleCancelOrder(item.orderNumber)"
+          @pay= "handlePayOrder(item)"
+          @refund= "handleRefund(item.orderNumber)"
+          @confirm= "handleConfirm(item.orderNumber)"
+          @logistics= "handleToLogistics(item)"
+        />
+      </div>
       
       <!-- 待付款的商品项 -->
-      <OrderItem v-if="orderActive == 1 && list.length > 0" 
-        v-for= "item of list" 
-        :data= "item" 
-        :key= "item.orderNumber" 
-        :statusText= "getStatusText(item.goodsList[0].status)"
-        :showPay= "true"
-        :showCancel= "true"
-        @pay= "handlePayOrder(item)" 
-        @cancel= "handleCancelOrder(item.orderNumber)"
-      />
+      <div v-if="orderActive == 1 && list.length > 0">
+        <OrderItem 
+          v-for= "item of list" 
+          :data= "item" 
+          :key= "item.orderNumber" 
+          :statusText= "getStatusText(item.goodsList[0].status)"
+          :showPay= "true"
+          :showCancel= "true"
+          @pay= "handlePayOrder(item)" 
+          @cancel= "handleCancelOrder(item.orderNumber)"
+        />
+      </div>
 
       <!-- 待发货的商品项 -->
-      <OrderItem v-if="orderActive == 2 && list.length > 0" 
-        v-for= "item of list" 
-        :data= "item" 
-        :statusText= "getStatusText(item.goodsList[0].status)"
-        :key= "item.orderNumber" 
-        :showRefund= "true"
-        @refund= "handleRefund(item.orderNumber)"
-      />
+      <div v-if="orderActive == 2 && list.length > 0">
+        <OrderItem  
+          v-for= "item of list" 
+          :data= "item" 
+          :statusText= "getStatusText(item.goodsList[0].status)"
+          :key= "item.orderNumber" 
+          :showRefund= "true"
+          @refund= "handleRefund(item.orderNumber)"
+        />
+      </div>
 
       <!-- 待收货的商品项 -->
-      <OrderItem v-if="orderActive == 3 && list.length > 0" 
-        v-for= "item of list" 
-        :data= "item" 
-        :key= "item.orderNumber"
-        :statusText= "getStatusText(item.goodsList[0].status)"
-        :showConfirm = "true" 
-        :showLogistics = "true"
-        @confirm= "handleConfirm(item.orderNumber)"
-        @logistics= "handleToLogistics(item)"
-      />
+      <div v-if="orderActive == 3 && list.length > 0">
+        <OrderItem  
+          v-for= "item of list" 
+          :data= "item" 
+          :key= "item.orderNumber"
+          :statusText= "getStatusText(item.goodsList[0].status)"
+          :showConfirm = "true" 
+          :showLogistics = "true"
+          @confirm= "handleConfirm(item.orderNumber)"
+          @logistics= "handleToLogistics(item)"
+        />
+      </div>
 
       <div class="blank"></div>
     </div>
@@ -187,7 +196,7 @@ export default {
         case 0:
           return '待付款'
         case 1:
-          return '订单完成'
+          return '待评价'
         case 2:
           return '待发货'
         case 3:
@@ -199,7 +208,7 @@ export default {
         case 9:
           return '已退款'
         case 10:
-          return '已评价'
+          return '订单完成'
         default:
           return ''
       }
@@ -207,18 +216,18 @@ export default {
 
     //判断是否显示删除按钮
     showDel(status){
-      if(status == 1){
-        return true
-      }
+      // if(status == 1){
+      //   return true
+      // }
       if(status == 8){
         return true
       }
-      if(status == 9){
-        return true
-      }
-      if(status == 10){
-        return true
-      }
+      // if(status == 9){
+      //   return true
+      // }
+      // if(status == 10){
+      //   return true
+      // }
 
       return false
     },

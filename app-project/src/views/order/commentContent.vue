@@ -2,7 +2,7 @@
   <div class="commentContent-wrapper">
     <van-nav-bar title="评价" left-arrow @click-left="handleBackClick"/>
 
-    <van-cell-group>
+    <van-cell-group :key="index" v-for="(item,index) in order.goods_info">
 
       <van-cell>
         <div class="good_desc">
@@ -10,11 +10,11 @@
             width="1.8rem"
             height="1.8rem"
             fit="contain"
-            :src="photo"
+            :src="item.cover_img"
           />
           <div class="desc-text">
-            <span class="text-title">{{title}}</span>
-            <span class="desc">{{descText}}</span>
+            <span class="text-title">{{item.goods_name}}</span>
+            <span class="desc">{{getDesc(item)}}</span>
           </div>
         </div>
       </van-cell>
@@ -37,17 +37,16 @@
         type="textarea"
         placeholder="宝贝满足你的期待吗？说说它的优点和缺点吧"
       />
-
-      <van-cell>
-        <van-button @click="handlePostComment" type="primary" round>提交评价</van-button>
-      </van-cell>
-
     </van-cell-group>
+    <van-cell>
+      <van-button @click="handlePostComment" type="primary" round>提交评价</van-button>
+    </van-cell>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import {orderDetail} from '@/utils/axios/request'
 import { mapState } from 'vuex'
 export default {
   name: "CommentContent",
@@ -58,15 +57,50 @@ export default {
       message: '',
       descText: '',
       title: '',
-      photo: ''
+      photo: '',
+      
+      // 订单号
+      order_number:"",
+      // 订单详情
+      order:{},
     }
   },
   computed:{
     ...mapState(['userData'])
   },
+  created(){
+    this.order_number = this.$route.query.order_number;
+    this.getOrderDetail();
+  },
   methods: {
     handleBackClick(){
       this.$router.go(-1)
+    },
+    // 获取订单详情
+    getOrderDetail(){
+      orderDetail({
+        order_number:this.order_number
+      }).then(res=>{
+        if(res.data.code != 1){
+          this.$toast(res.data.message);
+          return;
+        }
+        this.order = res.data.data;
+      }).catch(res=>{});
+    },
+    // 获取属性值
+    getDesc(item){
+      let desc = "";
+      if(item.attr1_name !== ""){
+        desc+= item.attr1_name+ ":" + item.attr1_value;
+      }
+      if(item.attr2_name !== ""){
+        desc+= " " + item.attr2_name+ ":" + item.attr2_value;
+      }
+      if(item.attr3_name !== ""){
+        desc+= " " + item.attr3_name+ ":" + item.attr3_value;
+      }
+      return desc;
     },
     getBase64List(){
       if(this.fileList.length > 0){
@@ -152,6 +186,13 @@ export default {
     color: #E31436
     font-size: 20px
 
+  .van-nav-bar
+    position fixed
+    left 0
+    top 0
+    right  0
+  .commentContent-wrapper
+    padding-top 46px
   .commentContent-wrapper >>> .good_desc
     display: flex
     flex-direction: row

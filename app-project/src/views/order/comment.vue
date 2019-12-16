@@ -40,34 +40,17 @@ export default {
   computed:{
     ...mapState(['userData']),
     list(){
-      if(this.orderList.length > 0){
-        let result = []
-        for(let item of this.orderList){
+      let result = []
+
+      if(this.orderList && Object.keys(this.orderList).length > 0){
+        for(let key in this.orderList){
           result.push({
-            originData: item,
-            attr1_name: item.attr1_name,
-            attr1_value: item.attr1_value,
-            attr2_name: item.attr2_name,
-            attr2_value: item.attr2_value,
-            attr3_name: item.attr3_name,
-            attr3_value: item.attr3_value,
-            imgUrl: item.photo.photo,
-            price: item.price,
-            totalPrice: item.amount,
-            shop: item.shop.company,
-            number: item.number,
-            title: item.title.goods_name,
-            orderNumber: item.order_number,
-            goods_id: item.goods_id,
-            goods_attr_id: item.goods_attr_id,
-            user_id: item.user_id,
-            user_id_to: item.user_id_to,
-            status: item.status
+            orderNumber: key,
+            goodsList: this.orderList[key]
           })
         }
-
-        return result
       }
+      return result
     }
   },
   methods: {
@@ -75,24 +58,12 @@ export default {
       this.$router.go(-1)
     },
     handleCommentClick(data){
-      let attr1_desc = data.attr1_name.length > 0 ? (data.attr1_name + ':'+ data.attr1_value + " ") : ""
-      let attr2_desc = data.attr2_name.length > 0 ? (data.attr2_name + ':'+ data.attr2_value + " ") : ""
-      let attr3_desc = data.attr3_name.length > 0 ? (data.attr3_name + ':'+ data.attr3_value + " ") : ""
-
-      let descText = attr1_desc + attr2_desc + attr3_desc
       this.$router.push({
         path: "/commentContent",
         name: "commentContent",
         query: {
-          goods_id: data.goods_id,
-          shop_id: data.user_id_to
+          order_number: data.orderNumber,
         },
-        params: {
-          photo: data.imgUrl,
-          title: data.title,
-          orderNumber: data.orderNumber,
-          descText: descText,
-        }
       })
     },
     getCommentData(){
@@ -104,8 +75,8 @@ export default {
       axios.post('api/method/getMyOrder',postData)
         .then((res)=>{
           console.log('commentdata',res.data)
-          this.orderList = res.data.data
-          if(this.orderList.length > 0){
+          this.orderList = res.data.data;
+          if(Object.keys(this.orderList).length > 0){
             this.showWarn = false
           }else{
             this.showWarn = true

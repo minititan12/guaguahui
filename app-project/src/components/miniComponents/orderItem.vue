@@ -81,6 +81,7 @@ export default {
   methods: {
     // 跳转到订单详情
     goOrderDetails(){
+      console.log(this.data);
       this.$router.push({
         path: "/orderDetails",
         query:{

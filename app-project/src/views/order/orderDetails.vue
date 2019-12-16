@@ -86,6 +86,10 @@
       <div @click="confirmOrder" class="confirm double">确认收货</div>
       <div @click="refundOrder" class="refund double">申请退款</div>
     </div>
+    <!-- 待评价 -->
+    <div v-if="order.status === 1" class="order-footer">
+      <div @click="evaluationOrder" class="evaluation single">评价</div>
+    </div>
   </div>
 </template>
 <script>
@@ -108,7 +112,7 @@ export default {
         case 0:
           return '待付款'
         case 1:
-          return '订单完成'
+          return '待评价'
         case 2:
           return '待发货'
         case 3:
@@ -120,7 +124,7 @@ export default {
         case 9:
           return '已退款'
         case 10:
-          return '已评价'
+          return '订单完成'
         default:
           return ''
       }    
@@ -215,6 +219,15 @@ export default {
         query: {
           orderNumber: this.order_number,
           imgUrl: this.order.goods_info[0].cover_img
+        }
+      })
+    },
+    // 评价订单
+    evaluationOrder(){
+      this.$router.push({
+        path: '/commentContent',
+        query: {
+          order_number: this.order_number,
         }
       })
     },
@@ -453,6 +466,6 @@ export default {
       margin 0 2vw
     .cancel,.confirm
       background #faaa10
-    .delete,.refund,.pay
+    .delete,.refund,.pay,.evaluation
       background #f3284f
 </style>

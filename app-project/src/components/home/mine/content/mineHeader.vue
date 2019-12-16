@@ -29,7 +29,7 @@
     <div class="bottom">
       <div class="bottom-item" @click="handleToCollect">
         <span>收藏</span>
-        <span class="num">0</span>
+        <span class="num">{{collectNum}}</span>
       </div>
 
       <div class="bottom-item" @click="handleToHistory">
@@ -54,6 +54,7 @@ export default {
   data(){
     return {
       couponNum: 0,
+      collectNum: 0
     }
   },
   computed: {
@@ -113,10 +114,27 @@ export default {
         .catch((err)=>{
           console.log('getUserCouponsTotal err',err)
         })
+    },
+    //获取收藏总数
+    getAllCollect(){
+      let postData = {
+        user_id: this.userData.id
+      }
+      axios.post('api/method/getUserCollects',postData)
+        .then((res)=>{
+          console.log('getUserCollects',res.data)
+          if(res.data.code == 1){
+            this.collectNum = res.data.data.total
+          }
+        })
+        .catch((err)=>{
+          console.log('getUserCollects err',err)
+        })
     }
   },
   created(){
     this.getAllCouponNum()
+    this.getAllCollect()
   }
 }
 </script>

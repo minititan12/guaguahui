@@ -5,8 +5,8 @@
         <div class="header-top">
           <span class="top-name">{{title}}</span>
           <div class="top-right">
-            <div class="collectShop" @click="handleToCollectShop">
-              <span>收藏店铺</span>
+            <div class="collectShop" @click="handleCollectShop">
+              <span>{{is_collect == 0 ? '收藏店铺' : '取消收藏'}}</span>
             </div>
             <div class="header-cross" @click="handleBackClick">
               <van-icon name="cross" />
@@ -100,7 +100,8 @@ export default {
       id: 0,
       header_img: '',
       showLoading: false,
-      showNoMore: false
+      showNoMore: false,
+      is_collect: 0
     }
   },
   computed:{
@@ -203,25 +204,65 @@ export default {
       })
     },
     //收藏店铺
-    handleToCollectShop(){
+    handleCollectShop(){
+      let is_collect = this.is_collect == 0 ? 1 : 0
       let postData = {
         flag: 2,
         ids: this.$route.query.shopID,
-        user_id: this.userData.id
+        user_id: this.userData.id,
+        is_collect: is_collect
       }
 
       axios.post('api/method/doCollect',postData)
         .then((res)=>{
           console.log('doCollect',res.data)
+          if(res.data.code ==1){
+            if(this.is_collect == 0){
+              this.$toast({
+                message: '收藏成功',
+                duration: 1200,
+                type: 'success'
+              })
+            }else{
+              this.$toast({
+                message: '取消成功',
+                duration: 1200,
+                type: 'success'
+              })
+            }
+            this.is_collect = is_collect
+          }
         })
         .catch((err)=>{
           console.log('doCollect err',err)
         })
+    },
+    //判断店铺是否收藏
+    checkCollect(){
+      let postData = {
+        flag: 2,
+        user_id: this.userData.id,
+        ids: this.$route.query.shopID
+      }
+
+      axios.post('api/method/checkCollects',postData)
+        .then((res)=>{
+          console.log('checkCollects',res.data)
+          if(res.data.code == 1){
+            this.is_collect = res.data.data.is_collect
+          }
+        })
+        .catch((err)=>{
+          console.log('checkCollects err',err)
+        })
     }
+  },
+  created(){
+    this.checkCollect()
+    this.getShopData()
   },
   mounted(){
     this.initShopScroll()
-    this.getShopData()
   },
   watch:{
     '$route'(to,from){

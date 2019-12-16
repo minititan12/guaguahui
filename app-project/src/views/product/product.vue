@@ -18,15 +18,19 @@
       <span class="iconfont">&#xe624;</span>
     </div>
 
-    <div class="share" v-if="is_app()" @click="openSharePopUp">
+    <div class="share" v-if="true" @click="openSharePopUp">
       <span class="iconfont">&#xe61c;</span>
     </div>
 
-    <div class="backToHome" v-if="!is_app()" @click="handleToHome">
+    <div class="collect" @click="handleGoodCollect">
+      <van-icon :class="is_collect == 0 ? 'star' : 'active-star'" name="star" />
+    </div>
+
+    <div class="backToHome" v-if="false" @click="handleToHome">
       app首页
     </div>
 
-    <div class="download" v-if="!is_app()" @click="handleToDownload">
+    <div class="download" v-if="false" @click="handleToDownload">
       <van-image
         width="15vw"
         height="15vw"
@@ -57,7 +61,8 @@ export default {
   name: "Product",
   data(){
     return {
-      type: 0
+      type: 0,
+      is_collect: 0
     }
   },
 
@@ -73,7 +78,7 @@ export default {
   },
   
   computed:{
-    ...mapState(['login','openid','currentProductData']),
+    ...mapState(['login','openid','currentProductData','userData']),
     shareData(){
       if(this.currentProductData){
         return {
@@ -170,20 +175,76 @@ export default {
             })
         }
       }
+    },
+
+    //检查商品是否收藏
+    checkCollect(){
+      let postData = {
+        flag: 1,
+        user_id: this.userData.id,
+        ids: this.$route.query.id
+      }
+
+      axios.post('api/method/checkCollects',postData)
+        .then((res)=>{
+          console.log('checkCollects',res.data)
+          if(res.data.code == 1){
+            this.is_collect = res.data.data.is_collect
+          }
+        })
+        .catch((err)=>{
+          console.log('checkCollects err',err)
+        })
+    },
+
+    //处理收藏或取消产品
+    handleGoodCollect(){
+      let is_collect = this.is_collect == 0 ? 1 : 0
+      let postData = {
+        flag: 1,
+        ids: this.$route.query.id,
+        user_id: this.userData.id,
+        is_collect: is_collect
+      }
+
+      axios.post('api/method/doCollect',postData)
+        .then((res)=>{
+          console.log('doCollect',res.data)
+          if(res.data.code ==1){
+            if(this.is_collect == 0){
+              this.$toast({
+                message: '收藏成功',
+                duration: 1200,
+                type: 'success'
+              })
+            }else{
+              this.$toast({
+                message: '取消成功',
+                duration: 1200,
+                type: 'success'
+              })
+            }
+            this.is_collect = is_collect
+          }
+        })
+        .catch((err)=>{
+          console.log('doCollect err',err)
+        })
     }
   },
 
   created(){
-    this.updateServePopUp(false)
-    this.updateSharePopUp(false)
-    this.closePopup()
-    this.changeCurrentBuyDetail(null)
-    this.changeCurrentProductData({})
-    this.updateAllSpellGroups([])
-    this.updatedGroupBuyID(-1)
-    this.updateGroupBuyData(null)
-    this.updatedSeckillData(null)
-    this.getProductData()
+    this.checkCollect()//检查是否收藏该产品
+    this.updateServePopUp(false)//关闭服务上拉框
+    this.updateSharePopUp(false)//关闭分享上拉框
+    this.closePopup()           //关闭商品上拉框
+    this.changeCurrentBuyDetail(null)//更新购买信息为空
+    this.changeCurrentProductData({})//更新当前产品信息为空
+    this.updateAllSpellGroups([])//更新可拼团的信息为空
+    this.updatedGroupBuyID(-1)//更新拼团的队伍id为-1
+    this.updateGroupBuyData(null)//更新拼团购买信息为空
+    this.updatedSeckillData(null)//更新秒杀产品信息为空
+    this.getProductData()//获取产品信息
   },
 
   mounted(){
@@ -225,6 +286,26 @@ export default {
     .iconfont
       color: #fff
       line-height: 8vw
+  
+  .collect
+    width: 8vw
+    height: 8vw
+    background-color: rgba(60,60,60,.5)
+    position: absolute 
+    top: 3vw
+    right: 12vw
+    z-index: 3
+    overflow: hidden
+    border-radius: 8vw
+    display: flex
+    align-items: center
+    justify-content: center
+    .star
+      font-size: 5vw
+      color: #fff
+    .active-star
+      font-size: 5vw
+      color: #ff5657
 
   .backToHome
     position: absolute

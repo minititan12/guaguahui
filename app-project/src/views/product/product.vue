@@ -18,19 +18,19 @@
       <span class="iconfont">&#xe624;</span>
     </div>
 
-    <div class="share" v-if="true" @click="openSharePopUp">
+    <div class="share" v-if="is_app()" @click="openSharePopUp">
       <span class="iconfont">&#xe61c;</span>
     </div>
 
-    <div class="collect" @click="handleGoodCollect">
+    <div class="collect" v-if="showCollectIcon()" @click="handleGoodCollect">
       <van-icon :class="is_collect == 0 ? 'star' : 'active-star'" name="star" />
     </div>
 
-    <div class="backToHome" v-if="false" @click="handleToHome">
+    <div class="backToHome" v-if="!is_app()" @click="handleToHome">
       app首页
     </div>
 
-    <div class="download" v-if="false" @click="handleToDownload">
+    <div class="download" v-if="!is_app()" @click="handleToDownload">
       <van-image
         width="15vw"
         height="15vw"
@@ -100,6 +100,19 @@ export default {
       }
       
       return false;
+    },
+
+    //是否显示收藏按钮
+    showCollectIcon(){
+      if(this.is_app()){
+        if(this.currentProductData.flag == 1){
+          return true
+        }else{
+          return false
+        }
+      }else{
+        return false
+      }
     },
 
     //跳转到主页

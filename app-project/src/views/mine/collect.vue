@@ -23,9 +23,15 @@
         <!-- 商品收藏框 -->
         <div v-if="active == 1">
           <div class="goodCollectItem" v-for="item of collectList">
-            <van-image :src="item.cover_img" width="25vw" height="25vw" fit="contain"/>
+            <van-image 
+              :src="item.cover_img" 
+              width="25vw" 
+              height="25vw" 
+              fit="contain"
+              @click="handleToProduct(item.ids)"
+            />
             <div class="item-right">
-              <span class="title">{{item.goods_name}}</span>
+              <span class="title" @click="handleToProduct(item.ids)">{{item.goods_name}}</span>
               <span class="num">{{item.total + '人收藏'}}</span>
               <div class="right-bottom">
                 <span class="price">{{'￥' + item.price}}</span>
@@ -38,10 +44,17 @@
         <!-- 店铺收藏框 -->
         <div v-if="active == 2">
           <div class="shopCollectItem" v-for="item of collectList">
-            <van-image round :src="item.shop_img" width="15vw" height="15vw" fit="contain"/>
+            <van-image 
+              round 
+              :src="item.shop_img" 
+              width="15vw" 
+              height="15vw" 
+              fit="contain" 
+              @click="handleToShop(item.ids)"
+            />
             <div class="item-right">
               <div class="right-top">
-                <span class="title">{{item.company}}</span>
+                <span class="title" @click="handleToShop(item.ids)">{{item.company}}</span>
                 <span class="btn" @click="handleConfirmCancel(item.ids,item.flag)">取消收藏</span>
               </div>
               
@@ -99,6 +112,24 @@ export default {
   methods: {
     handleBack(){
       this.$router.go(-1)
+    },
+    //跳转产品页面
+    handleToProduct(id){
+      this.$router.push({
+        path: '/product',
+        query:{
+          id: id
+        }
+      })
+    },
+    //跳转商铺页面
+    handleToShop(id){
+      this.$router.push({
+        path: '/shop',
+        query:{
+          shopID: id
+        }
+      })
     },
     //初始化滚动
     initCollectScroll(){
@@ -267,10 +298,10 @@ export default {
       margin-bottom: 2vw
 
       .tab
-        margin: 0 2vw
+        margin: 0 5vw
         display: block
       .actived-tab
-        margin: 0 2vw
+        margin: 0 5vw
         display: block
         font-size: 4.5vw
         padding-bottom: 1vw

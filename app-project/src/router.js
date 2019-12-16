@@ -673,7 +673,7 @@ export default new Router({
       component: Collect,
       meta:{
         index: 2,
-        keepAlive: false,
+        keepAlive: true,
         isImmersion: true,
         color: '#ffffff',
         style: 'dark'

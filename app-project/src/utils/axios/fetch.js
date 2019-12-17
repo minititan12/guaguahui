@@ -1,10 +1,10 @@
-import axios from 'axios';
+import axios from 'axios'
+import qs from 'qs'
 import store from '@/store'
 import {Toast} from 'vant'
 
 axios.defaults.timeout = 5000;
 axios.defaults.baseURL ='';
-
 //http request 拦截器
 axios.interceptors.request.use(
   config => {
@@ -36,7 +36,7 @@ export const httpPost = (url,param={},headers) => {
     axios({
       method: 'post',
       url,
-      data:param,
+      data:qs.stringify(param),
       headers: {
         ...headers
       }
@@ -58,7 +58,25 @@ export const httpGet = (url,param={},headers) => {
       params:param,
       url: url,
       headers:{
-        ...headers
+        ...headers,
+        'Content-Type':'application/x-www-form-urlencoded'
+      }
+    }).then(res => {
+      resolve(res)
+    }).catch(err => {
+      reject(err)
+    });
+  });
+}
+
+export const httpUpload = (url,param={}) => {
+  return new Promise((resolve,reject)=>{
+    axios({
+      method: 'post',
+      url,
+      data:param,
+      headers: {
+        'Content-Type':'multipart/form-data',
       }
     }).then(res => {
       resolve(res)

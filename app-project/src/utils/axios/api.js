@@ -43,4 +43,6 @@ export default {
   // 物流消息
   // http://showdoc.gghbuy.com/web/#/1?page_id=67
   logisticsDetails: baseUrl + '/api/method/logisticsDetails',
+  // 评价图片上传
+  evaImageUpload: baseUrl + '/api/method/show_img_upload',
 }

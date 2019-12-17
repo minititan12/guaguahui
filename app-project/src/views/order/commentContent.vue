@@ -2,7 +2,7 @@
   <div class="commentContent-wrapper">
     <van-nav-bar title="评价" left-arrow @click-left="handleBackClick"/>
 
-    <van-cell-group :key="index" v-for="(item,index) in order.goods_info">
+    <van-cell-group :key="index" v-for="(item,index) in orderEvaluation">
 
       <van-cell>
         <div class="good_desc">
@@ -21,16 +21,25 @@
 
       <van-cell>
         <div style="margin-bottom: .2rem">整体评分</div>
-        <van-rate allow-half v-model="value" />
+        <van-rate allow-half v-model="item.stars" />
       </van-cell>
 
       <van-cell>
         <div style="margin-bottom: .2rem">请上传评价图片</div>
-        <van-uploader v-model="fileList" multiple />
+        <div class="van-uploader" style="vertical-align: middle;">
+          <div class="van-uploader__wrapper">
+            <div class="van-uploader__preview" :key="index" v-for="(img,index) in item.imageUrl">
+              <div @click="previewImg(item.imageUrl,index)" class="van-image van-uploader__preview-image" style="overflow: hidden; border-radius: 4px;">
+                <img :src="img" class="van-image__img" style="object-fit: cover;">
+              </div>
+              <i @click.stop="deleteImg(item,index)" class="van-icon van-icon-clear van-uploader__preview-delete"></i>
+            </div>
+          </div>
+        </div>
+        <van-uploader v-show="item.imageUrl.length<=4" :name="index" :after-read="uploadImage" :accept="'image/*'" :max-count="9" />
       </van-cell>
-
       <van-field
-        v-model="message"
+        v-model="item.remark"
         rows="4"
         autosize
         label="评价"
@@ -46,23 +55,18 @@
 
 <script>
 import axios from 'axios'
-import {orderDetail} from '@/utils/axios/request'
+import {orderDetail,evaImageUpload} from '@/utils/axios/request'
 import { mapState } from 'vuex'
+import { ImagePreview } from 'vant';
 export default {
   name: "CommentContent",
   data(){
     return {
-      value: 0,
-      fileList: [],
-      message: '',
-      descText: '',
-      title: '',
-      photo: '',
-      
+
       // 订单号
       order_number:"",
       // 订单详情
-      order:{},
+      orderEvaluation:[],
     }
   },
   computed:{
@@ -76,6 +80,26 @@ export default {
     handleBackClick(){
       this.$router.go(-1)
     },
+    // 预览图片
+    previewImg(images,startPosition){
+      ImagePreview({images,startPosition});
+    },
+    // 上传图片
+    uploadImage(file,{name}){
+      let param = new FormData();
+      param.append('file',file.file);
+      evaImageUpload(param).then(res=>{
+        if(res.data.code != 1){
+          this.$toast(res.data.message);
+          return;
+        }
+        this.orderEvaluation[name].imageUrl.push(res.data.data.src);
+      }).catch(res=>{})
+    },
+    // 移除图片
+    deleteImg(item,index){
+      item.imageUrl.splice(index,1);
+    },
     // 获取订单详情
     getOrderDetail(){
       orderDetail({
@@ -85,7 +109,24 @@ export default {
           this.$toast(res.data.message);
           return;
         }
-        this.order = res.data.data;
+        let orderEvaluation = [];
+        for(let i in res.data.data.goods_info){
+          orderEvaluation.push({
+            goods_id:res.data.data.goods_info[i].goods_id,
+            cover_img:res.data.data.goods_info[i].cover_img,
+            goods_name:res.data.data.goods_info[i].goods_name,
+            attr1_name:res.data.data.goods_info[i].attr1_name,
+            attr1_value:res.data.data.goods_info[i].attr1_value,
+            attr2_name:res.data.data.goods_info[i].attr2_name,
+            attr2_value:res.data.data.goods_info[i].attr2_value,
+            attr3_name:res.data.data.goods_info[i].attr3_name,
+            attr3_value:res.data.data.goods_info[i].attr3_value,
+            stars:0,
+            remark:"",
+            imageUrl:[]
+          });
+        }
+        this.orderEvaluation = orderEvaluation;
       }).catch(res=>{});
     },
     // 获取属性值
@@ -102,45 +143,30 @@ export default {
       }
       return desc;
     },
-    getBase64List(){
-      if(this.fileList.length > 0){
-        let result = []
-        for(let item of this.fileList){
-          result.push(item.content)
-        }
-        return result
-      }else{
-        return []
-      }
-    },
     handlePostComment(){
-      if(this.value == 0){
-        this.$toast({
-          message: '请选择评分(>0)',
-          duration: 1200
-        })
-        return 
-      }
-
-      if(this.message.length == 0){
-        this.$toast({
-          message: '请输入评价',
-          duration: 1200
-        })
-        return
-      }
-      let postData = {
-        goods_id: this.$route.query.goods_id,
-        user_id: this.userData.id,
-        user_id_to: this.$route.query.shop_id,
-        order_number: this.$route.params.orderNumber,
-        content: this.message,
-        value: this.value,
+      let data = {
+        order_number:this.order_number,
+        user_id:this.userData.id,
         nickname: this.userData.nickname,
         head_img: this.userData.head_img,
-        file_list: this.getBase64List()
       }
-      axios.post('api/method/showComment',postData)
+      let goodList = [];
+      for(let i in this.orderEvaluation){
+        if(this.orderEvaluation[i].stars > 0){
+          goodList.push({
+            goods_id:this.orderEvaluation[i].goods_id,
+            stars:this.orderEvaluation[i].stars,
+            remark:this.orderEvaluation[i].remark,
+            imageUrl:this.orderEvaluation[i].imageUrl,
+          });
+        }
+      }
+      if(goodList.length == 0){
+        this.$toast("请选择商品评价");
+        return;
+      }
+      data.goodList = goodList;
+      axios.post('api/method/showComment',data)
         .then((res)=>{
           console.log('showComment',res.data)
           if(res.data.code == 1){
@@ -170,14 +196,6 @@ export default {
         })
     }
   },
-  mounted(){
-    // console.log(this.$route.params)
-    if(this.$route.params){
-      this.descText = this.$route.params.descText
-      this.title = this.$route.params.title
-      this.photo = this.$route.params.photo
-    }
-  }
 }
 </script>
 
@@ -193,6 +211,7 @@ export default {
     right  0
   .commentContent-wrapper
     padding-top 46px
+    box-sizing border-box
   .commentContent-wrapper >>> .good_desc
     display: flex
     flex-direction: row

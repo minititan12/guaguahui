@@ -171,6 +171,7 @@ export default {
           this.$toast(res.data.message);
           return;
         }
+        console.log('orderDetail',res.data)
         this.order = res.data.data;
       }).catch(res=>{});
     },

@@ -50,6 +50,7 @@ const AllComment = () => import('./views/product/allComment.vue')
 const Set = () => import('./views/mine/set.vue')
 const SetPage = () => import('./views/mine/setPage.vue')
 const Complaint = () => import('./views/mine/complaint.vue')
+const ComplaintDesc = () => import('./views/mine/complaintDesc.vue')
 const Collect = () => import('./views/mine/collect.vue')
 const History = () => import('./views/mine/history.vue')
 const Coupon = () => import('./views/mine/coupon.vue')
@@ -192,7 +193,7 @@ export default new Router({
       component: OrderPage,
       meta:{
         index: 2,
-        keepAlive: false,
+        keepAlive: true,
         isImmersion: true,
         color: '#ffffff',
         style: 'dark'
@@ -658,6 +659,19 @@ export default new Router({
       path: '/complaint',
       name: 'complaint',
       component: Complaint,
+      meta:{
+        index: 2,
+        keepAlive: false,
+        isImmersion: true,
+        color: '#ffffff',
+        style: 'dark'
+      }
+    },
+    //我的投诉/举报页面组件
+    {
+      path: '/complaintDesc',
+      name: 'complaintDesc',
+      component: ComplaintDesc,
       meta:{
         index: 2,
         keepAlive: false,

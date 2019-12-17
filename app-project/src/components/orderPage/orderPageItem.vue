@@ -23,6 +23,7 @@
           @refund= "handleRefund(item.orderNumber)"
           @confirm= "handleConfirm(item.orderNumber)"
           @logistics= "handleToLogistics(item)"
+          @comment = "handleToComment(item)"
         />
       </div>
       
@@ -372,6 +373,17 @@ export default {
         })
         .catch(()=>{
         })
+    },
+
+    //评价商品
+    handleToComment(data){
+      this.$router.push({
+        path: "/commentContent",
+        name: "commentContent",
+        query: {
+          order_number: data.orderNumber,
+        },
+      })
     },
 
     //申请退款

@@ -1,4 +1,4 @@
-import {httpPost,httpGet} from './fetch'
+import {httpPost,httpGet,httpUpload} from './fetch'
 import api from './api.js'
 
 // 获取消息红点
@@ -69,4 +69,9 @@ export const receipt = (param = {}) => {
 // 物流信息
 export const logisticsDetails = (param = {}) => {
   return httpPost(api.logisticsDetails,param);
+}
+
+// 上传评价图片
+export const evaImageUpload = (param = {}) => {
+  return httpUpload(api.evaImageUpload,param);
 }

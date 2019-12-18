@@ -75,3 +75,13 @@ export const logisticsDetails = (param = {}) => {
 export const evaImageUpload = (param = {}) => {
   return httpUpload(api.evaImageUpload,param);
 }
+
+// 退款商品信息
+export const refundGoodsInfo = (param = {}) => {
+  return httpGet(api.refundGoodsInfo,param);
+}
+
+// 申请退款
+export const refundApply = (param = {}) => {
+  return httpPost(api.refundApply,param);
+}

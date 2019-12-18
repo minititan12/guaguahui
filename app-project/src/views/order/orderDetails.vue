@@ -34,7 +34,12 @@
         />
         <div class="content">
           <div class="name">{{item.goods_name}}</div>
-          <div class="attr">{{getDesc(item)}}</div>
+          <div class="desc">
+            <div class="attr">{{getDesc(item)}}</div>
+            <div v-if="item.status == 2 || item.status == 3" @click="refundOrder(item.goods_attr_id)" class="refund">申请退款</div>
+            <div v-if="item.status == 5" class="refund-status">退款中</div>
+            <div v-if="item.status == 11" class="refund-status">退款成功</div>
+          </div>
           <div class="details">
             <div>x{{item.number}}</div>
             <div>￥{{item.price}}</div>
@@ -77,14 +82,9 @@
     <div v-if="order.status === 8" class="order-footer">
       <div @click="delOrder" class="delete single">删除订单</div>
     </div>
-    <!-- 待发货 -->
-    <div v-if="order.status === 2" class="order-footer">
-      <div @click="refundOrder" class="refund single">申请退款</div>
-    </div>
     <!-- 待收货 -->
     <div v-if="order.status === 3" class="order-footer">
       <div @click="confirmOrder" class="confirm double">确认收货</div>
-      <div @click="refundOrder" class="refund double">申请退款</div>
     </div>
     <!-- 待评价 -->
     <div v-if="order.status === 1" class="order-footer">
@@ -134,7 +134,7 @@ export default {
         case 0:
           return 'unpaid'
         case 1:
-          return '订单完成'
+          return '待评价'
         case 2:
           return 'wait-ship'
         case 3:
@@ -146,7 +146,7 @@ export default {
         case 9:
           return '已退款'
         case 10:
-          return '已评价'
+          return 'complete'
         default:
           return ''
       }    
@@ -250,7 +250,7 @@ export default {
       }).catch(()=>{})
     },
     //申请退款
-    refundOrder(orderNumber){
+    refundOrder(goods_attr_id){
       this.$dialog.alert({
         title: '申请退款',
         message: '确定申请退款',
@@ -259,8 +259,9 @@ export default {
         this.$router.push({
           path: "/requestRefund",
           name: "requestRefund",
-          params: {
-            orderNumber: this.order_number
+          query: {
+            goods_attr_id,
+            order_number: this.order_number
           }
         })
       }).catch(()=>{})
@@ -326,6 +327,8 @@ export default {
       background-image url('/public/static/order/paid_bg@2x.png')
     &.wait-receipt
       background-image url('/public/static/order/shipments_bg@2x.png')
+    &.complete
+      background-image url('/public/static/order/change_hands_bg@2x.png')
     .status
       font-size 5vw
       color white
@@ -399,12 +402,31 @@ export default {
           font-size 3.8vw
           font-family PFH
           line-height 4.6vw
-          height 11vw
-        .attr
-          font-size 3vw
-          color #999
-          line-height 5vw
+          height 10vw
+        .desc
           padding-bottom 1vw
+          display flex
+          justify-content space-between
+          height 9vw
+          .attr
+            font-size 3vw
+            color #999
+            line-height 4.5vw
+            flex 1
+          .refund
+            font-size 3vw
+            line-height 6vw
+            height 6vw
+            border 1px solid #eee
+            color #999
+            padding 0 4vw
+            border-radius 3vw
+          .refund-status
+            font-size 3vw
+            line-height 6vw
+            height 6vw
+            color #666
+            padding 0 4vw
         .details
           display flex
           justify-content space-between
@@ -466,6 +488,6 @@ export default {
       margin 0 2vw
     .cancel,.confirm
       background #faaa10
-    .delete,.refund,.pay,.evaluation
+    .delete,.pay,.evaluation
       background #f3284f
 </style>

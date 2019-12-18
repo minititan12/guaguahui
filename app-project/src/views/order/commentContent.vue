@@ -34,9 +34,9 @@
               </div>
               <i @click.stop="deleteImg(item,index)" class="van-icon van-icon-clear van-uploader__preview-delete"></i>
             </div>
+            <van-uploader v-show="item.imageUrl.length<9" :name="index" :after-read="uploadImage" :accept="'image/*'" :max-count="9" />
           </div>
         </div>
-        <van-uploader v-show="item.imageUrl.length<=4" :name="index" :after-read="uploadImage" :accept="'image/*'" :max-count="9" />
       </van-cell>
       <van-field
         v-model="item.remark"

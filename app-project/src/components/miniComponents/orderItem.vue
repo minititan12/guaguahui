@@ -34,24 +34,6 @@
     </div>
 
     <div class='oderItem-bottom'>
-
-      <!-- 底下按钮 -->
-      <div class="bottom-btns">
-        <van-button plain  class="bottom-del" type="danger" size="small" @click.stop="handleDel" v-if="showDel">删除订单</van-button>
-
-        <van-button plain  class="bottom-comment" type="warning" size="small" @click.stop="handleComment" v-if="showComment">评价</van-button>
-
-        <van-button plain v-if="showCancel"  class="bottom-cancel" type="warning" size="small" @click.stop="handleCancel">取消订单</van-button>
-
-        <van-button plain v-if="showConfirm"  class="bottom-confirm" type="primary" size="small" @click.stop="handleConfirm">确认收货</van-button>
-
-        <van-button plain v-if="showPay"  class="bottom-pay" type="primary" size="small" @click.stop="handlePay">付款</van-button>
-
-        <van-button plain v-if="showRefund"  class="bottom-refund" type="warning" size="small" @click.stop="handleRefund">申请退款</van-button>
-
-        <van-button plain v-if="showLogistics"  class="bottom-logistics" type="primary" size="small" @click.stop="handleToLogistics">物流信息</van-button>
-      </div>
-
       <!-- 底下价格数量描述 -->
       <div class="bottom-desc">
         <span class="bottom-number">共 {{getAllNumber()}} 件</span>
@@ -59,6 +41,23 @@
         <span class="bottom-icon">￥</span>
         <span class="bottom-price">{{getAllAmount()}}</span>
       </div>
+    </div>
+
+    <!-- 底下按钮 -->
+    <div class="bottom-btns">
+      <van-button class="bottom-del" type="danger" size="small" @click.stop="handleDel" v-if="showDel">删除订单</van-button>
+
+      <van-button class="bottom-comment" type="warning" size="small" @click.stop="handleComment" v-if="showComment">评价</van-button>
+
+      <van-button v-if="showCancel"  class="bottom-cancel" type="warning" size="small" @click.stop="handleCancel">取消订单</van-button>
+
+      <van-button v-if="showConfirm"  class="bottom-confirm" type="primary" size="small" @click.stop="handleConfirm">确认收货</van-button>
+
+      <van-button v-if="showPay"  class="bottom-pay" type="primary" size="small" @click.stop="handlePay">付款</van-button>
+
+      <van-button v-if="showRefund"  class="bottom-refund" type="warning" size="small" @click.stop="handleRefund">申请退款</van-button>
+
+      <van-button v-if="showLogistics"  class="bottom-logistics" type="primary" size="small" @click.stop="handleToLogistics">物流信息</van-button>
     </div>
   </div>
 </template>
@@ -252,26 +251,10 @@ export default {
           font-family: PFM
 
     .oderItem-bottom
-      line-height: 12vw
       display: flex
       flex-direction: row
-      justify-content: space-between
-      padding-left: 1vw
+      justify-content: flex-end
       align-items: center
-      .bottom-btns
-        height: 100%
-        .bottom-del
-          margin-right: 1vw
-        .bottom-cancel
-          margin-right: 1vw
-        .bottom-comment
-          margin-right: 1vw
-        .bottom-confirm
-          margin-right: 1vw
-        .bottom-refund
-          margin-right: 1vw
-        .bottom-logistics
-          margin-right: 1vw
       .bottom-desc
         .bottom-number
           font-size: 3vw
@@ -285,4 +268,22 @@ export default {
           font-size: 4vw
           font-family: hgzt
           color: #FF5655
+
+    .bottom-btns
+      height: 100%
+      padding: 3vw 0
+      display: flex
+      justify-content: flex-end
+      .bottom-del
+        margin-right: 1vw
+      .bottom-cancel
+        margin-right: 1vw
+      .bottom-comment
+        margin-right: 1vw
+      .bottom-confirm
+        margin-right: 1vw
+      .bottom-refund
+        margin-right: 1vw
+      .bottom-logistics
+        margin-right: 1vw
 </style>

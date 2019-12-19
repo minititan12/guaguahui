@@ -58,35 +58,33 @@ export default {
 <style lang="stylus" scoped>
   .left-wrapper
     position: absolute 
-    right: 75%
+    right: 76%
     top: 0
     bottom: 0
     left: 0
     overflow: hidden
     box-sizing: border-box
-    // border-right: .01rem solid #999
     color: #000
     background-image: url('/public/uploads/bglogo.jpg')
     background-size: 100vw auto
     background-position: 0 -11vw
     background-repeat: no-repeat
     .classifyList
-      padding: .1rem 0
+      padding: 2vw 0
       .left-item
-        width: 86%
-        height: .6rem
-        line-height: .6rem
-        margin: .3rem 0
-        border-radius: .3rem
-        box-sizing: border-box
+        width: 90%
+        height: 8vw
+        line-height: 8vw
+        margin: 5vw 0
+        border-top-right-radius: 5vw
+        border-bottom-right-radius: 5vw
         text-align: center
-        margin-left: 7%
-        font-weight: bold
+        font-family: PFM
+        letter-spacing: .2vw
+        font-size: 3.8vw
       .activeItem
-        // background: linear-gradient(to right, #FD0305, #FD4140)
-        background-color: #FD4140
+        background-color: #ff5756
         color: #eee
-        border: .01rem solid #FD4140
       .unActiveItem
         color: #000
 </style>

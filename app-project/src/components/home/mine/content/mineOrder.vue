@@ -140,10 +140,12 @@ export default {
     box-sizing: border-box
     padding: 3vw
     .order-top
-      line-height: 8vw
+      width: 100%
       display: flex
       flex-direction: row
       justify-content: space-between
+      align-items: center
+      margin: 2vw 0
       .top-text
         font-family: PFH
         font-size: 4.5vw
@@ -152,7 +154,11 @@ export default {
         color: #A2A2A2
         display: flex
         align-items: center
+        .right-text
+          display: inline-block
         .iconfont
+          display: inline-block
+          color: #ff5756
           font-size: 4vw
           margin-left: 1vw
     .order-bottom

@@ -45,6 +45,12 @@ export default {
   logisticsDetails: baseUrl + '/api/method/logisticsDetails',
   // 评价图片上传
   evaImageUpload: baseUrl + '/api/method/show_img_upload',
+  //获取投诉大小类
+  getcategory: baseUrl + '/api/method/getcategory',
+  //获取可以投诉的订单
+  getcomplainedorders: baseUrl + '/api/method/getcomplainedorders',
+  //投诉
+  addcomplaint: baseUrl + '/api/method/addcomplaint',
   // 退款商品信息
   // http://showdoc.gghbuy.com/web/#/1?page_id=75
   refundGoodsInfo: baseUrl + '/api/method/refundGoodsInfo',

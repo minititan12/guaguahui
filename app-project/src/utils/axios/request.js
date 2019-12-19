@@ -76,6 +76,21 @@ export const evaImageUpload = (param = {}) => {
   return httpUpload(api.evaImageUpload,param);
 }
 
+//获取投诉大小类
+export const getcategory = (param = {}) => {
+  return httpGet(api.getcategory,param);
+}
+
+//获取可以投诉的订单
+export const getcomplainedorders = (param = {}) => {
+  return httpPost(api.getcomplainedorders,param);
+}
+
+//投诉
+export const addcomplaint = (param = {}) => {
+  return httpPost(api.addcomplaint,param);
+}
+
 // 退款商品信息
 export const refundGoodsInfo = (param = {}) => {
   return httpGet(api.refundGoodsInfo,param);
@@ -105,3 +120,4 @@ export const expressList = (param = {}) => {
 export const refundGoods = (param = {}) => {
   return httpPost(api.refundGoods,param);
 }
+

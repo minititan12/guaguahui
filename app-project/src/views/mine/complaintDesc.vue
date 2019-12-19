@@ -40,7 +40,7 @@
 
         <div class="uploader">
           <div class="title">上传凭证</div>
-          <van-uploader v-model="fileList" :after-read="getFileList" multiple :max-count="4"/>
+          <van-uploader v-model="fileList" @delete="handleDeleteFile" :after-read="getFileList" multiple :max-count="4"/>
         </div>
 
         <div class="phone">
@@ -104,8 +104,6 @@ export default {
     },
     //获取图片地址
     getFileList(file,obj){
-      // console.log(file)
-      // console.log(obj)
       let param = new FormData();
       param.append('file',file.file);
       evaImageUpload(param).then(res=>{
@@ -115,6 +113,10 @@ export default {
         }
         this.postFileList[obj.index] = res.data.data.src
       }).catch(err=>{})
+    },
+    //处理删除
+    handleDeleteFile(file,obj){
+      this.postFileList.splice(obj.index,1)
     },
     //处理显示主要原因弹出框
     handleShowMainReason(){

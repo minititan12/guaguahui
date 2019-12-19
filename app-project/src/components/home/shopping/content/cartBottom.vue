@@ -122,7 +122,7 @@ export default {
     position: absolute
     bottom: 0
     z-index: 2
-    background-color: #fff
+    background-color: #f5f7fa
     display: flex
     flex-direction: row
     align-items: center

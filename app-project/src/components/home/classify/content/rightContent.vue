@@ -108,19 +108,19 @@ export default {
   .right-wrapper
     position: absolute 
     left: 25%
-    top: 0
+    top: 2vw
     right: 0
     bottom: 0
     box-sizing: border-box
     overflow: hidden
     text-align: center
+    background-color: #f5f7fa
     .product-blank
       width: 100%
-      height: .1rem
+      height: 2vw
     .adver-img
       width: 95%
-      height: 20vws
-      margin: .2rem auto 
+      margin: 3vw auto 
     .product-list
       width: 100%
       display: flex
@@ -131,11 +131,14 @@ export default {
         display: flex
         flex-direction: column
         align-items: center
-        margin-bottom: .3rem
+        margin-bottom: 4vw
+        color: #000
+        font-family: PFM
+        letter-spacing: .2vw
         .product-img
           width: 20vw
           height: 20vw
-          margin-bottom: .2rem
+          margin-bottom: 3vw
 </style>
 
 

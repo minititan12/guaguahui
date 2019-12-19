@@ -77,14 +77,15 @@ export default {
     font-size: 4vw
     font-family: PFH
   .setContent-wrapper >>> .van-nav-bar__arrow
-    color: #000
+    color: #ff5756
     font-size: 5vw
   .setContent-wrapper >>> .van-cell__value
     text-align: left
-    color: #000
-    font-family: PFM
+    color: #ff5756
+    font-family: PFB
+    font-size: 3.5vw
   .setContent-wrapper >>> .van-cell__title
-    color: #666
+    color: #999
     font-family: PFM
   .setContent-wrapper >>> .van-cell__left-icon
     color: #000

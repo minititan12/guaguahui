@@ -100,3 +100,24 @@ export const refundGoodsInfo = (param = {}) => {
 export const refundApply = (param = {}) => {
   return httpPost(api.refundApply,param);
 }
+
+// 退款售后列表
+export const refundList = (param = {}) => {
+  return httpGet(api.refundList,param);
+}
+
+// 退款详情
+export const refundDetail = (param = {}) => {
+  return httpGet(api.refundDetail,param);
+}
+
+// 物流公司
+export const expressList = (param = {}) => {
+  return httpGet(api.expressList,param);
+}
+
+// 退款发货
+export const refundGoods = (param = {}) => {
+  return httpPost(api.refundGoods,param);
+}
+

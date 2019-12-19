@@ -58,7 +58,7 @@ export default {
 <style lang="stylus" scoped>
   .left-wrapper
     position: absolute 
-    right: 75%
+    right: 76%
     top: 0
     bottom: 0
     left: 0

@@ -107,14 +107,16 @@ export default {
 <style lang="stylus" scoped>
   .right-wrapper
     position: absolute 
-    left: 25%
+    left: 24%
     top: 2vw
     right: 0
     bottom: 0
     box-sizing: border-box
     overflow: hidden
     text-align: center
-    background-color: #f5f7fa
+    background-color: #fff
+    // border-top: .01vw solid #eee
+    border-left: .01vw solid #eee
     .product-blank
       width: 100%
       height: 2vw

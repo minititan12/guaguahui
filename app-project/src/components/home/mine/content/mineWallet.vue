@@ -16,7 +16,7 @@
         </div>
         <div class="balance-num">
           <span class="num-icon">￥</span>
-          <span class="num-text">120.00</span>
+          <span class="num-text">{{userData.brokerage}}</span>
         </div>
       </div>
     </div>
@@ -24,8 +24,12 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: "MineWallet",
+  computed: {
+    ...mapState(['userData'])
+  },
   methods: {
     handleToIntegral(){
       this.$router.push({

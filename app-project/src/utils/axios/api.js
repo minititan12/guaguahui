@@ -51,4 +51,16 @@ export default {
   // 申请退款
   // http://showdoc.gghbuy.com/web/#/1?page_id=71
   refundApply: baseUrl + '/api/method/refundApply',
+  // 退款售后列表
+  // http://showdoc.gghbuy.com/web/#/1?page_id=70
+  refundList: baseUrl + '/api/method/refundList',
+  // 退款详情
+  // http://showdoc.gghbuy.com/web/#/1?page_id=78
+  refundDetail: baseUrl + '/api/method/refundDetail',
+  // 物流公司
+  // http://showdoc.gghbuy.com/web/#/1?page_id=79
+  expressList: baseUrl + '/api/method/expressList',
+  // 退款发货
+  // http://showdoc.gghbuy.com/web/#/1?page_id=77
+  refundGoods: baseUrl + '/api/method/refundGoods',
 }

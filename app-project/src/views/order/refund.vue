@@ -3,186 +3,152 @@
     <van-sticky>
       <van-nav-bar title="退款/售后" left-arrow @click-left="handleBackClick"/>
     </van-sticky>
-    
-    <van-sticky>
-      <van-tabs v-model="active" title-active-color="#FF5756">
-        <van-tab title="可退款"></van-tab>
-        <van-tab title="退款中"></van-tab>
-        <van-tab title="已退款"></van-tab>
-      </van-tabs>
-    </van-sticky>
-
-    <OrderItem 
-      v-if= "orderList.length > 0" 
-      v-for= "item of list" 
-      :data= "item" 
-      :showDel= "item.status == 5 ? false : true"
-      :statusText= "getStatusText(item.status)"
-      @del= "handleDel(item.orderNumber)"
-      @imgClick= "handleGoodClick(item.goods_id)"
-      @titleClick= "handleGoodClick(item.goods_id)"
-      @shopClick= "handleShopClick(item.user_id_to)"
-    />
+    <div @click="goRefundDetails(item)" class="refund" :key="index" v-for="(item,index) in refundList">
+      <div @click.stop="goShop(item)" class="head">
+        <van-icon color="#B9B9B9" name="shop-o" />
+        <div>{{item.shop_name}}</div>
+        <van-icon name="arrow" />
+      </div>
+      <div class="goods">
+        <van-image
+          width="20vw"
+          height="20vw"
+          fit="contain"
+          :src="item.cover_img"
+        />
+        <div class="content">
+          <div class="name">{{item.goods_name}}</div>
+          <div class="desc">{{getDesc(item)}}</div>
+          <div class="num">x{{item.number}}</div>
+        </div>
+      </div>
+      <div class="footer">
+        <van-image
+          width="5vw"
+          fit="contain"
+          src="/public/static/refund/icon_refund.png"
+        />
+        <div v-if="item.refund_status === 0">商家处理中</div>
+        <div v-if="item.refund_status == 1">商家同意退款</div>
+        <div v-if="item.refund_status == 2">商家拒绝退款</div>
+        <div v-if="item.refund_status == 3">等待商家收货</div>
+        <div v-if="item.refund_status == 4">退款成功</div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
-import OrderItem from '../../components/miniComponents/orderItem'
-import { mapState } from 'vuex'
+import {refundList} from '@/utils/axios/request'
 export default {
   name: "Refund",
-  components:{
-    OrderItem
-  },
   data(){
     return {
-      orderList: [],
-      active: 0
+      refundList:[]
     }
   },
-  computed:{
-    ...mapState(['userData']),
-    list(){
-      let result = []
-      for(let item of this.orderList){
-        result.push({
-          originData: item,
-          attr1_name: item.attr1_name,
-          attr1_value: item.attr1_value,
-          attr2_name: item.attr2_name,
-          attr2_value: item.attr2_value,
-          attr3_name: item.attr3_name,
-          attr3_value: item.attr3_value,
-          imgUrl: item.photo.photo,
-          price: item.price,
-          totalPrice: item.amount,
-          shop: item.shop.company,
-          number: item.number,
-          title: item.title.goods_name,
-          orderNumber: item.order_number,
-          goods_id: item.goods_id,
-          goods_attr_id: item.goods_attr_id,
-          user_id: item.user_id,
-          user_id_to: item.user_id_to,
-          status: item.status
-        })
+  created(){
+    refundList().then(res=>{
+      if(res.data.code != 1){
+        this.$toast(res.data.message);
+        return;
       }
-      return result
-    }
+      this.refundList = res.data.data;
+    }).catch(res=>{})
   },
   methods: {
     handleBackClick(){
       this.$router.go(-1)
     },
-    getStatusText(status){
-      if(status == 5){
-        return '待退款'
-      }else if(status == 9){
-        return '已退款'
-      }
-    },
-    getData(){
-      let postData = {
-        user_id: this.userData.id
-      }
-      axios.post('api/method/retirement',postData)
-        .then((res)=>{
-          console.log('retirement',res.data)
-          if(res.data.code == 1){
-            this.orderList = res.data.data
-          }
-        })
-        .catch((err)=>{
-          console.log('retirement',err)
-        })
-    },
-    handleDel(orderNumber){
-      this.$dialog.alert({
-        title: '删除订单',
-        message: '确定删除该订单',
-        showCancelButton: true   
-      })
-        .then(()=>{
-          this.$toast({
-            type: "loading",
-            message: "删除中...",
-            duration: 1500
-          })
-          let postData = {
-            order_number: orderNumber
-          }
-          console.log(postData)
-          axios.post('api/method/delOrder',postData)
-            .then((res)=>{
-              console.log('delOrder',res.data)
-              this.$toast.clear()
-              if(res.data.code == 1){
-                this.getData()
-              }else{
-                this.$toast({
-                  type: "fail",
-                  message: "删除失败",
-                  duration: 1200
-                })
-              }
-            })
-            .catch((err)=>{
-              this.$toast.clear()
-              this.$toast({
-                type: "fail",
-                message: "删除失败",
-                duration: 1200
-              })
-              console.log('delOrder',err)
-            })
-        })
-        .catch(()=>{
-        })
-    },
-    handleGoodClick(goods_id){
+    // 跳转退款详情
+    goRefundDetails(item){
       this.$router.push({
-        path: '/product',
+        path: '/refundDetails',
         query: {
-          id: goods_id
+          order_id: item.order_id,
         }
       })
     },
-
-    handleShopClick(user_id_to){
+    // 跳转到店铺
+    goShop(item){
       this.$router.push({
         path: '/shop',
         query: {
-          shopID: user_id_to
+          shopID: item.shop_id
         }
       })
-    }
+    },
+    // 获取属性值
+    getDesc(item){
+      let desc = "";
+      if(item.attr1_name !== ""){
+        desc+= item.attr1_name+ ":" + item.attr1_value;
+      }
+      if(item.attr2_name !== ""){
+        desc+= " " + item.attr2_name+ ":" + item.attr2_value;
+      }
+      if(item.attr3_name !== ""){
+        desc+= " " + item.attr3_name+ ":" + item.attr3_value;
+      }
+      return desc;
+    },
   },
-  created(){
-    this.getData()
-  }
 }
 </script>
 
 <style lang="stylus" scoped>
-  .refund-wrapper >>> .van-icon
+  .refund-wrapper
+    background #f5f7fa
+  .refund-wrapper .van-nav-bar >>> .van-icon
     color: #FF5756
     font-size: 5vw
   .refund-wrapper >>> .van-nav-bar__title
     font-size: 4vw
     font-family: PFH
     color: #000
-  
-  .refund-wrapper >>> .van-tabs__line
-    background-color: #FF5756 
 
-  .refund-wrapper >>> .van-tab
-    font-size: 3.5vw
-    color: #000
-    font-family: PFB
-
-  .refund-wrapper
-    width: 100vw
-    min-height: 100vh
-    background-color: #eee
+  .refund
+    background-color white
+    margin 3vw
+    padding 0 2vw
+    border-radius 2vw
+    .head
+      display flex
+      justify-content flex-start
+      align-items center
+      height 10vw
+      font-size 4vw
+      font-family: PFB
+      .van-icon-shop-o
+        font-size 5vw
+        margin-right 1vw
+    .goods
+      display flex
+      justify-content flex-start
+      .van-image
+        margin-right 2vw
+      .content
+        flex 1
+        .name
+          font-size 3.8vw
+          font-family PFH
+          line-height 4.6vw
+          height 10vw
+        .desc
+          padding-bottom 1vw
+          font-size 3vw
+          color #999
+          line-height 4.5vw
+        .num
+          font-size 3vw
+          color #999
+          line-height 4.5vw    
+    .footer
+      height 10vw
+      display flex
+      justify-content flex-start
+      align-items center
+      font-size 3.6vw    
+      .van-image
+        margin-right 2vw
 </style>

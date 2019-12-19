@@ -55,8 +55,6 @@
 
       <van-button v-if="showPay"  class="bottom-pay" type="primary" size="small" @click.stop="handlePay">付款</van-button>
 
-      <van-button v-if="showRefund"  class="bottom-refund" type="warning" size="small" @click.stop="handleRefund">申请退款</van-button>
-
       <van-button v-if="showLogistics"  class="bottom-logistics" type="primary" size="small" @click.stop="handleToLogistics">物流信息</van-button>
     </div>
   </div>

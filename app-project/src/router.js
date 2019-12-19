@@ -25,6 +25,8 @@ const Refund = () => import('./views/order/refund.vue')
 const RequestRefund = () => import ('./views/order/requestRefund.vue')
 const WaitShare = () => import('./views/order/waitShare.vue')
 const OrderDetails = () => import('./views/order/orderDetails.vue')
+const RefundDetails = () => import('./views/order/refundDetails.vue')
+const WriteLogistics = () => import('./views/order/writeLogistics.vue')
 
 //marketing文件夹
 const LimitBuy = () => import('./views/marketing/limitBuy.vue')
@@ -204,6 +206,32 @@ export default new Router({
       path: '/orderDetails',
       name: 'orderDetails',
       component: OrderDetails,
+      meta:{
+        index: 2,
+        keepAlive: false,
+        isImmersion: true,
+        color: '#ffffff',
+        style: 'dark'
+      }
+    },
+    //退款详情页面组件
+    {
+      path: '/refundDetails',
+      name: 'refundDetails',
+      component: RefundDetails,
+      meta:{
+        index: 2,
+        keepAlive: false,
+        isImmersion: true,
+        color: '#ffffff',
+        style: 'dark'
+      }
+    },
+    //退款详情页面组件
+    {
+      path: '/writeLogistics',
+      name: 'writeLogistics',
+      component: WriteLogistics,
       meta:{
         index: 2,
         keepAlive: false,

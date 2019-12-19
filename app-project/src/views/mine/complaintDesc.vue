@@ -40,7 +40,7 @@
 
         <div class="uploader">
           <div class="title">上传凭证</div>
-          <van-uploader v-model="fileList" multiple :max-count="4"/>
+          <van-uploader v-model="fileList" :after-read="getFileList" multiple :max-count="4"/>
         </div>
 
         <div class="phone">
@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import { getcategory,addcomplaint } from '../../utils/axios/request'
+import { getcategory,addcomplaint,evaImageUpload } from '../../utils/axios/request'
 import { Toast } from 'vant'
 import { mapState } from 'vuex'
 export default {
@@ -90,6 +90,7 @@ export default {
       explainText: '',
       phone: '',
       fileList: [],
+      postFileList: [],
       class_id: null,
       category_id: null
     }
@@ -100,6 +101,20 @@ export default {
   methods: {
     handleBack(){
       this.$router.go(-1)
+    },
+    //获取图片地址
+    getFileList(file,obj){
+      // console.log(file)
+      // console.log(obj)
+      let param = new FormData();
+      param.append('file',file.file);
+      evaImageUpload(param).then(res=>{
+        if(res.data.code != 1){
+          this.$toast(res.data.message);
+          return;
+        }
+        this.postFileList[obj.index] = res.data.data.src
+      }).catch(err=>{})
     },
     //处理显示主要原因弹出框
     handleShowMainReason(){
@@ -218,7 +233,7 @@ export default {
         class_id: this.class_id,
         category_id: this.category_id,
         explain: this.explainText,
-        photo: this.fileList,
+        photo: this.postFileList,
         phone: this.phone
       }
 

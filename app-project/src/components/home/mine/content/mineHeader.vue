@@ -135,6 +135,10 @@ export default {
   created(){
     this.getAllCouponNum()
     this.getAllCollect()
+  },
+  activated(){
+    this.getAllCouponNum()
+    this.getAllCollect()
   }
 }
 </script>

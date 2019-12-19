@@ -124,13 +124,25 @@ export default {
             this.title = res.data.company.company
 
             if(res.data.data.length > 0){
-              this.goodsList = [...this.goodsList,...res.data.data]
+              if(type == 'init'){
+                this.goodsList = [...res.data.data]
+              }else{
+                this.goodsList = [...this.goodsList,...res.data.data]
+              }
               this.$nextTick(()=>{
-                this.showLoading = true
-                this.showNoMore = false
-                this.page = this.page + 1
-                if(this.shopScroll){
-                  this.shopScroll.finishPullUp()
+                if(this.goodsList.length > 8){
+                  this.showLoading = true
+                  this.showNoMore = false
+                  this.page = this.page + 1
+                  if(this.shopScroll){
+                    this.shopScroll.finishPullUp()
+                  }
+                }else{
+                  this.showLoading = false
+                  this.showNoMore = true
+                  if(this.shopScroll){
+                    this.shopScroll.closePullUp()
+                  }
                 }
               })
             }else{
@@ -203,7 +215,7 @@ export default {
         }
       })
     },
-    //收藏店铺
+    //处理收藏或者取消店铺
     handleCollectShop(){
       let is_collect = this.is_collect == 0 ? 1 : 0
       let postData = {
@@ -263,6 +275,9 @@ export default {
   },
   mounted(){
     this.initShopScroll()
+  },
+  activated(){
+    this.checkCollect()
   },
   watch:{
     '$route'(to,from){

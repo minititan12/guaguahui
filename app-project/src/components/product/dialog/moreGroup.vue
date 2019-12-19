@@ -62,7 +62,7 @@ export default {
 <style lang="stylus" scoped>
   .more-items
     width: 100%
-    height: 40vw
+    max-height: 40vw
     overflow: scroll
     .title
       width: 100%

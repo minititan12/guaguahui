@@ -61,7 +61,7 @@
           </van-loading>
         </div>
 
-        <div class="no-more" v-show="!showLoading">
+        <div class="no-more" v-show="showNoMore">
           <img class="loading-img" src="/public/uploads/home/load.png" alt="">
           <span>没有更多了</span>
         </div>
@@ -89,7 +89,8 @@ export default {
       todayList: [],
       groupList: [],
       page: 1,
-      showLoading: true
+      showLoading: false,
+      showNoMore: false,
     }
   },
   methods: {
@@ -144,13 +145,20 @@ export default {
               this.page = this.page + 1
 
               this.$nextTick(()=>{
-                if(this.groupScroll){
-                  this.groupScroll.finishPullUp()
-                  this.groupScroll.refresh()
+                if(this.groupList.length > 6){
+                  if(this.groupScroll){
+                    this.groupScroll.finishPullUp()
+                    this.groupScroll.refresh()
+                  }
+                  this.showLoading = true
+                }else{
+                  this.showLoading = false
+                  this.showNoMore = true
                 }
               })
             }else{
               this.showLoading = false
+              this.showNoMore = true
               this.groupScroll.closePullUp()
             }
           }

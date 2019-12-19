@@ -224,14 +224,19 @@ export default {
                 }
               })
             }else{
-              if(this.collectList.length > 0){
-                this.showLoading = false
-                this.showNoMore = true
-                this.collectScroll.closePullUp()
-              }else{
-                this.showLoading = false
-                this.showNoMore = false
+              if(type == 'init'){
+                this.collectList = []
                 this.showWarn = true
+              }else{
+                if(this.collectList.length > 0){
+                  this.showLoading = false
+                  this.showNoMore = true
+                  this.collectScroll.closePullUp()
+                }else{
+                  this.showLoading = false
+                  this.showNoMore = false
+                  this.showWarn = true
+                }
               }
             }
           }

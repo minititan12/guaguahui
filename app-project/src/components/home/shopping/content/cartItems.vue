@@ -111,6 +111,9 @@ export default {
 
         this.cartItemsScroll.on('pullingDown',()=>{
           this.updateCartRefreshStatus(true)
+          this.$nextTick(()=>{
+            this.cartItemsScroll.refresh()
+          })
           setTimeout(()=>{
             this.updateCartRefreshStatus(false)
             this.cartItemsScroll.finishPullDown()
@@ -156,7 +159,7 @@ export default {
     },
     //处理数量减少
     handleNumberMinus(id){
-      let cart = [...this.cart]
+      let cart = JSON.parse(JSON.stringify(this.cart))
       for(let item of cart){
         if(item.id == id){
           if(item.number > 1){
@@ -210,7 +213,7 @@ export default {
                 this.updateSelectedList()
               }else{
                 this.$toast({
-                  type: "success",
+                  type: "fail",
                   message: "删除失败",
                   duration: 1200
                 })
@@ -296,7 +299,7 @@ export default {
     height: 15vw
     opacity: 1
   .downFresh-leave-active
-    transition: height .5s ease
+    transition: all .5s ease
   .downFresh-leave-to
     height: 0
     opacity: 0
@@ -311,9 +314,10 @@ export default {
       height: 5vw
       margin-right: 2vw
   .cartItems-wrapper >>> .van-loading
-    height: 15vw
     display: flex
     align-items: center
+  .cartItems-wrapper >>> .van-loading__text
+    line-height: 15vw
 
   .cartItems-wrapper
     position: absolute 

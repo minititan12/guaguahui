@@ -42,9 +42,6 @@ export default {
 <style lang="stylus" scoped>
   .warn-wrapper
     width: 100%
-    position: absolute
-    top: 0
-    bottom: 0
     display: flex
     flex-direction: column
     align-items: center

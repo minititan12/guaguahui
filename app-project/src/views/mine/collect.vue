@@ -165,11 +165,15 @@ export default {
       this.collectScroll.on('pullingDown',()=>{
         console.log('pulling down')
         this.showRefresh = true
-        this.reGetCollectData()
+        this.$nextTick(()=>{
+          this.collectScroll.refresh()
+        })
+        this.initCollectData()
         this.getCollectList('init')
         setTimeout(()=>{
           this.collectScroll.finishPullDown()
           this.showRefresh = false
+          this.collectScroll.refresh()
         },1500)
       })
 
@@ -178,18 +182,18 @@ export default {
         this.getCollectList()
       })
     },
-    //重新获取收藏的信息
-    reGetCollectData(){
+    //初始化数据
+    initCollectData(){
       this.page = 1
       this.showLoading = false
       this.showNoMore = false
       this.showWarn = false
-      this.collectScroll.closePullUp()
     },
     //改变active
     handleChangeActive(val){
       this.active = val
-      this.reGetCollectData()
+      this.initCollectData()
+      this.collectScroll.closePullUp()
       this.collectList = []
       this.getCollectList()
     },
@@ -217,7 +221,10 @@ export default {
                 if(this.collectList.length > 6){
                   this.showLoading = true
                   this.showNoMore = false
-                  this.collectScroll.finishPullUp()
+                  if(this.collectScroll){
+                    this.collectScroll.finishPullUp()
+                    this.collectScroll.refresh()
+                  }
                 }else{
                   this.showLoading = false
                   this.showNoMore = true
@@ -231,7 +238,10 @@ export default {
                 if(this.collectList.length > 0){
                   this.showLoading = false
                   this.showNoMore = true
-                  this.collectScroll.closePullUp()
+                  if(this.collectScroll){
+                    this.collectScroll.closePullUp()
+                    this.collectScroll.refresh()
+                  }
                 }else{
                   this.showLoading = false
                   this.showNoMore = false
@@ -269,7 +279,7 @@ export default {
               type: 'success',
               duration: 1200
             })
-            this.reGetCollectData()
+            this.initCollectData()
             this.getCollectList('init')
           }
         })

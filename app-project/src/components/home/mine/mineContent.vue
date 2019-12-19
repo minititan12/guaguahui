@@ -1,5 +1,5 @@
 <template>
-  <div class="mine-wrapper">
+  <div class="mine-wrapper" id="mineWrapper">
     <div class="mine-bgcolor">
     </div>
     <MineHeader></MineHeader>
@@ -32,6 +32,22 @@ export default {
   },
   data(){
     return {
+      scrollY: 0
+    }
+  },
+  watch:{
+    '$route'(to,from){
+      console.log(to,from)
+      if(from.name == 'home'){
+        let d = document.getElementById('mineWrapper')
+        this.scrollY = d.scrollTop
+      }
+    }
+  },
+  activated(){
+    if(this.scrollY != 0){
+      let d = document.getElementById('mineWrapper')
+      d.scrollTo(0,this.scrollY)
     }
   }
 }

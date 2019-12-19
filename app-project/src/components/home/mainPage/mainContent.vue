@@ -108,7 +108,11 @@ export default {
 
       this.scroll.on('pullingDown',()=>{
         this.productPage = 1
+        //修改刷新状态为true
         this.updateRefreshStatus(true)
+        this.$nextTick(()=>{
+          this.scroll.refresh()
+        })
         this.refreshData()
         setTimeout(()=>{
           this.updateRefreshStatus(false)

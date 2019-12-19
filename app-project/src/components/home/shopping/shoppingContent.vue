@@ -89,10 +89,6 @@ export default {
     this.clearSelectedID()
     this.updateSelectedList()
   },
-  updated(){
-    this.clearSelectedID()
-    this.updateSelectedList()
-  },
   watch: {
     cartRefresh(){
       if(this.cartRefresh){

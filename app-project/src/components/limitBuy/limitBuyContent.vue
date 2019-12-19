@@ -41,12 +41,12 @@
         <div class="goodsList-loading" v-if="showLoading">
           <van-loading color="#FF5756" size="24px">
             <img class="loading-img" src="/public/uploads/home/load.png" alt="">
-            <span>加载中...</span>
+            <span class="loading-text">加载中...</span>
           </van-loading>
         </div>
         <div class="no-more" v-show="showNoMore">
           <img class="loading-img" src="/public/uploads/home/load.png" alt="">
-          <span>没有更多了</span>
+          <span class="loading-text">没有更多了</span>
         </div>
 
       </div>
@@ -54,7 +54,7 @@
 
     <div class="warn-wrapper" v-if="showWarn">
       <span class="iconfont">&#xe605;</span>
-      <span class="warn-text">抱歉,没有处于抢购中的商品</span>
+      <span class="warn-text">抱歉,当前时间没有可抢购的商品</span>
     </div>
   </div>
 </template>
@@ -66,13 +66,13 @@ export default {
   name: "LimitBuyContent",
   data(){
     return {
-      showWarn: false,
       timeList: [],
       page: 1,
       seckillGoodsList:[],
       active: '00',
       showLoading: false,
-      showNoMore: false
+      showNoMore: false,
+      showWarn: false,
     }
   },
   methods: {
@@ -145,7 +145,7 @@ export default {
     },
 
     //获取秒杀商品列表数据
-    getSeckillGoodsData(){
+    getSeckillGoodsData(type){
       let postData = {
         page: this.page,
         times: this.active,
@@ -156,23 +156,41 @@ export default {
         .then((res)=>{
           console.log('getSeckillGoods',res.data)
           if(res.data.code == 1){
-            if(res.data.data.list.length > 0){
-              this.seckillGoodsList = [...this.seckillGoodsList,...res.data.data.list]
-              this.page = this.page + 1
+            if(res.data.data.list.length > 0){//请求到的列表不为空
+              if(type == 'init'){
+                this.seckillGoodsList = [...res.data.data.list]
+              }else{
+                this.seckillGoodsList = [...this.seckillGoodsList,...res.data.data.list]
+              }
+
               this.$nextTick(()=>{
-                this.goodsScroll.finishPullUp()
-                if(this.seckillGoodsList.length > 6){
+                if(this.goodsScroll){
+                  this.goodsScroll.finishPullUp()
+                  this.goodsScroll.refresh()
+                }
+
+                if(this.seckillGoodsList.length > 9){//秒杀商品列表数量大于9
+                  this.page = this.page + 1
                   this.showLoading = true
                   this.showNoMore = false
-                }else{
+                }else{//秒杀商品列表数量小于9
                   this.showLoading = false
-                  this.showNoMore = false
+                  this.showNoMore = true
+                  if(this.goodsScroll){
+                    this.goodsScroll.closePullUp()
+                  }
                 }
               })
-            }else{
-              this.goodsScroll.closePullUp()
-              this.showLoading = false
-              this.showNoMore = true
+            }else{//请求到的列表为空
+              if(type == 'init'){
+                this.showWarn = true
+              }else{
+                if(this.goodsScroll){
+                  this.goodsScroll.closePullUp()
+                }
+                this.showLoading = false
+                this.showNoMore = true
+              }
             }
           }
         })
@@ -199,19 +217,20 @@ export default {
         this.page = 1
         this.showLoading = false
         this.showNoMore = false
+        this.showWarn = false
         this.goodsScroll.closePullUp()
         this.seckillGoodsList = []
         console.log('active change get')
-        this.getSeckillGoodsData()
+        this.getSeckillGoodsData('init')
       }
     }
   },
   mounted(){
     this.getTimeItemsWidth()
-    this.getSeckillGoodsData()
+    this.getSeckillGoodsData('init')
     this.initTimeScroll()
     this.initGoodsScroll()
-    console.log(this.goodsScroll)
+    // console.log(this.goodsScroll)
   }
 }
 </script>
@@ -281,6 +300,7 @@ export default {
           align-items: center
           justify-content: center
           padding: 3vw 0
+          font-family:PFB
           .loading-img
             width: 6vw
             margin-right: 2vw
@@ -291,9 +311,11 @@ export default {
           align-items: center
           justify-content: center
           padding: 3vw 0
+          font-family:PFB
           .loading-img
             width: 6vw
             margin-right: 2vw
+            
 
         .good-item
           background-color: #fff
@@ -359,11 +381,12 @@ export default {
         display: flex
         flex-direction: column
         align-items: center
-        padding-top: 1rem
+        padding-top: 15vw
+        color: #999
         .iconfont
-          color: #666
-          font-size: .8rem
-          margin-bottom: .3rem
+          font-size: 10vw
+          margin-bottom: 5vw
         .warn-text
-          font-size: .35rem
+          font-size: 4vw
+          font-family:PFB
 </style>

@@ -368,6 +368,14 @@ export default {
     height: 0
     opacity: 0
 
+  .goods-wrapper >>> .van-loading
+    height: 15vw
+    display: flex
+    align-items: center
+  .goods-wrapper >>> .van-loading__text
+    color: #FF5756
+    font-family: PFH
+
   .goods-wrapper >>> .van-tabs--line .van-tabs__wrap
     height: 8vw
     margin-top: 1vw
@@ -412,13 +420,9 @@ export default {
           justify-content: center
           align-items: center
           // padding-top: 2vw
-          // .van-loading
-          //   padding-top: 2vw
           .loading-img
             width: 6vw
             margin-right: 2vw
-          .loading-text
-            line-height: 15vw
 
         .blank
           width: 100%

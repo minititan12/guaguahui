@@ -121,12 +121,10 @@ export default {
         },2000)
       })
 
-      let that = this
-
       this.scroll.on('pullingUp',this.handlePullingUp)
 
       this.scroll.on('beforeScrollStart',()=>{
-        that.scroll.refresh()
+        this.scroll.refresh()
       })
     },
     //获取首页轮播图数据

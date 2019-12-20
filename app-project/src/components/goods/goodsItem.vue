@@ -283,8 +283,8 @@ export default {
           this.goodsScroll.refresh()
         })
         setTimeout(()=>{
-          this.goodsScroll.finishPullDown()
           this.goodsRefresh = false
+          this.goodsScroll.finishPullDown()
         },2000)
       })
 

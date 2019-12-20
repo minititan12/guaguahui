@@ -412,8 +412,8 @@ export default {
           justify-content: center
           align-items: center
           // padding-top: 2vw
-          .van-loading
-            padding-top: 2vw
+          // .van-loading
+          //   padding-top: 2vw
           .loading-img
             width: 6vw
             margin-right: 2vw

@@ -36,10 +36,13 @@ const MineGroup = () => import('./views/marketing/groupBuy/mineGroup.vue')
 const GroupOrderDesc = () => import('./views/marketing/groupBuy/groupOrderDesc.vue')
 const GroupOrderShare = () => import('./views/marketing/groupBuy/groupOrderShare.vue')
 const Activities = () => import('./views/marketing/activities.vue')
-const IntergralShop = () => import('./views/marketing/integralShop.vue')
+const IntergralShop = () => import('./views/marketing/integral/integralShop.vue')
 const CutPrice = () => import('./views/marketing/bargain/cutPrice.vue')
 const Bargain = () => import('./views/marketing/bargain/bargain.vue')
 const MyBargain = () =>import('./views/marketing/bargain/myBargain.vue')
+const IntegralDetails = () => import('./views/marketing/integral/integralDetails.vue')
+const RedemptionDetails = () => import('./views/marketing/integral/redemptionDetails.vue')
+const RedemptionRecord = () =>import('./views/marketing/integral/redemptionRecord.vue')
 
 
 //product文件夹
@@ -674,6 +677,45 @@ export default new Router({
       path: '/myBargain',
       name: 'myBargain',
       component: MyBargain,
+      meta:{
+        index: 2,
+        keepAlive: false,
+        isImmersion: true,
+        color: '#ffffff',
+        style: 'dark'
+      }
+    },
+    // 积分明细列表组件
+    {
+      path: '/integralDetails',
+      name: 'integralDetails',
+      component: IntegralDetails,
+      meta:{
+        index: 2,
+        keepAlive: false,
+        isImmersion: true,
+        color: '#ffffff',
+        style: 'dark'
+      }
+    },
+    // 兑换详情组件
+    {
+      path: '/redemptionDetails',
+      name: 'redemptionDetails',
+      component: RedemptionDetails,
+      meta:{
+        index: 2,
+        keepAlive: false,
+        isImmersion: true,
+        color: '#ffffff',
+        style: 'dark'
+      }
+    },
+    // 兑换记录组件
+    {
+      path: '/redemptionRecord',
+      name: 'redemptionRecord',
+      component: RedemptionRecord,
       meta:{
         index: 2,
         keepAlive: false,

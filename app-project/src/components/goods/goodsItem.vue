@@ -1,7 +1,7 @@
 <template>
   <div class="goods-wrapper">
     <div class="goods-tab">
-      <van-tabs v-model="active" title-active-color="#FF5756">
+      <van-tabs v-model="active" @change="handleActiveChange" title-active-color="#FF5756">
         <van-tab title="综合"></van-tab>
         <van-tab title="销量"></van-tab>
         <van-tab>
@@ -19,6 +19,15 @@
 
     <div class="wrapper-contain" ref="goodsWrapper" >
       <div class="good-wrapper" >
+        <transition name="fade">
+          <div class="content-refresh" v-if="goodsRefresh">
+            <van-loading color="#FF5756" size="24px">
+              <img class="loading-img" src="/public/uploads/home/load.png" alt="">
+              <span class="loading-text">加载中...</span>
+            </van-loading>
+          </div>
+        </transition>
+
         <div class="blank"></div>
         <ProductItem
           v-if= "goodsList.length > 0"
@@ -26,12 +35,14 @@
           :data = "item"
           @productItemClick="handleToProduct(item.id)">
         </ProductItem>
+
         <div class="goodsList-loading" v-if="showLoading">
           <van-loading color="#FF5756" size="24px">
             <img class="loading-img" src="/public/uploads/home/load.png" alt="">
             <span>加载中...</span>
           </van-loading>
         </div>
+        
         <div class="no-more" v-show="showNoMore">
           <img class="loading-img" src="/public/uploads/home/load.png" alt="">
           <span>没有更多了</span>
@@ -39,7 +50,7 @@
         <!-- <div class="blank"></div> -->
         <div class="goods-warn" v-if="showWarn">
           <span class="iconfont">&#xe610;</span>
-          <span>该系列没有商品上架</span>
+          <span>没有对应商品上架</span>
         </div>
       </div>
     </div>
@@ -57,12 +68,13 @@ export default {
   data(){
     return {
       goodsList: [],
-      showWarn: false,
       page: 1,
       active: 0,
       inputValue: '',
-      showLoading: true,
-      showNoMore: false
+      showLoading: false,
+      showNoMore: false,
+      showWarn: false,
+      goodsRefresh: false
     }
   },
   components:{
@@ -73,6 +85,25 @@ export default {
   },
   
   methods: {
+    //可以加载的状态
+    loadingStatus(){
+      this.showLoading = true
+      this.showNoMore = false
+      this.showWarn = false
+    },
+    //没有更多的状态
+    noMoreStatus(){
+      this.showLoading = false
+      this.showNoMore = true
+      this.showWarn = false
+    },
+    //没有获取到商品的提醒状态
+    warnStatus(){
+      this.showLoading = false
+      this.showNoMore = false
+      this.showWarn = true
+    },
+
     //获取商品数据(根据goodsID,页码page,属性status)
     getGoodsList(type){
       console.log('getGoodsList')
@@ -82,27 +113,44 @@ export default {
         page: this.page,
         status: this.active
       }
-      axios.post('/api/method/getBarndGoods',postData)
+      axios.post('/api/method/getBrandGoods',postData)
         .then((res)=>{
-          console.log('getBarndGoods:',res.data)
+          console.log('getBrandGoods:',res.data)
           if(res.data.code == 1){
             // console.log(res.data.count)
             if(type == 'pullingUp'){        //上拉加载
               if(res.data.data.count > 0){
                 this.goodsList = [...this.goodsList,...res.data.data.attributes_amount]
                 this.page = this.page + 1
+                this.loadingStatus()
 
                 this.$nextTick(()=>{
                   this.goodsScroll.finishPullUp()
+                  this.goodsScroll.refresh()
                 })
               }else{
-                this.goodsScroll.closePullUp()
-                this.showLoading = false
-                this.showNoMore = true
+                this.noMoreStatus()
+                this.$nextTick(()=>{
+                  this.goodsScroll.refresh()
+                  this.goodsScroll.closePullUp()
+                })
               }
             }else {      //切换active或者第一次加载或者清空搜索关键字
               this.goodsList = [...res.data.data.attributes_amount]
               this.page = this.page + 1
+
+              this.$nextTick(()=>{
+                this.goodsScroll.refresh()
+                if(this.goodsList.length > 0){
+                  if(this.goodsList.length >= 8){
+                    this.loadingStatus()
+                  }else{
+                    this.noMoreStatus()
+                  }
+                }else{
+                  this.warnStatus()
+                }
+              })
 
               this.goodsScroll.scrollTo(0,0)
               //如果pullup被关闭,就打开
@@ -111,18 +159,11 @@ export default {
                   this.goodsScroll.openPullUp({
                       threshold: 60
                   })
+                  this.goodsScroll.refresh()
                 })
               }
             }
 
-          }else{
-            this.goodsScroll.finishPullUp()
-          }
-
-          if(!this.goodsList.length){
-            this.showWarn = true
-            this.showLoading = false
-            this.showNoMore = false
           }
         })
         .catch((err)=>{
@@ -148,18 +189,36 @@ export default {
               if(res.data.data.length > 0){
                 this.goodsList = [...this.goodsList,...res.data.data]
                 this.page = this.page + 1
+                this.loadingStatus()
 
                 this.$nextTick(()=>{
                   this.goodsScroll.finishPullUp()
+                  this.goodsScroll.refresh()
                 })
               }else{
-                this.goodsScroll.closePullUp()
-                this.showLoading = false
-                this.showNoMore = true
+                this.noMoreStatus()
+                this.$nextTick(()=>{
+                  this.goodsScroll.closePullUp()
+                  this.goodsScroll.refresh()
+                })
               }
             }else {            //切换active或者第一次加载
               this.goodsList = [...res.data.data]
               this.page = this.page + 1
+
+              if(this.goodsList.length > 0){
+                if(this.goodsList.length < 8){
+                  this.noMoreStatus()
+                  this.$nextTick(()=>{
+                    this.goodsScroll.refresh()
+                    this.goodsScroll.closePullUp()
+                  })
+                }else{
+                  this.loadingStatus()
+                }
+              }else{
+                this.warnStatus()
+              }
 
               this.goodsScroll.scrollTo(0,0)
               //如果pullup被关闭,就打开
@@ -172,19 +231,19 @@ export default {
               }
 
             }
-          }else{
-            this.goodsScroll.finishPullUp()
-          }
-
-          if(!this.goodsList.length){
-            this.showWarn = true
-            this.showLoading = false
-            this.showNoMore = false
           }
         })
         .catch((err)=>{
           console.log('searchbrandGoods err:',err)
         })
+    },
+
+    //初始化组件数据
+    initData(type){
+      this.page = 1
+      this.showLoading = false
+      this.showNoMore = false
+      this.showWarn = false
     },
 
     //上划时
@@ -201,11 +260,35 @@ export default {
     initGoodsScroll(){
       let el = this.$refs.goodsWrapper
       this.goodsScroll = new Bscroll(el,{
+        pullDownRefresh: {
+          threshold: 50,
+          stop: 0
+        },
         pullUpLoad: {
           threshold: 60
         },
         click: true,
         eventPassthrough: 'horizontal'
+      })
+
+      this.goodsScroll.on('pullingDown',()=>{
+        this.goodsRefresh = true
+        this.initData()
+        if(this.currentGoodsInputValue.length > 0){
+          this.getSearchList()
+        }else{
+          this.getGoodsList()
+        }
+        this.$nextTick(()=>{
+          this.goodsScroll.refresh()
+        })
+        setTimeout(()=>{
+          this.goodsRefresh = false
+          this.$nextTick(()=>{
+            this.goodsScroll.finishPullDown()
+            this.goodsScroll.refresh()
+          })
+        },2000)
       })
 
       this.goodsScroll.on('pullingUp',this.onPullingUp)
@@ -217,76 +300,42 @@ export default {
 
     //跳转到商品详情页
     handleToProduct(id){
-      // this.goodsScroll.refresh()
       this.$router.push('/product?id=' + id)
     },
 
-    //初始化组件数据
-    initData(type){
-      if(type == 'active'){
-        this.page = 1
-        this.showLoading = true
-        this.showNoMore = false
-      }else{
-        this.page = 1
-        this.active = 0
-        this.showLoading = true
-        this.showNoMore = false
-      }
-    }
-  },
-
-  watch:{
-    //tab的属性active值
-    active(){
-      console.log('active change')
-
-      this.initData('active')
+    //active变化的时候
+    handleActiveChange(name,title){
+      this.initData()
       //切换active的时候先把pullup关了,把商品列表清空
-      if(this.goodsScroll && this.goodsScroll.pullupWatching){
-        this.goodsScroll.closePullUp()
-      }
+      this.goodsScroll.closePullUp()
       this.goodsList = []
 
-      //根据有无搜索关键词
-      //判断是获取商品数据还是搜索商品数据
       if(this.currentGoodsInputValue.length){
         this.getSearchList()
       }else{
         this.getGoodsList()
       }
-    },
+    }
+  },
 
+  watch:{
     //输入框的值
     currentGoodsInputValue(val){
       console.log('inputvalue change')
       if(this.currentGoodsInputValue.length){
-        let changeActive = false
-        if(this.active != 0){
-          changeActive = true
-        }
         this.initData()
-        if(!changeActive){
-          this.getSearchList()
-        }
+        this.active = 0
+        this.getSearchList()
       }else{
-        console.log('input length 0')
-        let changeActive = false
-        if(this.active != 0){
-          changeActive = true
-        }
         this.initData()
-        if(!changeActive){
-          this.getGoodsList()
-        }
+        this.active = 0
+        this.getGoodsList()
       }
     },
-    //商品数据数组
-    goodsList(){
-      if(this.goodsList.length){
-        this.showWarn = false
-      }
-    }
+  },
+
+  created(){
+    this.getGoodsList()
   },
 
   mounted(){
@@ -296,23 +345,32 @@ export default {
   //keep-alive返回页面时
   activated(){
     console.log('activated')
-    this.showWarn = false
     if(localStorage.fromHomeToGoods == 'true'){
       this.initData()
-      this.$nextTick(()=>{
-        this.getGoodsList()
-      })
+
+      if(this.active != 0){
+        this.active = 0
+      }else{
+        this.$nextTick(()=>{
+          this.getGoodsList()
+        })
+      }
     }
     this.goodsScroll.refresh()
   },
-
-  updated(){
-    this.goodsScroll.refresh()
-  }
 }
 </script>
 
 <style lang="stylus" scoped>
+  .fade-leave
+    height: 15vw
+    opacity: 1
+  .fade-leave-active
+    transition: all .5s ease
+  .fade-leave-to
+    height: 0
+    opacity: 0
+
   .goods-wrapper >>> .van-tabs--line .van-tabs__wrap
     height: 8vw
     margin-top: 1vw
@@ -350,9 +408,25 @@ export default {
         flex-wrap: wrap
         justify-content: space-between
         align-items: flex-start
+
+        .content-refresh
+          width: 100%
+          display: flex
+          justify-content: center
+          align-items: center
+          // padding-top: 2vw
+          .van-loading
+            padding-top: 2vw
+          .loading-img
+            width: 6vw
+            margin-right: 2vw
+          .loading-text
+            line-height: 15vw
+
         .blank
           width: 100%
-          height: .4rem
+          height: 2vw
+
         .goods-warn
           width: 100%
           text-align: center
@@ -364,6 +438,7 @@ export default {
           .iconfont
             font-size: 10vw
             margin-top: 5vw
+
         .goodsList-loading
           width: 100%
           display: flex
@@ -371,9 +446,11 @@ export default {
           align-items: center
           justify-content: center
           padding: 3vw 0
+          font-family: PFB
           .loading-img
             width: 6vw
             margin-right: 2vw
+
         .no-more
           width: 100%
           display: flex
@@ -381,9 +458,11 @@ export default {
           align-items: center
           justify-content: center
           padding: 3vw 0
+          font-family: PFB
           .loading-img
             width: 6vw
             margin-right: 2vw
+
         .good-item
           width: 45vw
           height: 60vw

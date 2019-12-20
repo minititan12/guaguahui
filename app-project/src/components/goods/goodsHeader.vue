@@ -32,7 +32,6 @@ export default {
   methods: {
     ...mapMutations(['changeTab','updateCurrentGoodsInputValue']),
     handlBack(){
-      this.value = ''
       this.$router.go(-1)
     },
     handleSearch(){

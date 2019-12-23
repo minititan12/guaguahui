@@ -203,8 +203,13 @@ export default {
                 path: '/payment'
               })
             }
+          }else{
+            this.$toast({
+              message: res.data.message,
+              type: 'fail',
+              duration: 1500
+            })
           }
-
         })
         .catch((err)=>{
           console.log('commit data err',err)

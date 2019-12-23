@@ -29,7 +29,7 @@ import { mapState, mapMutations } from 'vuex';
 export default {
   name: "ProductProps",
   computed: {
-    ...mapState(['currentProductData']),
+    ...mapState(['currentProductData','login']),
     attr1(){
       if(this.currentProductData && this.currentProductData.hasOwnProperty('attr')){
         let name = this.currentProductData.attr.attr1.attr_name
@@ -143,10 +143,16 @@ export default {
     ...mapMutations(['changeCurrentProductPopUpStock','changeCurrentBuyDetail','changeProductPopUpImg','openPopup']),
     //初始化弹出框
     showPopUp(){
-      this.changeCurrentProductPopUpStock('0')
-      this.changeCurrentBuyDetail(null)
-      this.changeProductPopUpImg('')
-      this.openPopup()
+      if(this.login){
+        this.changeCurrentProductPopUpStock('0')
+        this.changeCurrentBuyDetail(null)
+        this.changeProductPopUpImg('')
+        this.openPopup()
+      }else{
+        this.$router.push({
+          path: '/login'
+        })
+      }
     }
   }
 }

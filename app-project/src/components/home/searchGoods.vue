@@ -4,6 +4,19 @@
       <div class="search-items">
         <ProductItem v-for="item of searchList" :data="item" @productItemClick="productItemClick(item.id)" :key="item.id"/>
       </div>
+
+      <div class="searchGoods-loading" v-if="showLoading">
+          <van-loading color="#FF5756" size="24px">
+            <img class="loading-img" src="/public/uploads/home/load.png" alt="">
+            <span>加载中...</span>
+          </van-loading>
+        </div>
+        
+      <div class="no-more" v-show="showNoMore">
+        <img class="loading-img" src="/public/uploads/home/load.png" alt="">
+        <span>没有更多了</span>
+      </div>
+
       <div class="warn" v-if="showWarn">
         <span>未搜索到任何商品</span>
       </div>
@@ -22,6 +35,8 @@ export default {
     return {
       searchList: [],
       page: 1,
+      showLoading: true,
+      showNoMore: false,
       showWarn: false
     }
   },
@@ -33,46 +48,41 @@ export default {
   },
   watch: {
     searchText(){
+      this.showLoading = false
+      this.showNoMore = false
+      this.showWarn = false
       this.page = 1
+      if(this.searchScroll){
+        this.searchScroll.closePullUp()
+      }
       this.searchList = []
       if(this.searchText.length > 0){
-        let postdata = {
-          goods_name: this.searchText,
-          page: this.page
-        }
-        axios.post('/api/method/searchGoods',postdata)
-          .then((res)=>{
-            console.log('firstsearch',res.data)
-            if(res.data.code == 1){
-              this.searchList = res.data.data
-              this.$nextTick(()=>{
-                this.searchScroll.refresh()
-              })
-              this.page = this.page + 1
-              console.log(this.searchList)
-              if(!res.data.data.length){
-                this.showWarn = true
-                console.log('get none')
-              }
-            }else{
-              this.showWarn = true
-              console.log('search err')
-            }
-          })
-          .catch((err)=>{
-            console.log('search err',err)
-          })
-      }
-    },
-    searchList(){
-      if(this.searchList.length){
-        this.showWarn = false
+        this.getSearchGoods('init')
       }
     }
   },
   methods: {
     ...mapMutations(['changeSearchText']),
-    getMoreSearchGoods(){
+    //可以继续加载的状态
+    loadingStatus(){
+      this.showLoading = true
+      this.showNoMore = false
+      this.showWarn = false
+    },
+    //没有更多的状态
+    noMorestatus(){
+      this.showLoading = false
+      this.showNoMore = true
+      this.showWarn = false
+    },
+    //提醒的状态
+    warnStatus(){
+      this.showLoading = false
+      this.showNoMore = false
+      this.showWarn = true
+    },
+    //获取搜索的商品列表
+    getSearchGoods(type){
       if(this.searchText.length > 0){
         let postdata = {
           goods_name: this.searchText,
@@ -80,22 +90,46 @@ export default {
         }
         axios.post('/api/method/searchGoods',postdata)
           .then((res)=>{
-            console.log('getMoreSearch:',res.data)
+            console.log('searchGoods',res.data)
             if(res.data.code == 1){
-              this.searchList = [...this.searchList,...res.data.data]
-              this.$nextTick(()=>{
-                this.searchScroll.refresh()
-              })
-              this.page = this.page + 1
-              console.log(this.searchList)
-              if(!res.data.data.length){
-                console.log('get none')
+              if(type == 'init'){
+                if(res.data.data.length > 0){
+                  this.searchList = [...res.data.data]
+                  this.$nextTick(()=>{
+                    if(this.searchList.length > 8){
+                      this.page = this.page + 1
+                      this.loadingStatus()
+                      if(this.searchScroll){
+                        this.searchScroll.refresh()
+                        if(!this.searchScroll.pullupWatching){
+                          this.searchScroll.openPullUp()
+                        }
+                      }
+                    }else{
+                      this.noMorestatus()
+                    }
+                  })
+                }else{
+                  this.warnStatus()
+                }
+              }else{
+                if(res.data.data.length > 0){
+                  this.searchList = [...this.searchList,...res.data.data]
+                  this.loadingStatus()
+                  this.$nextTick(()=>{
+                    this.page = this.page + 1
+                    this.searchScroll.finishPullUp()
+                    if(!this.searchScroll.pullupWatching){
+                      this.searchScroll.openPullUp()
+                    }
+                    this.searchScroll.refresh()
+                  })
+                }else{
+                  this.noMorestatus()
+                  this.searchScroll.closePullUp()
+                  this.searchScroll.refresh()
+                }
               }
-            }else{
-              console.log('search err')
-            }
-            if(res.data.code == 1 && res.data.data.length){
-              this.searchScroll.finishPullUp()
             }
           })
           .catch((err)=>{
@@ -120,21 +154,21 @@ export default {
         })
 
         this.searchScroll.on('pullingUp',()=>{
-          this.getMoreSearchGoods()
           console.log('pullingup')
+          this.getSearchGoods()
         })
 
-        let that = this
         this.searchScroll.on('beforeScrollStart',()=>{
-          that.searchScroll.refresh()
+          this.searchScroll.refresh()
         })
+
+        // console.log('searchScroll',this.searchScroll)
       })
     },
     productItemClick(id){
-      console.log(this.searchScroll)
+      // console.log(this.searchScroll)
       this.$router.push('/product?id='+ id)
-    },
-
+    }
   },
   mounted(){
     this.initScroll()
@@ -161,6 +195,31 @@ export default {
         justify-content: space-between
         padding: 2vw
         box-sizing: border-box
+
+      .searchGoods-loading
+        width: 100%
+        display: flex
+        flex-direction: row
+        align-items: center
+        justify-content: center
+        padding: 3vw 0
+        font-family: PFB
+        .loading-img
+          width: 6vw
+          margin-right: 2vw
+
+      .no-more
+        width: 100%
+        display: flex
+        flex-direction: row
+        align-items: center
+        justify-content: center
+        padding: 3vw 0
+        font-family: PFB
+        .loading-img
+          width: 6vw
+          margin-right: 2vw
+
       .warn
         margin-top: 20vw
         font-family: PFH

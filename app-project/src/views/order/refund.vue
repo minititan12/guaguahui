@@ -1,38 +1,58 @@
 <template>
   <div class="refund-wrapper">
-    <van-sticky>
-      <van-nav-bar title="退款/售后" left-arrow @click-left="handleBackClick"/>
-    </van-sticky>
-    <div @click="goRefundDetails(item)" class="refund" :key="index" v-for="(item,index) in refundList">
-      <div @click.stop="goShop(item)" class="head">
-        <van-icon color="#B9B9B9" name="shop-o" />
-        <div>{{item.shop_name}}</div>
-        <van-icon name="arrow" />
-      </div>
-      <div class="goods">
-        <van-image
-          width="20vw"
-          height="20vw"
-          fit="contain"
-          :src="item.cover_img"
-        />
-        <div class="content">
-          <div class="name">{{item.goods_name}}</div>
-          <div class="desc">{{getDesc(item)}}</div>
-          <div class="num">x{{item.number}}</div>
+    <van-nav-bar title="退款/售后" left-arrow @click-left="handleBackClick"/>
+    <div class="refund-list" ref="refundList">
+      <div>
+        <div class="main">
+          <div @click="goRefundDetails(item)" class="refund" :key="index" v-for="(item,index) in refundList">
+            <div @click.stop="goShop(item)" class="head">
+              <van-icon color="#B9B9B9" name="shop-o" />
+              <div>{{item.shop_name}}</div>
+              <van-icon name="arrow" />
+            </div>
+            <div class="goods">
+              <van-image
+                width="20vw"
+                height="20vw"
+                fit="contain"
+                :src="item.cover_img"
+              />
+              <div class="content">
+                <div class="name">{{item.goods_name}}</div>
+                <div class="desc">{{getDesc(item)}}</div>
+                <div class="num">x{{item.number}}</div>
+              </div>
+            </div>
+            <div class="footer">
+              <van-image
+                width="5vw"
+                fit="contain"
+                src="/public/static/refund/icon_refund.png"
+              />
+              <div v-if="item.refund_status === 0">商家处理中</div>
+              <div v-if="item.refund_status == 1">商家同意退款</div>
+              <div v-if="item.refund_status == 2">商家拒绝退款</div>
+              <div v-if="item.refund_status == 3">等待商家收货</div>
+              <div v-if="item.refund_status == 4">退款成功</div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="footer">
-        <van-image
-          width="5vw"
-          fit="contain"
-          src="/public/static/refund/icon_refund.png"
-        />
-        <div v-if="item.refund_status === 0">商家处理中</div>
-        <div v-if="item.refund_status == 1">商家同意退款</div>
-        <div v-if="item.refund_status == 2">商家拒绝退款</div>
-        <div v-if="item.refund_status == 3">等待商家收货</div>
-        <div v-if="item.refund_status == 4">退款成功</div>
+
+
+        <div class="warn" v-show="empty">
+          <span class="iconfont">&#xe605;</span>
+          <span>没有退款商品</span>
+        </div>
+        <div class="pullUpLoading">
+          <van-loading color="#FF5756" size="24px" v-show="showLoading  && refundList.length > 10">
+            <img class="loading-img" src="/public/uploads/home/load.png" alt="">
+            <span>加载中...</span>
+          </van-loading>
+          <div class="no-more" v-show="!showLoading  && refundList.length > 10">
+            <img class="loading-img" src="/public/uploads/home/load.png" alt="">
+            <span>没有更多了</span>
+          </div>
+        </div>       
       </div>
     </div>
   </div>
@@ -40,25 +60,75 @@
 
 <script>
 import {refundList} from '@/utils/axios/request'
+import Bscroll from 'better-scroll'
 export default {
   name: "Refund",
   data(){
     return {
-      refundList:[]
+      // 退款记录
+      refundList:[],
+      // 是否空数据
+      empty:false,
+      page: 1,
+      showLoading: true,
     }
   },
   created(){
-    refundList().then(res=>{
-      if(res.data.code != 1){
-        this.$toast(res.data.message);
-        return;
-      }
-      this.refundList = res.data.data;
-    }).catch(res=>{})
+    this.getRefundList();
+  },
+  mounted(){
+    this.initCollectScroll()
   },
   methods: {
     handleBackClick(){
       this.$router.go(-1)
+    },
+    //初始化滚动
+    initCollectScroll(){
+      let el = this.$refs.refundList
+      this.refundListScroll = new Bscroll(el,{
+        bounce: {
+          top: false
+        },
+        pullUpLoad: {
+          threshold: 10,
+          stop: 0
+        },
+        click: true,
+        // eventPassthrough: 'horizontal'
+      })
+
+      this.refundListScroll.on('beforeScrollStart',()=>{
+        this.refundListScroll.refresh()
+      })
+
+      this.refundListScroll.on('pullingUp',()=>{
+        this.getRefundList()
+      })
+    },
+    getRefundList(){
+      refundList({
+        page:this.page
+      }).then(res=>{
+        if(res.data.code != 1){
+          this.$toast(res.data.message);
+          return;
+        }
+        if(this.page == 1&&res.data.data.length <= 0){
+          this.empty = true;
+        }
+        if(res.data.data.length == 0){
+          this.showLoading = false;
+          this.refundListScroll.closePullUp();
+          return;
+        }
+        if(this.page == 1 && res.data.data.length < 10 && this.cutPriceScroll){
+          this.refundListScroll.closePullUp();
+        }
+        this.page++;
+        this.refundList = [...this.refundList,...res.data.data,];
+
+      }).catch(res=>{})
     },
     // 跳转退款详情
     goRefundDetails(item){
@@ -97,8 +167,6 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  .refund-wrapper
-    background #f5f7fa
   .refund-wrapper .van-nav-bar >>> .van-icon
     color: #FF5756
     font-size: 5vw
@@ -107,9 +175,45 @@ export default {
     font-family: PFH
     color: #000
 
+  .refund-list
+    position absolute 
+    top 46px
+    left 0
+    right 0
+    bottom 0
+    overflow hidden
+    background-color #f5f7fa
+  .main
+    padding-top 0
+  .warn
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
+    font-size: 5vw 
+    font-family: PFH
+    color: #000
+    .iconfont
+      font-size: 10vw
+      color: #FF5756
+      margin: 10vw 0 5vw 0 
+  .pullUpLoading
+    width: 100%
+    display: flex
+    justify-content: center
+    align-items: center
+    .loading-img
+      width: 6vw
+      height: 5vw
+      margin-right: 2vw
+    .no-more
+      height: 15vw
+      line-height: 15vw
+      font-family: PFH
+      font-size: 4vw
   .refund
     background-color white
-    margin 3vw
+    margin 3vw 3vw 0
     padding 0 2vw
     border-radius 2vw
     .head

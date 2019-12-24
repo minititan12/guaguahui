@@ -3,7 +3,7 @@
     <div class="oderItem-shop">
       <div class="shop-left">
         <van-icon color="#B9B9B9" name="shop-o" />
-        <span class="shop-name" @click="handleToShop(data.goodsList[0].user_id_to)">{{data.goodsList[0].shop}}</span>
+        <span class="shop-name" @click.stop="handleToShop(data.goodsList[0].user_id_to)">{{data.goodsList[0].shop}}</span>
       </div>
       <span class="shop-status">{{statusText}}</span>
     </div>

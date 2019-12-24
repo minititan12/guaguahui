@@ -43,6 +43,9 @@ export default {
   },
   created(){
     this.correctActive()
+  },
+  activated(){
+    this.correctActive()
   }
 }
 </script>

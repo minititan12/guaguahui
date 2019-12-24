@@ -8,14 +8,15 @@
     <div class="cut-price" ref="cutPrice">
       <div>
         <MyBargainList @share="share" :cutPriceList="cutPriceList"></MyBargainList>
-        <div class="group-loading" v-show="showLoading && cutPriceList.length > 10">
-          <van-loading color="#fff" size="24px">
+        <div class="pullUpLoading">
+          <van-loading color="#FF5756" size="24px" v-show="showLoading  && cutPriceList.length > 10">
+            <img class="loading-img" src="/public/uploads/home/load.png" alt="">
             <span>加载中...</span>
           </van-loading>
-        </div>
-
-        <div class="no-more" v-show="!showLoading && cutPriceList.length > 10">
-          <span>没有更多了</span>
+          <div class="no-more" v-show="!showLoading  && cutPriceList.length > 10">
+            <img class="loading-img" src="/public/uploads/home/load.png" alt="">
+            <span>没有更多了</span>
+          </div>
         </div>
       </div>
     </div>
@@ -74,7 +75,7 @@ export default {
           this.cutPriceScroll.closePullUp();
           return;
         }
-        if(this.page == 0 && res.data.data.length < 10 && this.cutPriceScroll){
+        if(this.page == 1 && res.data.data.length < 10 && this.cutPriceScroll){
           this.cutPriceScroll.closePullUp();
         }
         this.page++;
@@ -128,4 +129,19 @@ export default {
     bottom 0
     overflow hidden
     background #f6f7fb
+
+  .pullUpLoading
+    width: 100%
+    display: flex
+    justify-content: center
+    align-items: center
+    .loading-img
+      width: 6vw
+      height: 5vw
+      margin-right: 2vw
+    .no-more
+      height: 15vw
+      line-height: 15vw
+      font-family: PFH
+      font-size: 4vw
 </style>

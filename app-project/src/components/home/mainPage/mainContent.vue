@@ -1,14 +1,9 @@
 <template>
   <div class="content-wrapper" ref="wrapper">
     <div class="all-wrapper">
-      <transition name="fade">
-        <div class="content-refresh" v-if="mainPageRefresh">
-          <van-loading color="#FF5756" size="24px">
-            <img class="loading-img" src="/public/uploads/home/load.png" alt="">
-            <span>加载中...</span>
-          </van-loading>
-        </div>
-      </transition>
+      <div v-show="pullDown" class="pull-down">
+        <van-icon :class="{'refresh':refresh}" color="#FF5756" name="down" size="20" />
+      </div>
       <!-- <LittleTitle :recommendList="recommendList"></LittleTitle> -->
       <MainSwiper :swiperList="swiperList"></MainSwiper>
       <MainIcons :iconsList="iconsList"></MainIcons>
@@ -30,6 +25,15 @@
         </div>
       </div>
     </div>
+
+    <!-- <transition name="fade"> -->
+      <div class="content-refresh" v-show="mainPageRefresh">
+        <van-loading color="#FF5756" size="24px">
+          <img class="loading-img" src="/public/uploads/home/load.png" alt="">
+          <span>加载中...</span>
+        </van-loading>
+      </div>
+    <!-- </transition> -->
   </div>
 </template>
 
@@ -64,7 +68,12 @@ export default {
       productADList: [],
       productPage: 1,
       y: null,
-      showLoading: true
+      showLoading: true,
+
+      // 是否显示下拉箭头
+      pullDown:true,
+      // 是否下拉到足够的距离刷新
+      refresh:false,
     }
   },
   computed: {
@@ -95,8 +104,8 @@ export default {
       let el = this.$refs.wrapper
       this.scroll = new Bscroll(el,{
         pullDownRefresh: {
-          threshold: 50,
-          stop: 0
+          threshold: 55,
+          stop: 55
         },
         pullUpLoad: {
           threshold: 10,
@@ -110,17 +119,29 @@ export default {
         this.productPage = 1
         //修改刷新状态为true
         this.updateRefreshStatus(true)
-        this.$nextTick(()=>{
-          this.scroll.refresh()
-        })
+        this.pullDown = false;
+        // this.$nextTick(()=>{
+        //   this.scroll.refresh()
+        // })
         this.refreshData()
         setTimeout(()=>{
+          this.pullDown = true;
           this.updateRefreshStatus(false)
           this.scroll.finishPullDown()
           this.scroll.refresh()
         },2000)
       })
-
+      this.scroll.on('scroll',(pos)=>{
+        if(pos.y > 55){
+          if(!this.refresh){
+            this.refresh = true;
+          }
+        }else{
+          if(this.refresh){
+            this.refresh = false;
+          }
+        }
+      });
       this.scroll.on('pullingUp',this.handlePullingUp)
 
       this.scroll.on('beforeScrollStart',()=>{
@@ -163,9 +184,9 @@ export default {
           this.$toast.clear()
           if(data.code == 1){
             this.todayHotList = data.data
-            this.$nextTick(()=>{
-              this.scroll.refresh()
-            })
+            // this.$nextTick(()=>{
+            //   this.scroll.refresh()
+            // })
           }
         })
         .catch((err)=>{
@@ -339,6 +360,20 @@ export default {
     display: flex
     align-items: center
 
+  .content-refresh
+    position absolute
+    left 0
+    top 0
+    width 100%
+    z-index 2
+    width: 100%
+    display: flex
+    justify-content: center
+    align-items: center
+    background-color: #fff
+    .loading-img
+      width: 6vw
+      margin-right: 2vw
   .content-wrapper
     position: fixed
     overflow: hidden
@@ -349,16 +384,20 @@ export default {
     z-index: 2
     .all-wrapper
       background: linear-gradient(to bottom, #fff, #F6F7FB 300vw, #F6F7FB)
-      // background-color: #999
-      .content-refresh
-        width: 100%
-        display: flex
-        justify-content: center
-        align-items: center
-        background-color: #fff
-        .loading-img
-          width: 6vw
-          margin-right: 2vw
+      .pull-down
+        display flex
+        justify-content center
+        align-items center
+        height 50px
+        position absolute
+        width 100%
+        left 0
+        top -50px
+        .van-icon-down
+          transition all 300ms
+          transform rotate(0deg)
+          &.refresh
+            transform rotate(180deg)
       .pullUpLoading
         width: 100%
         display: flex

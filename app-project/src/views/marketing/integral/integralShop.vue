@@ -1,5 +1,5 @@
 <template>
-  <div class="intergral-wrapper">
+  <div class="integral-wrapper">
     <van-nav-bar
       title="我的积分"
       right-text="兑换记录"
@@ -21,10 +21,24 @@
 
       <div class="goodItems" ref="goodItems">
         <div class="items-wrapper">
-          <IntergralGoodItem />
-          <IntergralGoodItem />
-          <IntergralGoodItem />
-          <IntergralGoodItem />
+          <IntegralGoodItem :itemData="item" v-for="item of goodList"/>
+
+          <div class="loading" v-show="showLoading">
+            <van-loading color="#FF5756" size="24px">
+              <img class="loading-img" src="/public/uploads/home/load.png" alt="">
+              <span>加载中...</span>
+            </van-loading>
+          </div>
+
+          <div class="no-more" v-show="showNoMore">
+            <img class="loading-img" src="/public/uploads/home/load.png" alt="">
+            <span>没有更多了</span>
+          </div>
+
+          <div class="warn" v-show="showWarn">
+            <span class="iconfont">&#xe605;</span>
+            <span>该积分区间没有商品</span>
+          </div>
         </div>
       </div>
     </div>
@@ -32,30 +46,55 @@
 </template>
 
 <script>
-import IntergralGoodItem from '../../../components/miniComponents/intergralGoodItem'
+import IntegralGoodItem from '../../../components/miniComponents/integralGoodItem'
+import { getCreditGoods } from '../../../utils/axios/request'
 import Bscroll from 'better-scroll'
 export default {
-  name: "IntergralShop",
+  name: "IntegralShop",
   components: {
-    IntergralGoodItem
+    IntegralGoodItem
   },
   data(){
     return {
       tabList: ['全部','1-50','51-100','101-300','300以上'],
-      active: 0
+      active: 0,
+      page: 1,
+      goodList: [],
+      showLoading: false,
+      showNoMore: false,
+      showWarn: false
     }
   },
   methods: {
+    //loading状态
+    loadingStatus(){
+      this.showLoading = true
+      this.showNoMore = false
+      this.showWarn = false
+    },
+    //没有更多状态
+    noMoreStatus(){
+      this.showLoading = false
+      this.showNoMore = true
+      this.showWarn = false
+    },
+    //提醒状态
+    warnStatus(){
+      this.showLoading = false
+      this.showNoMore = false
+      this.showWarn = true
+    },
+    //初始化滚动
     initScroll(){
       let el = this.$refs.goodItems
       this.intergralGoodsScroll = new Bscroll(el,{
         bounce: {
           top: false
         },
-        // pullUpLoad: {
-        //   threshold: 10,
-        //   stop: 0
-        // },
+        pullUpLoad: {
+          threshold: 10,
+          stop: 0
+        },
         click: true,
         eventPassthrough: 'horizontal'
       })
@@ -64,9 +103,12 @@ export default {
         this.intergralGoodsScroll.refresh()
       })
 
-      // this.groupScroll.on('pullingUp',()=>{
-      //   this.getGroupListData()
-      // })
+      this.intergralGoodsScroll.on('pullingUp',()=>{
+        console.log('pulling up')
+        this.getIntegralList()
+      })
+
+      // console.log(this.intergralGoodsScroll)
     },
     handleBack(){
       this.$router.go(-1)
@@ -81,8 +123,121 @@ export default {
     },
     //改变active
     handleChangeActive(index){
-      this.active = index
+      if(this.active != index){
+        this.active = index
+        this.showLoading = false
+        this.showNoMore = false
+        this.showWarn = false
+        this.page = 1
+        if(this.intergralGoodsScroll){
+          this.intergralGoodsScroll.closePullUp()
+        }
+        this.goodList = []
+        this.intergralGoodsScroll.scrollTo(0,0)
+        this.$toast({
+          type: 'loading',
+          duration: 3000
+        })
+        this.getIntegralList('init')
+      }
+    },
+    //获取积分列表
+    getIntegralList(type){
+      let levelStr = ''
+      switch(this.active){
+        case 0:
+          levelStr = ''
+          break
+        case 1:
+          levelStr = '1-50'
+          break
+        case 2:
+          levelStr = '51-100'
+          break
+        case 3:
+          levelStr = '101-300'
+          break
+        case 4:
+          levelStr = '301-up'
+          break
+      }
+
+      //获取get参数
+      let getParams = undefined
+      if(levelStr.length >0){
+        getParams = {
+          level: levelStr,
+          page: this.page
+        }
+      }else{
+        getParams = {
+          page: this.page
+        }
+      }
+
+      getCreditGoods(getParams)
+        .then((res)=>{
+          console.log('getCreditGoods',res.data)
+          this.$toast.clear()
+          if(res.data.code == 1){
+            if(type == 'init'){//第一次请求或者切换active请求
+              this.goodList = [...res.data.data]
+
+              this.$nextTick(()=>{
+                if(res.data.data.length < 10){//请求的列表数据没达到10个
+                  if(res.data.data.length > 0){
+                    this.noMoreStatus()
+                    if(this.intergralGoodsScroll){
+                      this.intergralGoodsScroll.closePullUp()
+                    }
+                  }else{//请求的列表数据为空
+                    this.warnStatus()
+                  }
+                }else{//请求的列表数据达到10个
+                  this.page = this.page + 1
+                  this.loadingStatus()
+                  if(this.intergralGoodsScroll){
+                    this.intergralGoodsScroll.finishPullUp()
+                  }
+                  if(!this.intergralGoodsScroll.pullupWatching){//打开pullup功能
+                    this.intergralGoodsScroll.openPullUp({
+                      threshold: 10,
+                      stop: 0
+                    })
+                  }
+                }
+
+                this.intergralGoodsScroll.refresh()
+              })
+            }else{//pullup请求列表数据
+              this.goodList = [...this.goodList,...res.data.data]
+              this.$nextTick(()=>{
+                if(res.data.data.length < 10){//请求的列表数据不足10个
+                  this.noMoreStatus()
+                  // console.log(this.intergralGoodsScroll)
+                }else{//请求的列表数据达到10个
+                  this.page = this.page + 1
+                  this.loadingStatus()
+                  if(this.intergralGoodsScroll){//结束pullup
+                    this.intergralGoodsScroll.finishPullUp()
+                    this.intergralGoodsScroll.refresh()
+                  }
+                }
+              })
+            }
+          }else{
+            this.$toast({
+              message: res.data.message,
+              type: 'fail',
+              duration: 1500
+            })
+          }
+        })
+        .catch((err)=>{})
     }
+  },
+  created(){
+    this.getIntegralList()
   },
   mounted(){
     this.initScroll()
@@ -91,7 +246,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  .intergral-wrapper
+  .integral-wrapper
     background #fff
     .van-nav-bar
       .van-icon
@@ -187,4 +342,38 @@ export default {
           flex-direction: row
           justify-content: space-between
           flex-wrap: wrap
+
+          .loading
+              width: 100%
+              display: flex
+              flex-direction: row
+              align-items: center
+              justify-content: center
+              padding: 3vw 0
+            .loading-img
+              width: 6vw
+              margin-right: 2vw
+          .no-more
+            width: 100%
+            display: flex
+            flex-direction: row
+            align-items: center
+            justify-content: center
+            padding: 3vw 0
+            .loading-img
+              width: 6vw
+              margin-right: 2vw
+          .warn
+            width: 100%
+            display: flex
+            flex-direction: column
+            align-items: center
+            justify-content: center
+            font-size: 5vw 
+            font-family: PFH
+            color: #000
+            .iconfont
+              font-size: 10vw
+              color: #FF5756
+              margin: 10vw 0 5vw 0 
 </style>

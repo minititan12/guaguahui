@@ -121,3 +121,12 @@ export const refundGoods = (param = {}) => {
   return httpPost(api.refundGoods,param);
 }
 
+//积分列表
+export const getCreditGoods = (param = {}) => {
+  return httpGet(api.getCreditGoods,param);
+}
+
+//积分商品详情
+export const getCreditGoodsDetail = (param = {}) => {
+  return httpGet(api.getCreditGoodsDetail,param);
+}

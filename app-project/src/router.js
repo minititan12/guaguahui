@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 const Home = () => import('./views/home')
-const Product = () => import('./views/product/product')
 //pay文件夹
 const Pay = () => import('./views/pay/pay.vue')
 const Payment = () => import('./views/pay/payment.vue')
@@ -36,7 +35,7 @@ const MineGroup = () => import('./views/marketing/groupBuy/mineGroup.vue')
 const GroupOrderDesc = () => import('./views/marketing/groupBuy/groupOrderDesc.vue')
 const GroupOrderShare = () => import('./views/marketing/groupBuy/groupOrderShare.vue')
 const Activities = () => import('./views/marketing/activities.vue')
-const IntergralShop = () => import('./views/marketing/integral/integralShop.vue')
+const IntegralShop = () => import('./views/marketing/integral/integralShop.vue')
 const CutPrice = () => import('./views/marketing/bargain/cutPrice.vue')
 const Bargain = () => import('./views/marketing/bargain/bargain.vue')
 const MyBargain = () =>import('./views/marketing/bargain/myBargain.vue')
@@ -46,10 +45,12 @@ const RedemptionRecord = () =>import('./views/marketing/integral/redemptionRecor
 
 
 //product文件夹
+const Product = () => import('./views/product/product')
 const Service = () => import('./views/product/service.vue')
 const Shop = () => import('./views/product/shop.vue')
 const GetCoupon = () => import('./views/product/getCoupon.vue')
 const AllComment = () => import('./views/product/allComment.vue')
+const IntegralProduct = () => import('./views/product/integralProduct.vue')
 
 //mine文件夹
 const Set = () => import('./views/mine/set.vue')
@@ -109,6 +110,19 @@ export default new Router({
       path: '/product',
       name: 'product',
       component: Product,
+      meta:{
+        index: 3,
+        keepAlive: false,
+        isImmersion: true,
+        color: '#F6F7FB',
+        style: 'dark'
+      }
+    },
+    //积分商品详情页面组件
+    {
+      path: '/integralProduct',
+      name: 'integralProduct',
+      component: IntegralProduct,
       meta:{
         index: 3,
         keepAlive: false,
@@ -635,12 +649,12 @@ export default new Router({
     },
     //积分商城页面组件
     {
-      path: '/intergralShop',
-      name: 'intergralShop',
-      component: IntergralShop,
+      path: '/integralShop',
+      name: 'integralShop',
+      component: IntegralShop,
       meta:{
         index: 2,
-        keepAlive: false,
+        keepAlive: true,
         isImmersion: true,
         color: '#ffffff',
         style: 'dark'

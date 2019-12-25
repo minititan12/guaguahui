@@ -1,13 +1,13 @@
 <template>
-  <div class="item-wrapper">
-    <van-image width="100%" height="40vw" src="" />
+  <div class="item-wrapper" @click="handleToProduct(itemData.id)">
+    <van-image width="100%" height="40vw" :src="itemData.goods_cover" />
     <div class="title">
-      <span class="text">2019新款女款np95啊哈不可发你方便</span>
+      <span class="text">{{itemData.goods_name}}</span>
     </div>
     <div class="item-bottom">
       <div class="bottom-left">
-        <span class="score">2250积分</span>
-        <span class="num">已兑59915件</span>
+        <span class="score">{{parseInt(itemData.price)}}积分</span>
+        <span class="num">已兑{{itemData.sale_num}}件</span>
       </div>
 
       <div class="btn">立即兑换</div>
@@ -17,7 +17,20 @@
 
 <script>
 export default {
-  name: 'IntergralGoodItem'
+  name: 'IntegralGoodItem',
+  props: {
+    itemData: Object
+  },
+  methods: {
+    handleToProduct(id){
+      this.$router.push({
+        path: '/integralProduct',
+        query: {
+          id: id
+        }
+      })
+    }
+  }
 }
 </script>
 

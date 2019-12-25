@@ -489,4 +489,15 @@ export default {
     let result = JSON.parse(JSON.stringify(data))
     state.seckillData = result
   },
+
+  //更新当前积分商品数据
+  updateCurrentCreditGoodDetail(state,data){
+    let result = JSON.parse(JSON.stringify(data))
+    state.currentCreditGoodDetail = result
+  },
+
+  //改变积分商品中的图片遮罩显示
+  changeShowProMask(state,bool){
+    state.showProMask = bool
+  },
 }

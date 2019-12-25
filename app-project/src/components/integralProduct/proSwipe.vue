@@ -1,9 +1,7 @@
 <template>
   <div class="swiper-wrapper">
-    <swiper :options="swiperOption" ref="mySwiper" v-if="productSwiperList" @click.native="handleClick">
-      <!-- slides -->
-      <swiper-slide v-for="item of productSwiperList" :key="item">
-        <!-- <img class="swiper-img" :src="item" /> -->
+    <swiper :options="swiperOption" ref="mySwiper" v-if="swiperList" @click.native="handleClick">
+      <swiper-slide v-for="item of swiperList" :key="item">
         <van-image
           width="100vw"
           height="70vw"
@@ -12,8 +10,8 @@
           :src="item"
         />
       </swiper-slide>
-      <!-- Optional controls -->
     </swiper>
+
     <div class="showPage">
       <span>{{swiperIndex + 1}}</span>
       <span class="showPage_icon">/</span>
@@ -25,7 +23,7 @@
 <script>
 import { mapMutations, mapState } from 'vuex'
 export default {
-  name: 'ProductSwiper',
+  name: 'ProSwipe',
   data(){
     const that = this
     return {
@@ -42,11 +40,11 @@ export default {
     }
   },
   computed: {
-    ...mapState(['currentProductData']),
+    ...mapState(['currentCreditGoodDetail']),
     //轮播图列表
-    productSwiperList(){
-      if(this.currentProductData){
-        return this.currentProductData.photo
+    swiperList(){
+      if(this.currentCreditGoodDetail){
+        return this.currentCreditGoodDetail.base.goods_photo
       }else{
         return []
       }
@@ -57,26 +55,25 @@ export default {
     },
     //总页数
     allPages(){
-      if(this.productSwiperList && this.productSwiperList.length){
-        return this.productSwiperList.length
+      if(this.swiperList && this.swiperList.length){
+        return this.swiperList.length
       }
     }
   },
   methods: {
-    ...mapMutations(['changeShowMasking']),
+    ...mapMutations(['changeShowProMask']),
     //处理图片点击
     handleClick(){
       setTimeout(()=>{
-        this.changeShowMasking(true)
+        this.changeShowProMask(true)
       },310)
-      console.log('1')
     }
   },
   updated(){
     this.productSwiper.update()
   },
   mounted(){
-    this.changeShowMasking(false)
+    this.changeShowProMask(false)
   }
 }
 </script>
@@ -84,7 +81,7 @@ export default {
 <style lang='stylus' scoped>
 .swiper-wrapper
   width: 100vw
-  min-height: 70vw
+  max-height: 70vw
   position: relative
   background-color: #F6F7FB
   .showPage

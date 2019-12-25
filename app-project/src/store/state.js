@@ -26,6 +26,8 @@ export default {
   currentProductPopUpStock: '0',  //当前产品详情页面上拉购买产品库存
   currentBuyDetail: null,         //当前产品已选择属性后的购买信息
   showMasking: false,         //点击商品图片显示遮罩
+  currentCreditGoodDetail: null,  //积分商品详情数据
+  showProMask: false,         //积分商品中的图片点击显示遮罩
 
   //购物车页面
   cart: [],                    //购物车页面中的商品数据

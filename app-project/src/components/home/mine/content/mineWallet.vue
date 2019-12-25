@@ -33,7 +33,7 @@ export default {
   methods: {
     handleToIntegral(){
       this.$router.push({
-        path: "/intergralShop"
+        path: "/integralShop"
       })
     },
     handleToWallet(){

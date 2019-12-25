@@ -39,7 +39,7 @@ export default {
     },
     handleToIntergralShop(){
       this.$router.push({
-        path: "/intergralShop"
+        path: "/integralShop"
       })
     },
     handleToCutPrice(){

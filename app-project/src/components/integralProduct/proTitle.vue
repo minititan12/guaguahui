@@ -21,6 +21,7 @@
 
       <ProProps />
       <DescContent />
+      <ProDesc />
     
     </van-skeleton>
   </div>
@@ -31,11 +32,13 @@ import axios from 'axios'
 import { mapMutations, mapState } from 'vuex'
 import ProProps from './title/proProps'
 import DescContent from './title/descContent'
+import ProDesc from './title/proDesc'
 export default {
   name: "ProTitle",
   components: {
     ProProps,
-    DescContent
+    DescContent,
+    ProDesc
   },
 
   data(){

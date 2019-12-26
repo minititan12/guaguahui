@@ -1,7 +1,9 @@
 <template>
   <div class="Product-wrapper">
     <IntegralProContent />
+    <ProFooter/>
     <ProImgMask />
+    <ProPopUp />
   </div>
 </template>
 
@@ -10,14 +12,18 @@ import { getCreditGoodsDetail } from '../../utils/axios/request'
 import { mapMutations } from 'vuex'
 import IntegralProContent from '../../components/integralProduct/integralProContent'
 import ProImgMask from '../../components/integralProduct/proImgMask'
+import ProFooter from '../../components/integralProduct/proFooter'
+import ProPopUp from '../../components/integralProduct/proPopUp'
 export default {
   name: 'IntegralProduct',
   components: {
     IntegralProContent,
-    ProImgMask
+    ProImgMask,
+    ProFooter,
+    ProPopUp
   },
   methods: {
-    ...mapMutations(['updateCurrentCreditGoodDetail']),
+    ...mapMutations(['updateCurrentCreditGoodDetail','changeShowProPopUp']),
     //获取积分产品数据
     getProductData(){
       let getParams = {
@@ -47,6 +53,7 @@ export default {
     }
   },
   created(){
+    this.changeShowProPopUp(false)
     this.getProductData()
   }
 }

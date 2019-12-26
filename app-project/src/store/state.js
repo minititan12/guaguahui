@@ -28,6 +28,9 @@ export default {
   showMasking: false,         //点击商品图片显示遮罩
   currentCreditGoodDetail: null,  //积分商品详情数据
   showProMask: false,         //积分商品中的图片点击显示遮罩
+  showProPopUp: false,        //显示积分商品的上拉框
+  proPopUpImg: '',            //积分商品弹出框的商品主图
+  integralProBuyDetail: null,    //积分商品购买信息
 
   //购物车页面
   cart: [],                    //购物车页面中的商品数据

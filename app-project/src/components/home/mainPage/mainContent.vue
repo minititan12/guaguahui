@@ -378,7 +378,7 @@ export default {
     position: fixed
     overflow: hidden
     top: 18vw
-    bottom: 1rem
+    bottom: 12vw
     left: 0
     right: 0
     z-index: 2

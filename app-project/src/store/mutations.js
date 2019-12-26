@@ -500,4 +500,18 @@ export default {
   changeShowProMask(state,bool){
     state.showProMask = bool
   },
+
+  //改变积分商品中的弹出框状态
+  changeShowProPopUp(state,bool){
+    state.showProPopUp = bool
+  },
+  //改变弹出框主图
+  changeProPopUpImg(state,img){
+    state.proPopUpImg = img
+  },
+  //更新积分商品购买信息
+  updateIntegralProBuyDetail(state,detail){
+    let result = JSON.parse(JSON.stringify(detail))
+    state.integralProBuyDetail = result
+  }
 }

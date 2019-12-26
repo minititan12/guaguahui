@@ -12,7 +12,7 @@ export default {
   name: 'IntegralProContent',
   components: {
     ProSwipe,
-    ProTitle
+    ProTitle,
   }
 }
 </script>

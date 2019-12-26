@@ -130,3 +130,13 @@ export const getCreditGoods = (param = {}) => {
 export const getCreditGoodsDetail = (param = {}) => {
   return httpGet(api.getCreditGoodsDetail,param);
 }
+
+//记录足迹
+export const history = (param = {}) => {
+  return httpGet(api.history,param);
+}
+
+//我的足迹列表
+export const footprint = (param = {}) => {
+  return httpGet(api.footprint,param);
+}

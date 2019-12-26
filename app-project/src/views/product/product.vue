@@ -57,6 +57,7 @@ import GroupDialog from '../../components/product/groupDialog'
 
 import axios from 'axios'
 import { mapMutations, mapState } from 'vuex'
+import {history} from '@/utils/axios/request'
 export default {
   name: "Product",
   data(){
@@ -136,7 +137,13 @@ export default {
           console.log('get product err')
         })
     },
-
+    // 记录足迹
+    history(){
+      let id = this.$route.query.id ? this.$route.query.id : 286
+      history({
+        goods_id:id
+      }).then().catch();
+    },
     //返回
     back(){
       console.log(this.$router)
@@ -258,6 +265,7 @@ export default {
     this.updateGroupBuyData(null)//更新拼团购买信息为空
     this.updatedSeckillData(null)//更新秒杀产品信息为空
     this.getProductData()//获取产品信息
+    this.history()//记录足迹
   },
 
   mounted(){

@@ -184,7 +184,7 @@ export default {
     overflow hidden
     background-color #f5f7fa
   .main
-    padding-top 0
+    padding-top 3vw
   .warn
     display: flex
     flex-direction: column
@@ -216,6 +216,8 @@ export default {
     margin 3vw 3vw 0
     padding 0 2vw
     border-radius 2vw
+    &:nth-of-type(1)
+      margin-top 0
     .head
       display flex
       justify-content flex-start

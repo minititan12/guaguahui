@@ -9,7 +9,7 @@
     </div>
 
     <div :key="index" class="oderItem-content" v-for="(item,index) of data.goodsList">
-      <div class="oderItem-img" @click.stop="handleToProduct(item.goods_id)">
+      <div class="oderItem-img">
         <van-image
           width="25vw"
           height="25vw"
@@ -20,7 +20,7 @@
       </div>
 
       <div class="content-middle">
-        <span class="oderItem-title" @click.stop="handleToProduct(item.goods_id)">{{item.goods_name}}</span>
+        <span class="oderItem-title">{{item.goods_name}}</span>
         <span class="oderItem-desc">{{getDesc(item)}}</span>
       </div>
 

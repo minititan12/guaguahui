@@ -25,7 +25,7 @@
       </div>
     </div>
     <div class="goods-info">
-      <div class="goods" :key="index" v-for="(item,index) in order.goods_info">
+      <div @click="goDetails(item)" class="goods" :key="index" v-for="(item,index) in order.goods_info">
         <van-image
           width="20vw"
           height="20vw"
@@ -161,6 +161,47 @@ export default {
     ...mapMutations(['updatePayOrderData']),
     handleBack(){
       this.$router.go(-1)
+    },
+    // 跳转商品详情
+    goDetails(info){
+      switch(info.flag){
+        case 1:
+          this.$router.push({
+            path: '/product',
+            query: {
+              id: info.goods_id
+            }
+          })
+          break;
+        case 2:
+          this.$router.push({
+            path: '/product',
+            query: {
+              id: info.goods_id,
+              group_id: info.flag_activity
+            }
+          })
+          break;
+        case 3:
+          this.$router.push({
+            path: '/product',
+            query: {
+              id: info.goods_id,
+              seckill_id: info.flag_activity
+            }
+          })
+          break;
+        case 4:
+          this.$router.push({
+            path: '/bargain',
+            query: {
+              goods_id: info.goods_id,
+            }
+          })
+          break;
+        default:
+           break;
+      }  
     },
     // 获取订单详情
     getOrderDetail(){

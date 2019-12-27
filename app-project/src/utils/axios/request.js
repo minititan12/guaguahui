@@ -145,3 +145,8 @@ export const history = (param = {}) => {
 export const footprint = (param = {}) => {
   return httpGet(api.footprint,param);
 }
+
+//删除我的足迹
+export const deletefootprint = (param = {}) => {
+  return httpGet(api.deletefootprint,param);
+}

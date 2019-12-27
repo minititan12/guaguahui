@@ -67,6 +67,7 @@ export default {
         width: 35%
         padding-right: 2vw
       .item-right
+        width: 63%
         color: #000
         font-family: PFB
         letter-spacing: .1vw

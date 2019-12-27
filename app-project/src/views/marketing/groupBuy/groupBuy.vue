@@ -196,7 +196,7 @@ export default {
         query:{
           id: item.goods_id,
           group_id: item.id,
-          shop_id: item.user_id
+          // shop_id: item.user_id
         }
       })
     }

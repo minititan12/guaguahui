@@ -130,7 +130,10 @@ export default {
           console.log('getGoodsInfo',res.data)
           if(res.data.code == 1){
             this.type = res.data.data.flag
-            this.changeCurrentProductData(res.data.data)
+            this.changeCurrentProductData(res.data.data);
+            if(res.data.data.flag == 1){
+              this.history()//记录足迹
+            }
           }
         })
         .catch((err)=>{
@@ -265,7 +268,6 @@ export default {
     this.updateGroupBuyData(null)//更新拼团购买信息为空
     this.updatedSeckillData(null)//更新秒杀产品信息为空
     this.getProductData()//获取产品信息
-    this.history()//记录足迹
   },
 
   mounted(){

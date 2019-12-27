@@ -8,6 +8,10 @@
 
       <ProPopUpHeader />
       <ProPopUpAttr />
+
+      <div class="btn" @click="handleconfirm">
+        <span>确认订单</span>
+      </div>
     </div>
   </div>
 </template>
@@ -24,12 +28,26 @@ export default {
     ProPopUpAttr
   },
   computed: {
-    ...mapState(['showProPopUp'])
+    ...mapState(['showProPopUp','integralProBuyDetail'])
   },
   methods: {
-    ...mapMutations(['changeShowProPopUp']),
+    ...mapMutations(['changeShowProPopUp','updateIntegralProBuyDetail']),
     closePopUp(){
       this.changeShowProPopUp(false)
+      this.updateIntegralProBuyDetail(null)
+    },
+    //确认订单
+    handleconfirm(){
+      if(this.integralProBuyDetail){
+        this.$router.push({
+          path:"/intergralConfirmPay"
+        })
+      }else{
+        this.$toast({
+          message:'请先选择属性',
+          duration: 1200
+        })
+      }
     }
   }
 }
@@ -70,6 +88,18 @@ export default {
     border-top-right-radius: 3vw
     overflow: hidden
     z-index: 5
+    .btn
+      position: absolute 
+      bottom: 0
+      left: 0
+      width: 100%
+      height: 12vw
+      background-color: #ff5756
+      color: #fff
+      font-size: 4vw
+      font-family: PFB
+      text-align: center
+      line-height: 12vw
 </style>
 
 

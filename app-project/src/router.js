@@ -6,6 +6,7 @@ const Home = () => import('./views/home')
 const Pay = () => import('./views/pay/pay.vue')
 const Payment = () => import('./views/pay/payment.vue')
 const AccessCoupon = () => import('./views/pay/accessCoupon.vue')
+const IntergralConfirmPay = () => import('./views/pay/integralConfirmPay.vue')
 
 //login文件夹
 const Login = () => import('./views/login/login.vue')
@@ -136,6 +137,19 @@ export default new Router({
       path: '/pay',
       name: 'pay',
       component: Pay,
+      meta:{
+        index: 4,
+        keepAlive: false,
+        isImmersion: true,
+        color: '#ffffff',
+        style: 'dark'
+      }
+    },
+    //积分商品确认订单页面组件
+    {
+      path: '/intergralConfirmPay',
+      name: 'intergralConfirmPay',
+      component: IntergralConfirmPay,
       meta:{
         index: 4,
         keepAlive: false,

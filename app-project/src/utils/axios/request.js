@@ -131,6 +131,11 @@ export const getCreditGoodsDetail = (param = {}) => {
   return httpGet(api.getCreditGoodsDetail,param);
 }
 
+//积分商品下订单
+export const creditGoodsOrder = (param = {}) => {
+  return httpPost(api.creditGoodsOrder,param);
+}
+
 //记录足迹
 export const history = (param = {}) => {
   return httpGet(api.history,param);

@@ -4,6 +4,10 @@
     <ProFooter/>
     <ProImgMask />
     <ProPopUp />
+
+    <div class="back" @click="back">
+      <span class="iconfont">&#xe624;</span>
+    </div>
   </div>
 </template>
 
@@ -23,7 +27,11 @@ export default {
     ProPopUp
   },
   methods: {
-    ...mapMutations(['updateCurrentCreditGoodDetail','changeShowProPopUp']),
+    ...mapMutations(['updateCurrentCreditGoodDetail','changeShowProPopUp','updateIntegralProBuyDetail']),
+    //返回上一个页面
+    back(){
+      this.$router.go(-1)
+    },
     //获取积分产品数据
     getProductData(){
       let getParams = {
@@ -54,10 +62,26 @@ export default {
   },
   created(){
     this.changeShowProPopUp(false)
+    this.updateIntegralProBuyDetail(null)
     this.getProductData()
   }
 }
 </script>
 
 <style lang="stylus" scoped>
+  .back
+    width: 8vw
+    height: 8vw
+    background-color: rgba(60,60,60,.5)
+    position: absolute 
+    top: 3vw
+    left: 3vw
+    z-index: 3
+    text-align: center
+    overflow: hidden
+    border-radius: 8vw
+    .iconfont
+      color: #fff
+      font-size: 5vw
+      line-height: 8vw
 </style>

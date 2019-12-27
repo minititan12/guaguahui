@@ -5,9 +5,9 @@
       left-arrow
       @click-left="handleBack"
     >
-      <div slot="right">
+      <div @click="manage" slot="right">
         <van-icon name="setting-o"/>
-        <span class='right-text'>管理</span>
+        <span class='right-text'>{{showCheck?"完成":"管理"}}</span>
       </div>
     </van-nav-bar>
     <div class="content-wrapper" ref="wrapper">
@@ -16,6 +16,7 @@
           <van-icon :class="{'refresh':refresh}" color="#FF5756" name="down" size="20" />
         </div>
         <div class="history" v-for="item in historyList" :key="item.goods_id">
+          <van-checkbox v-show="showCheck" v-model="item.chose" checked-color="#ff5756"></van-checkbox>
           <van-image width="27vw" height="27vw" fit="cover" :src="item.cover_img"/>
           <div class="content">
             <div class="goods-name">{{item.goods_name}}</div>
@@ -40,11 +41,16 @@
         </van-loading>
       </div>
     </div>
+
+    <div v-show="showCheck" class="footer">
+      <van-checkbox @change="allChange" v-model="allChose" checked-color="#ff5756">全部</van-checkbox>
+      <div @click="deleteHistory" class="delete">删除</div>
+    </div>
   </div>
 </template>
 
 <script>
-import {footprint} from '@/utils/axios/request'
+import {footprint,deletefootprint} from '@/utils/axios/request'
 import Bscroll from 'better-scroll'
 export default {
   name: "History",
@@ -56,6 +62,9 @@ export default {
       refresh:false,
       refreshing:false,
       page:1,
+      allChose:false,
+
+      showCheck:false
     }
   },
   created(){
@@ -67,6 +76,46 @@ export default {
   methods: {
     handleBack(){
       this.$router.go(-1)
+    },
+    manage(){
+      if(!this.showCheck){
+        for(let i in this.historyList){
+          this.historyList[i]['chose'] = false;
+        }
+        this.allChose = false;
+      }
+      this.showCheck = !this.showCheck;
+    },
+    allChange(){
+      for(let i in this.historyList){
+        this.historyList[i]['chose'] = this.allChose;
+      }
+    },
+    deleteHistory(){
+      let id = [];
+      for(let i in this.historyList){
+        if(this.historyList[i]['chose']){
+          id.push(this.historyList[i].id);
+        }
+      }
+      if(id.length == 0){
+        this.$toast("请选择足迹");
+        return;
+      }
+      deletefootprint({
+        id
+      }).then(res=>{
+        if(res.data.code != 1){
+          this.$toast(res.data.message);
+          return;
+        }
+        this.$toast("删除成功");
+        this.showCheck = false;
+        this.page = 1;
+        this.scroll.openPullUp();
+        this.showLoading = true;
+        this.getFootprint();
+      }).catch();
     },
     getFootprint(cb){
       footprint({
@@ -84,6 +133,9 @@ export default {
             this.scroll.closePullUp();
           }
           return;
+        }
+        for(let i in res.data.data){
+          res.data.data[i]["chose"] = false;
         }
         if(this.page == 1 && res.data.data.length < 10 && this.scroll){
           this.scroll.closePullUp();
@@ -192,6 +244,8 @@ export default {
       justify-content flex-start
       &:nth-of-type(2)
         margin-top 0
+      .van-checkbox
+        padding-right 2vw
       .van-image
         margin-right 3vw
         border-radius 1vw
@@ -257,4 +311,24 @@ export default {
         line-height: 15vw
         font-family: PFH
         font-size: 4vw
+  .footer
+    position fixed
+    left 0
+    bottom 0
+    right 0
+    display flex
+    justify-content space-between
+    align-items center
+    padding 0 4vw
+    height 14vw
+    background white
+    z-index 5
+    .delete
+      background #ff5756
+      height 8vw
+      line-height 8vw
+      color white
+      width 20vw
+      border-radius 4vw
+      text-align center
 </style>

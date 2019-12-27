@@ -81,4 +81,7 @@ export default {
   // 我的足迹列表
   // http://showdoc.gghbuy.com/web/#/1?page_id=87
   footprint: baseUrl + '/api/method/footprint',
+  // 删除我的足迹
+  // http://showdoc.gghbuy.com/web/#/1?page_id=88
+  deletefootprint: baseUrl + '/api/method/deletefootprint',
 }

@@ -35,6 +35,11 @@
           </div>
         </div>
 
+        <div class="warn-wrapper" v-show="showWarn">
+          <span class="iconfont">&#xe605;</span>
+          <span class="warn-text">您没有拼团的商品</span>
+        </div>
+
       </div>
     </div>
 
@@ -50,7 +55,8 @@ export default {
   name: "MineGroup",
   data(){
     return {
-      mineGroupList: []
+      mineGroupList: [],
+      showWarn: false
     }
   },
   computed: {
@@ -92,6 +98,15 @@ export default {
           console.log('getShareSpellGroup',res.data)
           if(res.data.code == 1){
             this.mineGroupList = res.data.data
+            if(!this.mineGroupList.length){
+              this.showWarn = true
+            }
+          }else{
+            this.$toast({
+              message: res.data.message,
+              type: 'fail',
+              duration: 1500
+            })
           }
         })
         .catch((err)=>{
@@ -197,5 +212,19 @@ export default {
             color: #fff
             padding: 2vw 4vw
             border-radius: 4vw
-
+      
+      .warn-wrapper
+        width: 100%
+        display: flex
+        flex-direction: column
+        align-items: center
+        padding: 10vw 0
+        font-family: PFH
+        .iconfont
+          font-size: 8vw
+          color: #bbb
+        .warn-text
+          margin-top: 5vw
+          font-size: 5vw
+          color: #bbb
 </style>

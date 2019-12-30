@@ -69,6 +69,9 @@ export default {
   // 退款发货
   // http://showdoc.gghbuy.com/web/#/1?page_id=77
   refundGoods: baseUrl + '/api/method/refundGoods',
+  //获取积分
+  //http://showdoc.gghbuy.com/web/#/1?page_id=89
+  getCredit: baseUrl + '/api/method/getCredit',
   //获取积分列表
   //http://showdoc.gghbuy.com/web/#/1?page_id=80
   getCreditGoods: baseUrl + '/api/method/getCreditGoods',
@@ -76,10 +79,13 @@ export default {
   //http://showdoc.gghbuy.com/web/#/1?page_id=81
   getCreditGoodsDetail: baseUrl + '/api/method/getCreditGoodsDetail',
   //提交积分商品订单
+  //http://showdoc.gghbuy.com/web/#/1?page_id=82
   creditGoodsOrder: baseUrl + '/api/method/creditGoodsOrder',
   //积分明细
+  //http://showdoc.gghbuy.com/web/#/1?page_id=84
   creditLog: baseUrl + '/api/method/creditLog',
   //积分兑换记录
+  //http://showdoc.gghbuy.com/web/#/1?page_id=83
   creditOrderList: baseUrl + '/api/method/creditOrderList',
   // 记录足迹
   // http://showdoc.gghbuy.com/web/#/1?page_id=86

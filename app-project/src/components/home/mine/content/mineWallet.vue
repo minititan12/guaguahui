@@ -7,7 +7,7 @@
     <div class="wallet-bottom">
       <div class="mineIntegral" @click="handleToIntegral">
         <span class="integral-title">我的积分</span>
-        <span class="integral-num">40</span>
+        <span class="integral-num">{{credit}}</span>
       </div>
       <div class="wallet" @click="handleToWallet">
         <div class="balance-top">
@@ -25,8 +25,14 @@
 
 <script>
 import { mapState } from 'vuex'
+import { getCredit } from '../../../../utils/axios/request'
 export default {
   name: "MineWallet",
+  data(){
+    return {
+      credit: 0
+    }
+  },
   computed: {
     ...mapState(['userData'])
   },
@@ -40,7 +46,29 @@ export default {
       this.$router.push({
         path: '/wallet'
       })
-    }
+    },
+    //获取积分
+    getCredit(){
+      let getData = {
+        user_id: this.userData.id
+      }
+      getCredit(getData)
+        .then((res)=>{
+          console.log('getCredit',res.data)
+          if(res.data.code == 1){
+            this.credit = res.data.data.credit
+          }else{
+            this.$toast({
+              message: res.data.message,
+              type: 'fail',
+              duration: 1500
+            })
+          }
+        }).catch(()=>{})
+    },
+  },
+  created(){
+    this.getCredit()
   }
 }
 </script>

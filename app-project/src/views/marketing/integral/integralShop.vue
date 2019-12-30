@@ -9,7 +9,7 @@
     />
     <div class="head">
       <div class="label">当前积分</div>
-      <div class="integral">505</div>
+      <div class="integral">{{credit}}</div>
       <!-- <div class="tip">积分当钱花，天天都能省！</div> -->
       <div class="details" @click="goIntegralDetails">积分明细</div>
     </div>
@@ -47,8 +47,9 @@
 
 <script>
 import IntegralGoodItem from '../../../components/miniComponents/integralGoodItem'
-import { getCreditGoods } from '../../../utils/axios/request'
+import { getCreditGoods,getCredit } from '../../../utils/axios/request'
 import Bscroll from 'better-scroll'
+import { mapState } from 'vuex'
 export default {
   name: "IntegralShop",
   components: {
@@ -62,8 +63,12 @@ export default {
       goodList: [],
       showLoading: false,
       showNoMore: false,
-      showWarn: false
+      showWarn: false,
+      credit: 0
     }
+  },
+  computed:{
+    ...mapState(['userData'])
   },
   methods: {
     //loading状态
@@ -140,6 +145,25 @@ export default {
         })
         this.getIntegralList('init')
       }
+    },
+    //获取积分
+    getCredit(){
+      let getData = {
+        user_id: this.userData.id
+      }
+      getCredit(getData)
+        .then((res)=>{
+          console.log('getCredit',res.data)
+          if(res.data.code == 1){
+            this.credit = res.data.data.credit
+          }else{
+            this.$toast({
+              message: res.data.message,
+              type: 'fail',
+              duration: 1500
+            })
+          }
+        }).catch(()=>{})
     },
     //获取积分列表
     getIntegralList(type){
@@ -237,6 +261,7 @@ export default {
     }
   },
   created(){
+    this.getCredit()
     this.getIntegralList()
   },
   mounted(){

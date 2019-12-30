@@ -121,6 +121,11 @@ export const refundGoods = (param = {}) => {
   return httpPost(api.refundGoods,param);
 }
 
+//获取积分
+export const getCredit = (param = {}) => {
+  return httpGet(api.getCredit,param);
+}
+
 //积分列表
 export const getCreditGoods = (param = {}) => {
   return httpGet(api.getCreditGoods,param);

@@ -6,22 +6,22 @@
       @click-left="handleBack"
     />
     <div class="list">
-      <div @click="goRedemptionDetails" class="record">
-        <div class="time">2019-11-20 13:20:13</div>
+      <div @click="goRedemptionDetails(item)" class="record" v-for="item of creditOrderList">
+        <div class="time">{{item.create_at}}</div>
         <div class="content">
           <van-image
             width="20vw"
             height="20vw"
             fit="contain"
-            src="https://gd3.alicdn.com/imgextra/i2/2012428513/O1CN01LXOQPf2Cl0GmofLEo_!!2012428513.png_400x400.jpg"
+            :src="item.sku_img"
           />
           <div class="info">
-            <div class="name">2019秋装新款纯棉复古浅色布落肩袖宽松牛仔外套女</div>
-            <div class="attr">颜色：黑色    尺码：M</div>
-            <div class="num">X1</div>
+            <div class="name">{{item.goods_name}}</div>
+            <div class="attr">{{getAttrDesc(item.sku)}}</div>
+            <div class="num">X{{item.number}}</div>
           </div>
           <div>
-            <div class="deduction">-10积分</div>
+            <div class="deduction">-{{item.order_money}}积分</div>
           </div>
         </div>
       </div>
@@ -30,15 +30,66 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+import { creditOrderList } from '../../../utils/axios/request'
 export default {
   name: "RedemptionRecord",
+  data(){
+    return {
+      creditOrderList: []
+    }
+  },
+  computed: {
+    ...mapState(['userData'])
+  },
   methods: {
     handleBack(){
       this.$router.go(-1)
     },
-    goRedemptionDetails(){
-      this.$router.push('/redemptionDetails');
+    //跳转兑换订单详情
+    goRedemptionDetails(item){
+      let str = JSON.stringify(item)
+      this.$router.push({
+        path: '/redemptionDetails',
+        name: 'redemptionDetails',
+        params: {
+          data: str
+        }
+      });
+    },
+    //获取兑换记录数据
+    getCreditOrderList(){
+      let getData = {
+        user_id: this.userData.id
+      }
+      creditOrderList(getData)
+        .then((res)=>{
+          console.log('creditOrderList',res.data)
+          if(res.data.code == 1){
+            this.creditOrderList = res.data.data
+          }else{
+            this.$toast({
+              message: res.data.message,
+              type: 'fail',
+              duration: 1500
+            })
+          }
+        })
+        .catch((err)=>{})
+    },
+    //获取属性描述
+    getAttrDesc(obj){
+      let strAry = []
+      for(let key in obj){
+        let str = key + ':' + obj[key]
+        strAry.push(str)
+      }
+
+      return strAry.join()
     }
+  },
+  created(){
+    this.getCreditOrderList()
   }
 }
 </script>

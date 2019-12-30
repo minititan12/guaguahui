@@ -13,32 +13,32 @@
       />
       <div>兑换成功</div>
     </div>  
-    <div class="main">
+    <div class="main" v-if="orderData">
       <div class="goods">
         <van-image
           width="20vw"
           height="20vw"
           fit="contain"
-          src="public/uploads/goods_img/20191025/cff8de0f3229702082be7cb608ccb347.png"
+          :src="orderData.sku_img"
         />
         <div class="content">
-          <div class="name">2019秋装新款纯棉复古浅色纯棉复纯棉布落肩袖宽松牛仔外套女</div>
-          <div class="attr">颜色：黑色    尺码：M</div>
-          <div class="num">x1</div>
+          <div class="name">{{orderData.goods_name}}</div>
+          <div class="attr">{{getAttrDesc(orderData.sku)}}</div>
+          <div class="num">x{{orderData.number}}</div>
         </div>
       </div>
 
       <div class="part">
         <div class="label">会员积分</div>
-        <div class="result">10</div>
+        <div class="result">{{orderData.order_money}}</div>
       </div>
       <div class="part">
         <div class="label">兑换时间</div>
-        <div class="result">2019-10-23 12:20:30</div>
+        <div class="result">{{orderData.create_at}}</div>
       </div>
       <div class="part">
-        <div class="label">兑换流水</div>
-        <div class="result">1259895244552</div>
+        <div class="label">兑换订单号</div>
+        <div class="result">{{orderData.order_number}}</div>
       </div>
     </div>      
   </div>
@@ -47,6 +47,16 @@
 <script>
 export default {
   name: "RedemptionDetails",
+  computed: {
+    orderData(){
+      if(this.$route.params){
+        let data = JSON.parse(this.$route.params.data)
+        return data
+      }else{
+        return null
+      }
+    },
+  },
   methods: {
     handleBack(){
       this.$router.go(-1)
@@ -54,6 +64,16 @@ export default {
     goIntegralDetails(){
       this.$router.push('/integralDetails');
     },
+    //获取属性描述
+    getAttrDesc(obj){
+      let strAry = []
+      for(let key in obj){
+        let str = key + ':' + obj[key]
+        strAry.push(str)
+      }
+
+      return strAry.join()
+    }
   }
 }
 </script>

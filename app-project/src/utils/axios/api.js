@@ -77,6 +77,10 @@ export default {
   getCreditGoodsDetail: baseUrl + '/api/method/getCreditGoodsDetail',
   //提交积分商品订单
   creditGoodsOrder: baseUrl + '/api/method/creditGoodsOrder',
+  //积分明细
+  creditLog: baseUrl + '/api/method/creditLog',
+  //积分兑换记录
+  creditOrderList: baseUrl + '/api/method/creditOrderList',
   // 记录足迹
   // http://showdoc.gghbuy.com/web/#/1?page_id=86
   history: baseUrl + '/api/method/history',

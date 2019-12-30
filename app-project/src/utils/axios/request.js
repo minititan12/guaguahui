@@ -136,6 +136,17 @@ export const creditGoodsOrder = (param = {}) => {
   return httpPost(api.creditGoodsOrder,param);
 }
 
+//积分明细
+//creditLog
+export const creditLog = (param = {}) => {
+  return httpGet(api.creditLog,param);
+}
+
+//积分兑换记录
+export const creditOrderList = (param = {}) => {
+  return httpGet(api.creditOrderList,param);
+}
+
 //记录足迹
 export const history = (param = {}) => {
   return httpGet(api.history,param);

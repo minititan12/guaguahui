@@ -1,7 +1,7 @@
 <template>
   <div class="integral-wrapper">
     <van-nav-bar
-      title="我的积分"
+      title="积分商城"
       right-text="兑换记录"
       left-arrow
       @click-right="goRedemptionRecord"

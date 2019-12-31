@@ -2,6 +2,7 @@ import axios from 'axios'
 import qs from 'qs'
 import store from '@/store'
 import {Toast} from 'vant'
+import router from '@/router'
 
 axios.defaults.timeout = 5000;
 axios.defaults.baseURL ='';
@@ -42,6 +43,7 @@ export const httpPost = (url,param={},headers) => {
       }
     })
     .then(res => {
+      
       resolve(res)
     }).catch(err => {
       reject(err)
@@ -62,6 +64,7 @@ export const httpGet = (url,param={},headers) => {
         'Content-Type':'application/x-www-form-urlencoded'
       }
     }).then(res => {
+    
       resolve(res)
     }).catch(err => {
       reject(err)

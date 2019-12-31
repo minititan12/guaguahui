@@ -49,6 +49,8 @@ export default {
     background-color white
     border-radius 2vw
     padding 3vw 2vw
+    &:nth-of-type(1)
+      margin-top 0
     .head
       display flex
       justify-content space-between

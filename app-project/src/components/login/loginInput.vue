@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { getCode } from '../../utils/axios/request'
 import { mapState } from 'vuex'
 export default {
   name: "LoginInput",
@@ -87,7 +87,7 @@ export default {
           type: 1
         }
         console.log(postData)
-        axios.post('/api/method/getCode',postData)
+        getCode(postData)
           .then((res)=>{
             console.log(res.data)
             if(res.data.code == '1'){

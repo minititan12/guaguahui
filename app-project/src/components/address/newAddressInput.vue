@@ -13,7 +13,7 @@
 <script>
 import { mapState } from 'vuex'
 import areaList from './area'
-import axios from 'axios'
+import { updateAddress,addAddress,editAddress} from '../../utils/axios/request'
 export default {
   name: "NewAddressInput",
   data(){
@@ -56,7 +56,7 @@ export default {
           ...addressData
         }
         console.log(editAddressData)
-        axios.post('api/method/updateAddress',editAddressData)
+        updateAddress(editAddressData)
           .then((res)=>{
             console.log('updateAddress:',res.data)
             if(res.data.code == 1){
@@ -69,11 +69,9 @@ export default {
               })
             }
           })
-          .catch((err)=>{
-            console.log('post updateAddress err' + err)
-          })
+          .catch((err)=>{})
       }else{  //如果是添加数据
-        axios.post('/api/method/addAddress',addressData)
+        addAddress(addressData)
         .then((res)=>{
           console.log('addAddress:',res.data)
           if(res.data.code == 1){
@@ -86,9 +84,7 @@ export default {
             })
           }
         })
-        .catch((err)=>{
-          console.log('post addressData err' + err)
-        })
+        .catch((err)=>{})
       }
     },
     //初始化地址数据，判断是修改还是添加
@@ -99,10 +95,11 @@ export default {
       }
       if(id.length > 0){
         this.edit = true
-        axios.post('api/method/editAddress',{
+        let postData = {
           id: id,
           user_id: this.userData.id
-        })
+        }
+        editAddress(postData)
           .then((res)=>{
             console.log('editAddress:',res.data)
             let data = res.data.data
@@ -120,9 +117,7 @@ export default {
             }
             this.addressInfo = addressInfo
           })
-          .catch((err)=>{
-            console.log('post editAddress err' + err)
-          })
+          .catch((err)=>{})
       }
     }
   },

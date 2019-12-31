@@ -28,7 +28,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import { mapMutations, mapState } from 'vuex'
 import ProProps from './title/proProps'
 import DescContent from './title/descContent'

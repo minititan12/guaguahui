@@ -1,6 +1,72 @@
 import {httpPost,httpGet,httpUpload} from './fetch'
 import api from './api.js'
 
+//login页面
+//login
+export const login = (param = {}) => {
+  return httpPost(api.login,param);
+}
+
+//注册
+export const register = (param = {}) => {
+  return httpPost(api.register,param);
+}
+
+//获取验证码
+export const getCode = (param = {}) => {
+  return httpPost(api.getCode,param);
+}
+
+//设置默认地址
+export const setAddressDefault = (param = {}) => {
+  return httpPost(api.setAddressDefault,param);
+}
+
+//删除地址
+export const delAddress = (param = {}) => {
+  return httpPost(api.delAddress,param);
+}
+
+//获取地址
+export const getAddress = (param = {}) => {
+  return httpPost(api.getAddress,param);
+}
+
+//修改地址
+export const updateAddress = (param = {}) => {
+  return httpPost(api.updateAddress,param);
+}
+
+//添加地址
+export const addAddress = (param = {}) => {
+  return httpPost(api.addAddress,param);
+}
+
+//初始化地址，判断地址是修改还是添加
+export const editAddress = (param = {}) => {
+  return httpPost(api.editAddress,param);
+}
+
+//获取默认地址
+export const getDefault = (param = {}) => {
+  return httpPost(api.getDefault,param);
+}
+
+//获取分类页商品数据
+export const getBrandGoods = (param = {}) => {
+  return httpPost(api.getBrandGoods,param);
+}
+
+//获取分类页搜索数据
+export const searchbrandGoods = (param = {}) => {
+  return httpPost(api.searchbrandGoods,param);
+}
+
+//获取秒杀页面数据
+export const getSeckillGoods = (param = {}) => {
+  return httpPost(api.getSeckillGoods,param);
+}
+
 // 获取消息红点
 export const getMsgRedtotal = (param = {}) => {
   return httpPost(api.getMsgRedtotal,param);

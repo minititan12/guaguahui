@@ -19,7 +19,7 @@
 <script>
 import LoginInput from './loginInput'
 import LoginBtn from './loginBtn'
-import axios from 'axios'
+import { login, register} from '../../utils/axios/request'
 import { mapMutations, mapState } from 'vuex'
 export default {
   name: "LoginContent",
@@ -47,7 +47,7 @@ export default {
         password: this.postData.code,
         type: 2
       }
-      axios.post('/api/method/login',postdata)
+      login(postdata)
         .then((res)=>{
           console.log('login',res.data)
           if(res.data.code == 1){
@@ -72,7 +72,7 @@ export default {
         })
     },
     codeLogin(){
-      axios.post('/api/method/register',this.postData)
+      register(this.postData)
         .then((res)=>{
           console.log('register',res.data)
           if(res.data.code == 1){

@@ -21,7 +21,7 @@
 
 <script>
 import { mapMutations, mapState } from 'vuex'
-import axios from 'axios'
+import { login } from '../../utils/axios/request'
 export default {
   name: "LoginBtn",
   computed:{
@@ -55,7 +55,7 @@ export default {
       }
       // let string1 = JSON.stringify(openid)
       // alert(string1)
-      axios.post('api/method/Login',postData)
+      login(postData)
         .then((res)=>{
           // let string = JSON.stringify(res.data)
           // alert(string)
@@ -82,9 +82,7 @@ export default {
             }
           }
         })
-        .catch((err)=>{
-          console.log('check openid err',err)
-        })
+        .catch((err)=>{})
     },
     handleWXLogin(){
       let that = this

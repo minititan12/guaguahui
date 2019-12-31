@@ -18,7 +18,6 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex'
-import axios from 'axios'
 import ProPopUpHeader from './popUp/proPopUpHeader'
 import ProPopUpAttr from './popUp/proPopUpAttr'
 export default {

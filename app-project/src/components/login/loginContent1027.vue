@@ -78,6 +78,7 @@
 import LoginInput from './loginInput'
 import LoginBtn from './loginBtn'
 import axios from 'axios'
+import { login,register,getCode} from '../../utils/axios/request'
 import { mapMutations, mapState } from 'vuex'
 export default {
   name: "LoginContent",
@@ -117,7 +118,7 @@ export default {
           type: 1
         }
         console.log(postData)
-        axios.post('/api/method/getCode',postData)
+        getCode(postData)
           .then((res)=>{
             console.log(res.data)
             if(res.data.code == '1'){
@@ -161,7 +162,7 @@ export default {
         phone: this.phone,
         code: this.code
       }
-      axios.post('/api/method/register',postData)
+      register(postData)
         .then((res)=>{
           console.log('register',res.data)
           if(res.data.code == 1){
@@ -194,7 +195,7 @@ export default {
       }
       // let string1 = JSON.stringify(openid)
       // alert(string1)
-      axios.post('api/method/Login',postData)
+      login(postData)
         .then((res)=>{
           // let string = JSON.stringify(res.data)
           // alert(string)

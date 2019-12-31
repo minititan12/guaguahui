@@ -60,6 +60,7 @@
 
 <script>
 import axios from 'axios'
+import { getBrandGoods,searchbrandGoods } from '../../utils/axios/request'
 import Bscroll from 'better-scroll'
 import ProductItem from '../miniComponents/productItem'
 import { mapState, mapMutations } from 'vuex'
@@ -113,7 +114,7 @@ export default {
         page: this.page,
         status: this.active
       }
-      axios.post('/api/method/getBrandGoods',postData)
+      getBrandGoods(postData)
         .then((res)=>{
           console.log('getBrandGoods:',res.data)
           if(res.data.code == 1){
@@ -164,11 +165,15 @@ export default {
               }
             }
 
+          }else{
+            this.$toast({
+              message: res.data.message,
+              type: 'fail',
+              duration: 1500
+            })
           }
         })
-        .catch((err)=>{
-          console.log('get goods err',err)
-        })
+        .catch((err)=>{})
     },
 
     //获取搜索数据
@@ -181,7 +186,7 @@ export default {
         page: this.page,
         status: this.active
       }
-      axios.post('api/method/searchbrandGoods',postData)
+      searchbrandGoods(postData)
         .then((res)=>{
           console.log('searchbrandGoods:',res.data)
           if(res.data.code == 1){
@@ -231,11 +236,15 @@ export default {
               }
 
             }
+          }else{
+            this.$toast({
+              message: res.data.message,
+              type: 'fail',
+              duration: 1500
+            })
           }
         })
-        .catch((err)=>{
-          console.log('searchbrandGoods err:',err)
-        })
+        .catch((err)=>{})
     },
 
     //初始化组件数据

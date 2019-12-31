@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { getDefault } from '../../utils/axios/request'
 import { mapState,mapMutations } from 'vuex'
 import IntegralUserItem from './content/integralUserItem'
 import IntegralConfirmItem from './content/integralConfirmItem'
@@ -27,14 +27,20 @@ export default {
         user_id: this.userData.id
       }
       console.log(getDefaultAddressOptions)
-      axios.post('api/method/getDefault',getDefaultAddressOptions)
+      getDefault(getDefaultAddressOptions)
         .then((res)=>{
           console.log(res.data)
-          this.updateDefaultAddress(res.data)
+          if(res.data.code == 1){
+            this.updateDefaultAddress(res.data)
+          }else{
+            this.$toast({
+              message: res.data.message,
+              type: 'fail',
+              duration: 1500
+            })
+          }
         })
-        .catch((err)=>{
-          console.log('get default address data err' + err)
-        })
+        .catch((err)=>{})
     }
   },
   mounted(){

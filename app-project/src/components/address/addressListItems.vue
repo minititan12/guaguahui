@@ -39,7 +39,7 @@
 
 <script>
 import { mapState,mapMutations } from 'vuex'
-import axios from 'axios'
+import { setAddressDefault,delAddress,getAddress} from '../../utils/axios/request'
 export default {
   name: "AddressListItems",
   data(){
@@ -66,13 +66,17 @@ export default {
         status: 1,
         user_id: this.userData.id
       }
-      axios.post('api/method/setAddressDefault',postData)
+      setAddressDefault(postData)
         .then((res)=>{
           console.log(res.data)
-        })
-        .catch((err)=>{
-          console.log('post setAddressDefault err' + err)
-        })
+          if(res.data.code != 1){
+            this.$toast({
+              message: res.data.message,
+              type: 'fail',
+              duration: 1500
+            })
+          }
+        }).catch((err)=>{})
     }
   },
   methods: {
@@ -107,7 +111,7 @@ export default {
             user_id: this.userData.id
           }
           console.log(postData)
-          axios.post('api/method/delAddress',postData)
+          delAddress(postData)
             .then((res)=>{
               console.log(res.data)
               if(res.data.code == 1){
@@ -127,26 +131,23 @@ export default {
                 })
               }
             })
-            .catch((err)=>{
-              console.log('post delAddress err' + err)
-            })
+            .catch((err)=>{})
         })
         .catch(()=>{
         })
     },
     //初始化获取地址列表
     initAddressList(){
-      axios.post('api/method/getAddress',{
+      let postData = {
         user_id: this.userData.id
-      })
+      }
+      getAddress(postData)
         .then((res)=>{
           console.log('getAddress',res.data)
           this.updateAddressList(res.data.data)
           this.$toast.clear()
         })
-        .catch((err)=>{
-          console.log('post getAddress err' + err)
-        })
+        .catch((err)=>{})
     },
     handleEditAddress(id){
       this.$router.push('/newAddress?id=' + id)

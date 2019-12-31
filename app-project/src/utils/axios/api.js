@@ -2,6 +2,42 @@
 const baseUrl = process.env.VUE_APP_REQUEST_HOST;
 
 export default {
+  //地址
+  //设置默认地址
+  setAddressDefault: baseUrl + '/api/method/setAddressDefault',
+  //删除地址
+  delAddress: baseUrl + '/api/method/delAddress',
+  //获取地址
+  getAddress: baseUrl + '/api/method/getAddress',
+  //修改地址
+  updateAddress: baseUrl + '/api/method/updateAddress',
+  //添加地址
+  addAddress: baseUrl + '/api/method/addAddress',
+  //初始化地址判断是修改还是添加
+  editAddress: baseUrl + '/api/method/editAddress',
+  //获取默认地址
+  getDefault: baseUrl + '/api/method/getDefault',
+
+  //秒杀页面
+  //获取秒杀数据
+  getSeckillGoods: baseUrl + '/api/method/getSeckillGoods',
+
+  //登录页面
+  //登录
+  login: baseUrl + '/api/method/Login',
+  //注册
+  register: baseUrl + '/api/method/register',
+  //获取验证码
+  getCode: baseUrl + '/api/method/getCode',
+
+
+  //分类商品页
+  //获取商品数据
+  getBrandGoods: baseUrl + '/api/method/getBrandGoods',
+  //获取搜索商品数据
+  searchbrandGoods: baseUrl + '/api/method/searchbrandGoods',
+
+
   // 用户阅读消息
   // http://showdoc.gghbuy.com/web/#/1?page_id=58
   readMsg: baseUrl + '/api/method/readMsg',
@@ -14,6 +50,8 @@ export default {
   // 用户阅读消息
   // http://showdoc.gghbuy.com/web/#/1?page_id=58
   readMsg: baseUrl + '/api/method/readMsg',
+
+
   // 绑定银行卡
   // http://showdoc.gghbuy.com/web/#/1?page_id=41
   bindBank: baseUrl + '/api/method/bindBank',
@@ -31,6 +69,8 @@ export default {
   // 用户解绑银行卡
   // http://showdoc.gghbuy.com/web/#/1?page_id=46
   unbindBank: baseUrl + '/api/method/unbindBank',
+
+
   // 订单详情
   // http://showdoc.gghbuy.com/web/#/1?page_id=69
   orderDetail: baseUrl + '/api/method/orderDetail',
@@ -43,6 +83,8 @@ export default {
   // 物流消息
   // http://showdoc.gghbuy.com/web/#/1?page_id=67
   logisticsDetails: baseUrl + '/api/method/logisticsDetails',
+
+
   // 评价图片上传
   evaImageUpload: baseUrl + '/api/method/show_img_upload',
   //获取投诉大小类
@@ -51,6 +93,8 @@ export default {
   getcomplainedorders: baseUrl + '/api/method/getcomplainedorders',
   //投诉
   addcomplaint: baseUrl + '/api/method/addcomplaint',
+
+
   // 退款商品信息
   // http://showdoc.gghbuy.com/web/#/1?page_id=75
   refundGoodsInfo: baseUrl + '/api/method/refundGoodsInfo',
@@ -69,6 +113,8 @@ export default {
   // 退款发货
   // http://showdoc.gghbuy.com/web/#/1?page_id=77
   refundGoods: baseUrl + '/api/method/refundGoods',
+
+
   //获取积分
   //http://showdoc.gghbuy.com/web/#/1?page_id=89
   getCredit: baseUrl + '/api/method/getCredit',
@@ -87,6 +133,8 @@ export default {
   //积分兑换记录
   //http://showdoc.gghbuy.com/web/#/1?page_id=83
   creditOrderList: baseUrl + '/api/method/creditOrderList',
+
+
   // 记录足迹
   // http://showdoc.gghbuy.com/web/#/1?page_id=86
   history: baseUrl + '/api/method/history',

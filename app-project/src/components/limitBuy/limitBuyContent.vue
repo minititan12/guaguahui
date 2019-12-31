@@ -61,7 +61,7 @@
 
 <script>
 import BScroll from "better-scroll"
-import axios from 'axios'
+import { getSeckillGoods } from '../../utils/axios/request'
 export default {
   name: "LimitBuyContent",
   data(){
@@ -152,7 +152,7 @@ export default {
         seckill_id: this.$route.query.seckill_id
       }
 
-      axios.post('api/method/getSeckillGoods',postData)
+      getSeckillGoods(postData)
         .then((res)=>{
           console.log('getSeckillGoods',res.data)
           if(res.data.code == 1){
@@ -192,6 +192,12 @@ export default {
                 this.showNoMore = true
               }
             }
+          }else{
+            this.$toast({
+              message: res.data.message,
+              type: 'fail',
+              duration: 1500
+            })
           }
         })
         .catch((err)=>{

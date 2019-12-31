@@ -1,6 +1,18 @@
 <template>
-  <div>
-    <mescroll-vue :down="down" :up="up" @init="init">
+  <div class="content-wrapper" ref="wrapper">
+    <div class="all-wrapper">
+      <transition name="fade">
+        <div class="content-refresh" v-show="mainPageRefresh">
+          <van-loading color="#FF5756" size="24px">
+            <img class="loading-img" src="/public/uploads/home/load.png" alt="">
+            <span>加载中...</span>
+          </van-loading>
+        </div>
+      </transition>
+      <div v-show="pullDown" class="pull-down">
+        <van-icon :class="{'refresh':refresh}" color="#FF5756" name="down" size="20" />
+      </div>
+      <!-- <LittleTitle :recommendList="recommendList"></LittleTitle> -->
       <MainSwiper :swiperList="swiperList"></MainSwiper>
       <MainIcons :iconsList="iconsList"></MainIcons>
       <TodayHot :todayHotList="todayHotList"></TodayHot>
@@ -10,12 +22,23 @@
       <ProductAD :productADList="productADList"></ProductAD>
       <MainActivity :activityList="activityList"></MainActivity>
       <MainProducts :productsList="productsList"></MainProducts>
-    </mescroll-vue>
+      <div class="pullUpLoading">
+        <van-loading color="#FF5756" size="24px" v-show="showLoading">
+          <img class="loading-img" src="/public/uploads/home/load.png" alt="">
+          <span>加载中...</span>
+        </van-loading>
+        <div class="no-more" v-show="!showLoading">
+          <img class="loading-img" src="/public/uploads/home/load.png" alt="">
+          <span>没有更多了</span>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
 <script>
-import MescrollVue from 'mescroll.js/mescroll.vue'
+import Bscroll from 'better-scroll'
 import axios from 'axios'
 import { mapState,mapMutations } from 'vuex'
 export default {
@@ -30,10 +53,8 @@ export default {
     'BrandAD': () => import('./brandAD'),
     'ProductAD': () => import('./productAD'),
     'MainActivity': () => import('./mainActivity'),
-    'MainProducts': () => import('./products'),
-    MescrollVue,
+    'MainProducts': () => import('./products')
   },
-
   data(){
     return {
       swiperList: [],
@@ -53,25 +74,6 @@ export default {
       pullDown:true,
       // 是否下拉到足够的距离刷新
       refresh:false,
-
-      mescroll: null,
-      down:{
-        textInOffset:"下拉刷新",
-        textOutOffset: "释放刷新",
-        textLoading: "加载中 ..",
-        auto:false,
-        callback:(mescroll)=>{
-          this.refreshData();
-          mescroll.resetUpScroll();
-        }
-      },
-      up:{
-        isBounce: false,
-        // htmlNodata: '<div class="pullUpLoading"><div class="no-more"><img class="loading-img" src="/public/uploads/home/load.png" alt=""><span>没有更多了</span></div></div>',
-        // htmlLoading: '<div class="pullUpLoading"><van-loading color="#FF5756" size="24px"><img class="loading-img" src="/public/uploads/home/load.png" alt=""><span>加载中...</span></van-loading></div>',
-        auto:true,
-        callback:this.handlePullingUp,
-      }      
     }
   },
   computed: {
@@ -79,28 +81,73 @@ export default {
   },
   methods: {
     ...mapMutations(['updateRefreshStatus','changeSearchText','updatedToTop']),
-
-    // mescroll组件初始化的回调,可获取到mescroll对象
-    init(mescroll){
-      this.mescroll = mescroll;
-    },
-
     //触发下拉之后更新数据
     refreshData(){
       this.changeSearchText('')
       this.getSwiperList()
       this.getIconsList()
       this.getActivityList()
+      this.getProductsList(true)
       this.getlimitShoppingData()
       // this.getRecommendData()
       this.getTodayHotList()
     },
     //上拉加载的操作
-    handlePullingUp(mes){
-      if(this.mescroll){
+    handlePullingUp(){
+      if(this.scroll){
         console.log('pullingup')
-        this.getProductsList(mes.num)
+        this.getProductsList()
       }
+    },
+    //初始化主页面滚动条
+    initScroll(){
+      let el = this.$refs.wrapper
+      this.scroll = new Bscroll(el,{
+        pullDownRefresh: {
+          threshold: 55,
+          stop: 0
+        },
+        pullUpLoad: {
+          threshold: 10,
+          stop: 0
+        },
+        click: true,
+        eventPassthrough: 'horizontal',
+        mouseWheel: true
+      })
+
+      this.scroll.on('pullingDown',()=>{
+        this.productPage = 1
+        //修改刷新状态为true
+        this.updateRefreshStatus(true)
+        this.pullDown = false;
+        // this.$nextTick(()=>{
+        //   this.scroll.refresh()
+        // })
+        this.refreshData()
+        setTimeout(()=>{
+          this.pullDown = true;
+          this.updateRefreshStatus(false)
+          this.scroll.finishPullDown()
+          this.scroll.refresh()
+        },2000)
+      })
+      this.scroll.on('scroll',(pos)=>{
+        if(pos.y > 55){
+          if(!this.refresh){
+            this.refresh = true;
+          }
+        }else{
+          if(this.refresh){
+            this.refresh = false;
+          }
+        }
+      });
+      this.scroll.on('pullingUp',this.handlePullingUp)
+
+      this.scroll.on('beforeScrollStart',()=>{
+        this.scroll.refresh()
+      })
     },
     //获取首页轮播图数据
     getSwiperList(){
@@ -176,20 +223,30 @@ export default {
         })
     },
     //获取首页产品的数据
-    getProductsList(page){
+    getProductsList(refresh){
       let postData = {
-        page: page
+        page: this.productPage
       }
       axios.post('/api/method/getGoods',postData)
         .then((res)=>{
           console.log('productData:',res.data)
           let data = res.data
-          this.mescroll.endSuccess(data.data.length,data.data.length>=10);	
           if(data.code == 1){
-            if(page == 1){
-              this.productsList = data.data;
+            if(refresh){
+              this.productsList = data.data
             }else{
-              this.productsList = [...this.productsList,...data.data]
+              if(data.data.length > 0){
+                setTimeout(()=>{
+                  this.productsList = [...this.productsList,...data.data]
+
+                  this.$nextTick(()=>{
+                    this.scroll.finishPullUp()
+                    this.scroll.refresh()
+                  })
+                },300)
+              }else{
+                this.showLoading = false
+              }
             }
             this.productPage = this.productPage + 1
           }
@@ -235,10 +292,14 @@ export default {
     this.getIconsList()
     this.getlimitShoppingData()
     this.getActivityList()
+    this.getProductsList(true)
     // this.getRecommendData()
     this.getBrandADData()
     this.getProductADData()
     this.getTodayHotList()
+  },
+  mounted(){
+    this.initScroll()
   },
   //keep-alive页面显示时触发
   activated(){
@@ -284,29 +345,74 @@ export default {
 </script>
 
 <style lang='stylus' scoped>
-  .mescroll{
-      position: absolute;
-      left: 0;
-      top: 18vw;
-      height: calc( 100% - 30vw);    
-      /deep/ .mescroll-upwarp{
-          padding: 0;
-      }
-  }
-  /deep/ .pullUpLoading
-    width: 100%
+  .fade-leave
+    height: 15vw
+    opacity: 1
+  .fade-leave-active
+    transition: all .5s ease
+  .fade-leave-to
+    height: 0
+    opacity: 0
+
+  .content-wrapper >>> .van-loading__text
+    color: #FF5756
+    font-family: PFH
+  .content-wrapper >>> .van-loading
+    height: 15vw
     display: flex
-    justify-content: center
     align-items: center
-    .loading-img
-      width: 6vw
-      height: 5vw
-      margin-right: 2vw
-    .no-more
-      height: 15vw
-      line-height: 15vw
-      font-family: PFH
-      font-size: 4vw
+
+  .content-wrapper
+    position: fixed
+    overflow: hidden
+    top: 18vw
+    bottom: 12vw
+    left: 0
+    right: 0
+    z-index: 2
+    .all-wrapper
+      background: linear-gradient(to bottom, #fff, #F6F7FB 300vw, #F6F7FB)
+      .content-refresh
+        // position absolute
+        // left 0
+        // top 0
+        width 100%
+        // z-index 2
+        display: flex
+        justify-content: center
+        align-items: center
+        background-color: #fff
+        .loading-img
+          width: 6vw
+          margin-right: 2vw
+      .pull-down
+        display flex
+        justify-content center
+        align-items center
+        height 50px
+        position absolute
+        width 100%
+        left 0
+        top -50px
+        .van-icon-down
+          transition all 300ms
+          transform rotate(0deg)
+          &.refresh
+            transform rotate(180deg)
+      .pullUpLoading
+        width: 100%
+        display: flex
+        justify-content: center
+        align-items: center
+        .loading-img
+          width: 6vw
+          height: 5vw
+          margin-right: 2vw
+        .no-more
+          height: 15vw
+          line-height: 15vw
+          font-family: PFH
+          font-size: 4vw
 </style>
 
 

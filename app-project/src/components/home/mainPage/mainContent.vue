@@ -1,6 +1,14 @@
 <template>
   <div class="content-wrapper" ref="wrapper">
     <div class="all-wrapper">
+      <transition name="fade">
+        <div class="content-refresh" v-show="mainPageRefresh">
+          <van-loading color="#FF5756" size="24px">
+            <img class="loading-img" src="/public/uploads/home/load.png" alt="">
+            <span>加载中...</span>
+          </van-loading>
+        </div>
+      </transition>
       <div v-show="pullDown" class="pull-down">
         <van-icon :class="{'refresh':refresh}" color="#FF5756" name="down" size="20" />
       </div>
@@ -26,14 +34,6 @@
       </div>
     </div>
 
-    <!-- <transition name="fade"> -->
-      <div class="content-refresh" v-show="mainPageRefresh">
-        <van-loading color="#FF5756" size="24px">
-          <img class="loading-img" src="/public/uploads/home/load.png" alt="">
-          <span>加载中...</span>
-        </van-loading>
-      </div>
-    <!-- </transition> -->
   </div>
 </template>
 
@@ -105,14 +105,15 @@ export default {
       this.scroll = new Bscroll(el,{
         pullDownRefresh: {
           threshold: 55,
-          stop: 55
+          stop: 0
         },
         pullUpLoad: {
           threshold: 10,
           stop: 0
         },
         click: true,
-        eventPassthrough: 'horizontal'
+        eventPassthrough: 'horizontal',
+        mouseWheel: true
       })
 
       this.scroll.on('pullingDown',()=>{
@@ -346,11 +347,12 @@ export default {
 <style lang='stylus' scoped>
   .fade-leave
     height: 15vw
+    opacity: 1
   .fade-leave-active
-    transition: height .5s ease
+    transition: all .5s ease
   .fade-leave-to
     height: 0
-    opacity: 1
+    opacity: 0
 
   .content-wrapper >>> .van-loading__text
     color: #FF5756
@@ -360,20 +362,6 @@ export default {
     display: flex
     align-items: center
 
-  .content-refresh
-    position absolute
-    left 0
-    top 0
-    width 100%
-    z-index 2
-    width: 100%
-    display: flex
-    justify-content: center
-    align-items: center
-    background-color: #fff
-    .loading-img
-      width: 6vw
-      margin-right: 2vw
   .content-wrapper
     position: fixed
     overflow: hidden
@@ -384,6 +372,19 @@ export default {
     z-index: 2
     .all-wrapper
       background: linear-gradient(to bottom, #fff, #F6F7FB 300vw, #F6F7FB)
+      .content-refresh
+        // position absolute
+        // left 0
+        // top 0
+        width 100%
+        // z-index 2
+        display: flex
+        justify-content: center
+        align-items: center
+        background-color: #fff
+        .loading-img
+          width: 6vw
+          margin-right: 2vw
       .pull-down
         display flex
         justify-content center

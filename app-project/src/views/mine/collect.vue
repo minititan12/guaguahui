@@ -218,12 +218,12 @@ export default {
               
               this.page = this.page + 1
               this.$nextTick(()=>{
-                if(this.collectList.length > 6){
+                this.collectScroll.refresh()
+                if(this.collectList.length > 9){
                   this.showLoading = true
                   this.showNoMore = false
                   if(this.collectScroll){
                     this.collectScroll.finishPullUp()
-                    this.collectScroll.refresh()
                   }
                 }else{
                   this.showLoading = false
@@ -240,7 +240,6 @@ export default {
                   this.showNoMore = true
                   if(this.collectScroll){
                     this.collectScroll.closePullUp()
-                    this.collectScroll.refresh()
                   }
                 }else{
                   this.showLoading = false

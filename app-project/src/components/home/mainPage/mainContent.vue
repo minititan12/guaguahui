@@ -54,6 +54,8 @@ export default {
       // 是否下拉到足够的距离刷新
       refresh:false,
 
+      // mescroll滚动的距离
+      scrollTop: 0,
       mescroll: null,
       down:{
         textInOffset:"下拉刷新",
@@ -93,6 +95,9 @@ export default {
         htmlLoading: '<div class="pullUpLoading"><p class="loading"></p><img class="loading-img" src="/public/uploads/home/load.png" alt=""><span>加载中...</span></div>',
         auto:true,
         callback:this.handlePullingUp,
+        onScroll:(mescroll, y, isUp)=>{
+          this.scrollTop = y;
+        }
       }      
     }
   },
@@ -206,7 +211,13 @@ export default {
         .then((res)=>{
           console.log('productData:',res.data)
           let data = res.data
-          this.mescroll.endSuccess(data.data.length,data.data.length>=10);	
+          if(page == 1){
+            setTimeout(()=>{
+              this.mescroll.endSuccess(data.data.length,data.data.length>=10);	
+            },1000);
+          }else{
+            this.mescroll.endSuccess(data.data.length,data.data.length>=10);	
+          }
           if(data.code == 1){
             if(page == 1){
               this.productsList = data.data;
@@ -217,6 +228,7 @@ export default {
           }
         })
         .catch((err)=>{
+          this.mescroll.endErr();
           console.log('get product err' + err)
         })
     },
@@ -264,10 +276,9 @@ export default {
   },
   //keep-alive页面显示时触发
   activated(){
-    if(this.scroll){
-      this.scroll.refresh()
-      if(this.y){
-        this.scroll.scrollTo(0,this.y)
+    if(this.mescroll){
+      if(this.scrollTop){
+        this.mescroll.scrollTo(this.scrollTop,0);
       }
     }
   },
@@ -275,15 +286,10 @@ export default {
     currentTab(){
       if(this.currentTab == 1){
         // console.log('refresh')
-        if(this.scroll){
-          this.scroll.refresh()
-          if(this.y){
-            this.scroll.scrollTo(0,this.y)
+        if(this.mescroll){
+          if(this.scrollTop){
+            this.mescroll.scrollTo(this.scrollTop,0);
           }
-        }
-      }else{
-        if(this.scroll){
-          this.y = this.scroll.y
         }
       }
     },
@@ -292,13 +298,6 @@ export default {
         console.log('totop')
         this.scroll.scrollTo(0,0,0)
         this.updatedToTop(false)
-      }
-    },
-    '$route'(to,from){
-      if(from.name == 'home'){
-        if(this.scroll){
-          this.y = this.scroll.y
-        }
       }
     }
   }
@@ -348,6 +347,7 @@ export default {
     justify-content: center
     align-items: center
     color #FF5756
+    height 15vw
     .loading
       display inline-block
       width 4.2vw
@@ -363,9 +363,7 @@ export default {
       height: 5vw
       margin-right: 2vw
     .no-more
-      height: 15vw
       line-height: 15vw
-      font-family: PFH
       font-size: 4vw
 </style>
 

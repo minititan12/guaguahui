@@ -110,7 +110,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { getbrand,application } from '../../utils/axios/request'
 import Clipboard from 'clipboard'
 export default {
   name: "ShopEnter",
@@ -157,7 +157,7 @@ export default {
       this.showBrand = true
     },
     getAllBrandData(){
-      axios.get('api/method/getbrand')
+      getbrand()
         .then((res)=>{
           if(res.data.code == 1){
             console.log('getbrand',res.data)
@@ -179,7 +179,7 @@ export default {
         brand_id: this.brand_id
       }
       let that = this
-      axios.post('api/method/application',postData)
+      application(postData)
         .then((res)=>{
           console.log('application',res.data)
           if(res.data.code == '-1'){

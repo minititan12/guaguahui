@@ -77,7 +77,6 @@
 <script>
 import LoginInput from './loginInput'
 import LoginBtn from './loginBtn'
-import axios from 'axios'
 import { login,register,getCode} from '../../utils/axios/request'
 import { mapMutations, mapState } from 'vuex'
 export default {

@@ -116,6 +116,7 @@
 <script>
 import BargainPop from './popup/bargainPop'
 import axios from 'axios'
+import { doBargin } from '../../../utils/axios/request'
 import { mapState,mapMutations } from 'vuex'
 export default {
   data(){
@@ -155,21 +156,23 @@ export default {
         this.$router.push('/login');
         return;
       }
-      axios.post('/api/method/doBargin',{
+      let postData = {
         goods_id: this.currentProductData.id,
         bargin_item_id: this.bargainData.bargin_item_id,
         user_id: this.userData.id,
-      }).then(res=>{
-        if(res.data.code != 1){
-          return;
-        }
-        this.showPop = true;
-        this.bargainInfo = res.data.data;
-        this.bargin_item_id = res.data.data.bargin_item_id;
-        this.$emit('reload',this.bargin_item_id);
-      }).catch(res=>{
-        console.log('bargain err')
-      })
+      }
+      doBargin(postData)
+        .then(res=>{
+          if(res.data.code != 1){
+            return;
+          }
+          this.showPop = true;
+          this.bargainInfo = res.data.data;
+          this.bargin_item_id = res.data.data.bargin_item_id;
+          this.$emit('reload',this.bargin_item_id);
+        }).catch(res=>{
+          console.log('bargain err')
+        })
     },
     // 点击分享
     share(){

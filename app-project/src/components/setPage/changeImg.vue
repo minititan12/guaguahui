@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { get_user_id,headimg } from '../../utils/axios/request'
 import { mapState,mapMutations } from 'vuex'
 export default {
   name: "ChangeImg",
@@ -56,7 +56,7 @@ export default {
         user_id: this.userData.id
       }
       // console.log('userID:',userID)
-      axios.post('api/method/get_user_id',userID)
+      get_user_id(userID)
         .then((res)=>{
           console.log('get_user_id:',res.data)
           if(res.data.code == 1){
@@ -79,7 +79,7 @@ export default {
           user_id: this.userData.id,
           phone: this.userData.phone
         }
-        axios.post('api/method/headimg',postData)
+        headimg(postData)
           .then((res)=>{
             console.log('headimg:',res.data)
             if(res.data.code == 1){

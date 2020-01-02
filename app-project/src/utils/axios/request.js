@@ -67,6 +67,47 @@ export const getSeckillGoods = (param = {}) => {
   return httpPost(api.getSeckillGoods,param);
 }
 
+//商品详情页
+//获取该商品所有拼团的信息
+export const getAllSpellGroups = (param = {}) => {
+  return httpPost(api.getAllSpellGroups,param);
+}
+
+//获取拼团商品的描述信息
+export const getGroupGoodsdec = (param = {}) => {
+  return httpPost(api.getGroupGoodsdec,param);
+}
+
+//获取所有该商品可用的优惠券信息
+export const getAllShopsCoupons = (param = {}) => {
+  return httpPost(api.getAllShopsCoupons,param);
+}
+
+//获取秒杀商品的描述
+export const getSeckillGoodsDes = (param = {}) => {
+  return httpPost(api.getSeckillGoodsDes,param);
+}
+
+//获取可分享的该商品拼团信息
+export const getShareSpellGroup = (param = {}) => {
+  return httpPost(api.getShareSpellGroup,param);
+}
+
+//获取服务弹出框信息
+export const explain = (param = {}) => {
+  return httpGet(api.explain,param);
+}
+
+//获取当前聊天信息
+export const getcontent = (param = {}) => {
+  return httpPost(api.getcontent,param);
+}
+
+//储存聊天信息
+export const storagecontent = (param = {}) => {
+  return httpPost(api.storagecontent,param);
+}
+
 // 获取消息红点
 export const getMsgRedtotal = (param = {}) => {
   return httpPost(api.getMsgRedtotal,param);
@@ -80,6 +121,47 @@ export const getMsgList = (param = {}) => {
 // 用户阅读消息
 export const readMsg = (param = {}) => {
   return httpPost(api.readMsg,param);
+}
+
+//获取用户的最新信息
+export const get_user_id = (param = {}) => {
+  return httpPost(api.get_user_id,param);
+}
+
+//修改头像
+export const headimg = (param = {}) => {
+  return httpPost(api.headimg,param);
+}
+
+//修改用户名
+export const editnickname = (param = {}) => {
+  return httpPost(api.editnickname,param);
+}
+
+//商户入驻
+export const application = (param = {}) => {
+  return httpPost(api.application,param);
+}
+
+//获取选择用的分类
+export const getbrand = (param = {}) => {
+  return httpGet(api.getbrand,param);
+}
+
+//商店页面
+//获取商店商品列表
+export const getshopgoods = (param = {}) => {
+  return httpPost(api.getshopgoods,param);
+}
+
+//点击收藏
+export const doCollect = (param = {}) => {
+  return httpPost(api.doCollect,param);
+}
+
+//检查是否收藏
+export const checkCollects = (param = {}) => {
+  return httpPost(api.checkCollects,param);
 }
 
 // 绑定银行卡
@@ -110,6 +192,21 @@ export const commissionLog = (param = {}) => {
 // 用户解绑银行卡
 export const unbindBank = (param = {}) => {
   return httpPost(api.unbindBank,param);
+}
+
+//删除购物车中的对应订单
+export const delCart = (param = {}) => {
+  return httpPost(api.delCart,param);
+}
+
+//下订单
+export const makeOrder = (param = {}) => {
+  return httpPost(api.makeOrder,param);
+}
+
+//获取订单列表
+export const getMyOrder = (param = {}) => {
+  return httpPost(api.getMyOrder,param);
 }
 
 // 订单详情
@@ -185,6 +282,16 @@ export const expressList = (param = {}) => {
 // 退款发货
 export const refundGoods = (param = {}) => {
   return httpPost(api.refundGoods,param);
+}
+
+//点击砍价
+export const doBargin = (param = {}) => {
+  return httpPost(api.doBargin,param);
+}
+
+//获取当前订单优惠券信息
+export const getShopCoupons = (param = {}) => {
+  return httpPost(api.getShopCoupons,param);
 }
 
 //获取积分

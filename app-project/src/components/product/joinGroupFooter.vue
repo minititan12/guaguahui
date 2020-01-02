@@ -26,7 +26,7 @@
 
 <script>
 import { mapState,mapMutations } from 'vuex'
-import axios from 'axios'
+import { getShareSpellGroup } from '../../utils/axios/request'
 export default {
   name: 'JoinGroupFooter',
   data(){
@@ -131,7 +131,7 @@ export default {
         user_id: this.userData.id
       }
 
-      axios.post('api/method/getShareSpellGroup',postData)
+      getShareSpellGroup(postData)
         .then((res)=>{
           console.log('getShareSpellGroup',res.data)
           if(res.data.code == 1){

@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { getGroupGoodsdec } from '../../../utils/axios/request'
 import ProductComment from './title/productComment'
 import TitleShop from './title/titleShop'
 import GroupList from './title/groupList'
@@ -135,7 +135,7 @@ export default {
         goods_id: this.$route.query.id,
         activity_spell_group_id: this.$route.query.group_id
       }
-      axios.post('api/method/getGroupGoodsdec',postData)
+      getGroupGoodsdec(postData)
         .then((res)=>{
           console.log('getGroupGoodsdec',res.data)
           if(res.data.code == 1){

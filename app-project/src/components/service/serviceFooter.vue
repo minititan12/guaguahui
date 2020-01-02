@@ -7,7 +7,7 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex'
-import axios from 'axios'
+import { storagecontent } from '../../utils/axios/request'
 export default {
   name: "ServiceFooter",
   data(){
@@ -32,7 +32,7 @@ export default {
       }
       console.log(postData)
 
-      axios.post('api/method/storagecontent',postData)
+      storagecontent(postData)
         .then((res)=>{
           console.log(res.data)
         })

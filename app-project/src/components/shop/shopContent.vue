@@ -82,7 +82,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { getshopgoods,doCollect,checkCollects } from '../../utils/axios/request'
 import Bscroll from 'better-scroll'
 import ProductItem from '../miniComponents/productItem'
 import { mapState } from 'vuex'
@@ -110,14 +110,14 @@ export default {
   methods:{
     //获取商店商品数据
     getShopData(type){
-      let user_id = this.$route.query.shopID
+      let shop_id = this.$route.query.shopID
       let postData = {
-        user_id: user_id,
+        shop_id: shop_id,
         page: this.page,
         status: this.active
       }
 
-      axios.post('api/method/getshopgoods',postData)
+      getshopgoods(postData)
         .then((res)=>{
           console.log('getshopgoods',res.data)
           if(res.data.code == 1){
@@ -225,7 +225,7 @@ export default {
         is_collect: is_collect
       }
 
-      axios.post('api/method/doCollect',postData)
+      doCollect(postData)
         .then((res)=>{
           console.log('doCollect',res.data)
           if(res.data.code ==1){
@@ -257,7 +257,7 @@ export default {
         ids: this.$route.query.shopID
       }
 
-      axios.post('api/method/checkCollects',postData)
+      checkCollects(postData)
         .then((res)=>{
           console.log('checkCollects',res.data)
           if(res.data.code == 1){

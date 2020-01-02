@@ -101,7 +101,7 @@ import OrderItem from '../miniComponents/orderItem'
 import OrderPageWarn from './orderPageWarn'
 import Bscroll from 'better-scroll'
 import { mapState,mapMutations } from 'vuex'
-import axios from 'axios'
+import { getMyOrder,delOrder,cancelOrder,receipt} from '../../utils/axios/request'
 export default {
   name: "OrderPageItem",
   data(){
@@ -245,7 +245,7 @@ export default {
         page: this.page
       }
       console.log(postData)
-      axios.post('api/method/getMyOrder',postData)
+      getMyOrder(postData)
         .then((res)=>{
           console.log(res.data)
           this.$toast.clear()
@@ -365,15 +365,15 @@ export default {
 
     //处理请求
     handleAxios(action,postData){
-      let postUrl = ''
+      let requestMethod = null
       if(action == 'del'){
-        postUrl = 'api/method/delOrder'
+        requestMethod = delOrder
       }else if(action == 'cancel'){
-        postUrl = 'api/method/cancelOrder'
+        requestMethod = cancelOrder
       }else if(action == 'confirm'){
-        postUrl = 'api/method/receipt'
+        requestMethod = receipt
       }
-      axios.post(postUrl,postData)
+      requestMethod(postData)
         .then((res)=>{
           this.$toast.clear()
           console.log(action,res.data)

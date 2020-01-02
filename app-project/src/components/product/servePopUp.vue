@@ -55,7 +55,7 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex'
-import axios from 'axios'
+import { explain } from '../../utils/axios/request'
 export default {
   name:"ServePopUp",
   data(){
@@ -72,7 +72,7 @@ export default {
       this.updateServePopUp(false)
     },
     initServeData(){
-      axios.get('api/method/explain')
+      explain()
         .then((res)=>{
           console.log('explain',res.data)
           if(res.data.code == 1){

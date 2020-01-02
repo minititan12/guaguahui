@@ -1,7 +1,6 @@
 <template>
   <div class="guaguahui-wrapper">
     <img class="app-icon" src="/images/app-icon.png" alt="">
-    <!-- <div v-html="html"></div> -->
     <div class="app-desc">
       呱呱汇是一个品牌特卖电商app，区别于品牌特卖，以日常销售的形式集聚品质、特色、口碑的店铺。
     </div>
@@ -40,32 +39,13 @@
 </template>
 
 <script>
-import axios from 'axios'
 export default {
   name:"GuaGuaHui",
   data(){
     return {
-      html: '',
       actions: ['运动户外','国际运动','服装配饰','潮牌服饰','鞋靴箱包','钟表珠宝','生活家居','数码家电','食品超市','美妆个护','母婴童装']
     }
   },
-  methods:{
-    initGuaguahuiData(){
-      axios.get('api/method/guaguahui')
-        .then((res)=>{
-          console.log('guaguahui',res.data)
-          if(res.data.code == 1){
-            this.html = res.data.data.content
-          }
-        })
-        .catch((err)=>{
-          console.log('guaguahui err:',err)
-        })
-    }
-  },
-  created(){
-    this.initGuaguahuiData()
-  }
 }
 </script>
 

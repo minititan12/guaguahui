@@ -62,8 +62,7 @@
 </template>
 
 <script>
-import axios from 'axios'
-
+import { getSeckillGoodsDes } from '../../../utils/axios/request'
 import ProductProps from './title/productProps'
 import TitleShop from './title/titleShop'
 import Serve from './title/serve'
@@ -159,7 +158,7 @@ export default {
         seckill_id: this.$route.query.seckill_id
       }
 
-      axios.post('api/method/getSeckillGoodsDes',postData)
+      getSeckillGoodsDes(postData)
         .then((res)=>{
           console.log('getSeckillGoodsDes',res.data)
           if(res.data.code == 1){

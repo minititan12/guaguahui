@@ -17,7 +17,6 @@ import PoPUpFooter from './popup/popUpFooter'
 import PoPUpHeader from './popup/popUpHeader'
 import PoPUpContent from './popup/popUpContent'
 import { mapState, mapMutations } from 'vuex'
-import axios from 'axios'
 export default {
   name: "ProductPopUp",
   components: {

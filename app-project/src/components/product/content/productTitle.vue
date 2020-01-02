@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { getAllShopsCoupons } from '../../../utils/axios/request'
 import ProductComment from './title/productComment'
 import ProductProps from './title/productProps'
 import TitleShop from './title/titleShop'
@@ -130,7 +130,7 @@ export default {
         goods_id: this.currentProductData.id
       }
 
-      axios.post('api/method/getAllShopsCoupons',postData)
+      getAllShopsCoupons(postData)
         .then((res)=>{
           console.log('getAllShopsCoupons',res.data)
           if(res.data.code ==1){

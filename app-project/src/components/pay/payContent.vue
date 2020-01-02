@@ -15,7 +15,7 @@ import PayUserItem from './content/payUserItem'
 import PayItems from './content/payItems'
 import Bscroll from 'better-scroll'
 import PayWarn from './content/payWarn'
-import axios from 'axios'
+import { getDefault } from '../../utils/axios/request'
 import { mapState,mapMutations } from 'vuex'
 export default {
   name: "PayContent",
@@ -50,7 +50,7 @@ export default {
         user_id: this.userData.id
       }
       console.log(getDefaultAddressOptions)
-      axios.post('api/method/getDefault',getDefaultAddressOptions)
+      getDefault(getDefaultAddressOptions)
         .then((res)=>{
           console.log(res.data)
           this.updateDefaultAddress(res.data)

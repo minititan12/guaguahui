@@ -30,6 +30,12 @@ export default {
   //获取验证码
   getCode: baseUrl + '/api/method/getCode',
 
+  //确认订单(pay)页面
+  //删除购物车中的对应订单
+  delCart: baseUrl + '/api/method/delCart',
+  //下订单
+  makeOrder: baseUrl + '/api/method/makeOrder',
+
 
   //分类商品页
   //获取商品数据
@@ -71,6 +77,8 @@ export default {
   unbindBank: baseUrl + '/api/method/unbindBank',
 
 
+  //获取订单信息
+  getMyOrder: baseUrl + '/api/method/getMyOrder',
   // 订单详情
   // http://showdoc.gghbuy.com/web/#/1?page_id=69
   orderDetail: baseUrl + '/api/method/orderDetail',
@@ -83,6 +91,28 @@ export default {
   // 物流消息
   // http://showdoc.gghbuy.com/web/#/1?page_id=67
   logisticsDetails: baseUrl + '/api/method/logisticsDetails',
+
+
+  //产品详情页
+  //获取该商品所有组队拼团信息
+  getAllSpellGroups: baseUrl + '/api/method/getAllSpellGroups',
+  //获取该商品拼团信息的描述
+  getGroupGoodsdec: baseUrl + '/api/method/getGroupGoodsdec',
+  //获取所有商店优惠券信息
+  getAllShopsCoupons: baseUrl + '/api/method/getAllShopsCoupons',
+  //获取秒杀商品的商品描述
+  getSeckillGoodsDes: baseUrl + '/api/method/getSeckillGoodsDes',
+  //获取可分享的拼团队伍信息
+  getShareSpellGroup: baseUrl + '/api/method/getShareSpellGroup',
+  //获取服务窗口信息
+  explain: baseUrl + '/api/method/explain',
+
+
+  //客服页面
+  //获取聊天历史内容
+  getcontent: baseUrl + '/api/method/getcontent',
+  //储存聊天内容
+  storagecontent: baseUrl + '/api/method/storagecontent',
 
 
   // 评价图片上传
@@ -113,6 +143,37 @@ export default {
   // 退款发货
   // http://showdoc.gghbuy.com/web/#/1?page_id=77
   refundGoods: baseUrl + '/api/method/refundGoods',
+
+
+  //砍价
+  //点击砍价
+  doBargin: baseUrl + '/api/method/doBargin',
+
+
+  //获取当前订单的优惠券信息
+  getShopCoupons: baseUrl + '/api/method/getShopCoupons',
+
+
+  //设置页面
+  //获取当前用户的最新信息
+  get_user_id: baseUrl + '/api/method/get_user_id',
+  //改变用户头像
+  headimg: baseUrl + '/api/method/headimg',
+  //改变用户名
+  editnickname: baseUrl + '/api/method/editnickname',
+  //入驻商铺
+  applicationL: baseUrl + '/api/method/application',
+  //获取选择的分类
+  getbrand: baseUrl + '/api/method/getbrand',
+
+
+  //商店页面
+  //获取该商店商品列表
+  getshopgoods: baseUrl + '/api/method/getshopgoods',
+  //点击收藏
+  doCollect: baseUrl + '/api/method/doCollect',
+  //判断是否收藏
+  checkCollects: baseUrl + '/api/method/checkCollects',
 
 
   //获取积分

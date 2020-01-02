@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { getAllSpellGroups } from '../../../../utils/axios/request'
 import { mapMutations, mapState } from 'vuex'
 export default {
   name: "GroupList",
@@ -69,7 +69,7 @@ export default {
         activity_spell_group_id: activity_spell_group_id,
         goods_id: goods_id
       }
-      axios.post('api/method/getAllSpellGroups',postData)
+      getAllSpellGroups(postData)
         .then((res)=>{
           console.log('getAllSpellGroups:',res.data)
           if(res.data.code == 1){

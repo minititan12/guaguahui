@@ -19,7 +19,7 @@ import Bscroll from 'better-scroll'
 import News from './news'
 import { mapState, mapMutations } from 'vuex'
 import ProductDesc from './productDesc'
-import axios from 'axios'
+import { getcontent } from '../../utils/axios/request'
 export default {
   name:"ServiceContent",
   components: {
@@ -77,7 +77,7 @@ export default {
         shop_user_id: shop_id,
         timetamp: timetamp
       }
-      axios.post('api/method/getcontent',postData)
+      getcontent(postData)
         .then((res)=>{
           setTimeout(()=>{
             this.refresh = false

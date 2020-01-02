@@ -11,7 +11,7 @@
 
 <script>
 import { mapState,mapMutations } from 'vuex'
-import axios from 'axios'
+import { delCart,makeOrder } from '../../utils/axios/request'
 export default {
   name: "PayBottom",
   computed: {
@@ -83,7 +83,7 @@ export default {
           id: id
         }
         console.log(delObject)
-        axios.post('api/method/delCart',delObject)
+        delCart(delObject)
           .then((res)=>{
             console.log('delcart:',res.data)
             //删除之后,对一些数据的初始化
@@ -183,7 +183,7 @@ export default {
       console.log('makeOrder commitObject',commitObject)
 
       //上传到待支付列表
-      axios.post('api/method/makeOrder',commitObject)
+      makeOrder(commitObject)
         .then((res)=>{
           console.log('makeOrder:',res.data)
           if(res.data.code == 1){

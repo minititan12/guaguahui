@@ -26,7 +26,7 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex'
-import axios from 'axios'
+import { get_user_id,editnickname } from '../../utils/axios/request'
 export default {
   name:"ChangeName",
   data(){
@@ -47,7 +47,7 @@ export default {
         user_id: this.userData.id
       }
       // console.log('userID:',userID)
-      axios.post('api/method/get_user_id',userID)
+      get_user_id(userID)
         .then((res)=>{
           console.log('get_user_id:',res.data)
           if(res.data.code == 1){
@@ -70,7 +70,7 @@ export default {
           user_id: this.userData.id,
           phone: this.userData.phone
         }
-        axios.post('api/method/editnickname',postData)
+        editnickname(postData)
           .then((res)=>{
             console.log('editnickname:',res.data)
             if(res.data.code == 1){

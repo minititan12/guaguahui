@@ -8,7 +8,6 @@
 <script>
 import OrderPageHeader from './orderPageHeader'
 import OrderPageItem from './orderPageItem'
-import axios from 'axios'
 import { mapState, mapMutations } from 'vuex'
 export default {
   name: 'OrderPageContent',

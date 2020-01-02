@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { getShopCoupons } from '../../utils/axios/request'
 import { mapState } from 'vuex'
 export default {
   name: "ShopConfirmItem",
@@ -194,7 +194,7 @@ export default {
         strs: this.getStrs(),
         goods_id: this.getGoodsID()
       }
-      axios.post('api/method/getShopCoupons',postData)
+      getShopCoupons(postData)
         .then((res)=>{
           console.log('getShopCoupons',res.data)
           if(res.data.code == 1){

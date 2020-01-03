@@ -32,6 +32,7 @@ axios.interceptors.response.use(
 export const httpPost = (url,param={},headers) => {
   if(store.state.userData){
     param.user_id = store.state.userData.id
+    param.token = localStorage.gghToken
   }
   return new Promise((resolve,reject)=>{
     axios({
@@ -53,6 +54,7 @@ export const httpPost = (url,param={},headers) => {
 export const httpGet = (url,param={},headers) => {
   if(store.state.userData){
     param.user_id = store.state.userData.id
+    param.token = localStorage.gghToken
   }
   return new Promise((resolve,reject)=>{
     axios({

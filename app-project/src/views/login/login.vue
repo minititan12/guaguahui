@@ -10,11 +10,14 @@ export default {
   components: {
     LoginContent
   },
+  computed: {
+    ...mapState(['login'])
+  },
   // methods:{
   //   ...mapMutations(['updateUserData'])
   // },
   mounted(){
-    if(localStorage.userData){
+    if(this.login){
       this.$router.push('/')
     }
   }

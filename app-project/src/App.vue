@@ -36,15 +36,8 @@ import sha1 from 'sha1'
       ...mapMutations(['getAnswer','getNewAnswer','updatedMessageNum','updateWXTicket','changeLoginStatus','updateUserData']),
       //更新用户信息
       initUserData(){
-        if(localStorage.hasOwnProperty('userData')){
-          this.changeLoginStatus(true)
-          let userData = JSON.parse(localStorage.userData)
-          let userID = {
-            user_id: userData.id
-          }
-          this.updateUserData(userData)
-          console.log('userID:',userID)
-          get_user_id(userID)
+        if(localStorage.hasOwnProperty('gghToken')){
+          get_user_id()
             .then((res)=>{
               console.log('get_user_id:',res.data)
               if(res.data.code == 1){

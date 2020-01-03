@@ -165,15 +165,17 @@ export default {
         .then((res)=>{
           console.log('register',res.data)
           if(res.data.code == 1){
-            if(!localStorage.hasOwnProperty('userData')){
-              this.updateUserData(res.data.data)
-              let userDataString = JSON.stringify(res.data.data)
-              localStorage.userData = userDataString
-              this.changeLoginStatus(true)
-              // this.changeTab(5)
-              // this.$router.push('/')
+            this.updateUserData(res.data.data)
+            let userDataString = JSON.stringify(res.data.data)
+            localStorage.userData = userDataString
+            
+            let gghToken = JSON.stringify(res.data.data.token)
+            localStorage.setItem('gghToken',gghToken)
+            this.changeLoginStatus(true)
+            
+            this.$nextTick(()=>{
               this.$router.go(-1)
-            }
+            })
           }else{
             this.$toast({
               message: "请填写正确的验证码",

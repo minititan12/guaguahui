@@ -36,7 +36,6 @@
 <script>
 import Bscroll from 'better-scroll'
 import DetailItem from './detailItem'
-import axios from 'axios'
 import { mapState, mapMutations } from 'vuex'
 export default {
   name: "PoPUpContent",

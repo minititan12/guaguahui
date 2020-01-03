@@ -9,7 +9,7 @@
 
 <script>
 import { mapMutations, mapState } from 'vuex'
-import axios from 'axios'
+import { addCart,comfirmOrder } from '../../../utils/axios/request'
 export default {
   name: "PoPUpFooter",
   computed: {
@@ -39,7 +39,7 @@ export default {
 
         console.log('postData',postData)
 
-        axios.post('api/method/addCart',postData)
+        addCart(postData)
           .then((res)=>{
             console.log('addCart:',res.data)
             if(res.data.code == 1){
@@ -69,7 +69,7 @@ export default {
         }
 
         console.log('limitBuy postData:',postData)
-        axios.post('api/method/comfirmOrder',postData)
+        comfirmOrder(postData)
           .then((res)=>{
             console.log('comfirmOrder:',res.data)
             if(res.data.code == 1){
@@ -186,7 +186,7 @@ export default {
       }
 
       console.log('limitBuy postData:',postData)
-      axios.post('api/method/comfirmOrder',postData)
+      comfirmOrder(postData)
         .then((res)=>{
           console.log('comfirmOrder:',res.data)
           if(res.data.code == 1){

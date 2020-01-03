@@ -59,7 +59,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import { getBrandGoods,searchbrandGoods } from '../../utils/axios/request'
 import Bscroll from 'better-scroll'
 import ProductItem from '../miniComponents/productItem'

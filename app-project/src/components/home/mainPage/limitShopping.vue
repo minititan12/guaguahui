@@ -44,7 +44,6 @@
 
 <script>
 import BScroll from 'better-scroll'
-import axios from 'axios'
 import { mapState } from 'vuex';
 export default {
   name: 'LimitShopping',

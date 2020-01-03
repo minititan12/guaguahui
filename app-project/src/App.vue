@@ -15,7 +15,7 @@
 
 <script>
 import { mapState,mapMutations } from 'vuex'
-import axios from 'axios'
+import {get_user_id,getWxcode,signpackage,storagecontent,getRongYunToken} from './utils/axios/request'
 import sha1 from 'sha1'
   export default {
     name:"App",
@@ -44,7 +44,7 @@ import sha1 from 'sha1'
           }
           this.updateUserData(userData)
           console.log('userID:',userID)
-          axios.post('api/method/get_user_id',userID)
+          get_user_id(userID)
             .then((res)=>{
               console.log('get_user_id:',res.data)
               if(res.data.code == 1){
@@ -87,14 +87,16 @@ import sha1 from 'sha1'
             }
             let path = pageUrl.slice(indexOf+str.length);
             path = path.replace('&','|');
-            axios.post('/index/index/getWxcode',{
+            let postData = {
               url: path
-            }).then((res)=>{
-              console.log('getOpenid',res.data)
-            })
-            .catch((err)=>{
-              console.log('getOpenid err',err)
-            })
+            }
+            getWxcode(postData)
+              .then((res)=>{
+                console.log('getOpenid',res.data)
+              })
+              .catch((err)=>{
+                console.log('getOpenid err',err)
+              })
             this.$dialog.alert({
               title: '授权',
               message: '是否授权呱呱汇访问微信用户信息',
@@ -115,21 +117,23 @@ import sha1 from 'sha1'
           var openid = this.GetQueryString('openid');
           this.$store.state.openid = openid
           console.log('是在微信 OPENID:', this.$store.state.openid)
-            
-          axios.post('api/index/signpackage', {
+          
+          let postData = {
             url:window.location.href
-          }).then((res) => {
-            //加载配置
-            wx.config({
-              debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-              appId: res.data.appId, // 必填，公众号的唯一标识
-              timestamp: res.data.timestamp , // 必填，生成签名的时间戳
-              nonceStr:  res.data.nonceStr, // 必填，生成签名的随机串
-              signature:  res.data.signature,// 必填，签名
-              jsApiList: ['chooseWXPay','updateAppMessageShareData','updateTimelineShareData'] // 必填，需要使用的JS接口列表
-            });
-        
-          }).catch((err) => {}) 
+          }
+          signpackage(postData)
+            .then((res) => {
+              //加载配置
+              wx.config({
+                debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                appId: res.data.appId, // 必填，公众号的唯一标识
+                timestamp: res.data.timestamp , // 必填，生成签名的时间戳
+                nonceStr:  res.data.nonceStr, // 必填，生成签名的随机串
+                signature:  res.data.signature,// 必填，签名
+                jsApiList: ['chooseWXPay','updateAppMessageShareData','updateTimelineShareData'] // 必填，需要使用的JS接口列表
+              });
+          
+            }).catch((err) => {}) 
         }
       },
 
@@ -153,7 +157,7 @@ import sha1 from 'sha1'
         }
         console.log(postData)
 
-        axios.post('api/method/storagecontent',postData)
+        storagecontent(postData)
           .then((res)=>{
             console.log(res.data)
             if(res.data.code != 1){
@@ -317,7 +321,7 @@ import sha1 from 'sha1'
           user_id: this.userData.id
         }
         console.log(postData)
-        axios.post('api/method/getRongYunToken',postData)
+        getRongYunToken(postData)
           .then((res)=>{
             console.log('getRongYunToken',res.data)
             let data = res.data

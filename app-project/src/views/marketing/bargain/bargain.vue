@@ -35,7 +35,7 @@ import TitleShop from '../../../components/product/content/title/titleShop'
 import ProductComment from '../../../components/product/content/title/productComment'
 import ProductPopUp from '../../../components/product/productPopUp'
 import SharePop from '../../../components/sharePop/sharePop'
-import axios from 'axios'
+import { getGoodsInfo,barginGoodsDetail } from '../../../utils/axios/request'
 import Bscroll from 'better-scroll'
 import { mapState,mapMutations } from 'vuex'
 export default {
@@ -103,34 +103,41 @@ export default {
     },
     // 获取商品详情
     getProduct(){
-      axios.get(`/api/method/getGoodsInfo?id=${this.goods_id}&&bargin_item_id=${this.bargin_item_id}`).then((res)=>{
-        if(res.data.code != 1){
-          return;
-        }
-        this.changeCurrentProductData(res.data.data);
-      }).catch((err)=>{
-        console.log('get product err')
-      })
+      let getData = {
+        id: this.goods_id,
+        bargin_item_id: this.bargin_item_id
+      }
+      getGoodsInfo(getData)
+        .then((res)=>{
+          if(res.data.code != 1){
+            return;
+          }
+          this.changeCurrentProductData(res.data.data);
+        }).catch((err)=>{
+          console.log('get product err')
+        })
     },
     // 获取砍价商品详情
     getBargain(){
       let goods_id = this.$route.query.goods_id?this.$route.query.goods_id:"";
-      axios.post('api/method/barginGoodsDetail',{
+      let postData = {
         goods_id,
         user_id:this.userData.id,
         bargin_item_id:this.bargin_item_id
-      }).then(res=>{
-        if(res.data.code != 1){
-          return;
-        }
-        if(!res.data.data.bargin_friend_list){
-          res.data.data.bargin_friend_list = [];
-        }
-        this.updateBargainData(res.data.data);
-        this.configWXShare();
-      }).catch((err)=>{
-        console.log('barginGoodsDetail err')
-      })
+      }
+      barginGoodsDetail(postData)
+        .then(res=>{
+          if(res.data.code != 1){
+            return;
+          }
+          if(!res.data.data.bargin_friend_list){
+            res.data.data.bargin_friend_list = [];
+          }
+          this.updateBargainData(res.data.data);
+          this.configWXShare();
+        }).catch((err)=>{
+          console.log('barginGoodsDetail err')
+        })
     },
     //配置微信内网页分享
     configWXShare(){

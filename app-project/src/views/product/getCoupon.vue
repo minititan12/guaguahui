@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { getAllShopsCoupons,getCoupons } from '../../utils/axios/request'
 import CouponItem from '../../components/miniComponents/couponItem'
 import { mapState } from 'vuex'
 export default {
@@ -46,7 +46,7 @@ export default {
         goods_id: goods_id
       }
 
-      axios.post('api/method/getAllShopsCoupons',postData)
+      getAllShopsCoupons(postData)
         .then((res)=>{
           console.log('getAllShopsCoupons',res.data)
           if(res.data.code ==1){
@@ -66,7 +66,7 @@ export default {
         coupon_id: data.id,
       }
 
-      axios.post('api/method/getCoupons',postData)
+      getCoupons(postData)
         .then((res)=>{
           console.log('getCoupons',res.data)
           if(res.data.code == 1){

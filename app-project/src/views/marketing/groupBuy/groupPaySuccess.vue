@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import axios from "axios"
+import { userDoSpellGroup,userPartSpellGroup } from '../../../utils/axios/request'
 import SharePopUp from '../../../components/product/sharePopUp'
 import { mapState, mapMutations } from 'vuex'
 export default {
@@ -230,10 +230,10 @@ export default {
     handlePost(postData){
       // let a = JSON.stringify(postData)
       // alert(a)
-      //url路径
-      let url = this.type == 1 ? "api/method/userDoSpellGroup" : "api/method/userPartSpellGroup"
+      //请求方法
+      let requestMethod = this.type == 1 ? userDoSpellGroup : userPartSpellGroup
 
-      axios.post(url,postData)
+      requestMethod(postData)
         .then((res)=>{
           console.log('getCurrentGroupData:',res.data)
           // let b = JSON.stringify(res.data)

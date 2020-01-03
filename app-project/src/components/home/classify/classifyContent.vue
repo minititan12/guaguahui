@@ -9,7 +9,7 @@
 // import LeftList from './content/leftList'
 // import RightContent from './content/rightContent'
 import { mapState,mapMutations } from 'vuex'
-import axios from 'axios'
+import { getbrand } from '../../../utils/axios/request'
 export default {
   name: "ClassifyContent",
   components: {
@@ -20,7 +20,7 @@ export default {
     ...mapMutations(['initClassifyList']),
     //获取分类的数据
     getClassifyData(){
-      axios.get('/api/method/getbrand')
+      getbrand()
         .then((res)=>{
           if(res.data.code == 1){
             console.log('getbrand:',res.data.data)

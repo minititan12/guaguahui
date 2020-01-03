@@ -25,7 +25,7 @@
   </div>
 </template>
 <script>
-import axios from 'axios'
+import { myBarginList } from '../../../utils/axios/request'
 import { mapState } from 'vuex'
 import Bscroll from 'better-scroll'
 import MyBargainList from '../../../components/marketing/cutPrice/myBargainList'
@@ -66,24 +66,29 @@ export default {
     },
     // 获取我的砍价列表
     getMyBargain(){
-      axios.get(`api/method/myBarginList?page=${this.page}&&user_id=${this.userData.id}`).then(res=>{
-        if(res.data.code != 1){
-          return;
-        }
-        if(res.data.data.length == 0){
-          this.showLoading = false;
-          this.cutPriceScroll.closePullUp();
-          return;
-        }
-        if(this.page == 1 && res.data.data.length < 10 && this.cutPriceScroll){
-          this.cutPriceScroll.closePullUp();
-        }
-        this.page++;
-        this.cutPriceList = [...this.cutPriceList,...res.data.data,];
+      let getData = {
+        page: this.page,
+        user_id: this.userData.id
+      }
+      myBarginList(getData)
+        .then(res=>{
+          if(res.data.code != 1){
+            return;
+          }
+          if(res.data.data.length == 0){
+            this.showLoading = false;
+            this.cutPriceScroll.closePullUp();
+            return;
+          }
+          if(this.page == 1 && res.data.data.length < 10 && this.cutPriceScroll){
+            this.cutPriceScroll.closePullUp();
+          }
+          this.page++;
+          this.cutPriceList = [...this.cutPriceList,...res.data.data,];
 
-      }).catch((err)=>{
-        console.log('getMyBargain err')
-      })
+        }).catch((err)=>{
+          console.log('getMyBargain err')
+        })
     },
     //初始化疯狂砍价滚动条
     initGroupScroll(){

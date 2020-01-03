@@ -73,7 +73,7 @@
 import ShoppingWarn from './shoppingWarn'
 import { mapState , mapMutations} from 'vuex'
 import Bscroll from 'better-scroll'
-import axios from 'axios'
+import { delCart } from '../../../../utils/axios/request'
 export default {
   name: "CartItems",
   data(){
@@ -200,7 +200,7 @@ export default {
             id: id,
             user_id: this.userData.id
           }
-          axios.post('api/method/delCart',postData)
+          delCart(postData)
             .then((res)=>{
               console.log(res.data)
               if(res.data.code == 1){

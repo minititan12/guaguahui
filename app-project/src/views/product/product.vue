@@ -55,9 +55,8 @@ import ServePopUp from '../../components/product/servePopUp'
 import SharePopUp from '../../components/product/sharePopUp'
 import GroupDialog from '../../components/product/groupDialog'
 
-import axios from 'axios'
 import { mapMutations, mapState } from 'vuex'
-import {history} from '@/utils/axios/request'
+import {getGoodsInfo,getOpenid,checkCollects,history,doCollect} from '@/utils/axios/request'
 export default {
   name: "Product",
   data(){
@@ -125,7 +124,10 @@ export default {
     getProductData(){
       // console.log(this.$route)
       let id = this.$route.query.id ? this.$route.query.id : 286
-      axios.get('/api/method/getGoodsInfo?id=' + id)
+      let getData = {
+        id: id
+      }
+      getGoodsInfo(getData)
         .then((res)=>{
           console.log('getGoodsInfo',res.data)
           if(res.data.code == 1){
@@ -174,9 +176,10 @@ export default {
       if(/MicroMessenger/.test(window.navigator.userAgent)){
         if(!this.openid){
           let id = this.$route.query.id
-          axios.post('/index/index/getOpenid',{
+          let postData = {
             id: id
-          })
+          }
+          getOpenid(postData)
             .then((res)=>{
               console.log('getOpenid',res.data)
             })
@@ -208,7 +211,7 @@ export default {
         ids: this.$route.query.id
       }
 
-      axios.post('api/method/checkCollects',postData)
+      checkCollects(postData)
         .then((res)=>{
           console.log('checkCollects',res.data)
           if(res.data.code == 1){
@@ -230,7 +233,7 @@ export default {
         is_collect: is_collect
       }
 
-      axios.post('api/method/doCollect',postData)
+      doCollect(postData)
         .then((res)=>{
           console.log('doCollect',res.data)
           if(res.data.code ==1){

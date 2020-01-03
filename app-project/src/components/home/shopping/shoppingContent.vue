@@ -9,7 +9,7 @@
 import { mapState,mapMutations } from 'vuex'
 import ShoppingHeader from './content/shoppingHeader'
 import ShoppingCart from './content/shoppingCart'
-import axios from 'axios'
+import { showCart } from '../../../utils/axios/request'
 export default {
   name:"ShoppingContent",
   components: {
@@ -59,7 +59,7 @@ export default {
         user_id: this.userData.id
       }
       console.log(postData)
-      axios.post('api/method/showCart',postData)
+      showCart(postData)
         .then((res)=>{
           console.log('showCart',res.data)
           if(res.data.code == 1){

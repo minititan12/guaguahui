@@ -15,7 +15,7 @@
 
 <script>
 import { mapState,mapMutations } from 'vuex'
-import axios from 'axios'
+import { comfirmOrder } from '../../../../utils/axios/request'
 export default {
   name: "CartBottom",
   data() {
@@ -47,7 +47,7 @@ export default {
         }
 
         console.log('confirm postData:',postData)
-        axios.post('api/method/comfirmOrder',postData)
+        comfirmOrder(postData)
           .then((res)=>{
             console.log('comfirmOrder:',res.data)
             if(res.data.code == 1){

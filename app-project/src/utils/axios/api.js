@@ -29,6 +29,8 @@ export default {
   register: baseUrl + '/api/method/register',
   //获取验证码
   getCode: baseUrl + '/api/method/getCode',
+  //绑定手机
+  bindPhone: baseUrl + '/api/method/bindPhone',
 
   //确认订单(pay)页面
   //删除购物车中的对应订单
@@ -94,6 +96,8 @@ export default {
 
 
   //产品详情页
+  //获取商品信息
+  getGoodsInfo: baseUrl + '/api/method/getGoodsInfo',
   //获取该商品所有组队拼团信息
   getAllSpellGroups: baseUrl + '/api/method/getAllSpellGroups',
   //获取该商品拼团信息的描述
@@ -106,6 +110,14 @@ export default {
   getShareSpellGroup: baseUrl + '/api/method/getShareSpellGroup',
   //获取服务窗口信息
   explain: baseUrl + '/api/method/explain',
+  //获取评价列表
+  showCommentList: baseUrl + '/api/method/showCommentList',
+  //获取可用的优惠券
+  getCoupons: baseUrl + '/api/method/getCoupons',
+  //获取微信的openid
+  getOpenid: baseUrl + '/index/index/getOpenid',
+  //加入购物车
+  addCart: baseUrl + '/api/method/addCart',
 
 
   //客服页面
@@ -175,6 +187,27 @@ export default {
   //判断是否收藏
   checkCollects: baseUrl + '/api/method/checkCollects',
 
+  //营销功能
+  //砍价细节
+  barginGoodsDetail: baseUrl + '/api/method/barginGoodsDetail',
+  //砍价列表
+  barginlist: baseUrl + '/api/method/barginlist',
+  //我的砍价列表
+  myBarginList: baseUrl + '/api/method/myBarginList',
+
+  //拼团
+  //获取拼团热门商品
+  getSpellGroupHotGoods: baseUrl + '/api/method/getSpellGroupHotGoods',
+  //获取拼团商品列表
+  getSpellGroupGoods: baseUrl + '/api/method/getSpellGroupGoods',
+  //获取分享页的拼团信息
+  getShareSpellGroupDes: baseUrl + '/api/method/getShareSpellGroupDes',
+  //用户参加拼团
+  userDoSpellGroup: baseUrl + '/api/method/userDoSpellGroup',
+  //用户加入拼团
+  userPartSpellGroup: baseUrl + '/api/method/userPartSpellGroup',
+  //获取可分享的拼团信息
+  getShareSpellGroup: baseUrl + '/api/method/getShareSpellGroup',
 
   //获取积分
   //http://showdoc.gghbuy.com/web/#/1?page_id=89
@@ -196,6 +229,15 @@ export default {
   creditOrderList: baseUrl + '/api/method/creditOrderList',
 
 
+  //我的
+  //获取收藏列表
+  getCollects: baseUrl + '/api/method/getCollects',
+  //获取我的优惠券
+  getMyCoupons: baseUrl + '/api/method/getMyCoupons',
+
+  //显示评价
+  showComment: baseUrl + '/api/method/showComment',
+
   // 记录足迹
   // http://showdoc.gghbuy.com/web/#/1?page_id=86
   history: baseUrl + '/api/method/history',
@@ -205,4 +247,56 @@ export default {
   // 删除我的足迹
   // http://showdoc.gghbuy.com/web/#/1?page_id=88
   deletefootprint: baseUrl + '/api/method/deletefootprint',
+
+  //支付页面
+  //支付
+  pay: baseUrl + '/api/method/pay',
+  //支付宝外部网页支付
+  doPay: baseUrl + '/api/method/doPay',
+
+  //App
+  //获取微信code
+  getWxcode: baseUrl + '/index/index/getWxcode',
+  //获取签名包
+  signpackage: baseUrl + '/api/index/signpackage',
+  //获取融云token
+  getRongYunToken: baseUrl + '/api/method/getRongYunToken',
+
+  //home
+  //首页获取推荐
+  recommend: baseUrl + '/api/method/recommend',
+  //首页获取轮播图
+  lunbo: baseUrl + '/api/method/lunbo',
+  //首页获取分类
+  getClass: baseUrl + '/api/method/getClass',
+  //首页获取热销商品列表
+  hotlist: baseUrl + '/api/method/hotlist',
+  //首页获取分类品牌
+  getClassbrand: baseUrl + '/api/method/getClassbrand',
+  //首页获取秒杀
+  checkSeckill: baseUrl + '/api/method/checkSeckill',
+  //首页获取产品
+  getGoods: baseUrl + '/api/method/getGoods',
+  //首页获取品牌广告信息
+  brandadsense: baseUrl + '/api/method/brandadsense',
+  //首页获取商品广告信息
+  goodsadsense: baseUrl + '/api/method/goodsadsense',
+  //获取用户的聊天信息
+  getuserchat: baseUrl + '/api/method/getuserchat',
+  //获取用户的信息细节
+  userDetails: baseUrl + '/api/method/userDetails',
+  //删除聊天
+  deleteshat: baseUrl + '/api/method/deleteshat',
+  //获取用户的优惠券总数
+  getUserCouponsTotal: baseUrl + '/api/method/getUserCouponsTotal',
+  //获取用户的收藏总数
+  getUserCollects: baseUrl + '/api/method/getUserCollects',
+  //获取各种订单的数量
+  count: baseUrl + '/api/method/count',
+  //提交确认订单
+  comfirmOrder: baseUrl + '/api/method/comfirmOrder',
+  //购物车商品信息
+  showCart: baseUrl + '/api/method/showCart',
+  //查找商品
+  searchGoods: baseUrl + '/api/method/searchGoods',
 }

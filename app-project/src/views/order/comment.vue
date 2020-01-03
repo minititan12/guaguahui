@@ -24,7 +24,7 @@
 
 <script>
 import OrderItem from '../../components/miniComponents/orderItem'
-import axios from 'axios'
+import { getMyOrder } from '../../utils/axios/request'
 import { mapState } from 'vuex'
 export default {
   name: "Comment",
@@ -72,7 +72,7 @@ export default {
         status: 1
       }
       console.log(postData)
-      axios.post('api/method/getMyOrder',postData)
+      getMyOrder(postData)
         .then((res)=>{
           console.log('commentdata',res.data)
           this.orderList = res.data.data;

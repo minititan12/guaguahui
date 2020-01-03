@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { getUserCouponsTotal,getUserCollects } from '../../../../utils/axios/request'
 import { mapState, mapMutations } from 'vuex'
 export default {
   name: "MineHeader",
@@ -104,7 +104,7 @@ export default {
         status: 0
       }
 
-      axios.post('api/method/getUserCouponsTotal',postData)
+      getUserCouponsTotal(postData)
         .then((res)=>{
           console.log('getUserCouponsTotal',res.data)
           if(res.data.code == 1){
@@ -120,7 +120,7 @@ export default {
       let postData = {
         user_id: this.userData.id
       }
-      axios.post('api/method/getUserCollects',postData)
+      getUserCollects(postData)
         .then((res)=>{
           console.log('getUserCollects',res.data)
           if(res.data.code == 1){

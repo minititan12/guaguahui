@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { getShareSpellGroup } from '../../../utils/axios/request'
 import Bscroll from 'better-scroll'
 import { mapState } from 'vuex'
 export default {
@@ -93,7 +93,7 @@ export default {
         user_id: this.userData.id
       }
 
-      axios.post('api/method/getShareSpellGroup',postData)
+      getShareSpellGroup(postData)
         .then((res)=>{
           console.log('getShareSpellGroup',res.data)
           if(res.data.code == 1){

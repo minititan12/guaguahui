@@ -101,7 +101,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { getCollects,doCollect } from '../../utils/axios/request'
 import Bscroll from 'better-scroll'
 import { mapState } from 'vuex'
 export default {
@@ -205,7 +205,7 @@ export default {
         user_id: this.userData.id
       }
 
-      axios.post('api/method/getCollects',postData)
+      getCollects(postData)
         .then((res)=>{
           console.log('getCollects',res.data)
           if(res.data.code == 1){
@@ -269,7 +269,7 @@ export default {
         duration: 1200
       })
 
-      axios.post('api/method/doCollect',postData)
+      doCollect(postData)
         .then((res)=>{
           console.log('doCollect',res.data)
           if(res.data.code == 1){

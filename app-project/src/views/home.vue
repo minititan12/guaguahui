@@ -22,7 +22,6 @@ import SearchGoods from '../components/home/searchGoods'
 // import MessageContent from '../components/home/message/messageContent'
 // import ShoppingContent from '../components/home/shopping/shoppingContent'
 import MineContent from '../components/home/mine/mineContent'
-import axios from 'axios'
 import { mapMutations, mapState } from 'vuex'
 export default {
   name: "Home",

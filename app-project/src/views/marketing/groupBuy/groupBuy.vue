@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { getSpellGroupHotGoods,getSpellGroupGoods } from '../../../utils/axios/request'
 import Bscroll from 'better-scroll'
 import GroupList from '../../../components/marketing/groupBuy/groupList'
 import { mapMutations } from 'vuex'
@@ -117,7 +117,7 @@ export default {
     },
     //获取今日必拼数据
     getTodayGroupData(){
-      axios.get('api/method/getSpellGroupHotGoods')
+      getSpellGroupHotGoods()
         .then((res)=>{
           console.log('getSpellGroupHotGoods:',res.data)
           let data = res.data
@@ -135,7 +135,7 @@ export default {
       let postData = {
         page: this.page
       }
-      axios.post('api/method/getSpellGroupGoods',postData)
+      getSpellGroupGoods(postData)
         .then((res)=>{
           console.log('getSpellGroupGoods:',res.data)
           let data = res.data

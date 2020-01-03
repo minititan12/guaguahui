@@ -16,7 +16,7 @@
 
 <script>
 import MescrollVue from 'mescroll.js/mescroll.vue'
-import axios from 'axios'
+import { lunbo,getClass,hotlist,getClassbrand,checkSeckill,getGoods,brandadsense,goodsadsense } from '../../../utils/axios/request'
 import { mapState,mapMutations } from 'vuex'
 export default {
   name: 'MainContent',
@@ -131,7 +131,7 @@ export default {
     },
     //获取首页轮播图数据
     getSwiperList(){
-      axios.get('/api/method/lunbo')
+      lunbo()
         .then((res)=>{
           console.log('swiper data:',res.data)
           if(res.data.code == 1){
@@ -144,7 +144,7 @@ export default {
     },
     //获取首页分类数据
     getIconsList(){
-      axios.get('/api/method/getClass')
+      getClass()
         .then((res)=>{
           let data = res.data
           console.log('icons:',res.data)
@@ -158,7 +158,7 @@ export default {
     },
     //获取今日热销数据
     getTodayHotList(){
-      axios.get('/api/method/hotlist')
+      hotlist()
         .then((res)=>{
           console.log('hotlist:',res.data)
           let data = res.data
@@ -177,7 +177,7 @@ export default {
     },
     //获取首页活动数据
     getActivityList(){
-      axios.get('/api/method/getClassbrand')
+      getClassbrand()
         .then((res)=>{
           console.log('activityData:',res.data)
           let data = res.data
@@ -191,7 +191,7 @@ export default {
     },
     //获取秒杀产品数据
     getlimitShoppingData(){
-      axios.get('api/method/checkSeckill')
+      checkSeckill()
         .then((res)=>{
           console.log('checkSeckill',res.data)
           if(res.data.code == 1){
@@ -207,7 +207,7 @@ export default {
       let postData = {
         page: page
       }
-      axios.post('/api/method/getGoods',postData)
+      getGoods(postData)
         .then((res)=>{
           console.log('productData:',res.data)
           let data = res.data
@@ -234,7 +234,7 @@ export default {
     },
     //获取首页品牌广告的数据
     getBrandADData(){
-      axios.get('api/method/brandadsense')
+      brandadsense()
         .then((res)=>{
           console.log('brandadsense data:',res.data)
           if(res.data.code == 1){
@@ -247,7 +247,7 @@ export default {
     },
     //获取首页产品广告的数据
     getProductADData(){
-      axios.get('api/method/goodsadsense')
+      goodsadsense()
         .then((res)=>{
           console.log('goodsadsense data:',res.data)
           if(res.data.code == 1){

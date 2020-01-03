@@ -40,7 +40,7 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex'
-import axios from 'axios'
+import { getuserchat,userDetails,deleteshat } from '../../../../utils/axios/request'
 export default {
   name: "MessageItems",
   data(){
@@ -66,7 +66,7 @@ export default {
       let postData = {
         user_id: this.userData.id
       }
-      axios.post('api/method/getuserchat',postData)
+      getuserchat(postData)
         .then((res)=>{
           console.log('getuserchat',res.data)
           if(res.data.code == 1){
@@ -91,7 +91,7 @@ export default {
         let postData = {
           user_id: this.shopIds
         }
-        axios.post('api/method/userDetails',postData)
+        userDetails(postData)
           .then((res)=>{
             console.log('userDetails',res.data)
             if(res.data.code == 1){
@@ -138,7 +138,7 @@ export default {
         user_id: this.userData.id
       }
 
-      axios.post('api/method/deleteshat',postData)
+      deleteshat(postData)
         .then((res)=>{
           console.log('deleteshat',res.data)
           if(res.data.code == 1){

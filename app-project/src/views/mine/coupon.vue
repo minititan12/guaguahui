@@ -49,7 +49,7 @@
 <script>
 import BScroll from "better-scroll"
 import CouponItem from '../../components/miniComponents/couponItem'
-import axios from 'axios'
+import { getMyCoupons } from '../../utils/axios/request'
 import { mapState } from 'vuex'
 export default {
   name: "Coupon",
@@ -112,7 +112,7 @@ export default {
         status: this.status,
         keyword: ''
       }
-      axios.post('api/method/getMyCoupons',postData)
+      getMyCoupons(postData)
         .then((res)=>{
           console.log('getMyCoupons',res.data)
           if(res.data.code == 1){

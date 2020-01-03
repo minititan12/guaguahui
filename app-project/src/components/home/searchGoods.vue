@@ -28,7 +28,7 @@
 import ProductItem from '../miniComponents/productItem'
 import Bscroll from 'better-scroll'
 import { mapState, mapMutations } from 'vuex'
-import axios from 'axios'
+import { searchGoods } from '../../utils/axios/request'
 export default {
   name:"SearchGoods",
   data(){
@@ -88,7 +88,7 @@ export default {
           goods_name: this.searchText,
           page: this.page
         }
-        axios.post('/api/method/searchGoods',postdata)
+        searchGoods(postdata)
           .then((res)=>{
             console.log('searchGoods',res.data)
             if(res.data.code == 1){

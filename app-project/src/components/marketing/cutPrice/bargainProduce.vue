@@ -115,7 +115,6 @@
 </template>
 <script>
 import BargainPop from './popup/bargainPop'
-import axios from 'axios'
 import { doBargin } from '../../../utils/axios/request'
 import { mapState,mapMutations } from 'vuex'
 export default {

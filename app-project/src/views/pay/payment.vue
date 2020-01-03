@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { pay,doPay } from '../../utils/axios/request'
 import { mapState, mapMutations } from 'vuex'
 export default {
   name: "Payment",
@@ -171,7 +171,7 @@ export default {
       }
       var _this=this
       
-      axios.post('api/method/pay', payData)
+      pay(payData)
         .then((res) => {
           
         console.log('alipay', res.data)
@@ -218,7 +218,7 @@ export default {
       
       var _this=this
       
-      axios.post('api/method/doPay', payData)
+      doPay(payData)
         .then((res) => {
           console.log('aliExternalPay',res)
           _this.aliExternalPayHtml = res.data;
@@ -252,7 +252,7 @@ export default {
       
       let _this=this
       
-      axios.post('api/method/pay', payData)
+      pay(payData)
         .then((res) => {
           console.log('wxWebPay',res)
           // alert(JSON.stringify(res.data.data))
@@ -329,7 +329,7 @@ export default {
       
       var _this=this
       
-      axios.post('api/method/pay', payData)
+      pay(payData)
         .then((res) => {
           var mweb_url=res.data.data.order.mweb_url
         
@@ -385,7 +385,7 @@ export default {
       }
     
       //提交支付
-      axios.post('api/method/pay', payData)
+      pay(payData)
         .then((res) => {
           
           console.log('pay', res.data.data.pay_type)

@@ -16,7 +16,7 @@
 <script>
 import CommentItem from '../../components/miniComponents/commentItem'
 import Bscroll from 'better-scroll'
-import axios from 'axios'
+import { showCommentList } from '../../utils/axios/request'
 export default {
   name:"AllComment",
   data(){
@@ -37,7 +37,7 @@ export default {
         goods_id: this.$route.query.goods_id,
         page: this.page
       }
-      axios.post('api/method/showCommentList',postData)
+      showCommentList(postData)
         .then((res)=>{
           console.log('showCommentList',res.data)
           if(res.data.code == 1){

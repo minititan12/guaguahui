@@ -75,7 +75,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import {refundGoodsInfo,evaImageUpload,refundApply} from '@/utils/axios/request'
 import { ImagePreview } from 'vant';
 export default {

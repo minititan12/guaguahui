@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { count } from '../../../../utils/axios/request'
 import { mapState } from 'vuex'
 export default {
   name: "MineOrder",
@@ -107,7 +107,7 @@ export default {
       let postData = {
         user_id: this.userData.id
       }
-      axios.post('api/method/count',postData)
+      count(postData)
         .then((res)=>{
           console.log('count',res.data)
           if(res.data.code == 1){

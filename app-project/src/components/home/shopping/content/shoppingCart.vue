@@ -9,7 +9,6 @@
 import { mapState, mapMutations } from 'vuex'
 import CartItems from './cartItems'
 import CartBottom from './cartBottom'
-import axios from 'axios'
 export default {
   name: "ShoppingCart",
   components: {

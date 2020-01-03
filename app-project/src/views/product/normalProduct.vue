@@ -8,8 +8,6 @@
 <script>
 import ProductContent from '../../components/product/productContent'
 import ProductFooter from '../../components/product/productFooter'
-
-import axios from 'axios'
 import { mapMutations, mapState } from 'vuex'
 export default {
   name: "NormalProduct",

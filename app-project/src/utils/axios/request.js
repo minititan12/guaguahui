@@ -17,6 +17,11 @@ export const getCode = (param = {}) => {
   return httpPost(api.getCode,param);
 }
 
+//绑定手机
+export const bindPhone = (param = {}) => {
+  return httpPost(api.bindPhone,param);
+}
+
 //设置默认地址
 export const setAddressDefault = (param = {}) => {
   return httpPost(api.setAddressDefault,param);
@@ -68,6 +73,26 @@ export const getSeckillGoods = (param = {}) => {
 }
 
 //商品详情页
+//加入购物车
+export const addCart = (param = {}) => {
+  return httpPost(api.addCart,param);
+}
+
+//获取商品评价列表
+export const showCommentList = (param = {}) => {
+  return httpPost(api.showCommentList,param);
+}
+
+//获取可领取的优惠券
+export const getCoupons = (param = {}) => {
+  return httpPost(api.getCoupons,param);
+}
+
+//获取微信openid
+export const getOpenid = (param = {}) => {
+  return httpPost(api.getOpenid,param);
+}
+
 //获取该商品所有拼团的信息
 export const getAllSpellGroups = (param = {}) => {
   return httpPost(api.getAllSpellGroups,param);
@@ -284,14 +309,75 @@ export const refundGoods = (param = {}) => {
   return httpPost(api.refundGoods,param);
 }
 
+//营销功能
+//获取商品信息
+export const getGoodsInfo = (param = {}) => {
+  return httpGet(api.getGoodsInfo,param);
+}
+
+//砍价商品信息描述
+export const barginGoodsDetail = (param = {}) => {
+  return httpPost(api.barginGoodsDetail,param);
+}
+
+//砍价列表
+export const barginlist = (param = {}) => {
+  return httpPost(api.barginlist,param);
+}
+
+//我的砍价列表
+export const myBarginList = (param = {}) => {
+  return httpGet(api.myBarginList,param);
+}
+
 //点击砍价
 export const doBargin = (param = {}) => {
   return httpPost(api.doBargin,param);
 }
 
+//获取拼团热门的产品
+export const getSpellGroupHotGoods = (param = {}) => {
+  return httpGet(api.getSpellGroupHotGoods,param);
+}
+
+//获取拼团页面的产品列表
+export const getSpellGroupGoods = (param = {}) => {
+  return httpPost(api.getSpellGroupGoods,param);
+}
+
+//获取拼团分享页面的描述
+export const getShareSpellGroupDes = (param = {}) => {
+  return httpPost(api.getShareSpellGroupDes,param);
+}
+
+//用户发起拼团
+export const userDoSpellGroup = (param = {}) => {
+  return httpPost(api.userDoSpellGroup,param);
+}
+
+//用户加入拼团
+export const userPartSpellGroup = (param = {}) => {
+  return httpPost(api.userPartSpellGroup,param);
+}
+
 //获取当前订单优惠券信息
 export const getShopCoupons = (param = {}) => {
   return httpPost(api.getShopCoupons,param);
+}
+
+//获取收藏列表
+export const getCollects = (param = {}) => {
+  return httpPost(api.getCollects,param);
+}
+
+//获取我的优惠券列表
+export const getMyCoupons = (param = {}) => {
+  return httpPost(api.getMyCoupons,param);
+}
+
+//显示评价
+export const showComment = (param = {}) => {
+  return httpPost(api.showComment,param);
 }
 
 //获取积分
@@ -339,3 +425,120 @@ export const footprint = (param = {}) => {
 export const deletefootprint = (param = {}) => {
   return httpGet(api.deletefootprint,param);
 }
+
+//支付
+export const pay = (param = {}) => {
+  return httpPost(api.pay,param);
+}
+
+//支付宝外部网页支付
+export const doPay = (param = {}) => {
+  return httpPost(api.doPay,param);
+}
+
+//App
+//获取微信code
+export const getWxcode = (param = {}) => {
+  return httpPost(api.getWxcode,param);
+}
+
+//获取签名包
+export const signpackage = (param = {}) => {
+  return httpPost(api.signpackage,param);
+}
+
+//获取融云token
+export const getRongYunToken = (param = {}) => {
+  return httpPost(api.getRongYunToken,param);
+}
+
+//获取首页推荐信息
+export const recommend = (param = {}) => {
+  return httpGet(api.recommend,param);
+}
+
+//获取首页轮播信息
+export const lunbo = (param = {}) => {
+  return httpGet(api.lunbo,param);
+}
+
+//获取首页分类信息
+export const getClass = (param = {}) => {
+  return httpGet(api.getClass,param);
+}
+
+//获取首页今日热销信息
+export const hotlist = (param = {}) => {
+  return httpGet(api.hotlist,param);
+}
+
+//获取首页分类品牌信息
+export const getClassbrand = (param = {}) => {
+  return httpGet(api.getClassbrand,param);
+}
+
+//获取首页秒杀信息
+export const checkSeckill = (param = {}) => {
+  return httpGet(api.checkSeckill,param);
+}
+
+//获取首页品牌广告信息
+export const brandadsense = (param = {}) => {
+  return httpGet(api.brandadsense,param);
+}
+
+//获取首页商品广告信息
+export const goodsadsense = (param = {}) => {
+  return httpGet(api.goodsadsense,param);
+}
+
+//获取首页商品列表
+export const getGoods = (param = {}) => {
+  return httpPost(api.getGoods,param);
+}
+
+//获取用户的聊天信息
+export const getuserchat = (param = {}) => {
+  return httpPost(api.getuserchat,param);
+}
+
+//获取用户信息的描述
+export const userDetails = (param = {}) => {
+  return httpPost(api.userDetails,param);
+}
+
+//删除聊天框
+export const deleteshat = (param = {}) => {
+  return httpPost(api.deleteshat,param);
+}
+
+//获取用户总的优惠券数量
+export const getUserCouponsTotal = (param = {}) => {
+  return httpPost(api.getUserCouponsTotal,param);
+}
+
+//获取用户总的收藏数量
+export const getUserCollects = (param = {}) => {
+  return httpPost(api.getUserCollects,param);
+}
+
+//获取各种订单的数量
+export const count = (param = {}) => {
+  return httpPost(api.count,param);
+}
+
+//购物车商品确认订单
+export const comfirmOrder = (param = {}) => {
+  return httpPost(api.comfirmOrder,param);
+}
+
+//购物车商品列表
+export const showCart = (param = {}) => {
+  return httpPost(api.showCart,param);
+}
+
+//搜索商品
+export const searchGoods = (param = {}) => {
+  return httpPost(api.searchGoods,param);
+}
+

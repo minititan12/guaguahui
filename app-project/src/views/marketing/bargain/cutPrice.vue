@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { barginlist } from '../../../utils/axios/request'
 import Bscroll from 'better-scroll'
 import cutPriceList from '../../../components/marketing/cutPrice/cutPriceList'
 import { mapState } from 'vuex'
@@ -80,23 +80,24 @@ export default {
       let postData = {
         page: this.page
       }
-      axios.post('api/method/barginlist',postData).then(res=>{
-        if(res.data.code != 1){
-          return;
-        }
-        if(res.data.data.length == 0){
-          this.showLoading = false;
-          this.cutPriceScroll.closePullUp();
-          return;
-        }
-        if(this.page == 0 && res.data.data.length < 10 && this.cutPriceScroll){
-          this.cutPriceScroll.closePullUp();
-        }
-        this.page = this.page + 1;
-        this.cutPriceList = [...this.cutPriceList,...res.data.data,];
-      }).catch((err)=>{
-        console.log('getSpellGroupGoods err')
-      })
+      barginlist(postData)
+        .then(res=>{
+          if(res.data.code != 1){
+            return;
+          }
+          if(res.data.data.length == 0){
+            this.showLoading = false;
+            this.cutPriceScroll.closePullUp();
+            return;
+          }
+          if(this.page == 0 && res.data.data.length < 10 && this.cutPriceScroll){
+            this.cutPriceScroll.closePullUp();
+          }
+          this.page = this.page + 1;
+          this.cutPriceList = [...this.cutPriceList,...res.data.data,];
+        }).catch((err)=>{
+          console.log('getSpellGroupGoods err')
+        })
     },
     //初始化疯狂砍价滚动条
     initGroupScroll(){

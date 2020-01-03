@@ -15,7 +15,7 @@
 
 <script>
 import BScroll from 'better-scroll'
-import axios from 'axios'
+import { recommend } from '../../../utils/axios/request'
 import { mapMutations, mapState } from 'vuex'
 export default {
   name:"LittleTitle",
@@ -30,7 +30,7 @@ export default {
   methods: {
     //获取推荐数据
     getRecommendData(){
-      axios.get('api/method/recommend')
+      recommend()
         .then((res)=>{
           console.log('recommend data:',res.data)
           if(res.data.code == 1){

@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { getCode,bindPhone } from '../../utils/axios/request'
 import { mapMutations,mapState } from 'vuex'
 export default {
   name:"GetPhone",
@@ -64,7 +64,7 @@ export default {
           type: 1
         }
         console.log(postData)
-        axios.post('/api/method/getCode',postData)
+        getCode(postData)
           .then((res)=>{
             console.log(res.data)
             if(res.data.code == '1'){
@@ -100,7 +100,7 @@ export default {
         city: this.aweixin.city,
         sex: this.aweixin.sex
       }
-      axios.post('/api/method/bindPhone',postData)
+      bindPhone(postData)
         .then((res)=>{
           // alert('bindPhone success')
           if(res.data.code == 1){

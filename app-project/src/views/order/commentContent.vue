@@ -54,8 +54,7 @@
 </template>
 
 <script>
-import axios from 'axios'
-import {orderDetail,evaImageUpload} from '@/utils/axios/request'
+import {orderDetail,evaImageUpload,showComment} from '@/utils/axios/request'
 import { mapState } from 'vuex'
 import { ImagePreview } from 'vant';
 export default {
@@ -166,7 +165,7 @@ export default {
         return;
       }
       data.goodList = goodList;
-      axios.post('api/method/showComment',data)
+      showComment(data)
         .then((res)=>{
           console.log('showComment',res.data)
           if(res.data.code == 1){

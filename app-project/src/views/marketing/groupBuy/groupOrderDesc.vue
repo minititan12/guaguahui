@@ -97,7 +97,7 @@
 </template>
 
 <script>
-import axios from "axios"
+import { getShareSpellGroupDes } from '../../../utils/axios/request'
 import SharePopUp from '../../../components/product/sharePopUp'
 import { mapState, mapMutations } from 'vuex'
 export default {
@@ -217,7 +217,7 @@ export default {
         speelgroup_record_id: this.$route.query.team_id
       }
 
-      axios.post("api/method/getShareSpellGroupDes",postData)
+      getShareSpellGroupDes(postData)
         .then((res)=>{
           console.log('getShareSpellGroupDes:',res.data)
           if(res.data.code == 1){

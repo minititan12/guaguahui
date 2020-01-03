@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { logisticsDetails } from '../../utils/axios/request'
 import Clipboard from 'clipboard'
 export default {
   name: "Logistics",
@@ -55,7 +55,7 @@ export default {
         order_number: this.$route.query.orderNumber,
         type: 0
       }
-      axios.post('api/method/logisticsDetails',postData)
+      logisticsDetails(postData)
         .then((res)=>{
           console.log('logisticsDetails',res.data)
           if(res.data.code == 1){

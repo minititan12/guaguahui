@@ -32,7 +32,6 @@ axios.interceptors.response.use(
 export const httpPost = (url,param={},headers) => {
   if(store.state.userData){
     param.user_id = store.state.userData.id
-    param.token = localStorage.gghToken
   }
   return new Promise((resolve,reject)=>{
     axios({
@@ -40,6 +39,7 @@ export const httpPost = (url,param={},headers) => {
       url,
       data:qs.stringify(param),
       headers: {
+        token: localStorage.gghToken,
         ...headers
       }
     })
@@ -54,7 +54,7 @@ export const httpPost = (url,param={},headers) => {
 export const httpGet = (url,param={},headers) => {
   if(store.state.userData){
     param.user_id = store.state.userData.id
-    param.token = localStorage.gghToken
+    // param.token = localStorage.gghToken
   }
   return new Promise((resolve,reject)=>{
     axios({
@@ -62,6 +62,7 @@ export const httpGet = (url,param={},headers) => {
       params:param,
       url: url,
       headers:{
+        token: localStorage.gghToken,
         ...headers,
         'Content-Type':'application/x-www-form-urlencoded'
       }

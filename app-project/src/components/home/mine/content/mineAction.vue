@@ -52,6 +52,7 @@ export default {
     handleLogOut(){
       this.$router.push('/login')
       localStorage.removeItem('userData')
+      localStorage.removeItem('gghToken')
       this.updateUserData({})
       this.changeLoginStatus(false)
     }

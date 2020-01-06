@@ -205,22 +205,16 @@ export default {
               path: "/getPhone"
             })
           }else if(res.data.code == 1){
-            if(!localStorage.hasOwnProperty('userData')){
-              this.updateUserData(res.data.data)
-              let userDataString = JSON.stringify(res.data.data)
-              localStorage.userData = userDataString
-              this.changeLoginStatus(true)
-              this.changeTab(5)
-              this.$router.push('/')
-              // this.$router.go(-1)
-            }else{
-              let userData = JSON.parse(localStorage.userData)
-              this.updateUserData(userData)
-              this.changeLoginStatus(true)
-              this.changeTab(5)
-              this.$router.push('/')
-              // this.$router.go(-1)
-            }
+            let userDataString = JSON.stringify(res.data.data)
+            localStorage.userData = userDataString
+          
+            let gghToken = JSON.stringify(res.data.data.token)
+            localStorage.setItem('gghToken',gghToken)
+
+            this.updateUserData(res.data.data)
+            this.changeLoginStatus(true)
+            this.changeTab(5)
+            this.$router.push('/')
           }
         })
         .catch((err)=>{

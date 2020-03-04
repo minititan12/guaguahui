@@ -7,10 +7,6 @@
     <MineOrder></MineOrder>
     <!-- <MineWallet></MineWallet> -->
     <MineAction></MineAction>
-    <!-- <div class="copyRight">
-      <span>Copyright©2019</span>
-      <span>呱呱汇gghbuy.com 版权所有</span>
-    </div> -->
   </div>
 </template>
 

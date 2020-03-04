@@ -75,13 +75,15 @@ export const httpGet = (url,param={},headers) => {
   });
 }
 
-export const httpUpload = (url,param={}) => {
+export const httpUpload = (url,param={},headers) => {
   return new Promise((resolve,reject)=>{
     axios({
       method: 'post',
       url,
       data:param,
       headers: {
+        token: localStorage.gghToken,
+        ...headers,
         'Content-Type':'multipart/form-data',
       }
     }).then(res => {

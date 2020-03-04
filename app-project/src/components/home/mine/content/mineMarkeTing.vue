@@ -1,6 +1,6 @@
 <template>
   <div class="markeTing-wrapper">
-    <van-image 
+    <!-- <van-image 
       width="50%" 
       src="/images/jchd.png"
       @click="handleToActivities" 
@@ -9,7 +9,7 @@
       width="50%" 
       src="/images/jfsc.png" 
       @click="handleToIntergralShop"
-    />
+    /> -->
     <van-image 
       width="50%" 
       src="/images/hlpt.png"
@@ -54,8 +54,10 @@ export default {
 <style lang="stylus" scoped>
   .markeTing-wrapper
     width: 92vw
-    min-height: 25vw
+    // min-height: 25vw
     margin: 0 auto
+    padding: 1vw 0
     border-radius: 3vw
+    overflow: hidden
     background-color: #fff
 </style>

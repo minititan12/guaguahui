@@ -5,7 +5,7 @@
     <MineHeader></MineHeader>
     <MineMarkeTing></MineMarkeTing>
     <MineOrder></MineOrder>
-    <MineWallet></MineWallet>
+    <!-- <MineWallet></MineWallet> -->
     <MineAction></MineAction>
     <!-- <div class="copyRight">
       <span>Copyright©2019</span>

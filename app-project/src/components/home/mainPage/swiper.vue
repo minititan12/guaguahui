@@ -4,7 +4,8 @@
       <swiper :key="swiperKey" :options="swiperOption" ref="mySwiper" v-if="swiperList.length > 0" @click.native="handleClick">
         <swiper-slide v-for="item of swiperList" :key="item.id">
           <!-- <img class="swiper-img" :src="item.cover_img" /> -->
-          <van-image class="swiper-img" width="93vw" height="47vw" fit="contain" :src="item.cover_img" />
+          <!-- <van-image class="swiper-img" width="93vw" height="45vw" fit="contain" :src="item.cover_img" /> -->
+          <van-image class="swiper-img" width="93vw" fit="contain" :src="item.cover_img" />
         </swiper-slide>
       </swiper>
     </div>
@@ -101,7 +102,7 @@ export default {
 // .swiper-wrapper >>> .swiper-slide
 //   width: 95vw !important 
 .swiper-wrapper >>> .swiper-container
-  height: 47vw
+  height: 45vw
   border-radius: 3vw
 .swiper-wrapper
   width: 100vw
@@ -115,7 +116,7 @@ export default {
   background-repeat: no-repeat
   .mySwiper-wrapper
     width: calc(93vw + 1px)
-    height: 47vw
+    height: 45vw
     margin: 0 auto
     // position: fixed
     .swiper-img

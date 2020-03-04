@@ -315,6 +315,12 @@ export default {
           padding: 0;
       }
   }
+
+  // >>> .downwarp-content
+  //   display: flex
+  //   flex-direction: row
+  //   justify-content: center
+  //   align-items: center
   >>> .droping
     .downwarp-tip
       color #FF5756

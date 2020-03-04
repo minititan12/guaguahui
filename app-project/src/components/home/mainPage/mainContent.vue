@@ -296,7 +296,7 @@ export default {
     toTop(){
       if(this.toTop){
         console.log('totop')
-        this.scroll.scrollTo(0,0,0)
+        this.mescroll.scrollTo(0,0)
         this.updatedToTop(false)
       }
     }

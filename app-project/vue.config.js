@@ -37,6 +37,13 @@ module.exports = {
         }
       ]
     },
+    externals: {
+      'vue': 'Vue',
+      'vuex': 'Vuex',
+      'vue-router': 'VueRouter',
+      'vant': 'vant',
+      'axios': 'axios'
+    }
   },
 
   chainWebpack: config => {

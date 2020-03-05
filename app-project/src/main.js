@@ -2,14 +2,12 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
-import VueAreaLinkage from 'vue-area-linkage'
 import './assets/font.css'
 import './assets/border.css'
 import './assets/reset.css'
 import './assets/iconfont.css'
 import 'babel-polyfill'
 import 'swiper/dist/css/swiper.css'
-import 'vue-area-linkage/dist/index.css'
 import store from './store'
 import touch from 'vue-directive-touch'
 import { Lazyload, Swipe, SwipeItem, Loading, Toast, Button, NavBar, Tab, Tabs,Sticky,Circle,AddressEdit,Area,Dialog,Icon,RadioGroup,Radio,Checkbox,Image,Tag,Field,Cell,CellGroup,Search,Uploader,Popup,Divider,Stepper,Skeleton,Rate,ImagePreview,ActionSheet,SwipeCell,Step, Steps, CountDown, Progress,DatetimePicker,Overlay } from 'vant'
@@ -18,7 +16,6 @@ import 'vant/lib/index.css';
 Vue.prototype.HOST='/api'
 Vue.config.productionTip = false
 Vue.use(VueAwesomeSwiper)
-Vue.use(VueAreaLinkage)
 Vue.use(Lazyload)
 Vue.use(Swipe).use(SwipeItem)
 Vue.use(Loading)

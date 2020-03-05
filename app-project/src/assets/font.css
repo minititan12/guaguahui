@@ -1,7 +1,7 @@
 @font-face {  
   /* 重命名 */
   font-family: 'hgzt';
-  src: url('coregtd6-2.otf'); 
+  src: url('./coregtd6-2.otf'); 
   font-weight: normal;  
   font-style: normal;  
 }
@@ -9,7 +9,7 @@
 @font-face {  
   /* 重命名 */
   font-family: 'PFM';
-  src: url('PingFang Medium.ttf'); 
+  src: url('./PingFang Medium.ttf') format('truetype'); 
   font-weight: normal;  
   font-style: normal;  
 }
@@ -17,7 +17,7 @@
 @font-face {  
   /* 重命名 */
   font-family: 'PFB';
-  src: url('PingFang Bold.ttf'); 
+  src: url('./PingFang Bold.ttf') format('truetype'); 
   font-weight: normal;  
   font-style: normal;  
 }
@@ -25,7 +25,7 @@
 @font-face {  
   /* 重命名 */
   font-family: 'PFH';
-  src: url('PingFang Heavy.ttf'); 
+  src: url('./PingFang Heavy.ttf') format('truetype'); 
   font-weight: normal;  
   font-style: normal;  
 }

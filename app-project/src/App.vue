@@ -383,8 +383,6 @@ import sha1 from 'sha1'
 </script>
 
 <style lang="stylus">
-  @import './assets/font.css'
-  
   html, body {
 		width: 100%;
 		height: 100%;

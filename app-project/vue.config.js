@@ -5,6 +5,7 @@ module.exports = {
 
   assetsDir: 'static',
   publicPath: './',
+
   devServer: {
     proxy: {
       '/api':{
@@ -17,6 +18,7 @@ module.exports = {
       }
     }
   },
+
   configureWebpack:{
     resolve: {  // 配置解析别名
       alias: {
@@ -35,5 +37,12 @@ module.exports = {
         }
       ]
     },
+  },
+
+  chainWebpack: config => {
+    // 移除 prefetch 插件
+    config.plugins.delete('prefetch')
+    // 移除 preload 插件
+    config.plugins.delete('preload');
   }
 }

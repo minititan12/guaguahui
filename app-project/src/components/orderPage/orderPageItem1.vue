@@ -14,11 +14,62 @@
       <div class="blank"></div>
 
       <!-- 全部商品项 -->
-      <div v-if="list.length > 0">
+      <div v-if="orderActive == 0 && list.length > 0">
         <OrderItem  
           v-for= "item of list" 
           :data= "item" 
           :key= "item.orderNumber" 
+          :showDel= "showDel(item.goodsList[0].status)"
+          :showCancel= "item.goodsList[0].status == 0 ? true : false"
+          :showRefund= "showRefund(item.goodsList[0].status)" 
+          :showPay= "item.goodsList[0].status == 0 ? true : false"
+          :showConfirm= "item.goodsList[0].status == 3 ? true : false" 
+          :showLogistics = "item.goodsList[0].status == 3 ? true : false"
+          :showComment = "item.goodsList[0].status == 1 ? true : false"
+          @del= "handleDelItem(item.orderNumber)"
+          @cancel= "handleCancelOrder(item.orderNumber)"
+          @pay= "handlePayOrder(item)"
+          @refund= "handleRefund(item.orderNumber)"
+          @confirm= "handleConfirm(item.orderNumber)"
+          @logistics= "handleToLogistics(item)"
+          @comment = "handleToComment(item)"
+        />
+      </div>
+      
+      <!-- 待付款的商品项 -->
+      <div v-if="orderActive == 1 && list.length > 0">
+        <OrderItem 
+          v-for= "item of list" 
+          :data= "item" 
+          :key= "item.orderNumber" 
+          :showPay= "true"
+          :showCancel= "true"
+          @pay= "handlePayOrder(item)" 
+          @cancel= "handleCancelOrder(item.orderNumber)"
+        />
+      </div>
+
+      <!-- 待发货的商品项 -->
+      <div v-if="orderActive == 2 && list.length > 0">
+        <OrderItem  
+          v-for= "item of list" 
+          :data= "item" 
+          :key= "item.orderNumber" 
+          :showRefund= "true"
+          @refund= "handleRefund(item.orderNumber)"
+        />
+      </div>
+
+      <!-- 待收货的商品项 -->
+      <div v-if="orderActive == 3 && list.length > 0">
+        <OrderItem  
+          v-for= "item of list" 
+          :data= "item" 
+          :key= "item.orderNumber"
+          :showConfirm = "true" 
+          :showLogistics = "true"
+          @confirm= "handleConfirm(item.orderNumber)"
+          @logistics= "handleToLogistics(item)"
         />
       </div>
 
@@ -254,6 +305,221 @@ export default {
         .catch((err)=>{
           this.$toast.clear()
           console.log('post getMyOrder err' + err)
+        })
+    },
+
+    //获取订单状态
+    // getStatusText(status){
+    //   switch(status){
+    //     case 0:
+    //       return '待付款'
+    //     case 1:
+    //       return '待评价'
+    //     case 2:
+    //       return '待发货'
+    //     case 3:
+    //       return '待收货'
+    //     case 5:
+    //       return '待退款'
+    //     case 8:
+    //       return '交易关闭'
+    //     case 9:
+    //       return '已退款'
+    //     case 10:
+    //       return '订单完成'
+    //     default:
+    //       return ''
+    //   }
+    // },
+
+    //判断是否显示删除按钮
+    showDel(status){
+      // if(status == 1){
+      //   return true
+      // }
+      if(status == 8){
+        return true
+      }
+      // if(status == 9){
+      //   return true
+      // }
+      // if(status == 10){
+      //   return true
+      // }
+
+      return false
+    },
+
+    //判断是否显示退款按钮
+    showRefund(status){
+      if(status == 2){
+        return true
+      }else{
+        return false
+      }
+    },
+
+    //处理请求
+    handleAxios(action,postData){
+      let requestMethod = null
+      if(action == 'del'){
+        requestMethod = delOrder
+      }else if(action == 'cancel'){
+        requestMethod = cancelOrder
+      }else if(action == 'confirm'){
+        requestMethod = receipt
+      }
+      requestMethod(postData)
+        .then((res)=>{
+          this.$toast.clear()
+          console.log(action,res.data)
+          if(res.data.code == 1){
+            this.reGetData()
+          }else{
+            this.$toast({
+              type: "fail",
+              message: res.data.message,
+              duration: 1200
+            })
+          }
+        })
+        .catch((err)=>{
+          this.$toast.clear()
+          console.log('post handleOrder err' + err)
+        })
+    },
+
+    handleDelItem(orderNumber){
+      this.$dialog.alert({
+        title: '删除订单',
+        message: '确定删除该订单',
+        showCancelButton: true   
+      })
+        .then(()=>{
+          this.$toast({
+            type: "loading",
+            message: "删除中...",
+            duration: 3000
+          })
+          let postData = {
+            order_number: orderNumber
+          }
+          console.log(postData)
+          this.handleAxios('del',postData)
+        })
+        .catch(()=>{
+        })
+    },
+
+    //处理支付订单
+    handlePayOrder(shopItem){
+      console.log('payorder')
+
+      let allAmount = 0
+      for(let item of shopItem.goodsList){
+        allAmount = allAmount + parseFloat(item.amount)
+      }
+
+      let data = {
+        order_no: [{order_no: shopItem.orderNumber}],
+        total_amount: allAmount 
+      }
+      this.updatePayOrderData(data)
+
+      this.$router.push({
+        path: '/payment',
+        query: {
+          type: 'payFromOrder'
+        }
+      })
+    },
+
+    //处理确认订单
+    handleConfirm(orderNumber){
+      this.$dialog.alert({
+        title: '确认收货',
+        message: '请确认已收到货物',
+        showCancelButton: true   
+      })
+        .then(()=>{
+          this.$toast({
+            type: "loading",
+            message: "确认中...",
+            duration: 3000
+          })
+          let postData = {
+            order_number: orderNumber
+          }
+          console.log(postData)
+          this.handleAxios('confirm',postData)
+        })
+        .catch(()=>{
+        })
+    },
+
+    //物流信息
+    handleToLogistics(data){
+      console.log(data)
+      this.$router.push({
+        path: '/logistics',
+        query: {
+          orderNumber: data.orderNumber,
+          imgUrl: data.goodsList[0].photo
+        }
+      })
+    },
+
+    //取消订单
+    handleCancelOrder(orderNumber){
+      this.$dialog.alert({
+        title: '取消订单',
+        message: '确定取消该订单',
+        showCancelButton: true   
+      })
+        .then(()=>{
+          this.$toast({
+            type: "loading",
+            message: "取消中...",
+            duration: 3000
+          })
+          let postData = {
+            order_number: orderNumber
+          }
+          console.log(postData)
+          this.handleAxios('cancel',postData)
+        })
+        .catch(()=>{
+        })
+    },
+
+    //评价商品
+    handleToComment(data){
+      this.$router.push({
+        path: "/commentContent",
+        name: "commentContent",
+        query: {
+          order_number: data.orderNumber,
+        },
+      })
+    },
+
+    //申请退款
+    handleRefund(orderNumber){
+      this.$dialog.alert({
+        title: '申请退款',
+        message: '确定申请退款',
+        showCancelButton: true   
+      })
+        .then(()=>{
+          this.$router.push({
+            path: "/requestRefund",
+            name: "requestRefund",
+            params: {
+              orderNumber: orderNumber
+            }
+          })
+        })
+        .catch(()=>{
         })
     }
   },

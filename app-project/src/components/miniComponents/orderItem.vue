@@ -5,7 +5,6 @@
         <van-icon color="#B9B9B9" name="shop-o" />
         <span class="shop-name" @click.stop="handleToShop(data.goodsList[0].user_id_to)">{{data.goodsList[0].shop}}</span>
       </div>
-      <span class="shop-status">{{statusText}}</span>
     </div>
 
     <div :key="index" class="oderItem-content" v-for="(item,index) of data.goodsList">
@@ -25,6 +24,7 @@
       </div>
 
       <div class="content-right">
+        <span class="right-status">{{getStatusText(item.status)}}</span>
         <div>
           <span class="right-icon">￥</span>
           <span class="right-price">{{item.amount}}</span>
@@ -44,7 +44,7 @@
     </div>
 
     <!-- 底下按钮 -->
-    <div class="bottom-btns">
+    <!-- <div class="bottom-btns">
       <van-button class="bottom-del" type="danger" size="small" @click.stop="handleDel" v-if="showDel">删除订单</van-button>
 
       <van-button class="bottom-comment" type="warning" size="small" @click.stop="handleComment" v-if="showComment">评价</van-button>
@@ -56,7 +56,7 @@
       <van-button v-if="showPay"  class="bottom-pay" type="primary" size="small" @click.stop="handlePay">付款</van-button>
 
       <van-button v-if="showLogistics"  class="bottom-logistics" type="primary" size="small" @click.stop="handleToLogistics">物流信息</van-button>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -71,7 +71,7 @@ export default {
     showCancel: Boolean,
     showConfirm: Boolean,
     noShow: Boolean,
-    statusText: String,
+    // statusText: String,
     showRefund: Boolean,
     showLogistics: Boolean
   },
@@ -108,6 +108,33 @@ export default {
       }
 
       return result.toFixed(2)
+    },
+    //获取对应商品的订单状态
+    getStatusText(status){
+      switch(status){
+        case 0:
+          return '待付款'
+        case 1:
+          return '待评价'
+        case 2:
+          return '待发货'
+        case 3:
+          return '待收货'
+        case 5:
+          return '待退款'
+        case 6:
+          return '待退货'
+        case 8:
+          return '交易关闭'
+        case 9:
+          return '已退款'
+        case 10:
+          return '订单完成'
+        case 11:
+          return '退款成功'
+        default:
+          return ''
+      }
     },
     //点击删除按钮
     handleDel(){
@@ -183,11 +210,11 @@ export default {
   .oderItem
     width: 94%
     font-family: PFB
-    margin: .2rem auto
+    margin: 3vw auto
     color: #000
     background-color: #fff
-    border-radius: .2rem
-    padding: 0 .3rem
+    border-radius: 3vw
+    padding: 0 3vw
     box-sizing: border-box
     .oderItem-shop
       width: 100%
@@ -204,9 +231,6 @@ export default {
           margin-right: 1vw
         .shop-name
           font-size: 4vw
-      .shop-status
-        font-size: 3.8vw
-        color: #FF5655
 
 
     .oderItem-content
@@ -239,6 +263,11 @@ export default {
         display: flex
         flex-direction: column
         align-items: flex-end
+        .right-status
+          font-family: PFH
+          font-size: 3.5vw
+          color: #FF5655
+          margin-bottom: 1vw
         .right-icon
           font-size: 3vw
         .right-price
@@ -253,6 +282,7 @@ export default {
       flex-direction: row
       justify-content: flex-end
       align-items: center
+      padding-bottom: 3vw
       .bottom-desc
         .bottom-number
           font-size: 3vw

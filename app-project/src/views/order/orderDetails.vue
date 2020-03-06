@@ -5,6 +5,7 @@
       <div class="status">{{statusText}}</div>
     </div>
 
+    <!-- 物流信息 -->
     <div @click="gooLogistics" v-if="logisticsInfo" class="logisticsInfo">
       <van-image width="6vw" height="6vw" fit="contain" src="/public/static/order/icon_car@2x.png" />
       <div class="content">
@@ -14,6 +15,7 @@
       <van-icon name="arrow" />
     </div>
 
+    <!-- 地址信息 -->
     <div v-if="order.address" class="address-info">
       <van-image width="6vw" height="6vw" fit="contain" src="/public/static/order/icon_site@2x.png" />
       <div class="content">
@@ -24,6 +26,8 @@
         <div class="address">收货地址：{{order.address.buyer_address}}</div>
       </div>
     </div>
+
+    <!-- 商品信息 -->
     <div class="goods-info">
       <div @click="goDetails(item)" class="goods" :key="index" v-for="(item,index) in order.goods_info">
         <van-image
@@ -33,19 +37,22 @@
           :src="item.cover_img"
         />
         <div class="content">
-          <div class="name">{{item.goods_name}}</div>
-          <div class="desc">
-            <div class="attr">{{getDesc(item)}}</div>
-            <div v-if="item.status == 2 || item.status == 3" @click="refundOrder(item.goods_attr_id)" class="refund">申请退款</div>
-            <div v-if="item.status == 5" class="refund-status">退款中</div>
-            <div v-if="item.status == 11" class="refund-status">退款成功</div>
+          <div class="top">
+            <div class="name">{{item.goods_name}}</div>
+            <div v-if="order.order_status == 0" class="goods-status">{{getGoodsStatus(item.status)}}</div>
           </div>
+          <div class="desc">{{getDesc(item)}}</div>
           <div class="details">
             <div>x{{item.number}}</div>
             <div>￥{{item.price}}</div>
           </div>
+
+          <div class="btns">
+            <div v-if="item.status == 2 || item.status == 3" @click.stop="refundOrder(item.goods_attr_id)" class="btn">申请退款</div>
+          </div>
         </div>
       </div>
+
       <div v-if="order.discount > 0" class="part">
         <div>优惠</div>
         <div>￥{{order.discount}}</div>
@@ -55,6 +62,8 @@
         <div class="price">￥{{order.money}}</div>
       </div>
     </div>
+
+    <!-- 订单信息 -->
     <div class="order-info">
       <div class="item">
         <div class="label">订单编号</div>
@@ -73,21 +82,22 @@
         <div class="value">{{order.pay_time}}</div>
       </div>
     </div>
+
     <!-- 待付款 -->
-    <div v-if="order.status === 0" class="order-footer">
+    <div v-if="showFooterButton('waitPay')" class="order-footer">
       <div @click="cancelOrder" class="cancel double">取消订单</div>
       <div @click="payOrder" class="pay double">付款</div>
     </div>
     <!-- 订单已取消 -->
-    <div v-if="order.status === 8" class="order-footer">
+    <div v-if="showFooterButton('delete')" class="order-footer">
       <div @click="delOrder" class="delete single">删除订单</div>
     </div>
     <!-- 待收货 -->
-    <div v-if="order.status === 3" class="order-footer">
-      <div @click="confirmOrder" class="confirm double">确认收货</div>
+    <div v-if="showFooterButton('confirm')" class="order-footer">
+      <div @click="confirmOrder" class="confirm single">确认收货</div>
     </div>
     <!-- 待评价 -->
-    <div v-if="order.status === 1" class="order-footer">
+    <div v-if="showFooterButton('evaluation')" class="order-footer">
       <div @click="evaluationOrder" class="evaluation single">评价</div>
     </div>
   </div>
@@ -96,6 +106,7 @@
 import {orderDetail,cancelOrder,delOrder,receipt,logisticsDetails} from '@/utils/axios/request'
 import { mapMutations } from 'vuex'
 export default {
+  name: 'OrderDetails',
   data(){
     return {
       // 订单号
@@ -108,48 +119,60 @@ export default {
   },
   computed: {
     statusText(){
-      switch(this.order.status){
-        case 0:
-          return '待付款'
-        case 1:
-          return '待评价'
-        case 2:
-          return '待发货'
-        case 3:
-          return '待收货'
-        case 5:
-          return '待退款'
-        case 8:
-          return '交易关闭'
-        case 9:
-          return '已退款'
-        case 10:
-          return '订单完成'
-        default:
-          return ''
-      }    
+      if(this.order.order_status == 1){
+        switch(this.order.goods_info[0].status){
+          case 0:
+            return '待付款'
+          case 1:
+            return '待评价'
+          case 2:
+            return '待发货'
+          case 3:
+            return '待收货'
+          case 5:
+            return '待退款'
+          case 6:
+            return '待退货'
+          case 8:
+            return '交易关闭'
+          case 9:
+            return '已退款'
+          case 10:
+            return '订单完成'
+          case 11:
+            return '退款成功'
+          default:
+            return ''
+        } 
+      }else{
+        return ''
+      }
     },
     statusClass(){
-      switch(this.order.status){
-        case 0:
-          return 'unpaid'
-        case 1:
-          return '待评价'
-        case 2:
-          return 'wait-ship'
-        case 3:
-          return 'wait-receipt'
-        case 5:
-          return '待退款'
-        case 8:
-          return 'close'
-        case 9:
-          return '已退款'
-        case 10:
-          return 'complete'
-        default:
-          return ''
-      }    
+      if(this.order.order_status == 1){
+        switch(this.order.goods_info[0].status){
+          case 0:
+            return 'unpaid'
+          case 1:
+            return '待评价'
+          case 2:
+            return 'wait-ship'
+          case 3:
+            return 'wait-receipt'
+          case 5:
+            return '待退款'
+          case 8:
+            return 'close'
+          case 9:
+            return '已退款'
+          case 10:
+            return 'complete'
+          default:
+            return 'wait-ship'
+        }
+      }else{
+        return 'wait-ship'
+      }
     },
   },
   created(){
@@ -161,6 +184,67 @@ export default {
     ...mapMutations(['updatePayOrderData']),
     handleBack(){
       this.$router.go(-1)
+    },
+    //当一个订单存在不同状态商品时判断商品状态
+    getGoodsStatus(status){
+      if(this.order.order_status == 0){
+        switch(status){
+          case 0:
+            return '待付款'
+          case 1:
+            return '待评价'
+          case 2:
+            return '待发货'
+          case 3:
+            return '待收货'
+          case 5:
+            return '待退款'
+          case 6:
+            return '待退货'
+          case 8:
+            return '交易关闭'
+          case 9:
+            return '已退款'
+          case 10:
+            return '订单完成'
+          case 11:
+            return '退款成功'
+          default:
+            return ''
+        } 
+      }
+    },
+    //判断显示什么底部按钮
+    showFooterButton(type){
+      if(this.order.order_status === 1){
+        let status = this.order.goods_info[0].status
+        //待付款按钮
+        if(type == 'waitPay' && status == 0){
+          return true
+        }else{
+          return false
+        }
+        //订单已取消按钮
+        if(type == 'delete' && status == 8){
+          return true
+        }else{
+          return false
+        }
+        //待收货按钮
+        if(type == 'confirm' && status == 3){
+          return true
+        }else{
+          return false
+        }
+        //待评价按钮
+        if(type == 'evaluate' && status == 1){
+          return true
+        }else{
+          return false
+        }
+      }else{
+        return false
+      }
     },
     // 跳转商品详情
     goDetails(info){
@@ -221,6 +305,7 @@ export default {
       logisticsDetails({
         order_number:this.order_number
       }).then(res=>{
+        console.log(res.data)
         if(res.data.data.data&&res.data.data.data[0]){
           this.logisticsInfo = res.data.data.data[0];
         }
@@ -358,8 +443,7 @@ export default {
     width 100%
     height 30vw
     position relative
-    background-size 100% 100%    
-    margin-bottom 4vw
+    background-size 100% 100%
     &.unpaid
       background-image url('/public/static/order/wait_for_payment_bg@2x.png')
     &.close
@@ -413,7 +497,6 @@ export default {
     color #666
     line-height 6vw
     padding 4vw 3vw
-    border-bottom 1px solid #eee
     .van-image
       margin-right 4vw
     .content
@@ -434,45 +517,59 @@ export default {
     background white
     .goods
       display flex
-      justify-content flex-start
-      padding 2vw 3vw
+      justify-content space-between
+      padding 3vw
+      border-top 1px solid #eee
       .van-image
-        margin-right 2vw
+        margin-right 3vw
       .content
         flex 1
-        .name
-          font-size 3.8vw
-          font-family PFH
-          line-height 4.6vw
-          height 10vw
-        .desc
-          padding-bottom 1vw
+        min-height: 20vw
+        display: flex
+        flex-direction: column
+        justify-content: space-around
+        .top
           display flex
+          flex-direction row
           justify-content space-between
-          height 9vw
-          .attr
-            font-size 3vw
-            color #999
-            line-height 4.5vw
-            flex 1
-          .refund
-            font-size 3vw
-            line-height 6vw
+          .name
+            font-size 3.8vw
+            font-family PFH
+            line-height 4.6vw
+            // height 10vw
+          .goods-status
+            font-size 3.5vw
+            font-family PFH
+            line-height 4.6vw
             height 6vw
-            border 1px solid #eee
-            color #999
-            padding 0 4vw
-            border-radius 3vw
-          .refund-status
-            font-size 3vw
-            line-height 6vw
-            height 6vw
-            color #666
-            padding 0 4vw
+            color #FF5655
+            padding-left 4vw
+        .desc
+          flex 1
+          min-height 6vw
+          padding-bottom 1vw
+          font-size 3vw
+          line-height 4.5vw
+          color #999
         .details
           display flex
           justify-content space-between
           align-items center
+          font-family hgzt
+        .btns
+          margin-top: 2vw
+          display: flex
+          flex-direction: row
+          justify-content: flex-end
+          .btn
+            font-size 3vw
+            line-height 6vw
+            height 6vw
+            border 1px solid #eee
+            color #fff
+            background-color #FF5655
+            padding 0 4vw
+            border-radius 3vw
     .part
       display flex
       justify-content space-between
@@ -483,6 +580,7 @@ export default {
       font-size 3.8vw
       font-family PFH
       .price
+        font-family hgzt
         font-size 4.2vw
         color #f3284f
   .order-info

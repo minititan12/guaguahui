@@ -26,7 +26,9 @@ export default {
     ...mapMutations(['updateOrderList','updateOrderActive']),
     handleBackClick(){
       console.log(this.$router)
-      this.$router.go(-1)
+      this.$router.push({
+        path: '/'
+      })
     },
     correctActive(){
       this.active = parseInt(this.$route.query.orderID) + 1

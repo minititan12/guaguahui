@@ -98,7 +98,7 @@ export default {
         onScroll:(mescroll, y, isUp)=>{
           this.scrollTop = y;
         }
-      }      
+      }
     }
   },
   computed: {
@@ -123,10 +123,10 @@ export default {
       this.getTodayHotList()
     },
     //上拉加载的操作
-    handlePullingUp(mes){
+    handlePullingUp(page){
       if(this.mescroll){
         console.log('pullingup')
-        this.getProductsList(mes.num)
+        this.getProductsList(page.num)
       }
     },
     //获取首页轮播图数据

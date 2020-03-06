@@ -6,11 +6,11 @@
       </div>
 
       <div class="searchGoods-loading" v-if="showLoading">
-          <van-loading color="#FF5756" size="24px">
-            <img class="loading-img" src="/public/uploads/home/load.png" alt="">
-            <span>加载中...</span>
-          </van-loading>
-        </div>
+        <van-loading color="#FF5756" size="24px">
+          <img class="loading-img" src="/public/uploads/home/load.png" alt="">
+          <span>加载中...</span>
+        </van-loading>
+      </div>
         
       <div class="no-more" v-show="showNoMore">
         <img class="loading-img" src="/public/uploads/home/load.png" alt="">

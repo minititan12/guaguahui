@@ -27,7 +27,8 @@ export default {
     handleBackClick(){
       console.log(this.$router)
       this.$router.push({
-        path: '/'
+        path: '/',
+        name: 'home'
       })
     },
     correctActive(){

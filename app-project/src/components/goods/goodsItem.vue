@@ -46,8 +46,34 @@ export default {
       goodsList: [],
       active: 0,
       scrollTop: 0,
+
       down:{
-        use: false
+        htmlContent:'<div class="droping"><p class="downwarp-progress"></p><p class="downwarp-tip"></p></div><div class="refreshing"><p class="loading"></p><img class="loading-img" src="/public/uploads/home/load.png" alt=""><span>加载中...</span></div>',
+        inited:(mescroll, downwarp)=>{
+          mescroll.droping = downwarp.querySelector('.droping');
+          mescroll.refreshing = downwarp.querySelector('.refreshing');
+        },
+        inOffset:(mescroll)=>{
+          mescroll.droping.style.display="block";
+          mescroll.refreshing.style.display="none";
+          mescroll.droping.querySelector('.downwarp-tip').innerText = "下拉刷新";
+        },
+        outOffset:(mescroll)=>{
+          mescroll.droping.querySelector('.downwarp-tip').innerText = "释放刷新";
+        },
+        onMoving(mescroll, rate, downHight){
+          let deg = 0;
+          deg = parseInt(downHight)*4.5;
+          mescroll.droping.querySelector('.downwarp-progress').style.transform = "rotate("+ deg +"deg)";
+        },
+        showLoading:(mescroll)=>{
+          mescroll.droping.style.display="none";
+          mescroll.refreshing.style.display="block";
+        },
+        auto:false,
+        callback:(mescroll)=>{
+          mescroll.resetUpScroll();
+        }
       },
 
       up:{
@@ -237,6 +263,33 @@ export default {
           padding: 0;
       }
     }
+
+  >>> .droping
+        .downwarp-tip
+          color #FF5756
+        .downwarp-progress
+          border-color #FF5756
+          border-bottom-color: transparent;
+  >>> .refreshing
+        width: 100%
+        display: flex
+        justify-content: center
+        align-items: center
+        color #FF5756
+        .loading
+          display inline-block
+          width 4.2vw
+          height 4.2vw
+          margin-right 2vw
+          border-radius 50%
+          border 1px solid #FF5756
+          border-bottom-color transparent
+          vertical-align middle
+          animation mescrollRotate .8s linear infinite
+        .loading-img
+          width: 6vw
+          height: 5vw
+          margin-right: 2vw
   
   >>> .goodsList-wrapper
         display: flex

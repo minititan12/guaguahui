@@ -58,9 +58,6 @@ export default {
       scrollTop: 0,
       mescroll: null,
       down:{
-        textInOffset:"下拉刷新",
-        textOutOffset: "释放刷新",
-        textLoading: "加载中 ..",
         htmlContent:'<div class="droping"><p class="downwarp-progress"></p><p class="downwarp-tip"></p></div><div class="refreshing"><p class="loading"></p><img class="loading-img" src="/public/uploads/home/load.png" alt=""><span>加载中...</span></div>',
         inited:(mescroll, downwarp)=>{
           mescroll.droping = downwarp.querySelector('.droping');
@@ -91,8 +88,8 @@ export default {
       },
       up:{
         isBounce: false,
-        htmlNodata: '<div class="pullUpLoading"><div class="no-more"><img class="loading-img" src="/public/uploads/home/load.png" alt=""><span>没有更多了</span></div></div>',
-        htmlLoading: '<div class="pullUpLoading"><p class="loading"></p><img class="loading-img" src="/public/uploads/home/load.png" alt=""><span>加载中...</span></div>',
+        htmlNodata: '<div class="pullUpLoading"><div class="no-more"><img class="loading-img" src="/images/load.png" alt=""><span>没有更多了</span></div></div>',
+        htmlLoading: '<div class="pullUpLoading"><p class="loading"></p><img class="loading-img" src="/images/load.png" alt=""><span>加载中...</span></div>',
         auto:true,
         callback:this.handlePullingUp,
         onScroll:(mescroll, y, isUp)=>{
@@ -322,55 +319,55 @@ export default {
   //   justify-content: center
   //   align-items: center
   >>> .droping
-    .downwarp-tip
-      color #FF5756
-    .downwarp-progress
-      border-color #FF5756
-      border-bottom-color: transparent;
+        .downwarp-tip
+          color #FF5756
+        .downwarp-progress
+          border-color #FF5756
+          border-bottom-color: transparent;
   >>> .refreshing
-    width: 100%
-    display: flex
-    justify-content: center
-    align-items: center
-    color #FF5756
-    .loading
-      display inline-block
-      width 4.2vw
-      height 4.2vw
-      margin-right 2vw
-      border-radius 50%
-      border 1px solid #FF5756
-      border-bottom-color transparent
-      vertical-align middle
-      animation mescrollRotate .8s linear infinite
-    .loading-img
-      width: 6vw
-      height: 5vw
-      margin-right: 2vw
+        width: 100%
+        display: flex
+        justify-content: center
+        align-items: center
+        color #FF5756
+        .loading
+          display inline-block
+          width 4.2vw
+          height 4.2vw
+          margin-right 2vw
+          border-radius 50%
+          border 1px solid #FF5756
+          border-bottom-color transparent
+          vertical-align middle
+          animation mescrollRotate .8s linear infinite
+        .loading-img
+          width: 6vw
+          height: 5vw
+          margin-right: 2vw
   >>> .pullUpLoading
-    width: 100%
-    display: flex
-    justify-content: center
-    align-items: center
-    color #FF5756
-    height 15vw
-    .loading
-      display inline-block
-      width 4.2vw
-      height 4.2vw
-      margin-right 2vw
-      border-radius 50%
-      border 1px solid #FF5756
-      border-bottom-color transparent
-      vertical-align middle
-      animation mescrollRotate .8s linear infinite
-    .loading-img
-      width: 6vw
-      height: 5vw
-      margin-right: 2vw
-    .no-more
-      line-height: 15vw
-      font-size: 4vw
+        width: 100%
+        display: flex
+        justify-content: center
+        align-items: center
+        color #FF5756
+        height 15vw
+        .loading
+          display inline-block
+          width 4.2vw
+          height 4.2vw
+          margin-right 2vw
+          border-radius 50%
+          border 1px solid #FF5756
+          border-bottom-color transparent
+          vertical-align middle
+          animation mescrollRotate .8s linear infinite
+        .loading-img
+          width: 6vw
+          height: 5vw
+          margin-right: 2vw
+        .no-more
+          line-height: 15vw
+          font-size: 4vw
 </style>
 
 

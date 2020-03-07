@@ -33,7 +33,6 @@
 <script>
 import MescrollVue from 'mescroll.js/mescroll.vue'
 import { getBrandGoods,searchbrandGoods } from '../../utils/axios/request'
-import Bscroll from 'better-scroll'
 import ProductItem from '../miniComponents/productItem'
 import { mapState, mapMutations } from 'vuex'
 export default {

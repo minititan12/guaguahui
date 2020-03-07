@@ -2,13 +2,13 @@
   <div class="order-wrapper">
     <div class="order-top">
       <span class="top-text">我的订单</span>
-      <div class="order-right" @click="handleToOrderPage(-1)">
+      <div class="order-right" @click="handleToOrderPage(0)">
         <span class="right-text">全部订单</span>
         <span class="iconfont">&#xe619;</span>
       </div>
     </div>
     <div class="order-bottom">
-      <div class="order-item" @click="handleToOrderPage(0)">
+      <div class="order-item" @click="handleToOrderPage(1)">
         <van-image 
           class="item-image" 
           width="7vw" 
@@ -18,7 +18,7 @@
         <span class="item-num" v-if="payment > 0">{{payment}}</span>
       </div>
 
-      <div class="order-item" @click="handleToOrderPage(1)">
+      <div class="order-item" @click="handleToOrderPage(2)">
         <van-image 
           class="item-image" 
           width="7vw" 
@@ -28,7 +28,7 @@
         <span class="item-num" v-if="shipments > 0">{{shipments}}</span>
       </div>
 
-      <div class="order-item" @click="handleToOrderPage(2)">
+      <div class="order-item" @click="handleToOrderPage(3)">
         <van-image 
           class="item-image" 
           width="7vw" 
@@ -71,7 +71,7 @@
 
 <script>
 import { count } from '../../../../utils/axios/request'
-import { mapState } from 'vuex'
+import { mapState,mapMutations } from 'vuex'
 export default {
   name: "MineOrder",
   data(){
@@ -85,8 +85,10 @@ export default {
     ...mapState(['userData'])
   },
   methods: {
-    handleToOrderPage(id){
-      this.$router.push('/orderPage?orderID='+ id)
+    ...mapMutations(['updateOrderActive']),
+    handleToOrderPage(active){
+      this.updateOrderActive(active)
+      this.$router.push('/orderPage')
     },
     handleToComment(){
       this.$router.push({
@@ -125,6 +127,7 @@ export default {
     this.initCount()
   },
   activated(){
+    localStorage.setItem('fromHomeToOrder','false')
     this.initCount()
   }
 }

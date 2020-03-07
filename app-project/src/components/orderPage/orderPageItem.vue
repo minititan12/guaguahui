@@ -1,42 +1,16 @@
 <template>
-  <div class="orderItems-wrapper" ref="orderItems" v-show="showItems">
-
-    <div>
-      <transition name="fade">
-        <div class="order-refresh" v-if="orderRefresh">
-          <van-loading color="#FF5756" size="24px">
-            <img class="loading-img" src="/public/uploads/home/load.png" alt="">
-            <span class="loading-text">加载中...</span>
-          </van-loading>
-        </div>
-      </transition>
-
-      <div class="blank"></div>
-
-      <!-- 全部商品项 -->
-      <div v-if="list.length > 0">
+  <div>
+    <mescroll-vue :down="down" :up="up" @init="init">
+      <div class="list-wrapper" v-if="list.length > 0">
+        <!-- 全部商品项 -->
         <OrderItem  
           v-for= "item of list" 
           :data= "item" 
           :key= "item.orderNumber" 
         />
       </div>
-
-      <div class="orderPage-loading" v-show="showLoading">
-        <van-loading color="#FF5756" size="24px">
-          <img class="loading-img" src="/public/uploads/home/load.png" alt="">
-          <span>加载中...</span>
-        </van-loading>
-      </div>
-      
-      <div class="no-more" v-show="showNoMore">
-        <img class="loading-img" src="/public/uploads/home/load.png" alt="">
-        <span>没有更多了</span>
-      </div>
-
       <OrderPageWarn v-show="showWarn"/>
-    </div>
-
+    </mescroll-vue>
   </div>
 
 </template>
@@ -44,129 +18,97 @@
 <script>
 import OrderItem from '../miniComponents/orderItem'
 import OrderPageWarn from './orderPageWarn'
-import Bscroll from 'better-scroll'
+import MescrollVue from 'mescroll.js/mescroll.vue'
 import { mapState,mapMutations } from 'vuex'
-import { getMyOrder,delOrder,cancelOrder,receipt} from '../../utils/axios/request'
+import { getMyOrder } from '../../utils/axios/request'
 export default {
   name: "OrderPageItem",
-  data(){
-    return {
-      showItems: true,
-      page: 1,
-      showLoading: true,
-      showNoMore: false,
-      showWarn: false,
-      orderRefresh: false
-    }
-  },
   components: {
     OrderItem,
-    OrderPageWarn
+    OrderPageWarn,
+    MescrollVue
+  },
+  data(){
+    return {
+      list: [],
+      showItems: true,
+      orderRefresh: false,
+      showWarn: false,
+
+      // mescroll滚动的距离
+      scrollTop: 0,
+      mescroll: null,
+      //mescroll下拉刷新配置参数
+      down:{
+        htmlContent:'<div class="droping"><p class="downwarp-progress"></p><p class="downwarp-tip"></p></div><div class="refreshing"><p class="loading"></p><img class="loading-img" src="/public/uploads/home/load.png" alt=""><span>加载中...</span></div>',
+        inited:(mescroll, downwarp)=>{
+          mescroll.droping = downwarp.querySelector('.droping');
+          mescroll.refreshing = downwarp.querySelector('.refreshing');
+        },
+        inOffset:(mescroll)=>{
+          mescroll.droping.style.display="block";
+          mescroll.refreshing.style.display="none";
+          mescroll.droping.querySelector('.downwarp-tip').innerText = "下拉刷新";
+        },
+        outOffset:(mescroll)=>{
+          mescroll.droping.querySelector('.downwarp-tip').innerText = "释放刷新";
+        },
+        onMoving(mescroll, rate, downHight){
+          let deg = 0;
+          deg = parseInt(downHight)*4.5;
+          mescroll.droping.querySelector('.downwarp-progress').style.transform = "rotate("+ deg +"deg)";
+        },
+        showLoading:(mescroll)=>{
+          mescroll.droping.style.display="none";
+          mescroll.refreshing.style.display="block";
+        },
+        auto:false,
+        callback:(mescroll)=>{
+          mescroll.resetUpScroll();
+        }
+      },
+
+      //mscroll上拉加载配置参数
+      up:{
+        isBounce: false,
+        htmlNodata: '<div class="pullUpLoading"><div class="no-more"><img class="loading-img" src="/images/load.png" alt=""><span>没有更多了</span></div></div>',
+        htmlLoading: '<div class="pullUpLoading"><p class="loading"></p><img class="loading-img" src="/images/load.png" alt=""><span>加载中...</span></div>',
+        auto:true,
+        callback:this.handlePullingUp,
+        onScroll:(mescroll, y, isUp)=>{
+          this.scrollTop = y;
+        }
+      }
+    }
   },
   computed: {
-    ...mapState(['orderData','orderActive','userData']),
-    //订单列表
-    list(){
+    ...mapState(['orderActive','userData']),
+  },
+  methods: {
+    ...mapMutations(['updateOrderData']),
+    // mescroll组件初始化的回调,可获取到mescroll对象
+    init(mescroll){
+      this.mescroll = mescroll;
+    },
+
+    //整合获取到的数据
+    getList(data){
       let result = []
 
-      if(this.orderData && Object.keys(this.orderData).length > 0){
-        for(let key in this.orderData){
+      if(data && Object.keys(data).length > 0){
+        for(let key in data){
           result.push({
             orderNumber: key,
-            goodsList: this.orderData[key]
+            goodsList: data[key]
           })
         }
       }
+
       return result
-    }
-  },
-  watch: {
-    orderActive(){
-      this.reGetData()
-    }
-  },
-  methods: {
-    ...mapMutations(['updateOrderData','updatePayOrderData']),
-    //loading状态
-    loadingStatus(){
-      this.showLoading = true
-      this.showNoMore = false
-      this.showWarn = false
-    },
-    //没有更多状态
-    noMoreStatus(){
-      this.showLoading = false
-      this.showNoMore = true
-      this.showWarn = false
-    },
-    //提醒状态
-    warnStatus(){
-      this.showLoading = false
-      this.showNoMore = false
-      this.showWarn = true
-    },
-
-    //重新请求数据
-    reGetData(){
-      this.showLoading = false
-      this.showNoMore = false
-      this.showWarn = false
-      this.page = 1
-      if(this.orderScroll){
-        this.orderScroll.closePullUp()
-      }
-      this.updateOrderData(null)
-      this.$toast({
-        type: "loading",
-        duration: 3000
-      })
-      this.getOrderData('init')
-    },
-
-    //初始化滚动
-    initScroll(){
-      let el = this.$refs.orderItems
-      this.orderScroll = new Bscroll(el,{
-        pullDownRefresh: {
-          threshold: 50,
-          stop: 0
-        },
-        pullUpLoad: {
-          threshold: 60
-        },
-        click: true,
-        eventPassthrough: 'horizontal',
-      })
-
-      this.orderScroll.on('pullingDown',()=>{
-        this.orderRefresh = true
-        this.$nextTick(()=>{
-          this.orderScroll.refresh()
-        })
-        this.page = 1
-        this.getOrderData('init')
-
-        setTimeout(()=>{
-          this.orderRefresh = false
-          this.$nextTick(()=>{
-            this.orderScroll.refresh()
-          })
-          this.orderScroll.finishPullDown()
-        },2000)
-      })
-
-      this.orderScroll.on('pullingUp',()=>{
-        console.log('pulling up')
-        this.getOrderData()
-      })
-
-      this.orderScroll.on('beforeScrollStart',()=>{
-        this.orderScroll.refresh()
-      })
     },
 
     //获取订单信息
-    getOrderData(type){
+    getOrderData(page){
       let status = 0
       switch(this.orderActive){
         case 0:
@@ -187,150 +129,136 @@ export default {
       let postData = {
         user_id: this.userData.id,
         status: status,
-        page: this.page
+        page: page
       }
       console.log(postData)
       getMyOrder(postData)
         .then((res)=>{
-          console.log(res.data)
-          this.$toast.clear()
+          console.log('getMyorder:',res.data)
 
-          if(res.data.code == 1){
-            if(type == 'init'){//初始化请求数据
-              this.updateOrderData(res.data.data)
-              this.$nextTick(()=>{
-                if(res.data.count > 0){
-                  if(res.data.count < 10){
-                    if(this.orderScroll){
-                      this.orderScroll.closePullUp()
-                    }
-                    this.noMoreStatus()
-                    if(this.orderScroll){
-                      this.orderScroll.refresh()
-                    }
-                  }else{
-                    this.page = this.page + 1
-                    this.loadingStatus()
-                    if(this.orderScroll){
-                      this.orderScroll.refresh()
-                    }
+          let data = res.data
+          if(page == 1){
+            this.updateOrderData(data.data)
+            if(data.count){
+              setTimeout(()=>{
+                this.mescroll.endSuccess(data.count,data.count>=10)
+                this.showWarn = false
+              },1000)
+            }else{
+              setTimeout(()=>{
+                this.mescroll.endSuccess(0,false)
+                this.mescroll.hideUpScroll()
+                this.showWarn = true
+              },300)
+            }
+          }else{
+            this.mescroll.endSuccess(data.count,data.count>=10)
+          }
 
-                    if(this.orderScroll && !this.orderScroll.pullupWatching){
-                      this.orderScroll.openPullUp()
-                    }
-                  }
-                }else{
-                  this.warnStatus()             
-                }
-              })
-            }else{//上拉加载请求数据
-              let data = {
-                ...this.orderData,
-                ...res.data.data
-              }
-              this.updateOrderData(data)
-
-              this.$nextTick(()=>{
-                if(res.data.count < 10){
-                  this.noMoreStatus()
-                  this.orderScroll.refresh()
-                  this.orderScroll.closePullUp()
-                }else{
-                  this.page = this.page + 1
-                  this.loadingStatus()
-                  this.orderScroll.refresh()
-                  this.orderScroll.finishPullUp()
-                }
-              })
+          if(data.code == 1){
+            let list = this.getList(data.data)
+            if(page == 1){
+              this.list = [...list]
+            }else{
+              this.list = [...this.list,...list]
             }
           }else{
             this.$toast({
-              message: res.data.message,
+              message: data.message,
               type: 'fail',
               duration: 1500
             })
           }
         })
         .catch((err)=>{
-          this.$toast.clear()
+          this.mescroll.endErr();
           console.log('post getMyOrder err' + err)
         })
+    },
+
+    //上拉加载
+    handlePullingUp(page){
+      this.getOrderData(page.num)
     }
   },
-  created(){
-    this.$nextTick(()=>{
-      if(this.orderActive == 0){
-        this.getOrderData('init')
-      }
-    })
+  watch: {
+    orderActive(){
+      this.showWarn = false
+      this.list = []
+      this.mescroll.resetUpScroll();
+    }
   },
-  mounted(){
-    this.initScroll()
+  activated(){
+    if(this.mescroll){
+      if(this.scrollTop){
+        this.mescroll.scrollTo(this.scrollTop,0);
+      }
+    }
   }
 }
 </script>
 
 <style lang="stylus" scoped>
-  .fade-leave
-    height: 15vw
-    opacity: 1
-  .fade-leave-active
-    transition: all .5s ease
-  .fade-leave-to
-    height: 0
-    opacity: 0
+  >>> .mescroll
+        position: absolute
+        top: 90px
+        left: 0
+        height: calc(100% - 90px)
+  >>> .mescroll-upwarp
+        padding: 0
 
-  .orderItems-wrapper >>> .van-loading
-    height: 15vw
-    display: flex
-    justify-content: center
-    align-items: center
-  .orderItems-wrapper >>> .van-loading__text
-    color: #FF5756
-    font-family: PFH
+  >>> .list-wrapper
+        width: 100%
 
-  .orderItems-wrapper
-    position: absolute
-    top: 90px
-    left: 0
-    right: 0
-    bottom: 0
-    overflow: hidden
+  >>> .droping
+        .downwarp-tip
+          color #FF5756
+        .downwarp-progress
+          border-color #FF5756
+          border-bottom-color: transparent;
+  >>> .refreshing
+        width: 100%
+        display: flex
+        justify-content: center
+        align-items: center
+        color #FF5756
+        .loading
+          display inline-block
+          width 4.2vw
+          height 4.2vw
+          margin-right 2vw
+          border-radius 50%
+          border 1px solid #FF5756
+          border-bottom-color transparent
+          vertical-align middle
+          animation mescrollRotate .8s linear infinite
+        .loading-img
+          width: 6vw
+          height: 5vw
+          margin-right: 2vw
 
-    .order-refresh
-      width: 100%
-      display: flex
-      justify-content: center
-      align-items: center
-      .loading-img
-        width: 6vw
-        margin-right: 2vw
-
-    .blank
-      width: 100%
-      height: .1vw
-
-    .orderPage-loading
-      width: 100%
-      display: flex
-      flex-direction: row
-      align-items: center
-      justify-content: center
-      padding: 3vw 0
-      font-family: PFB
-      .loading-img
-        width: 6vw
-        margin-right: 2vw
-
-    .no-more
-      width: 100%
-      display: flex
-      flex-direction: row
-      align-items: center
-      justify-content: center
-      padding: 3vw 0
-      font-family: PFB
-      .loading-img
-        width: 6vw
-        margin-right: 2vw
+  >>> .pullUpLoading
+        width: 100%
+        display: flex
+        justify-content: center
+        align-items: center
+        color #FF5756
+        height 15vw
+        .loading
+          display inline-block
+          width 4.2vw
+          height 4.2vw
+          margin-right 2vw
+          border-radius 50%
+          border 1px solid #FF5756
+          border-bottom-color transparent
+          vertical-align middle
+          animation mescrollRotate .8s linear infinite
+        .loading-img
+          width: 6vw
+          height: 5vw
+          margin-right: 2vw
+        .no-more
+          line-height: 15vw
+          font-size: 4vw
 </style>

@@ -78,8 +78,8 @@ export default {
 
       up:{
         isBounce: false,
-        htmlNodata: '<div class="pullUpLoading"><div class="no-more"><img class="loading-img" src="/public/uploads/home/load.png" alt=""><span>没有更多了</span></div></div>',
-        htmlLoading: '<div class="pullUpLoading"><p class="loading"></p><img class="loading-img" src="/public/uploads/home/load.png" alt=""><span>加载中...</span></div>',
+        htmlNodata: '<div class="pullUpLoading"><div class="no-more"><img class="loading-img" src="images/load.png" alt=""><span>没有更多了</span></div></div>',
+        htmlLoading: '<div class="pullUpLoading"><p class="loading"></p><img class="loading-img" src="images/load.png" alt=""><span>加载中...</span></div>',
         auto:true,
         callback:this.handlePullingUp,
         onScroll:(mescroll, y, isUp)=>{

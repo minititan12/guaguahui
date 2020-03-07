@@ -43,20 +43,6 @@
       </div>
     </div>
 
-    <!-- 底下按钮 -->
-    <!-- <div class="bottom-btns">
-      <van-button class="bottom-del" type="danger" size="small" @click.stop="handleDel" v-if="showDel">删除订单</van-button>
-
-      <van-button class="bottom-comment" type="warning" size="small" @click.stop="handleComment" v-if="showComment">评价</van-button>
-
-      <van-button v-if="showCancel"  class="bottom-cancel" type="warning" size="small" @click.stop="handleCancel">取消订单</van-button>
-
-      <van-button v-if="showConfirm"  class="bottom-confirm" type="primary" size="small" @click.stop="handleConfirm">确认收货</van-button>
-
-      <van-button v-if="showPay"  class="bottom-pay" type="primary" size="small" @click.stop="handlePay">付款</van-button>
-
-      <van-button v-if="showLogistics"  class="bottom-logistics" type="primary" size="small" @click.stop="handleToLogistics">物流信息</van-button>
-    </div> -->
   </div>
 </template>
 
@@ -136,49 +122,12 @@ export default {
           return ''
       }
     },
-    //点击删除按钮
-    handleDel(){
-      this.$emit('del')
-    },
-    //点击取消按钮
-    handleCancel(){
-      this.$emit('cancel')
-    },
-    //点击评价按钮
-    handleComment(){
-      this.$emit('comment')
-    },
-    //点击支付按钮
-    handlePay(){
-      this.$emit('pay')
-    },
-    //点击退款按钮
-    handleRefund(){
-      this.$emit('refund')
-    },
-    //点击确认收货按钮
-    handleConfirm(){
-      this.$emit('confirm')
-    },
-    //点击物流信息按钮
-    handleToLogistics(){
-      this.$emit('logistics')
-    },
     //处理跳转到商店详情页面
     handleToShop(shopID){
       this.$router.push({
         path: '/shop',
         query: {
           shopID: shopID
-        }
-      })
-    },
-    //处理跳转到产品详情页面
-    handleToProduct(id){
-      this.$router.push({
-        path: '/product',
-        query: {
-          id: id
         }
       })
     },

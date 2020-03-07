@@ -20,10 +20,10 @@ export default {
     }
   },
   computed:{
-    ...mapState(['userData'])
+    ...mapState(['orderActive'])
   },
   methods: {
-    ...mapMutations(['updateOrderList','updateOrderActive']),
+    ...mapMutations(['updateOrderActive']),
     handleBackClick(){
       console.log(this.$router)
       this.$router.push({
@@ -32,9 +32,8 @@ export default {
       })
     },
     correctActive(){
-      this.active = parseInt(this.$route.query.orderID) + 1
-      if(!this.active){
-        this.updateOrderActive(this.active)
+      if(this.active !== this.orderActive){
+        this.active = this.orderActive
       }
     }
   },
@@ -42,9 +41,6 @@ export default {
     active(){
       this.updateOrderActive(this.active)
     }
-  },
-  created(){
-    this.correctActive()
   },
   activated(){
     this.correctActive()

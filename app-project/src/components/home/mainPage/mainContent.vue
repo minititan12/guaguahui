@@ -58,6 +58,7 @@ export default {
       scrollTop: 0,
       mescroll: null,
       down:{
+        offset: 120,
         htmlContent:'<div class="droping"><p class="downwarp-progress"></p><p class="downwarp-tip"></p></div><div class="refreshing"><p class="loading"></p><img class="loading-img" src="/public/uploads/home/load.png" alt=""><span>加载中...</span></div>',
         inited:(mescroll, downwarp)=>{
           mescroll.droping = downwarp.querySelector('.droping');

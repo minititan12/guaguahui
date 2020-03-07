@@ -68,6 +68,7 @@ export default {
   },
   
   methods: {
+    ...mapMutations(['updateCurrentGoodsInputValue']),
     // mescroll组件初始化的回调,可获取到mescroll对象
     init(mescroll){
       this.mescroll = mescroll;
@@ -77,7 +78,11 @@ export default {
     handlePullingUp(page){
       if(this.mescroll){
         console.log('pullingup')
-        this.getGoodsList(page.num)
+        if(this.currentGoodsInputValue.length > 0){
+          this.getSearchList(page.num)
+        }else{
+          this.getGoodsList(page.num)
+        }
       }
     },
 
@@ -104,7 +109,7 @@ export default {
 
           if(data.code == 1){
             if(page == 1){
-              this.goodsList = data.data.attributes_amount;
+              this.goodsList = [...data.data.attributes_amount];
             }else{
               this.goodsList = [...this.goodsList,...data.data.attributes_amount]
             }
@@ -123,74 +128,45 @@ export default {
     },
 
     //获取搜索数据
-    getSearchList(type){
+    getSearchList(page){
       console.log('getSearchList')
       let id = this.$route.query.goodsID
       let postData = {
         id: id,
         goods_name: this.currentGoodsInputValue,
-        page: this.page,
+        page: page,
         status: this.active
       }
       searchbrandGoods(postData)
         .then((res)=>{
           console.log('searchbrandGoods:',res.data)
-          if(res.data.code == 1){
-            if(type == 'pullingUp'){        //上拉加载
-              if(res.data.data.length > 0){
-                this.goodsList = [...this.goodsList,...res.data.data]
-                this.page = this.page + 1
-                this.loadingStatus()
+          let data = res.data
+          if(page == 1){
+            setTimeout(()=>{
+              this.mescroll.endSuccess(data.data.length,data.data.length>=10)
+            },1000)
+          }else{
+            this.mescroll.endSuccess(data.data.length,data.data.length>=10)
+          }
 
-                this.$nextTick(()=>{
-                  this.goodsScroll.finishPullUp()
-                  this.goodsScroll.refresh()
-                })
-              }else{
-                this.noMoreStatus()
-                this.$nextTick(()=>{
-                  this.goodsScroll.closePullUp()
-                  this.goodsScroll.refresh()
-                })
-              }
-            }else {            //切换active或者第一次加载
-              this.goodsList = [...res.data.data]
-              this.page = this.page + 1
-
-              if(this.goodsList.length > 0){
-                if(this.goodsList.length < 8){
-                  this.noMoreStatus()
-                  this.$nextTick(()=>{
-                    this.goodsScroll.refresh()
-                    this.goodsScroll.closePullUp()
-                  })
-                }else{
-                  this.loadingStatus()
-                }
-              }else{
-                this.warnStatus()
-              }
-
-              this.goodsScroll.scrollTo(0,0)
-              //如果pullup被关闭,就打开
-              if(!this.goodsScroll.pullupWatching){
-                this.$nextTick(()=>{
-                  this.goodsScroll.openPullUp({
-                      threshold: 60
-                  })
-                })
-              }
-
+          if(data.code == 1){
+            if(page == 1){
+              this.goodsList = [...data.data]
+            }else{
+              this.goodsList = [...this.goodsList,...data.data]
             }
           }else{
             this.$toast({
-              message: res.data.message,
+              message: data.message,
               type: 'fail',
               duration: 1500
             })
           }
         })
-        .catch((err)=>{})
+        .catch((err)=>{
+          this.mescroll.endErr();
+          console.log('get searchProduct err' + err)
+        })
     },
 
     //跳转到商品详情页
@@ -202,12 +178,7 @@ export default {
     handleActiveChange(name,title){
       //把商品列表清空
       this.goodsList = []
-
-      if(this.currentGoodsInputValue.length){
-        this.getSearchList()
-      }else{
-        this.mescroll.resetUpScroll()
-      }
+      this.mescroll.resetUpScroll()
     }
   },
 
@@ -215,14 +186,11 @@ export default {
     //输入框的值
     currentGoodsInputValue(val){
       console.log('inputvalue change')
-      if(this.currentGoodsInputValue.length){
+      if(this.active == 0){
         this.goodsList = []
-        this.active = 0
-        this.getSearchList()
-      }else{
-        this.goodsList = []
-        this.active = 0
         this.mescroll.resetUpScroll()
+      }else{
+        this.active = 0
       }
     },
   },
@@ -231,10 +199,15 @@ export default {
   activated(){
     console.log('activated')
     if(localStorage.fromHomeToGoods == 'true'){
-      if(this.active != 0){
-        this.active = 0
+      if(this.currentGoodsInputValue.length){
+        this.updateCurrentGoodsInputValue('')
       }else{
-        this.mescroll.resetUpScroll()
+        if(this.active == 0){
+          this.goodsList = []
+          this.mescroll.resetUpScroll()
+        }else{
+          this.active = 0
+        }
       }
     }else{
       if(this.mescroll){
@@ -251,7 +224,7 @@ export default {
   .goods-wrapper
     width: 100%
     .goods-tab
-      position: fixed
+      position: absolute 
       top: 45px
       left: 0
       width: 100vw
@@ -259,44 +232,44 @@ export default {
     .mescroll{
       position absolute
       left 0
-      top calc(45px + 10vw)
-      height calc( 100% - 10vw - 45px) 
+      top 89px
+      height calc( 100% - 89px) 
       >>> .mescroll-upwarp{
           padding: 0;
       }
     }
   
   >>> .goodsList-wrapper
-    display: flex
-    flex-direction: row
-    justify-content: space-around
-    flex-wrap: wrap
-    padding-top: 3vw
+        display: flex
+        flex-direction: row
+        justify-content: space-between
+        flex-wrap: wrap
+        padding: 3vw 2vw 0 2vw
 
   >>> .pullUpLoading
-    width: 100%
-    display: flex
-    justify-content: center
-    align-items: center
-    color #FF5756
-    height 15vw
-    .loading
-      display inline-block
-      width 4.2vw
-      height 4.2vw
-      margin-right 2vw
-      border-radius 50%
-      border 1px solid #FF5756
-      border-bottom-color transparent
-      vertical-align middle
-      animation mescrollRotate .8s linear infinite
-    .loading-img
-      width: 6vw
-      height: 5vw
-      margin-right: 2vw
-    .no-more
-      line-height: 15vw
-      font-size: 4vw
+        width: 100%
+        display: flex
+        justify-content: center
+        align-items: center
+        color #FF5756
+        height 15vw
+        .loading
+          display inline-block
+          width 4.2vw
+          height 4.2vw
+          margin-right 2vw
+          border-radius 50%
+          border 1px solid #FF5756
+          border-bottom-color transparent
+          vertical-align middle
+          animation mescrollRotate .8s linear infinite
+        .loading-img
+          width: 6vw
+          height: 5vw
+          margin-right: 2vw
+        .no-more
+          line-height: 15vw
+          font-size: 4vw
 </style>
 
 

@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapState,mapMutations } from 'vuex'
 export default {
   name: "GoodsHeader",
   data(){
@@ -25,6 +25,7 @@ export default {
     }
   },
   computed:{
+    ...mapState(['currentGoodsInputValue']),
     title(){
       return this.$route.query.brand_name
     }
@@ -32,6 +33,7 @@ export default {
   methods: {
     ...mapMutations(['changeTab','updateCurrentGoodsInputValue']),
     handlBack(){
+      localStorage.setItem('fromHomeToGoods','false')
       this.$router.go(-1)
     },
     handleSearch(){
@@ -44,10 +46,9 @@ export default {
         this.updateCurrentGoodsInputValue('')
       }
     },
-    '$route'(to,from){
-      // console.log(to,from)
-      if(from.name == 'goods' && to.name == 'home'){
-        this.value = ''
+    currentGoodsInputValue(){
+      if(this.value != this.currentGoodsInputValue){
+        this.value = this.currentGoodsInputValue
       }
     }
   }

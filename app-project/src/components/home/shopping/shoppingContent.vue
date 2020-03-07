@@ -66,9 +66,11 @@ export default {
             let cart = this.getCart(res.data.data)
             this.editCommodity(cart)
           }
+          this.updateCartRefreshStatus(false)
           this.$toast.clear()
         })
         .catch((err)=>{
+          this.updateCartRefreshStatus(false)
           this.$toast.clear()
           console.log('post showCart err',err)
         })
@@ -78,8 +80,6 @@ export default {
     }
   },
   mounted(){
-    // this.clearSelectedID()
-    // this.updateSelectedList()
     if(this.login){
       this.initCartData()
     }

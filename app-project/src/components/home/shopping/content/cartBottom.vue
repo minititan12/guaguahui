@@ -138,12 +138,14 @@ export default {
         color: #AFAFAF
         margin-left: 3vw
         font-family: PFM
+        font-size: 3.6vw
     .all-price
       height: 100%
       display: flex
       flex-direction: row
       align-items: center
       font-family: PFB
+      font-size: 3.6vw
       .price-number
         font-family: hgzt
         color: #ff5756
@@ -158,16 +160,4 @@ export default {
         margin: 0 3vw
         border-radius: 4vw
         color: #fff
-    .bottom-warn
-      position: absolute 
-      width: 2rem
-      height: .8rem
-      font-size: .3rem
-      line-height: .8rem
-      text-align: center
-      color: #eee
-      border-radius: .2rem
-      top: -40vh
-      left: calc(50vw - 1rem)
-      background-color: rgba(0,0,0,0.3)
 </style>

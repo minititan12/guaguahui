@@ -249,7 +249,9 @@ export default {
   watch: {
     cartRefresh(){
       if(!this.cartRefresh){
-        this.mescroll.endSuccess()
+        setTimeout(()=>{
+          this.mescroll.endSuccess()
+        },300)
       }
     },
     //监听选中的商品的id号
@@ -390,6 +392,7 @@ export default {
                 letter-spacing: .8vw
                 color: #222
               .item-desc
+                font-size: 3.5vw
                 font-family: PFM
                 color: #989898
             

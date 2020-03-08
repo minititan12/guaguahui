@@ -83,8 +83,8 @@ export default {
 
 <style lang='stylus' scoped>
 .swiper-wrapper
-  width: 100vw
-  min-height: 70vw
+  width: 100%
+  height: 70vw
   position: relative
   background-color: #F6F7FB
   .showPage

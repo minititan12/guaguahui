@@ -21,7 +21,7 @@
 
       <van-cell>
         <div style="margin-bottom: .2rem">整体评分</div>
-        <van-rate allow-half v-model="item.stars" />
+        <van-rate v-model="item.stars" />
       </van-cell>
 
       <van-cell>
@@ -109,21 +109,24 @@ export default {
           return;
         }
         let orderEvaluation = [];
-        for(let i in res.data.data.goods_info){
-          orderEvaluation.push({
-            goods_id:res.data.data.goods_info[i].goods_id,
-            cover_img:res.data.data.goods_info[i].cover_img,
-            goods_name:res.data.data.goods_info[i].goods_name,
-            attr1_name:res.data.data.goods_info[i].attr1_name,
-            attr1_value:res.data.data.goods_info[i].attr1_value,
-            attr2_name:res.data.data.goods_info[i].attr2_name,
-            attr2_value:res.data.data.goods_info[i].attr2_value,
-            attr3_name:res.data.data.goods_info[i].attr3_name,
-            attr3_value:res.data.data.goods_info[i].attr3_value,
-            stars:0,
-            remark:"",
-            imageUrl:[]
-          });
+        let goods_info = res.data.data.goods_info
+        for(let i in goods_info){
+          if(goods_info[i].status == 1){
+            orderEvaluation.push({
+              goods_id:goods_info[i].goods_id,
+              cover_img:goods_info[i].cover_img,
+              goods_name:goods_info[i].goods_name,
+              attr1_name:goods_info[i].attr1_name,
+              attr1_value:goods_info[i].attr1_value,
+              attr2_name:goods_info[i].attr2_name,
+              attr2_value:goods_info[i].attr2_value,
+              attr3_name:goods_info[i].attr3_name,
+              attr3_value:goods_info[i].attr3_value,
+              stars:0,
+              remark:"",
+              imageUrl:[]
+            })
+          }
         }
         this.orderEvaluation = orderEvaluation;
       }).catch(res=>{});

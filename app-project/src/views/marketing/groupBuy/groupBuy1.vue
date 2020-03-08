@@ -10,9 +10,11 @@
     </van-nav-bar>
 
     <!-- 火热拼团内容 -->
-    <mescroll-vue :down="down" :up="up" @init="init">
+    <div class="groupBuy-content" ref="groupBuyContent">
       <div>
-        <div class="head-img" v-if="showImg">
+        <div class="blank"></div>
+
+        <div class="head-img">
           <van-image
             width="100%"
             :src="head_img"
@@ -20,14 +22,15 @@
         </div>
 
         <!-- 今日必拼 -->
-        <div class="todayGroup" v-if="showToday">
+        <div class="todayGroup">
           <div class="todayGroup-top">
             <span class="top-title">今日必拼</span>
             <span class="top-date">{{date}}</span>
           </div>
 
           <div class="todayGroup-bottom">
-            <div
+            <div 
+              v-if="todayList.length > 0" 
               v-for="item of todayList" 
               class="bottom-item"
               @click="handleToProduct(item)"
@@ -48,27 +51,35 @@
           </div>
         </div>
 
-        <GroupList v-if="showGroup" :groupList="groupList"></GroupList>
+        <GroupList :groupList="groupList"></GroupList>
 
-        <div class="warn-wrapper" v-if="showWarn">
-          <span class="warn-text">没有可拼团的活动</span>
+        <div class="group-loading" v-show="showLoading">
+          <van-loading color="#FF5756" size="24px">
+            <img class="loading-img" src="/public/uploads/home/load.png" alt="">
+            <span>加载中...</span>
+          </van-loading>
         </div>
+
+        <div class="no-more" v-show="showNoMore">
+          <img class="loading-img" src="/public/uploads/home/load.png" alt="">
+          <span>没有更多了</span>
+        </div>
+
       </div>
-    </mescroll-vue>
+    </div>
     
   </div>
 </template>
 
 <script>
-import MescrollVue from 'mescroll.js/mescroll.vue'
 import { getSpellGroupHotGoods,getSpellGroupGoods } from '../../../utils/axios/request'
+import Bscroll from 'better-scroll'
 import GroupList from '../../../components/marketing/groupBuy/groupList'
 import { mapMutations } from 'vuex'
 export default {
   name: "GroupBuy",
   components: {
-    GroupList,
-    MescrollVue
+    GroupList
   },
   data(){
     return {
@@ -76,67 +87,13 @@ export default {
       head_img: '',
       todayList: [],
       groupList: [],
-      scrollTop: 0,
-      down: {
-        use: false
-      },
-
-      up:{
-        isBounce: false,
-        htmlNodata: '<div class="pullUpLoading"><div class="no-more"><img class="loading-img" src="/public/uploads/home/load.png" alt=""><span>没有更多了</span></div></div>',
-        htmlLoading: '<div class="pullUpLoading"><p class="loading"></p><img class="loading-img" src="/public/uploads/home/load.png" alt=""><span>加载中...</span></div>',
-        auto:true,
-        callback:this.handlePullingUp,
-        onScroll:(mescroll, y, isUp)=>{
-          this.scrollTop = y;
-        }
-      }
-    }
-  },
-  computed: {
-    //显示首图
-    showImg(){
-      if(this.head_img && this.head_img.length > 0){
-        return true
-      }
-      return false
-    },
-    //显示今日必拼
-    showToday(){
-      if(this.todayList.length > 0){
-        return true
-      }
-      return false
-    },
-    //显示拼团列表
-    showGroup(){
-      if(this.groupList.length > 0){
-        return true
-      }else{
-        return false
-      }
-    },
-    //显示warn
-    showWarn(){
-      if(this.head_img && this.head_img.length > 0){
-        return false
-      }
-      if(this.todayList.length > 0){
-        return false
-      }
-      if(this.groupList.length > 0){
-        return false
-      }
-
-      return true
+      page: 1,
+      showLoading: false,
+      showNoMore: false,
     }
   },
   methods: {
     ...mapMutations(['changeTab']),
-    // mescroll组件初始化的回调,可获取到mescroll对象
-    init(mescroll){
-      this.mescroll = mescroll;
-    },
     //处理返回我的页面
     handleBack(){
       this.changeTab(5)
@@ -157,10 +114,6 @@ export default {
       let result = month + '月' + date.getDate() + '日'
       this.date = result
     },
-    //处理上拉加载
-    handlePullingUp(page){
-      this.getGroupListData(page.num)
-    },
     //获取今日必拼数据
     getTodayGroupData(){
       getSpellGroupHotGoods()
@@ -177,41 +130,64 @@ export default {
         })
     },
     //获取拼团列表数据
-    getGroupListData(page){
+    getGroupListData(){
       let postData = {
-        page: page
+        page: this.page
       }
       getSpellGroupGoods(postData)
         .then((res)=>{
           console.log('getSpellGroupGoods:',res.data)
           let data = res.data
-
-          if(page == 1){
-            setTimeout(()=>{
-              this.mescroll.endSuccess(data.data.list.length,data.data.list.length>=10)
-            },1000)
-          }else{
-            this.mescroll.endSuccess(data.data.list.length,data.data.list.length>=10)
-          }
-
           if(data.code == 1){
-            if(page == 1){
-              this.groupList = [...data.data.list]
-            }else{
+            if(data.data.list.length > 0){
               this.groupList = [...this.groupList,...data.data.list]
+              this.page = this.page + 1
+
+              this.$nextTick(()=>{
+                if(this.groupList.length > 6){
+                  if(this.groupScroll){
+                    this.groupScroll.finishPullUp()
+                    this.groupScroll.refresh()
+                  }
+                  this.showLoading = true
+                }else{
+                  this.showLoading = false
+                  this.showNoMore = true
+                }
+              })
+            }else{
+              this.showLoading = false
+              this.showNoMore = true
+              this.groupScroll.closePullUp()
             }
-          }else{
-            this.$toast({
-              message: data.message,
-              type: 'fail',
-              duration: 1500
-            })
           }
         })
         .catch((err)=>{
-          this.mescroll.endErr();
           console.log('getSpellGroupGoods err')
         })
+    },
+    //初始化拼团滚动条
+    initGroupScroll(){
+      let el = this.$refs.groupBuyContent
+      this.groupScroll = new Bscroll(el,{
+        bounce: {
+          top: false
+        },
+        pullUpLoad: {
+          threshold: 10,
+          stop: 0
+        },
+        click: true,
+        eventPassthrough: 'horizontal'
+      })
+
+      this.groupScroll.on('beforeScrollStart',()=>{
+        this.groupScroll.refresh()
+      })
+
+      this.groupScroll.on('pullingUp',()=>{
+        this.getGroupListData()
+      })
     },
     handleToProduct(item){
       this.$router.push({
@@ -227,6 +203,21 @@ export default {
   created(){
     this.getTodayDate()
     this.getTodayGroupData()
+    this.getGroupListData()
+  },
+  mounted(){
+    this.initGroupScroll()
+    // console.log(this.groupScroll)
+  },
+  activated(){
+    // if(this.groupScroll){
+    //   if(!this.groupScroll.pullupWatching){
+    //     this.groupScroll.openPullUp({
+    //       threshold: 10,
+    //       stop: 0
+    //     })
+    //   }
+    // }
   }
 }
 </script>
@@ -246,26 +237,58 @@ export default {
     font-size: 3.6vw
     color: #FF5756
   
+  .GroupBuy-wrapper >>> .blank
+    height: 4vw
+    width: 100%
+  
   .GroupBuy-wrapper
     width: 100%
     height: 100%
     background-color: #F6F7FB
+    // background-color: #999
     font-family: PHM
-
-  >>> .mescroll
-        position: absolute 
-        top: 46px
-        left: 0
-        height: calc(100% - 46px)
-      
-  //首图
-  >>> .head-img
+    .groupBuy-content
+      position: absolute 
+      top: 46px
+      left: 0
+      right: 0
+      bottom: 0
+      overflow: hidden
+      //首图
+      .head-img
         width: 94%
         min-height: 20vw
         margin: 0 auto 4vw auto  
 
-  //今日必拼
-  >>> .todayGroup
+      //加载模块
+      .group-loading
+        width: 100%
+        padding-bottom: 4vw
+        display: flex
+        justify-content: center
+        align-items: center
+        .loading-img
+          width: 6vw
+          height: 5vw
+          margin-right: 2vw
+      
+      //没有更多模块
+      .no-more
+        width: 100%
+        padding-bottom: 4vw
+        display: flex
+        flex-direction: row
+        justify-content: center
+        align-items: center
+        font-family: PFH
+        font-size: 4vw
+        .loading-img
+          width: 6vw
+          height: 5vw
+          margin-right: 2vw
+
+      //今日必拼
+      .todayGroup
         width: 94%
         padding: 3vw 2vw
         box-sizing: border-box
@@ -328,40 +351,5 @@ export default {
               .item-originPrice
                 font-size: 3vw
                 color: #999
-  
-  >>> .pullUpLoading
-        width: 100%
-        display: flex
-        justify-content: center
-        align-items: center
-        color #FF5756
-        height 15vw
-        .loading
-          display inline-block
-          width 4.2vw
-          height 4.2vw
-          margin-right 2vw
-          border-radius 50%
-          border 1px solid #FF5756
-          border-bottom-color transparent
-          vertical-align middle
-          animation mescrollRotate .8s linear infinite
-        .loading-img
-          width: 6vw
-          height: 5vw
-          margin-right: 2vw
-        .no-more
-          line-height: 15vw
-          font-size: 4vw
-  >>> .warn-wrapper
-        width: 100%
-        display: flex
-        flex-direction: column
-        align-items: center
-        padding: 10vw 0
-        font-family: PFH
-        .warn-text
-          margin-top: 5vw
-          font-size: 5vw
-          color: #bbb
+              
 </style>

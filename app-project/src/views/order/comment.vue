@@ -10,7 +10,7 @@
     </div>
 
     <OrderItem 
-      style="margin-top: .2rem" 
+      style="margin-top: 3vw"
       :data="item" 
       :showComment="true" 
       v-for="item of list"

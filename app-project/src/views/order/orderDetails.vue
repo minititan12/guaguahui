@@ -50,6 +50,7 @@
           <div class="btns">
             <div v-if="showWaitReceive(item.status)" @click.stop="confirmOrder" class="btn">确认收货</div>
             <div v-if="showWaitReceive(item.status)" @click.stop="gooLogistics" class="btn">物流信息</div>
+            <div v-if="showEvaluate(item.status)" @click.stop="evaluationOrder" class="btn">评价</div>
             <div v-if="item.status == 2 || item.status == 3" @click.stop="refundOrder(item.goods_attr_id)" class="btn">申请退款</div>
           </div>
         </div>
@@ -197,7 +198,15 @@ export default {
           return true
         }
       }
-
+      return false
+    },
+    //是否显示评价按钮
+    showEvaluate(status){
+      if(this.order.order_status == 0){
+        if(status == 1){
+          return true
+        }
+      }
       return false
     },
     //当一个订单存在不同状态商品时判断商品状态

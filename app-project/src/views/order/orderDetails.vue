@@ -6,7 +6,7 @@
     </div>
 
     <!-- 物流信息 -->
-    <div @click="gooLogistics" v-if="logisticsInfo" class="logisticsInfo">
+    <div @click="gooLogistics" v-if="showLogistics" class="logisticsInfo">
       <van-image width="6vw" height="6vw" fit="contain" src="/public/static/order/icon_car@2x.png" />
       <div class="content">
         <div class="detials">{{logisticsInfo.context}}</div>
@@ -48,6 +48,8 @@
           </div>
 
           <div class="btns">
+            <div v-if="showWaitReceive(item.status)" @click.stop="confirmOrder" class="btn">确认收货</div>
+            <div v-if="showWaitReceive(item.status)" @click.stop="gooLogistics" class="btn">物流信息</div>
             <div v-if="item.status == 2 || item.status == 3" @click.stop="refundOrder(item.goods_attr_id)" class="btn">申请退款</div>
           </div>
         </div>
@@ -174,16 +176,29 @@ export default {
         return 'wait-ship'
       }
     },
-  },
-  created(){
-    this.order_number = this.$route.query.order_number;
-    this.getOrderDetail();
-    this.getLogistics();
+    showLogistics(){
+      if(this.logisticsInfo){
+        if(this.order.order_status == 1){
+          return true
+        }
+      }
+      return false
+    }
   },
   methods:{
     ...mapMutations(['updatePayOrderData']),
     handleBack(){
       this.$router.go(-1)
+    },
+    //是否显示待收货的商品按钮
+    showWaitReceive(status){
+      if(this.order.order_status == 0){
+        if(status == 3){
+          return true
+        }
+      }
+
+      return false
     },
     //当一个订单存在不同状态商品时判断商品状态
     getGoodsStatus(status){
@@ -221,27 +236,21 @@ export default {
         //待付款按钮
         if(type == 'waitPay' && status == 0){
           return true
-        }else{
-          return false
         }
         //订单已取消按钮
         if(type == 'delete' && status == 8){
           return true
-        }else{
-          return false
         }
         //待收货按钮
         if(type == 'confirm' && status == 3){
           return true
-        }else{
-          return false
         }
         //待评价按钮
         if(type == 'evaluate' && status == 1){
           return true
-        }else{
-          return false
         }
+
+        return false
       }else{
         return false
       }
@@ -305,7 +314,7 @@ export default {
       logisticsDetails({
         order_number:this.order_number
       }).then(res=>{
-        console.log(res.data)
+        console.log('logisticsDetails:',res.data)
         if(res.data.data.data&&res.data.data.data[0]){
           this.logisticsInfo = res.data.data.data[0];
         }
@@ -429,7 +438,12 @@ export default {
         }).catch(res=>{});
       }).catch(res=>{});       
     } 
-  }
+  },
+  created(){
+    this.order_number = this.$route.query.order_number
+    this.getOrderDetail()
+    this.getLogistics()
+  },
 }
 </script>
 <style lang="stylus" scoped>
@@ -542,8 +556,9 @@ export default {
             font-family PFH
             line-height 4.6vw
             height 6vw
+            min-width: 12vw
             color #FF5655
-            padding-left 4vw
+            padding-left 2vw
         .desc
           flex 1
           min-height 6vw
@@ -557,7 +572,7 @@ export default {
           align-items center
           font-family hgzt
         .btns
-          margin-top: 2vw
+          margin-top: 3vw
           display: flex
           flex-direction: row
           justify-content: flex-end
@@ -569,6 +584,7 @@ export default {
             color #fff
             background-color #FF5655
             padding 0 4vw
+            margin-left: 2vw
             border-radius 3vw
     .part
       display flex

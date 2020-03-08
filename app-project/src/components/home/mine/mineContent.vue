@@ -11,7 +11,8 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState,mapMutations } from 'vuex'
+import { count } from '../../../utils/axios/request'
 import MineHeader from './content/mineHeader'
 import MineOrder from './content/mineOrder'
 import MineMarkeTing from './content/mineMarkeTing'
@@ -31,6 +32,33 @@ export default {
       scrollY: 0
     }
   },
+  computed: {
+    ...mapState(['userData'])
+  },
+  methods: {
+    ...mapMutations(['updateAllCount']),
+    initCount(){
+      let postData = {
+        user_id: this.userData.id
+      }
+      count(postData)
+        .then((res)=>{
+          console.log('count',res.data)
+          if(res.data.code == 1){
+            this.updateAllCount(res.data.data)
+          }else{
+            this.$toast({
+              message: data.message,
+              type: 'fail',
+              duration: 1500
+            })
+          }
+        })
+        .catch((err)=>{
+          console.log('count err',err)
+        })
+    }
+  },
   watch:{
     '$route'(to,from){
       console.log(to,from)
@@ -40,7 +68,11 @@ export default {
       }
     }
   },
+  mounted(){
+    this.initCount()
+  },
   activated(){
+    this.initCount()
     if(this.scrollY != 0){
       let d = document.getElementById('mineWrapper')
       d.scrollTo(0,this.scrollY)

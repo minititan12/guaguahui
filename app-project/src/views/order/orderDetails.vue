@@ -48,9 +48,9 @@
           </div>
 
           <div class="btns">
-            <div v-if="showWaitReceive(item.status)" @click.stop="confirmOrder" class="btn">确认收货</div>
-            <div v-if="showWaitReceive(item.status)" @click.stop="gooLogistics" class="btn">物流信息</div>
-            <div v-if="showEvaluate(item.status)" @click.stop="evaluationOrder" class="btn">评价</div>
+            <div v-if="showWaitReceive(item.status)" @click.stop="confirmOrder" class="btn green">确认收货</div>
+            <div v-if="showWaitReceive(item.status)" @click.stop="gooLogistics" class="btn green">物流信息</div>
+            <div v-if="showEvaluate(item.status)" @click.stop="evaluationOrder" class="btn green">评价</div>
             <div v-if="item.status == 2 || item.status == 3" @click.stop="refundOrder(item.goods_attr_id)" class="btn">申请退款</div>
           </div>
         </div>
@@ -595,6 +595,8 @@ export default {
             padding 0 4vw
             margin-left: 2vw
             border-radius 3vw
+          .green
+            background-color 	#07B903
     .part
       display flex
       justify-content space-between

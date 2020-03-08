@@ -40,6 +40,9 @@ export default {
   selectedAll: false,          //购物车页面中是否选择了全部的商品
   selectedListTotalPrice: 0,   //购物车页面中选择的商品总价格
 
+  //我的页面
+  allCount: null,
+
   //支付数据
   payOrderData: null,          //支付页面数据
   confirmData: null,           //确认页面商品数据

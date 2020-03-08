@@ -162,6 +162,12 @@ export default {
     state.cart = result
   },
 
+  // mine我的页面
+  updateAllCount(state,data){
+    let result = JSON.parse(JSON.stringify(data))
+    state.allCount = result
+  },
+
   //confirm
   //更新确认订单的数据
   updatedConfirmData(state,data){

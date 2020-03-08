@@ -70,19 +70,39 @@
 </template>
 
 <script>
-import { count } from '../../../../utils/axios/request'
 import { mapState,mapMutations } from 'vuex'
 export default {
   name: "MineOrder",
   data(){
     return {
-      payment: 0,
-      shipments: 0,
-      receiving: 0
     }
   },
   computed: {
-    ...mapState(['userData'])
+    ...mapState(['allCount']),
+
+    payment(){
+      if(this.allCount && this.allCount.hasOwnProperty('payment')){
+        return this.allCount.payment
+      }else{
+        return 0
+      }
+    },
+
+    shipments(){
+      if(this.allCount && this.allCount.hasOwnProperty('shipments')){
+        return this.allCount.shipments
+      }else{
+        return 0
+      }
+    },
+
+    receiving(){
+      if(this.allCount && this.allCount.hasOwnProperty('receiving')){
+        return this.allCount.receiving
+      }else{
+        return 0
+      }
+    }
   },
   methods: {
     ...mapMutations(['updateOrderActive']),
@@ -105,30 +125,9 @@ export default {
     //     path: '/waitShare'
     //   })
     // },
-    initCount(){
-      let postData = {
-        user_id: this.userData.id
-      }
-      count(postData)
-        .then((res)=>{
-          console.log('count',res.data)
-          if(res.data.code == 1){
-            this.payment = res.data.data.payment
-            this.shipments = res.data.data.shipments
-            this.receiving = res.data.data.receiving
-          }
-        })
-        .catch((err)=>{
-          console.log('count err',err)
-        })
-    }
-  },
-  mounted(){
-    this.initCount()
   },
   activated(){
     localStorage.setItem('fromHomeToOrder','false')
-    this.initCount()
   }
 }
 </script>

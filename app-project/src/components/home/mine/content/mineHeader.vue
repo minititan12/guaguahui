@@ -29,17 +29,17 @@
     <div class="bottom">
       <div class="bottom-item" @click="handleToCollect">
         <span>收藏</span>
-        <span class="num">{{collectNum}}</span>
+        <span class="num">{{collectCount}}</span>
       </div>
 
       <div class="bottom-item" @click="handleToHistory">
         <span>足迹</span>
-        <span class="num">0</span>
+        <span class="num">{{footCount}}</span>
       </div>
 
       <div class="bottom-item" @click="handleToCoupon">
         <span>优惠劵</span>
-        <span class="num">{{couponNum}}</span>
+        <span class="num">{{coupouCount}}</span>
       </div>
     </div>
 
@@ -53,12 +53,34 @@ export default {
   name: "MineHeader",
   data(){
     return {
-      couponNum: 0,
-      collectNum: 0
     }
   },
   computed: {
-    ...mapState(['userData'])
+    ...mapState(['userData','allCount']),
+
+    collectCount(){
+      if(this.allCount && this.allCount.hasOwnProperty('collectcount')){
+        return this.allCount.collectcount
+      }else{
+        return 0
+      }
+    },
+
+    footCount(){
+      if(this.allCount && this.allCount.hasOwnProperty('footcount')){
+        return this.allCount.footcount
+      }else{
+        return 0
+      }
+    },
+
+    coupouCount(){
+      if(this.allCount && this.allCount.hasOwnProperty('coupoucount')){
+        return this.allCount.coupoucount
+      }else{
+        return 0
+      }
+    },
   },
   methods:{
     ...mapMutations(['changeTab']),
@@ -97,49 +119,7 @@ export default {
         }
       })
     },
-    //获取可用优惠券总数
-    getAllCouponNum(){
-      let postData = {
-        user_id: this.userData.id,
-        status: 0
-      }
-
-      getUserCouponsTotal(postData)
-        .then((res)=>{
-          console.log('getUserCouponsTotal',res.data)
-          if(res.data.code == 1){
-            this.couponNum = res.data.data.total
-          }
-        })
-        .catch((err)=>{
-          console.log('getUserCouponsTotal err',err)
-        })
-    },
-    //获取收藏总数
-    getAllCollect(){
-      let postData = {
-        user_id: this.userData.id
-      }
-      getUserCollects(postData)
-        .then((res)=>{
-          console.log('getUserCollects',res.data)
-          if(res.data.code == 1){
-            this.collectNum = res.data.data.total
-          }
-        })
-        .catch((err)=>{
-          console.log('getUserCollects err',err)
-        })
-    }
   },
-  created(){
-    this.getAllCouponNum()
-    this.getAllCollect()
-  },
-  activated(){
-    this.getAllCouponNum()
-    this.getAllCollect()
-  }
 }
 </script>
 

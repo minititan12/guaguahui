@@ -61,8 +61,14 @@ export default {
         font-size:4.2vw;
         height: 10vw;
         line-height:5vw;
-        padding-bottom: 1vw;
         color:#333;
+        text-overflow: ellipsis
+        display: -webkit-box
+        -webkit-line-clamp: 2
+        /*! autoprefixer: off */
+        -webkit-box-orient: vertical
+        overflow: hidden
+        margin-bottom: 1vw
       .participate
         display:flex;
         padding:1vw 0;

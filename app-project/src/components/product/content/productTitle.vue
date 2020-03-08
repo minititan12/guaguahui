@@ -191,18 +191,18 @@ export default {
       margin: 0 auto
       border-radius: 3vw
       .title
-        margin: 0 4vw
-        padding-bottom: 2vw
+        min-height: 6vw
+        max-height: 12vw
+        margin: 0 4vw 2vw 4vw
         font-family: PFH
         font-size: 4.5vw
+        line-height: 6vw
         letter-spacing: .2vw
-        overflow: hidden
         text-overflow: ellipsis
         display: -webkit-box
         -webkit-line-clamp: 2
         -webkit-box-orient: vertical
-        line-height: 6vw
-        min-height: 8vw
+        overflow: hidden
       .price
         color: #FF4D51
         margin: 0 4vw 2vw 4vw

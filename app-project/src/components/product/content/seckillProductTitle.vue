@@ -218,20 +218,18 @@ export default {
       border-radius: 3vw
 
       .title
-        width: 100%
-        height: 12vw
-        padding: 0 3vw
-        margin-bottom: 2vw
-        box-sizing: border-box
+        min-height: 6vw
+        max-height: 12vw
+        margin: 0 3vw 2vw 3vw
         font-family: PFH
         font-size: 4.5vw
+        line-height: 6vw
         letter-spacing: .2vw
-        overflow: hidden
         text-overflow: ellipsis
         display: -webkit-box
         -webkit-line-clamp: 2
         -webkit-box-orient: vertical
-        line-height: 6vw
+        overflow: hidden
       
       .warn
         padding: 0 4vw

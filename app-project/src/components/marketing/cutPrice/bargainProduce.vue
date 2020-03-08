@@ -143,7 +143,7 @@ export default {
       return false;
     },
     goBargainProduct(){
-      this.$router.push(`/bargainProduct?goods_id=${this.currentProductData.id}`);
+      // this.$router.push(`/bargainProduct?goods_id=${this.currentProductData.id}`);
     },
     // 查看更多砍价活动
     examine(){

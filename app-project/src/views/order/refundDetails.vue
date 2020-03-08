@@ -21,6 +21,7 @@
         <div v-if="refundDetail.complete_at" class="complete-time">{{refundDetail.complete_at}}</div>
       </div>
     </div>
+
     <div class="main">
       <div class="goods">
         <van-image
@@ -53,6 +54,22 @@
         <div class="result">{{refundDetail.create_at}}</div>
       </div>
     </div>
+
+    <div v-if="refundDetail.refund_status == 1" class="address">
+      <div class="part">
+        <div class="label">商户姓名</div>
+        <div class="result">{{refundDetail.real_name}}</div>
+      </div>
+      <div class="part">
+        <div class="label">商户手机号码</div>
+        <div class="result">{{refundDetail.phone}}</div>
+      </div>
+      <div class="part">
+        <div class="label">商户地址</div>
+        <div class="result">{{refundDetail.address}}</div>
+      </div>
+    </div>
+
     <div v-if="refundDetail.refund_status == 1" class="footer">
       <div @click="goLogistics" class="logistics">填写物流</div>
     </div>
@@ -192,6 +209,26 @@ export default {
       font-size 3.6vw
       .label
         color #767676
+
+  .address
+    width 95vw
+    background-color white
+    border-radius 3vw
+    margin 3vw auto 0 auto
+    padding 3vw 2vw
+    box-sizing border-box
+    .part
+      background-color white
+      display flex
+      justify-content space-between
+      align-items center
+      padding 2vw
+      font-size 3.6vw
+      .label
+        color #767676
+      .result
+        max-width 50vw
+
   .footer
     position fixed
     left 0

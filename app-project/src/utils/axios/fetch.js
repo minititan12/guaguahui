@@ -4,7 +4,7 @@ import store from '@/store'
 import {Toast} from 'vant'
 import router from '@/router'
 
-axios.defaults.timeout = 5000;
+axios.defaults.timeout = 10000;
 axios.defaults.baseURL ='';
 //http request 拦截器
 axios.interceptors.request.use(
@@ -12,7 +12,9 @@ axios.interceptors.request.use(
     return config;
   },
   error => {
-    Toast("服务器开小差");
+    // let err = JSON.stringify(error)
+    // alert(err);
+    Toast('服务器开小差')
     return Promise.reject(error);
   }
 );
@@ -24,7 +26,9 @@ axios.interceptors.response.use(
     return response;
   },
   error => {
-    Toast("服务器开小差");
+    // let err = JSON.stringify(error)
+    // alert(err);
+    Toast('服务器开小差')
     return Promise.reject(error)
   }
 )

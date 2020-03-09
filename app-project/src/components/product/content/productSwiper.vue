@@ -6,7 +6,7 @@
         <!-- <img class="swiper-img" :src="item" /> -->
         <van-image
           width="100vw"
-          height="70vw"
+          height="100vw"
           style="background-color: #F6F7FB"
           fit="contain"
           :src="item"
@@ -84,7 +84,7 @@ export default {
 <style lang='stylus' scoped>
 .swiper-wrapper
   width: 100%
-  height: 70vw
+  height: 100vw
   position: relative
   background-color: #F6F7FB
   .showPage

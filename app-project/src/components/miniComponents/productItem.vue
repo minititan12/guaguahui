@@ -106,8 +106,9 @@ export default {
           text-decoration: line-through
         .limit-buy
           display: inline-block
-          padding: 2vw
+          padding: 2vw 2.5vw
           font-family: PFM
+          border-radius: 4vw
           background-color: #FF5756
           // border-radius: 3vw
           color: #fff

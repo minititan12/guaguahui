@@ -17,7 +17,7 @@
 
 <script>
 import MescrollVue from 'mescroll.js/mescroll.vue'
-import { lunbo,getClass,hotlist,getClassbrand,checkSeckill,getGoods,brandadsense,goodsadsense } from '../../../utils/axios/request'
+import { lunbo,getClass,hotlist,getClassbrand,checkSeckill,getGoods,brandadsense,goodsadsense,getReconmendGoods } from '../../../utils/axios/request'
 import { mapState,mapMutations } from 'vuex'
 export default {
   name: 'MainContent',
@@ -47,7 +47,6 @@ export default {
       todayHotList: [],
       brandADList: [],
       productADList: [],
-      productPage: 1,
       y: null,
       showLoading: true,
 
@@ -102,7 +101,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['mainPageRefresh','currentTab','toTop'])
+    ...mapState(['mainPageRefresh','currentTab','toTop','mainProductActive'])
   },
   methods: {
     ...mapMutations(['updateRefreshStatus','changeSearchText','updatedToTop']),
@@ -126,7 +125,11 @@ export default {
     handlePullingUp(page){
       if(this.mescroll){
         console.log('pullingup')
-        this.getProductsList(page.num)
+        if(this.mainProductActive == 0){
+          this.getProductsList(page.num)
+        }else{
+          this.getReconmendGoods(page.num)
+        }
       }
     },
     //获取首页轮播图数据
@@ -213,7 +216,7 @@ export default {
           let data = res.data
           if(page == 1){
             setTimeout(()=>{
-              this.mescroll.endSuccess(data.data.length,data.data.length>=10);	
+              this.mescroll.endSuccess(data.data.length,data.data.length>=10);
             },1000);
           }else{
             this.mescroll.endSuccess(data.data.length,data.data.length>=10);	
@@ -224,12 +227,40 @@ export default {
             }else{
               this.productsList = [...this.productsList,...data.data]
             }
-            this.productPage = this.productPage + 1
           }
         })
         .catch((err)=>{
           this.mescroll.endErr();
           console.log('get product err' + err)
+        })
+    },
+    //获取首页推荐产品列表
+    getReconmendGoods(page){
+      let postData = {
+        page: page
+      }
+      getReconmendGoods(postData)
+        .then((res)=>{
+          console.log('getReconmendGoods:',res.data)
+          let data = res.data
+          if(page == 1){
+            setTimeout(()=>{
+              this.mescroll.endSuccess(data.data.length,data.data.length>=10);
+            },1000);
+          }else{
+            this.mescroll.endSuccess(data.data.length,data.data.length>=10);	
+          }
+          if(data.code == 1){
+            if(page == 1){
+              this.productsList = data.data;
+            }else{
+              this.productsList = [...this.productsList,...data.data]
+            }
+          }
+        })
+        .catch((err)=>{
+          this.mescroll.endErr();
+          console.log('getReconmendGoods err' + err)
         })
     },
     //获取首页品牌广告的数据
@@ -292,6 +323,9 @@ export default {
           }
         }
       }
+    },
+    mainProductActive(){
+      this.mescroll.resetUpScroll()
     },
     toTop(){
       if(this.toTop){

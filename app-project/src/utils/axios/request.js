@@ -497,6 +497,11 @@ export const getGoods = (param = {}) => {
   return httpPost(api.getGoods,param);
 }
 
+//获取首页推荐商品列表
+export const getReconmendGoods = (param = {}) => {
+  return httpGet(api.getReconmendGoods,param);
+}
+
 //获取用户的聊天信息
 export const getuserchat = (param = {}) => {
   return httpPost(api.getuserchat,param);

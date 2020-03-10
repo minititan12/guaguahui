@@ -277,6 +277,8 @@ export default {
   checkSeckill: baseUrl + '/api/method/checkSeckill',
   //首页获取产品
   getGoods: baseUrl + '/api/method/getGoods',
+  //首页推荐产品
+  getReconmendGoods: baseUrl + '/api/method/getReconmendGoods',
   //首页获取品牌广告信息
   brandadsense: baseUrl + '/api/method/brandadsense',
   //首页获取商品广告信息

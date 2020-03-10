@@ -9,6 +9,7 @@ export default {
   toTop: false,   //返回到首页置顶
   mainPageRefresh: false,     //首页下拉刷新
   messageNum: 0,               //首页的消息数量
+  mainProductActive: 0,         //首页产品的active
 
   //首页搜索
   searchText: "",              //首页搜索当前内容   

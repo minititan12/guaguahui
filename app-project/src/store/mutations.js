@@ -43,6 +43,10 @@ export default {
   changeSearchText(state,text){
     state.searchText = text
   },
+  //修改首页产品的active
+  changeMainProductActive(state,active){
+    state.mainProductActive = active
+  },
 
   //product
   //改变当前product数据

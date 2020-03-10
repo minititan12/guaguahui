@@ -105,14 +105,13 @@ export default {
     //是否显示收藏按钮
     showCollectIcon(){
       if(this.is_app()){
-        if(this.currentProductData.flag == 1){
-          return true
-        }else{
-          return false
+        if(this.login){
+          if(this.currentProductData.flag == 1){
+            return true
+          }
         }
-      }else{
-        return false
       }
+      return false
     },
 
     //跳转到主页
@@ -260,7 +259,7 @@ export default {
   },
 
   created(){
-    this.checkCollect()//检查是否收藏该产品
+    this.getProductData()//获取产品信息
     this.updateServePopUp(false)//关闭服务上拉框
     this.updateSharePopUp(false)//关闭分享上拉框
     this.closePopup()           //关闭商品上拉框
@@ -270,13 +269,12 @@ export default {
     this.updatedGroupBuyID(-1)//更新拼团的队伍id为-1
     this.updateGroupBuyData(null)//更新拼团购买信息为空
     this.updatedSeckillData(null)//更新秒杀产品信息为空
-    this.getProductData()//获取产品信息
   },
 
   mounted(){
-    // this.handleCheckOpenid()
-    // let string = JSON.stringify(this.$route.query)
-    // alert(string)
+    if(this.login){
+      this.checkCollect()//检查是否收藏该产品
+    }
   }
 }
 </script>

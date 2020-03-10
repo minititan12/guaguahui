@@ -12,9 +12,10 @@ axios.interceptors.request.use(
     return config;
   },
   error => {
-    // let err = JSON.stringify(error)
+    let err = JSON.stringify(error)
     // alert(err);
-    Toast('服务器开小差')
+    // Toast('服务器开小差')
+    console.log(err)
     return Promise.reject(error);
   }
 );
@@ -26,9 +27,10 @@ axios.interceptors.response.use(
     return response;
   },
   error => {
-    // let err = JSON.stringify(error)
+    let err = JSON.stringify(error)
     // alert(err);
-    Toast('服务器开小差')
+    // Toast('服务器开小差')
+    console.log(err)
     return Promise.reject(error)
   }
 )

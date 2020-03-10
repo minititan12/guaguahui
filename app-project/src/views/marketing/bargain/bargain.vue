@@ -125,6 +125,7 @@ export default {
         user_id:this.userData.id,
         bargin_item_id:this.bargin_item_id
       }
+      console.log('barginGoodsDetail:',postData)
       barginGoodsDetail(postData)
         .then(res=>{
           if(res.data.code != 1){

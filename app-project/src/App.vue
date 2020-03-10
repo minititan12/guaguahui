@@ -79,10 +79,13 @@ import sha1 from 'sha1'
               return;
             }
             let path = pageUrl.slice(indexOf+str.length);
-            path = path.replace('&','|');
+            path = path.replace('&','');
+            let base64 = btoa(path)
             let postData = {
-              url: path
+              url: base64
             }
+            console.log('getWxcode:',postData)
+
             getWxcode(postData)
               .then((res)=>{
                 console.log('getOpenid',res.data)
@@ -90,12 +93,13 @@ import sha1 from 'sha1'
               .catch((err)=>{
                 console.log('getOpenid err',err)
               })
+
             this.$dialog.alert({
               title: '授权',
               message: '是否授权呱呱汇访问微信用户信息',
               showCancelButton: true   
             }).then(()=>{
-              window.location.href= '/index/index/index2?url='+ path;
+              window.location.href= '/index/index/index2?url='+ base64;
             }).catch(()=>{
               WeixinJSBridge.call('closeWindow');
             })

@@ -1,14 +1,10 @@
 <template>
   <div class="wrapper">
     <div class="title">
-      <div>
-        <span>全部</span>
-        <span>猜你喜欢</span>
-      </div>
-      <div>
-        <span>推荐</span>
-        <span>好物推荐</span>
-      </div>
+      <!-- <span>为你推荐</span> -->
+      <van-divider :style="{ fontSize: '.4rem' , color: 'black', borderColor: 'black', padding: '0 16px' }">
+        为你推荐
+      </van-divider>
     </div>
     <div class="product-wrapper">
       <ProductItem v-if="productsList.length > 0" v-for="item of productsList" :data="item"  :key="item.id" @productItemClick="productItemClick(item.id)"/>

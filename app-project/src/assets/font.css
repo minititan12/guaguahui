@@ -3,7 +3,8 @@
   font-family: 'hgzt';
   src: url('./coregtd6-2.otf'); 
   font-weight: normal;  
-  font-style: normal;  
+  font-style: normal;
+  font-display: swap; 
 }
 
 @font-face {  
@@ -11,7 +12,8 @@
   font-family: 'PFM';
   src: url('./PingFang Medium.woff') format('woff'); 
   font-weight: normal;  
-  font-style: normal;  
+  font-style: normal; 
+  font-display: swap; 
 }
 
 @font-face {  
@@ -19,7 +21,8 @@
   font-family: 'PFB';
   src: url('./PingFang Bold.woff') format('woff'); 
   font-weight: normal;  
-  font-style: normal;  
+  font-style: normal; 
+  font-display: swap; 
 }
 
 @font-face {  
@@ -28,4 +31,5 @@
   src: url('./PingFang Heavy.woff') format('woff'); 
   font-weight: normal;  
   font-style: normal;  
+  font-display: swap;
 }

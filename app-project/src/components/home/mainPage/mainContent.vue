@@ -3,6 +3,7 @@
     <mescroll-vue :down="down" :up="up" @init="init">
       <MainSwiper :swiperList="swiperList"></MainSwiper>
       <MainIcons :iconsList="iconsList"></MainIcons>
+      <MarketingIcon />
       <TodayHot :todayHotList="todayHotList"></TodayHot>
       <LimitMore :seckillData="seckillData"></LimitMore>
       <LimitShopping :seckillData="seckillData"></LimitShopping>
@@ -31,6 +32,7 @@ export default {
     'ProductAD': () => import('./productAD'),
     'MainActivity': () => import('./mainActivity'),
     'MainProducts': () => import('./products'),
+    'MarketingIcon': () => import('./marketingIcon.vue'),
     MescrollVue,
   },
 

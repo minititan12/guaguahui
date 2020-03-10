@@ -139,10 +139,11 @@ export default {
     },
     //处理返回我的页面
     handleBack(){
-      this.changeTab(5)
-      this.$router.push({
-        path: '/'
-      })
+      // this.changeTab(5)
+      // this.$router.push({
+      //   path: '/'
+      // })
+      this.$router.go(-1)
     },
     //处理右侧点击
     onClickRight(){

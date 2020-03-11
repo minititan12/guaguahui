@@ -174,7 +174,8 @@ export default {
         display: flex
         flex-direction: row
         align-items: center
-        font-family: PFH
+        font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+        font-weight: bold
         padding: 2vw 0
         font-size: 4vw
         .header-img
@@ -185,7 +186,7 @@ export default {
           // font-weight: bold
       .item-middle
         font-size: 3.5vw
-        font-family: PFM
+        font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
         color: #999
         vertical-align: middle
         line-height: 6vw
@@ -193,7 +194,8 @@ export default {
           
       .item-bottom
         display: flex
-        font-family: PFB
+        font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+        font-weight: bold
         flex-direction: row
         justify-content: space-between
         align-items: center
@@ -241,7 +243,8 @@ export default {
       text-align: center
       line-height: 12vw
       font-size: 4vw
-      font-family: PFH
+      font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+      font-weight: bold
       color: #fff
       margin: 5vw auto
     .warn

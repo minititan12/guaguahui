@@ -310,7 +310,8 @@ export default {
   .paySuccess-wrapper >>> .van-nav-bar__title
     color: #000
     font-size: 4vw
-    font-family: PFH
+    font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+    font-weight: bold
 
   .paySuccess-wrapper
     width: 100%
@@ -321,7 +322,8 @@ export default {
       .human-num
         width: 100%
         text-align: center
-        font-family: PFH
+        font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+        font-weight: bold
         font-size: 7vw
         margin-top: 10vw
         margin-bottom: 5vw
@@ -332,7 +334,8 @@ export default {
         flex-direction: row
         align-items: center
         font-size: 4vw
-        font-family: PFB
+        font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+        font-weight: bold
         justify-content: center
         margin-bottom: 15vw
         .text
@@ -365,7 +368,7 @@ export default {
           .icon-text
             margin-top: 3vw
             font-size: 3.5vw
-            font-family: PFM
+            font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
       
       .images
         width: 100%
@@ -382,7 +385,8 @@ export default {
             background-color: yellow 
             color: #000
             font-size: 3vw
-            font-family: PFB
+            font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+            font-weight: bold
             padding: 1vw
             border-radius: 2vw
       
@@ -394,7 +398,7 @@ export default {
         text-align: center
         font-size: 4vw
         line-height: 10vw
-        font-family: PFM
+        font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
         color: #fff
         border-radius: 5vw
 
@@ -414,7 +418,8 @@ export default {
       text-align: center
       .done-text
         margin-top: 15vw
-        font-family: PFH
+        font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+        font-weight: bold
         font-size: 7vw
         color: #fff
       .done-btn
@@ -424,6 +429,7 @@ export default {
         height: 10vw
         line-height: 10vw
         font-size: 4vw
-        font-family: PFB
+        font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+        font-weight: bold
         border-radius: 5vw
 </style>

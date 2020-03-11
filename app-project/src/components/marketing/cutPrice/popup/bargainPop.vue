@@ -85,7 +85,8 @@ export default {
         left calc(50% - 20vw)
         top -16vw
       .already
-        font-family PFH
+        font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+        font-weight bold
         font-size 5vw
         line-height 8vw
         padding 3vw 0 2vw

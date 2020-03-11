@@ -143,7 +143,8 @@ export default {
           .left-text
             max-width: 25vw
             font-size: 3.5vw
-            font-family: PFH
+            font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+            font-weight: bold
             margin-left: 2vw
             overflow: hidden
             text-overflow: ellipsis
@@ -151,7 +152,7 @@ export default {
           display: flex
           flex-direction: row
           align-items: center
-          font-family: PFM
+          font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
           font-size: 3.5vw
           .right-icon
             min-width: 12vw

@@ -53,7 +53,8 @@ export default {
       border-radius 2vw
       .title
         font-size 4.2vw
-        font-family PFH
+        font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+        font-weight bold
         line-height 10vw
         border-bottom 1px solid #eee
       .desc
@@ -61,5 +62,5 @@ export default {
         font-size 3.4vw
         color #999
         line-height 4.2vw
-        font-family PFM
+        font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
 </style>

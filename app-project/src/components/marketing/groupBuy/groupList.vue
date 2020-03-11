@@ -69,7 +69,8 @@ export default {
       .item-right
         width: 63%
         color: #000
-        font-family: PFB
+        font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+        font-weight: bold
         letter-spacing: .1vw
         .right-top
           font-size: 4vw
@@ -102,7 +103,7 @@ export default {
             background-color: #FF3C36
             color: #fff
             font-size: 4vw
-            font-family: PFM
+            font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
             padding: 1vw 3vw
             line-height: 6vw
             border-radius: 4vw

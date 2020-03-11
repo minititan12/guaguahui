@@ -140,7 +140,8 @@ export default {
   .withdraw-wrapper >>> .van-nav-bar__title
     color: #000
     font-size: 4vw
-    font-family: PFH
+    font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+    font-weight: bold
 
   .withdraw-wrapper
     background #f5f7fa
@@ -165,7 +166,7 @@ export default {
         border-radius 5vw
         font-size 3.8vw
         text-align center
-        font-family: PFM
+        font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
         color white
         margin 2vw auto  
       .bank-card   
@@ -224,7 +225,7 @@ export default {
       border-radius 5vw
       font-size 3.8vw
       text-align center
-      font-family: PFM
+      font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
       color white
       margin 6vw auto
 </style>

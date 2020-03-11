@@ -169,11 +169,13 @@ export default {
   .add-bankCard-wrapper >>> .van-nav-bar__title
     color: #000
     font-size: 4vw
-    font-family: PFH
+    font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+    font-weight: bold
 
   .add-bankCard-wrapper
     >>>.van-field__label
-      font-family PFH
+      font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+      font-weight bold
     .tip
       padding 14px 16px
       color #868686
@@ -191,7 +193,7 @@ export default {
       border-radius 6vw
       font-size 3.8vw
       text-align center
-      font-family: PFM
+      font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
       color white
       margin 8vw auto
 </style>

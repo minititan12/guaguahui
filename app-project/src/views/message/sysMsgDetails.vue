@@ -65,12 +65,13 @@ export default {
     padding 0 3vw
     .title
       font-size 5vw
-      font-family PFH
+      font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+      font-weight bold
       text-align center
       line-height 12vw
     .time
       text-align center
-      font-family PFM
+      font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
       font-size 3.6vw
       color #999
       line-height 10vw

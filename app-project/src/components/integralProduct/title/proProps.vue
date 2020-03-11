@@ -64,7 +64,8 @@ export default {
     width: 94%
     margin: 2vw auto
     border-radius: 3vw
-    font-family: PFH
+    font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+    font-weight: bold
     font-size: 4vw
     overflow: hidden
   .productProps-wrapper >>>  .van-cell

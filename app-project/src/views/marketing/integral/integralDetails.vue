@@ -112,7 +112,8 @@ export default {
       .van-nav-bar__title
         color #000
         font-size 4vw
-        font-family PFH
+        font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+        font-weight bold
     .title
       display flex
       justify-content space-between
@@ -121,7 +122,8 @@ export default {
       height 10vw
       line-height 10vw
       font-size 3vw
-      font-family PFH
+      font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+      font-weight bold
       .income
         color #ff5756
     .list
@@ -137,12 +139,14 @@ export default {
         border-bottom 1px solid #eee
         font-size 4vw
         .type
-          font-family PFH
+          font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+          font-weight bold
           line-height 6vw
         .time
           color #7c7c7c
           font-size 3vw
         .data
           color #ff5756
-          font-family PFH
+          font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+          font-weight bold
 </style>

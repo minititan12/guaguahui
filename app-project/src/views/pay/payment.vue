@@ -527,7 +527,8 @@ export default {
     height: 100vh
     .payment-header
       background-color: #07c160
-      font-family: PFB
+      font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+      font-weight: bold
     .payment-desc
       height: 15vw
       background-color: #fff
@@ -545,7 +546,8 @@ export default {
       .payment-amount
         .text
           font-size: 4vw
-          font-family: PFH
+          font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+          font-weight: bold
           margin-right: 3vw
         .amount
           font-family: hgzt

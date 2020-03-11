@@ -21,11 +21,12 @@ export default {
     padding: 3vw
     box-sizing: border-box
     letter-spacing: .3vw
-    font-family: PFM
+    font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
     border-radius: 3vw
     .title
       font-size: 3.8vw
-      font-family: PFB
+      font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+      font-weight: bold
       margin-bottom: 2vw
     .text
       color: #999

@@ -70,7 +70,8 @@ export default {
   .content-group
     width: 100%
     height: 100%
-    font-family: PFH
+    font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+    font-weight: bold
     display: flex
     flex-direction: column
     align-items: center

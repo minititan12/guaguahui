@@ -328,7 +328,8 @@ export default {
   .collect-wrapper >>> .van-nav-bar__title
     color: #000
     font-size: 4vw
-    font-family: PFH
+    font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+    font-weight: bold
 
   .collect-wrapper
     width: 100%
@@ -339,7 +340,8 @@ export default {
       align-items: flex-end
       justify-content: center
       font-size: 3.5vw
-      font-family: PFH
+      font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+      font-weight: bold
       margin-bottom: 2vw
 
       .tab
@@ -400,16 +402,18 @@ export default {
           justify-content: center
           padding-left: 2vw
           box-sizing: border-box
-          font-family: PFM
+          font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
           color: #000
           .title
             font-size: 3.5vw
             line-height: 5vw
             letter-spacing: .2vw
-            font-family: PFH
+            font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+            font-weight: bold
             margin-bottom: 2vw
           .num
-            font-family: PFB
+            font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+            font-weight: bold
             margin-bottom: 5vw
             color: #9d9d9d
           .right-bottom
@@ -444,7 +448,7 @@ export default {
           justify-content: center
           padding-left: 2vw
           box-sizing: border-box
-          font-family: PFM
+          font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
           color: #000
           .right-top
             width: 100%
@@ -455,7 +459,8 @@ export default {
               font-size: 3.5vw
               line-height: 5vw
               letter-spacing: .2vw
-              font-family: PFH
+              font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+              font-weight: bold
               margin-bottom: 2vw
             .btn
               background-color: #ff5756
@@ -464,7 +469,8 @@ export default {
               padding: 2vw 2vw
               border-radius: 4vw
           .num
-            font-family: PFB
+            font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+            font-weight: bold
             margin-bottom: 2vw
             color: #9d9d9d
           .imgs
@@ -503,7 +509,8 @@ export default {
         align-items: center
         justify-content: center
         font-size: 5vw 
-        font-family: PFH
+        font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+        font-weight: bold
         color: #000
         .iconfont
           font-size: 10vw

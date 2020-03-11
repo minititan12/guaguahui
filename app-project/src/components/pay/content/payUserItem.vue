@@ -57,7 +57,8 @@ export default {
     background-color: #fff
     border-radius: 3vw
     box-sizing: border-box
-    font-family: PFB
+    font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+    font-weight: bold
     display: flex
     flex-direction: row
     align-items: center
@@ -72,7 +73,8 @@ export default {
         align-items: center
         .user-name
           font-size: 4vw
-          font-family: PFH
+          font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+          font-weight: bold
           margin: 0 3vw 0 2vw
         .user-phone
           color: #9A9A9A

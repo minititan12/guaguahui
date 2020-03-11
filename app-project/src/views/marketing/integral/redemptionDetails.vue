@@ -88,7 +88,8 @@ export default {
       .van-nav-bar__title
         color #000
         font-size 4vw
-        font-family PFH
+        font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+        font-weight bold
     .head
       background #ff5756
       height 18vw
@@ -97,7 +98,8 @@ export default {
       justify-content center
       align-items center
       color white
-      font-family PFH
+      font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+      font-weight bold
       font-size 4vw
       .van-image
         margin-right 2vw
@@ -119,7 +121,8 @@ export default {
           flex 1
           .name
             font-size 3.8vw
-            font-family PFH
+            font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+            font-weight bold
             line-height 4.6vw
             height 10vw
           .attr

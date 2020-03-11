@@ -84,13 +84,23 @@ export default {
       }
     },
 
-    //是否显示产品原价
+    //显示划掉的原价
     showCancel(){
       if(this.currentProductData && this.currentProductData.hasOwnProperty('second_price')){
         return true
       }else{
         return false
       }
+    },
+
+    //显示产品原价
+    showOriginPrice(){
+      if(this.currentProductData && this.currentProductData.flag == 1){
+        if(this.currentProductData.discount != '1'){
+          return true
+        }
+      }
+      return false
     },
 
     //产品的标题
@@ -194,7 +204,8 @@ export default {
         min-height: 6vw
         max-height: 12vw
         margin: 0 4vw 2vw 4vw
-        font-family: PFH
+        font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+        font-weight: bold
         font-size: 4.5vw
         line-height: 6vw
         letter-spacing: .2vw
@@ -214,7 +225,7 @@ export default {
           font-family: hgzt
         .price-cancel
           color: #aaa
-          font-family: PFM
+          font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
           margin-left: 4vw
           text-decoration: line-through
       .coupon
@@ -236,7 +247,8 @@ export default {
           display: flex
           flex-direction: row
           align-items: center
-          font-family: PFB
+          font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+          font-weight: bold
           font-size: 3.5vw
           color: #969799
           padding: 2vw 0
@@ -258,7 +270,7 @@ export default {
             .icon-text
               margin-top: 3vw
               font-size: 3.5vw
-              font-family: PFM
+              font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
 </style>
 
 

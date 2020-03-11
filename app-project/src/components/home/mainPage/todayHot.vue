@@ -60,11 +60,13 @@ export default {
         .hot-icon
           margin: 0 1vw
         .title-big
-          font-family: PFH
+          font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+          font-weight: bold
           font-size: 5vw
         .title-small
           font-size: 3vw
-          font-family: PFM
+          // font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
+          font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
           margin-left: .2rem
           color: #999
       .todayHotItems

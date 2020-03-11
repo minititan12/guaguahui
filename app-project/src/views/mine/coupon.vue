@@ -203,7 +203,8 @@ export default {
   .coupon-wrapper >>> .van-nav-bar__title
     color: #000
     font-size: 4vw
-    font-family: PFH
+    font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+    font-weight: bold
   
   .coupon-wrapper >>> .van-icon-search
     font-size: 4.5vw
@@ -215,7 +216,8 @@ export default {
   .coupon-wrapper >>> .van-tab
     font-size: 3.5vw
     color: #000
-    font-family: PFB
+    font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+    font-weight: bold
   
   .coupon-wrapper
     width: 100%
@@ -257,7 +259,8 @@ export default {
         align-items: center
         justify-content: center
         font-size: 5vw 
-        font-family: PFH
+        font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+        font-weight: bold
         color: #000
         .iconfont
           font-size: 10vw

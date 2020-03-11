@@ -109,7 +109,8 @@ export default {
         height: 8vw
         line-height: 8vw
         margin: 0 4vw
-        font-family: PFH
+        font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+        font-weight: bold
         font-size: 4.5vw
         letter-spacing: .2vw
         overflow: hidden

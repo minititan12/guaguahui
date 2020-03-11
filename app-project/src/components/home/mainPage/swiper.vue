@@ -3,9 +3,9 @@
     <div class="mySwiper-wrapper">
       <swiper :key="swiperKey" :options="swiperOption" ref="mySwiper" v-if="swiperList.length > 0" @click.native="handleClick">
         <swiper-slide v-for="item of swiperList" :key="item.id">
-          <!-- <img class="swiper-img" :src="item.cover_img" /> -->
+          <img class="swiper-img" :src="item.cover_img" />
           <!-- <van-image class="swiper-img" width="93vw" height="45vw" fit="contain" :src="item.cover_img" /> -->
-          <van-image class="swiper-img" width="93vw" fit="contain" :src="item.cover_img" />
+          <!-- <van-image class="swiper-img" width="93vw" fit="contain" :src="item.cover_img" /> -->
         </swiper-slide>
       </swiper>
     </div>
@@ -20,8 +20,13 @@
 
 <script>
 import { mapState } from 'vuex'
+import { swiper,swiperSlide } from 'vue-awesome-swiper'
 export default {
   name: 'MainSwiper',
+  components: {
+    swiper,
+    swiperSlide
+  },
   data(){
     const that = this
     return {
@@ -120,6 +125,7 @@ export default {
     margin: 0 auto
     // position: fixed
     .swiper-img
+      width: 93vw
       -webkit-touch-callout: none
   .top
     width: 100%

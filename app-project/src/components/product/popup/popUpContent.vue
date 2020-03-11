@@ -308,7 +308,8 @@ export default {
         line-height: 10vw
         vertical-align: middle
         font-size: 3.6vw
-        font-family: PFB
+        font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+        font-weight: bold
       .number
         display: inline-block
         line-height: 10vw

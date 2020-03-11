@@ -382,7 +382,8 @@ export default {
     align-items: center
   .goods-wrapper >>> .van-loading__text
     color: #FF5756
-    font-family: PFH
+    font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+    font-weight: bold
 
   .goods-wrapper >>> .van-tabs--line .van-tabs__wrap
     height: 8vw
@@ -390,7 +391,8 @@ export default {
 
   .goods-wrapper >>> .van-tab
     line-height: 8vw
-    font-family: PFH
+    font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+    font-weight: bold
     font-size: 4vw
     color: #000
   
@@ -440,7 +442,8 @@ export default {
           width: 100%
           text-align: center
           font-size: 5vw
-          font-family: PFH
+          font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+          font-weight: bold
           line-height: 10vw
           display: flex
           flex-direction: column
@@ -455,7 +458,8 @@ export default {
           align-items: center
           justify-content: center
           padding: 3vw 0
-          font-family: PFB
+          font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+          font-weight: bold
           .loading-img
             width: 6vw
             margin-right: 2vw
@@ -467,7 +471,8 @@ export default {
           align-items: center
           justify-content: center
           padding: 3vw 0
-          font-family: PFB
+          font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+          font-weight: bold
           .loading-img
             width: 6vw
             margin-right: 2vw

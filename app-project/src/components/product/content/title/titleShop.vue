@@ -93,7 +93,8 @@ export default {
         display: flex
         flex-direction: row
         align-items: center
-        font-family: PFH
+        font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+        font-weight: bold
         .left-img
           margin-right: 3vw
         span 
@@ -104,14 +105,15 @@ export default {
         color: #FF4D51
         padding: 0 3vw
         background-color: #fff
-        font-family: PFM
+        font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
         border: 1px solid #FF4D51
         border-radius: 4vw
     .shop-bottom
       display: flex
       flex-direction: row
       justify-content: space-between
-      font-family: PFB
+      font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+      font-weight: bold
       font-size: 3.8vw
       .bottom-score
         color: #FF4D51

@@ -19,7 +19,8 @@ export default {
     text-align: center
     line-height: 12vw
     font-size: 4vw
-    font-family: PFH
+    font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+    font-weight: bold
     color: #000
     // border-bottom: .1vw solid #ccc
     // box-sizing: border-box

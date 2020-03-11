@@ -17,6 +17,7 @@
 
 <script>
 import MescrollVue from 'mescroll.js/mescroll.vue'
+// import FontFaceObserver from 'fontfaceobserver'
 import { lunbo,getClass,hotlist,getClassbrand,checkSeckill,getGoods,brandadsense,goodsadsense,getReconmendGoods } from '../../../utils/axios/request'
 import { mapState,mapMutations } from 'vuex'
 export default {
@@ -288,13 +289,24 @@ export default {
         .catch((err)=>{
           console.log('get goodsadsense err' + err)
         })
-    }
+    },
+    //判断字体文件加载是否完成
+    // fontLoadSuccess(){
+    //   let font = new FontFaceObserver('PFH')
+    //   let that = this
+
+    //   font.load().then(function(){
+    //     that.$toast.clear()
+    //     console.log('font success')
+    //   })
+    // }
   },
   created(){
     this.$toast({
       type: "loading",
       duration: 4000
     })
+    // this.fontLoadSuccess()
     this.changeSearchText('')
     this.getSwiperList()
     this.getIconsList()

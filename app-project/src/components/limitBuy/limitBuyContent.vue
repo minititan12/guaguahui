@@ -274,14 +274,14 @@ export default {
           .text
             display: block
             width: 75%
-            font-family: PFM
+            font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
             font-size: 3vw
             line-height: 4vw
             color: #FEB896
           .active-text
             display: block
             width: 75%
-            font-family: PFM
+            font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
             font-size: 3vw
             line-height: 4vw
             color: red
@@ -306,7 +306,8 @@ export default {
           align-items: center
           justify-content: center
           padding: 3vw 0
-          font-family:PFB
+          font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+          font-weight: bold
           .loading-img
             width: 6vw
             margin-right: 2vw
@@ -317,7 +318,8 @@ export default {
           align-items: center
           justify-content: center
           padding: 3vw 0
-          font-family:PFB
+          font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+          font-weight: bold
           .loading-img
             width: 6vw
             margin-right: 2vw
@@ -332,7 +334,8 @@ export default {
           justify-content: space-between
           padding: 2vw
           box-sizing: border-box
-          font-family: PFH
+          font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+          font-weight: bold
           border-radius: 2vw
           // .item-img
           //   flex-shrink: 0
@@ -361,7 +364,8 @@ export default {
               align-items: center
               justify-content: space-between
               margin-top: 3vw
-              font-family: PFB
+              font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+              font-weight: bold
               .item-text
                 display: block
                 color: #999
@@ -379,7 +383,7 @@ export default {
                 padding: 2vw 3vw
                 color: #fff
                 border-radius: 4vw
-                font-family: PFM
+                font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
 
 
       .warn-wrapper
@@ -394,5 +398,6 @@ export default {
           margin-bottom: 5vw
         .warn-text
           font-size: 4vw
-          font-family:PFB
+          font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+          font-weight: bold
 </style>

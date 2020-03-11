@@ -72,7 +72,7 @@ export default {
         top: 4vw
         right: 6vw
         color: #fff
-        font-family: PFM
+        font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
         font-size: 3.5vw
         .iconfont
           margin-left: 1vw
@@ -100,10 +100,9 @@ export default {
           justify-content: center
           border-radius: 3vw
           .content-title
-            font-family: PFM
+            font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
             font-size: 3.5vw
             margin-top: 4vw
-            font-weight: bold
 </style>
 
 

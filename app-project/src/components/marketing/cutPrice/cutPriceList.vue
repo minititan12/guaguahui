@@ -53,7 +53,8 @@ export default {
     background: white;
     border-radius:2vw;
     padding:3vw;
-    font-family: PFH;
+    font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+    font-weight: bold;
     display: flex;
     .item-right
       margin-left:3vw;
@@ -87,7 +88,7 @@ export default {
           align-items: center;
       .price
         color:#666;
-        font-family: PFM;
+        font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif;
         text-decoration:line-through;
         color: #aaa;
         font-size: 3.6vw;

@@ -124,7 +124,8 @@ export default {
   .myBargain-wrapper >>> .van-nav-bar__title
     color: #000
     font-size: 4vw
-    font-family: PFH
+    font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+    font-weight: bold
 
   .cut-price
     position absolute
@@ -147,6 +148,7 @@ export default {
     .no-more
       height: 15vw
       line-height: 15vw
-      font-family: PFH
+      font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+      font-weight: bold
       font-size: 4vw
 </style>

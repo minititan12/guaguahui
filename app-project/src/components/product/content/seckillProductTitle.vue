@@ -221,7 +221,8 @@ export default {
         min-height: 6vw
         max-height: 12vw
         margin: 0 3vw 2vw 3vw
-        font-family: PFH
+        font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+        font-weight: bold
         font-size: 4.5vw
         line-height: 6vw
         letter-spacing: .2vw
@@ -234,7 +235,7 @@ export default {
       .warn
         padding: 0 4vw
         box-sizing: border-box
-        font-family: PFM
+        font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
         margin-bottom: 3vw
         color: #999
 
@@ -256,16 +257,16 @@ export default {
               font-family: hgzt
             .price-cancel
               color: #aaa
-              font-family: PFM
+              font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
               margin-left: 3vw
           .num
             margin-top: 2vw
-            font-family: PFM
+            font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
         .bottom-right
           .text
             display: inline-block
             margin-bottom: 1vw
-            font-family: PFM
+            font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
           .van-count-down
             .item
               display: inline-block

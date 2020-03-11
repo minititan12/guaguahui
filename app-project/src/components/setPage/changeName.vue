@@ -94,7 +94,8 @@ export default {
   .changeName-wrapper >>> .van-cell__title
     font-size: 4vw
     color: #000
-    font-family: PFB
+    font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+    font-weight: bold
   .changeName-wrapper >>> .van-icon
     font-size: 5vw
 
@@ -127,11 +128,12 @@ export default {
       .text
         margin-right: 5vw
         font-size: 4vw
-        font-family: PFB
+        font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+        font-weight: bold
         color: #000
       .nickName
         font-size: 4vw
-        font-family: PFM
+        font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
         color: #999
     .new-name
       width: 90%

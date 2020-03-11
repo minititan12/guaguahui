@@ -162,7 +162,8 @@ export default {
     align-items center
     color white
     font-size 5vw
-    font-family PFH
+    font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+    font-weight bold
     .complete-time
       font-size 3vw
       font-family hgzt
@@ -188,7 +189,8 @@ export default {
         flex 1
         .name
           font-size 3.8vw
-          font-family PFH
+          font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+          font-weight bold
           line-height 4.6vw
           height 10vw
         .attr

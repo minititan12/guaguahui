@@ -134,7 +134,8 @@ export default {
   .CutPrice-wrapper >>> .van-nav-bar__title
     color: #000
     font-size: 4vw
-    font-family: PFH
+    font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+    font-weight: bold
 
   .bg
     background-image: url('/public/static/bargin/bargin_bg.png');
@@ -177,7 +178,8 @@ export default {
     flex-direction: row
     justify-content: center
     align-items: center
-    font-family: PFH
+    font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+    font-weight: bold
     font-size: 4vw
     color:white
 </style>

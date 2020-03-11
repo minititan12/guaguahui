@@ -154,7 +154,8 @@ export default {
     font-size: 5vw
   .mineGroup-wrapper >>> .van-nav-bar__title
     font-size: 4vw
-    font-family: PFH
+    font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+    font-weight: bold
     color: #000
   
   .mineGroup-wrapper 
@@ -174,7 +175,8 @@ export default {
         margin: 3vw auto 
         background-color: #fff
         border-radius: 4vw
-        font-family: PFB
+        font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+        font-weight: bold
         .top
           display: flex
           flex-direction: row
@@ -187,7 +189,8 @@ export default {
             box-sizing: border-box
             .top-order
               margin-bottom: 2vw
-              font-family: PFH
+              font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+              font-weight: bold
               font-size: 3.8vw
             .top-name
               font-size: 3.6vw
@@ -219,7 +222,8 @@ export default {
         flex-direction: column
         align-items: center
         padding: 10vw 0
-        font-family: PFH
+        font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+        font-weight: bold
         .iconfont
           font-size: 8vw
           color: #bbb

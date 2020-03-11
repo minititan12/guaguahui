@@ -110,7 +110,8 @@ export default {
     .top
       width: 90vw
       margin: 0 auto
-      font-family: PFH
+      font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+      font-weight: bold
       color: #000
       padding: 2vw 4vw
       box-sizing: border-box
@@ -129,7 +130,8 @@ export default {
       border-radius: 5vw
       display: flex
       align-items: center
-      font-family: PFH
+      font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+      font-weight: bold
       font-size: 3.5vw
       color: #000
       span

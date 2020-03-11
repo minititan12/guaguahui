@@ -223,7 +223,8 @@ export default {
         align-items: center
         justify-content: center
         font-size: 5vw 
-        font-family: PFH
+        font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+        font-weight: bold
         color: #000
         .iconfont
           font-size: 10vw

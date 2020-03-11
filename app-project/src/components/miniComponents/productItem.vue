@@ -71,7 +71,8 @@ export default {
       min-height: 10vw
       padding-bottom: 3vw
       letter-spacing: .2vw
-      font-family: PFH
+      font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+      font-weight: bold
       .text
         width: 100%
         // height: 10vw
@@ -86,7 +87,8 @@ export default {
         overflow: hidden
       .sale
         font-size: 3vw
-        font-family: PFB
+        font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+        font-weight: bold
         color: #999
         padding: 1vw 0 2vw 0
       .price-wrapper
@@ -107,7 +109,7 @@ export default {
         .limit-buy
           display: inline-block
           padding: 2vw 2.5vw
-          font-family: PFM
+          font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
           border-radius: 4vw
           background-color: #FF5756
           // border-radius: 3vw

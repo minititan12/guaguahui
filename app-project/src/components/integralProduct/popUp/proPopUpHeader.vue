@@ -77,7 +77,8 @@ export default {
     .header-right
       display: flex
       flex-direction: column
-      font-family: PFB
+      font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+      font-weight: bold
       .price
         font-family: hgzt
         color: #FF5756

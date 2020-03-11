@@ -152,14 +152,15 @@ export default {
           align-items: center
           margin-bottom: 1vw
           .title-big
-            font-family: PFH
+            font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+            font-weight: bold
             font-size: 5vw
             margin-left: 2vw
             letter-spacing: .2vw
         .left-bottom
           .title-small
             font-size: 3vw
-            font-family: PFM
+            font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
             margin-left: 7vw
             color: #999
       .van-count-down
@@ -177,7 +178,7 @@ export default {
           font-size: 5vw
           color: #ff5756
       .title-right
-        font-family: PFM
+        font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
         display: flex
         align-items: center
         font-size: 4vw
@@ -200,7 +201,8 @@ export default {
           overflow: hidden
         .item-name
           margin: 1vw 0
-          font-family: PFB
+          font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+          font-weight: bold
           width: 100%
           height: 5vw
           font-size: 4vw

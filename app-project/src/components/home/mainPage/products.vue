@@ -55,7 +55,7 @@ export default {
     margin-top: 0
   .wrapper
     width: 100%
-    min-height: 100vh
+    // min-height: 100vh
     .title
       margin-bottom: 4vw
       display: flex
@@ -72,13 +72,14 @@ export default {
         align-items: center
         .part-top
           font-size: 4.5vw
-          font-family: PFH
+          font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+          font-weight: bold
           margin-bottom: 1vw
         .top-active
           color: #ff5756
         .part-bottom
           font-size: 3.5vw
-          font-family: PFM
+          font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
           color: #aaa
           padding: 1vw
         .bottom-active
@@ -89,7 +90,7 @@ export default {
 
     .product-wrapper
       width: 100%
-      min-height: 100vw
+      // min-height: 100vw
       display: flex
       flex-direction: row
       flex-wrap: wrap

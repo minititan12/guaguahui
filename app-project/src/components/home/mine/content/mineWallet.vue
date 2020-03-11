@@ -85,7 +85,8 @@ export default {
     .wallet-top
       line-height: 7vw
       font-size: 4.5vw
-      font-family: PFH
+      font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+      font-weight: bold
     .wallet-bottom
       width: 100%
       height: 18vw
@@ -105,9 +106,11 @@ export default {
         display: flex
         flex-direction: column
         .integral-title
-          font-family: PFB
+          font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+          font-weight: bold
         .integral-num
-          font-family: PFH
+          font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+          font-weight: bold
           font-size: 5vw
           margin-top: 3vw
       .wallet
@@ -125,12 +128,14 @@ export default {
           flex-direction: row
           justify-content: space-between
           // align-items: center
-          font-family: PFB
+          font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+          font-weight: bold
           .balance-out
             color: #FB5756
             font-size: 4vw
         .balance-num
-          font-family: PFH
+          font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+          font-weight: bold
           font-size: 5vw
           margin-top: 3vw
           .num-icon

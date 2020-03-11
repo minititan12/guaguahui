@@ -188,7 +188,8 @@ export default {
         min-height: 6vw
         max-height: 12vw
         margin: 0 4vw 2vw 4vw
-        font-family: PFH
+        font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+        font-weight: bold
         font-size: 4.5vw
         line-height: 6vw
         letter-spacing: .2vw
@@ -209,7 +210,7 @@ export default {
           font-family: hgzt
         .price-cancel
           color: #aaa
-          font-family: PFM
+          font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
           margin-left: 4vw
           // text-decoration: line-through
 
@@ -231,7 +232,7 @@ export default {
             .icon-text
               margin-top: 3vw
               font-size: 3.5vw
-              font-family: PFM
+              font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
 </style>
 
 

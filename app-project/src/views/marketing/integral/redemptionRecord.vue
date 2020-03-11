@@ -104,7 +104,8 @@ export default {
       .van-nav-bar__title
         color #000
         font-size 4vw
-        font-family PFH
+        font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+        font-weight bold
     .list
       .record
         background white
@@ -114,7 +115,8 @@ export default {
         .time
           font-size 3vw
           color #393939 
-          font-family PFH
+          font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+          font-weight bold
           height 9vw
           line-height 9vw
         .content
@@ -127,7 +129,8 @@ export default {
             flex 1
             .name
               font-size 3.8vw
-              font-family PFH
+              font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+              font-weight bold
               line-height 4.6vw
               height 10vw
             .attr
@@ -141,7 +144,8 @@ export default {
               line-height 4.5vw  
           .deduction
             color #ff5756
-            font-family PFH
+            font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+            font-weight bold
             width 18vw
             text-align center
             padding-top 4vw

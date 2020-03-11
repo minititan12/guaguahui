@@ -149,7 +149,8 @@ export default {
       align-items: center
       margin: 2vw 0
       .top-text
-        font-family: PFH
+        font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+        font-weight: bold
         font-size: 4.5vw
       .order-right
         font-size: 3.5vw
@@ -178,7 +179,8 @@ export default {
         justify-content: center
         position: relative
         font-size: 3vw
-        font-family: PFB
+        font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+        font-weight: bold
         .iconfont
           font-size: 7vw
           margin-bottom: 2vw

@@ -118,7 +118,8 @@ export default {
         width: 100vw
         height: 12vw
         font-size: 5vw
-        font-family: PFH
+        font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+        font-weight: bold
         color: #000
         letter-spacing: 1vw
         display: flex
@@ -137,7 +138,8 @@ export default {
           flex-direction: row
           align-items: center
           font-size: 4vw
-          font-family: PFB
+          font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+          font-weight: bold
         .text-bottom
           display: block
           color: #888

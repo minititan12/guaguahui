@@ -221,7 +221,8 @@ export default {
 <style lang="stylus" scoped>
   .shopItem
     width: 94%
-    font-family: PFB
+    font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+    font-weight: bold
     margin: .2rem auto
     color: #000
     background-color: #fff
@@ -268,7 +269,7 @@ export default {
             margin: 1vw 0
             color: #444
           .goodItem-desc
-            font-family: PFM
+            font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
             color: #B9B9B9
             margin-top: 3vw
         .goodItem-right
@@ -282,7 +283,7 @@ export default {
             font-family: hgzt
           .right-number
             color: #B9B9B9
-            font-family: PFM
+            font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
 
     .van-divider
       margin: 1vw 0 0 0

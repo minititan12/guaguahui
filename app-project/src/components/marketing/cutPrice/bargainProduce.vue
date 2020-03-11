@@ -221,7 +221,8 @@ export default {
         justify-content space-between
         flex-direction column
         .details
-          font-family PFH
+          font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+          font-weight bold
           font-size: 4.5vw
           letter-spacing: 0.2vw
           overflow: hidden
@@ -234,7 +235,8 @@ export default {
           color #fe4236
           font-size 3vw
           line-height 8vw
-          font-family PFH
+          font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+          font-weight bold
           span 
            font-family hgzt
            font-size 6vw
@@ -266,7 +268,7 @@ export default {
       margin 4vw auto 2vw
       text-align center
       background #ff4133
-      font-family PFM
+      font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
       border-radius 6vw
       color white
     .operate
@@ -279,7 +281,7 @@ export default {
         line-height 12vw
         text-align center
         background #ff4133
-        font-family PFM
+        font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
         border-radius 6vw
         color white   
         margin-right 4vw
@@ -289,7 +291,7 @@ export default {
         line-height 12vw
         text-align center
         background #ff4133
-        font-family PFM
+        font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
         border-radius 6vw
         color white     
       .help-bargain
@@ -317,7 +319,8 @@ export default {
           z-index 1
     .success-tip
       color #ff4133
-      font-family PFH
+      font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+      font-weight bold
       text-align center
       font-size 5.6vw
       line-height 10vw
@@ -328,7 +331,7 @@ export default {
       line-height 12vw
       text-align center
       background #ff4133
-      font-family PFM
+      font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
       border-radius 6vw
       color white     
       &.complete

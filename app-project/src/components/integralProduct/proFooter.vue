@@ -26,7 +26,8 @@ export default {
     height: 12vw
     background-color: #ff5756
     color: #fff
-    font-family: PFH
+    font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+    font-weight: bold
     font-size: 4vw
     line-height: 12vw
     text-align: center

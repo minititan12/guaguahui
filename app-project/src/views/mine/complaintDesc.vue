@@ -272,7 +272,8 @@ export default {
   .compaintDesc-wrapper >>> .van-nav-bar__title
     color: #000
     font-size: 4vw
-    font-family: PFH
+    font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+    font-weight: bold
 
   .compaintDesc-wrapper
     width: 100%
@@ -289,7 +290,8 @@ export default {
         margin: 3vw auto
         border-radius: 3vw
         overflow: hidden
-        font-family: PFH
+        font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+        font-weight: bold
         background-color: #fff
         .explain
           padding: 10px 16px
@@ -299,7 +301,7 @@ export default {
           .input
             width: 70%
             margin-left: 5vw
-            font-family: PFM
+            font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
             color: #000
             &::placeholder
               color: #d5d5d5
@@ -317,7 +319,7 @@ export default {
           .input
             width: 70%
             margin-left: 5vw
-            font-family: PFM
+            font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
             color: #000
             &::placeholder
               color: #d5d5d5
@@ -326,7 +328,8 @@ export default {
         text-align: center
         margin: 10vw auto 
         font-size: 4vw
-        font-family: PFB
+        font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+        font-weight: bold
         padding: 3.5vw 0
         color: #fff
         border-radius: 5vw
@@ -338,7 +341,7 @@ export default {
       //   flex-direction: row
       //   justify-content: space-around
       //   padding: 3vw 0
-      //   font-family: PFB
+      //   font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
       //   .typeItem
       //     width: 30%
       //     padding: 3vw 0

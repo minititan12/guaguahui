@@ -61,7 +61,6 @@ export default {
     display: flex
     flex-direction: column
     align-items: center
-    background-color: #F6F7FB
     .app-icon
       width: 15vw
     .app-desc
@@ -69,7 +68,8 @@ export default {
       font-size: 3.5vw
       line-height: 6vw
       color: #000
-      font-family: PFB
+      font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+      font-weight: bold
     .app-actions
       margin-top: 5vw
       .action
@@ -92,7 +92,8 @@ export default {
       margin-top: 5vw
       h3
         font-size: 3.8vw
-        font-family: PFB
+        font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+        font-weight: bold
         color: #000
         margin-bottom: 2vw
       span

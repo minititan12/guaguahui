@@ -135,7 +135,7 @@ export default {
         align-items: center
         margin-bottom: 4vw
         color: #000
-        font-family: PFM
+        font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
         letter-spacing: .2vw
         .product-img
           width: 20vw

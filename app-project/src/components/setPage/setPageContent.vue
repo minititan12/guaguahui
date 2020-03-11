@@ -1,17 +1,20 @@
 <template>
-  <div class="setPageContent-wrapper">
-    <van-sticky>
-      <van-nav-bar :title="title" left-arrow @click-left="handleBackClick"/>
-    </van-sticky>
-    <ChangeName v-if="title == '修改会员名'"></ChangeName>
-    <ChangeImg v-if="title == '修改头像'"></ChangeImg>
-    <PrivatePolicy v-if="title == '隐私政策'"></PrivatePolicy>
-    <GuaGuaHui v-if="title == '关于呱呱汇'"></GuaGuaHui>
-    <ShopEnter v-if="title == '商户入驻'"></ShopEnter>
+  <div>
+    <mescroll-vue :down="down" :up="up" @init="init">
+      <van-sticky>
+        <van-nav-bar :title="title" left-arrow @click-left="handleBackClick"/>
+      </van-sticky>
+      <ChangeName v-if="title == '修改会员名'"></ChangeName>
+      <ChangeImg v-if="title == '修改头像'"></ChangeImg>
+      <PrivatePolicy v-if="title == '隐私政策'"></PrivatePolicy>
+      <GuaGuaHui v-if="title == '关于呱呱汇'"></GuaGuaHui>
+      <ShopEnter v-if="title == '商户入驻'"></ShopEnter>
+    </mescroll-vue>
   </div>
 </template>
 
 <script>
+import MescrollVue from 'mescroll.js/mescroll.vue'
 import ChangeName from './changeName'
 import ChangeImg from './changeImg'
 import PrivatePolicy from './privatePolicy'
@@ -20,11 +23,22 @@ import ShopEnter from './shopEnter'
 export default {
   name:'SetPageContent',
   components:{
+    MescrollVue,
     ChangeName,
     ChangeImg,
     PrivatePolicy,
     GuaGuaHui,
     ShopEnter
+  },
+  data(){
+    return {
+      down: {
+        use: false,
+      },
+      up:{
+        isBounce: false,
+      }
+    }
   },
   computed:{
     title(){
@@ -43,6 +57,10 @@ export default {
     } 
   },
   methods:{
+    // mescroll组件初始化的回调,可获取到mescroll对象
+    init(mescroll){
+      this.mescroll = mescroll;
+    },
     handleBackClick(){
       this.$router.go(-1)
     }
@@ -51,16 +69,22 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  .setPageContent-wrapper >>> .van-nav-bar__arrow
-    color: #FF5756
-    font-size: 5vw
+  >>> .van-nav-bar__arrow
+        color: #FF5756
+        font-size: 5vw
   
-  .setPageContent-wrapper >>> .van-nav-bar__title
-    color: #000
-    font-size: 4vw
-    font-family: PFH
+  >>> .van-nav-bar__title
+        color: #000
+        font-size: 4vw
+        font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+        font-weight: bold
   
-  .setPageContent-wrapper
-    width: 100%
-    height: 100%
+  >>> .mescroll
+        position: fixed
+        top: 0
+        left: 0
+        height: 100%
+        background-color: #F6F7FB
+  >>> .mescroll-upwarp
+        padding: 0
 </style>

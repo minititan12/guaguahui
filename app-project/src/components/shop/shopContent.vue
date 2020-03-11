@@ -341,7 +341,8 @@ export default {
           margin-bottom: 2vw
           .top-name 
             font-size: 5vw
-            font-family: PFB
+            font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+            font-weight: bold
           .top-right
             display: flex
             flex-direction: row
@@ -362,7 +363,7 @@ export default {
               align-items: center
               justify-content: center
         .header-middle
-          font-family: PFM
+          font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
           margin-bottom: 2vw
           font-size: 3.5vw
           display: flex
@@ -380,7 +381,7 @@ export default {
           display: flex
           flex-direction: row
           align-items: center
-          font-family: PFM
+          font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
           padding: 2vw 0
           .tab
             margin-right: 8vw
@@ -426,7 +427,8 @@ export default {
             margin-right: 2vw
         .no-more
           width: 100%
-          font-family: PFH
+          font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+          font-weight: bold
           font-size: 4vw
           display: flex
           flex-direction: row

@@ -151,7 +151,8 @@ export default {
   .wallet-wrapper >>> .van-nav-bar__title
     color: #000
     font-size: 4vw
-    font-family: PFH
+    font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+    font-weight: bold
 
   .wallet-wrapper
     background-color #f5f7fa
@@ -191,7 +192,8 @@ export default {
         margin 4vw auto 0
         width 32vw
         font-size 4vw
-        font-family PFB
+        font-family 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+        font-weight bold
         height 10vw
         line-height 10vw
         border-radius 5vw
@@ -204,7 +206,8 @@ export default {
       background white
       padding 0 3vw
       font-size 4vw
-      font-family PFH
+      font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+      font-weight bold
       border-bottom 1px solid #eee
     .month
       display flex
@@ -214,14 +217,15 @@ export default {
       background white
       padding 0 3vw
       font-size 4.4vw
-      font-family PFH
+      font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+      font-weight bold
       .date
         display flex
         justify-items center
         align-items center
         font-size 3.6vw
         color #585858
-        font-family PFM
+        font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
         .van-image
           width 2vw
           margin-left 1vw
@@ -236,7 +240,8 @@ export default {
         height 12vw
         line-height 12vw
         padding 0 3vw
-        font-family PFB
+        font-family 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+        font-weight bold
         font-size 3.6vw
       .list
         display flex
@@ -252,14 +257,16 @@ export default {
           line-height 5vw
           .type
             color black
-            font-family PFB
+            font-family 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+            font-weight bold
             font-size 4vw
           .time
             color #a7a7a7
             font-size 3.2vw
         .money
           font-size 3.6vw
-          font-family PFB
+          font-family 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+          font-weight bold
           &.income
             color #ff5756
     .van-overlay

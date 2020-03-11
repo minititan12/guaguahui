@@ -51,7 +51,8 @@ export default {
     overflow: hidden
     .van-cell
       align-items: center
-      font-family: PFB
+      font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+      font-weight: bold
       .van-cell__title
         display: flex
         align-items: center

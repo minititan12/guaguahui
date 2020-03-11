@@ -199,7 +199,8 @@ export default {
         width: 33%
         flex-direction: column
         align-items: center
-        font-family: PFB
+        font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+        font-weight: bold
         .iconfont
           font-size: 5vw
           color: #FF5756
@@ -214,7 +215,8 @@ export default {
       flex-direction: row
       justify-content: space-around
       align-items: center
-      font-family: PFB
+      font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+      font-weight: bold
       font-size: 3.5vw
       line-height: 10vw
       letter-spacing: .1vw

@@ -107,12 +107,13 @@ export default {
       .title
         font-size 4.2vw
         line-height 5vw
-        font-family PFH
+        font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+        font-weight bold
       .message
         font-size 3vw
         line-height 5vw
         color #999
-        font-family PFM
+        font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
     .unread
       display flex
       align-items center

@@ -75,18 +75,20 @@ export default {
   .setContent-wrapper >>> .van-nav-bar__title
     color: #000
     font-size: 4vw
-    font-family: PFH
+    font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+    font-weight: bold
   .setContent-wrapper >>> .van-nav-bar__arrow
     color: #ff5756
     font-size: 5vw
   .setContent-wrapper >>> .van-cell__value
     text-align: left
     color: #ff5756
-    font-family: PFB
+    font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+    font-weight: bold
     font-size: 3.5vw
   .setContent-wrapper >>> .van-cell__title
     color: #999
-    font-family: PFM
+    font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
   .setContent-wrapper >>> .van-cell__left-icon
     color: #000
     font-size: 5vw
@@ -118,5 +120,6 @@ export default {
       .title
         padding: 3vw 4vw
         font-size: 4vw
-        font-family: PFH
+        font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+        font-weight: bold
 </style>

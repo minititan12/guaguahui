@@ -123,6 +123,7 @@ export default {
     .no-more
       height: 15vw
       line-height: 15vw
-      font-family: PFH
+      font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+      font-weight: bold
       font-size: 4vw
 </style>

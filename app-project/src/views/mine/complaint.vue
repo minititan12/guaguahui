@@ -116,7 +116,8 @@ export default {
   .complaint-wrapper >>> .van-nav-bar__title
     color: #000
     font-size: 4vw
-    font-family: PFH
+    font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+    font-weight: bold
 
   .complaintItems
     position: absolute 
@@ -130,7 +131,7 @@ export default {
       width: 94vw
       margin: 3vw auto 
       background-color: #fff
-      font-family: PFM
+      font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
       color: #000
       padding: 3vw
       border-radius: 3vw
@@ -141,7 +142,8 @@ export default {
         font-size: 3.5vw
         .top-desc
           color: #ff5756
-          font-family: PFH
+          font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+          font-weight: bold
           margin-right: 2vw
         .top-num
           letter-spacing: .1vw
@@ -157,7 +159,8 @@ export default {
           display: flex
           flex-direction: column
           .title
-            font-family: PFB
+            font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+            font-weight: bold
             margin-bottom: 3vw
             font-size: 3.5vw
             letter-spacing: .2vw

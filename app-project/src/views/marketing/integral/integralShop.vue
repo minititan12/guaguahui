@@ -280,11 +280,12 @@ export default {
       .van-nav-bar__title
         color #000
         font-size 4vw
-        font-family PFH
+        font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+        font-weight bold
       .van-nav-bar__text
         font-size 3.3vw
         color black
-        font-family PFM
+        font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
 
     .head
       height 30vw
@@ -297,7 +298,8 @@ export default {
         top 10vw
         background #f1f1f1
         font-size 3vw 
-        font-family PFB
+        font-family 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+        font-weight bold
         color #5b5b5b
         height 7vw
         line-height 7vw
@@ -305,7 +307,8 @@ export default {
         padding 0 3vw
       .label
         font-size 4vw
-        font-family PFB
+        font-family 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+        font-weight bold
         color #686868
         position absolute
         left 9vw
@@ -318,7 +321,7 @@ export default {
         top 13vw
       .tip
         font-size 3vw
-        font-family PFM
+        font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
         color #9e9e9e
         position absolute
         left 9vw
@@ -339,7 +342,8 @@ export default {
         flex-direction: row
         align-items: center
         justify-content: space-between
-        font-family: PFB
+        font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+        font-weight: bold
         .tab
           padding: 1vw 2vw
           border: 1px solid #dcdcdc
@@ -395,7 +399,8 @@ export default {
             align-items: center
             justify-content: center
             font-size: 5vw 
-            font-family: PFH
+            font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+            font-weight: bold
             color: #000
             .iconfont
               font-size: 10vw

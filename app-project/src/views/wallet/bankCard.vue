@@ -42,7 +42,8 @@ export default {
   .bankCard-wrapper >>> .van-nav-bar__title
     color: #000
     font-size: 4vw
-    font-family: PFH
+    font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+    font-weight: bold
   
   .bankCard-wrapper
     .add
@@ -55,5 +56,6 @@ export default {
       width 60vw
       margin 6vw auto
       border-radius 6vw
-      font-family: PFH
+      font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+      font-weight: bold
 </style>

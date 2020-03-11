@@ -69,7 +69,8 @@ export default {
       text-align: center
       padding: 3vw 0
       font-size: 4vw
-      font-family: PFH
+      font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+      font-weight: bold
 
     .more-item
       display: flex
@@ -84,7 +85,8 @@ export default {
         display: flex
         flex-direction: row
         .item-name
-          font-family: PFH
+          font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+          font-weight: bold
           margin-right: 2vw
 
       .item-icon

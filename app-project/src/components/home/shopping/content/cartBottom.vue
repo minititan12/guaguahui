@@ -137,14 +137,15 @@ export default {
       .select-text
         color: #AFAFAF
         margin-left: 3vw
-        font-family: PFM
+        font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
         font-size: 3.6vw
     .all-price
       height: 100%
       display: flex
       flex-direction: row
       align-items: center
-      font-family: PFB
+      font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+      font-weight: bold
       font-size: 3.6vw
       .price-number
         font-family: hgzt
@@ -153,7 +154,8 @@ export default {
         width: 18vw
         height: 8vw
         font-size: 3.6vw
-        font-family: PFB
+        font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+        font-weight: bold
         text-align: center
         line-height: 8vw
         background-color: #ff5756

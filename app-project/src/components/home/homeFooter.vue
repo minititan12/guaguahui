@@ -152,7 +152,8 @@ export default {
           font-size: 5vw
       .title
         font-size: 3vw
-        font-family: PFB
+        font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+        font-weight: bold
       .num
         position: absolute 
         top: .08rem

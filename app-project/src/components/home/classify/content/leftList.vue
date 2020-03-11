@@ -79,7 +79,7 @@ export default {
         border-top-right-radius: 5vw
         border-bottom-right-radius: 5vw
         text-align: center
-        font-family: PFM
+        font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
         letter-spacing: .2vw
         font-size: 3.8vw
       .activeItem

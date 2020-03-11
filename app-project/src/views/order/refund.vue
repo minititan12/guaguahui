@@ -172,7 +172,8 @@ export default {
     font-size: 5vw
   .refund-wrapper >>> .van-nav-bar__title
     font-size: 4vw
-    font-family: PFH
+    font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+    font-weight: bold
     color: #000
 
   .refund-list
@@ -191,7 +192,8 @@ export default {
     align-items: center
     justify-content: center
     font-size: 5vw 
-    font-family: PFH
+    font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+    font-weight: bold
     color: #000
     .iconfont
       font-size: 10vw
@@ -209,7 +211,8 @@ export default {
     .no-more
       height: 15vw
       line-height: 15vw
-      font-family: PFH
+      font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+      font-weight: bold
       font-size: 4vw
   .refund
     background-color white
@@ -224,7 +227,8 @@ export default {
       align-items center
       height 10vw
       font-size 4vw
-      font-family: PFB
+      font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+      font-weight: bold
       .van-icon-shop-o
         font-size 5vw
         margin-right 1vw
@@ -237,7 +241,8 @@ export default {
         flex 1
         .name
           font-size 3.8vw
-          font-family PFH
+          font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+          font-weight bold
           line-height 4.6vw
           height 10vw
         .desc

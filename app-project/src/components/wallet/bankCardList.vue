@@ -87,11 +87,12 @@ export default {
     color white
     .bank-name
       font-size 4.2vw
-      font-family PFH
+      font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+      font-weight bold
       line-height 6vw
     .bank-type
       font-size 3vw
-      font-family PFM
+      font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
       line-height 5vw
       padding-bottom 4vw
     .bank-no
@@ -104,7 +105,7 @@ export default {
     display flex
     justify-content flex-start
     font-size 3vw
-    font-family PFM
+    font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
     .van-icon 
       margin-right 1vw
 </style>

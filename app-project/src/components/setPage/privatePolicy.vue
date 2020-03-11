@@ -128,16 +128,17 @@ export default {
     box-sizing: border-box
     line-height: 6vw
     letter-spacing: .5vw
-    font-family: PFM
+    font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
     padding: 2vw 5vw
     color: #000
-    background-color: #F6F7FB
     .box
       margin-top: 5vw
       h3
-        font-family: PFH
+        font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+        font-weight: bold
         font-size: 3.5vw
         color: #FF5756
       h4
-        font-family: PFH
+        font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+        font-weight: bold
 </style>

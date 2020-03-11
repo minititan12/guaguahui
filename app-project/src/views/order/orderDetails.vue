@@ -482,7 +482,7 @@ export default {
       font-size 5vw
       color white
       padding 12vw 0 0 12vw
-      font-family PFM
+      font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
     .van-icon
       position absolute
       left 1vw
@@ -557,12 +557,14 @@ export default {
           justify-content space-between
           .name
             font-size 3.8vw
-            font-family PFH
+            font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+            font-weight bold
             line-height 4.6vw
             // height 10vw
           .goods-status
             font-size 3.5vw
-            font-family PFH
+            font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+            font-weight bold
             line-height 4.6vw
             height 6vw
             min-width: 12vw
@@ -605,7 +607,8 @@ export default {
       border-bottom 1px solid #eee
       height 12vw
       font-size 3.8vw
-      font-family PFH
+      font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+      font-weight bold
       .price
         font-family hgzt
         font-size 4.2vw
@@ -622,11 +625,12 @@ export default {
       height 12vw
       .label
         font-size 3.8vw
-        font-family PFH
+        font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+        font-weight bold
       .value
         font-size 3.2vw
         color #999
-        font-family PFM
+        font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
   .order-footer
     position fixed
     left 0

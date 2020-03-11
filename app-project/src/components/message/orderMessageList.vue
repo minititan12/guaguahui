@@ -57,10 +57,11 @@ export default {
       align-items center
       height 6vw
       .title
-        font-family PFH
+        font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+        font-weight bold
         font-size 4.2vw
       .time
-        font-family PFM
+        font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
         font-size 3.2vw
     .content
       display flex
@@ -73,11 +74,12 @@ export default {
       .info
         flex 1
         .name
-          font-family PFB
+          font-family 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+          font-weight bold
           height 14vw
           line-height 4.8vw
           font-size 3.8vw
         .number
-          font-family PFM
+          font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
           font-size 3.2vw
 </style>

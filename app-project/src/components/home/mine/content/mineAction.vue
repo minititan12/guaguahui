@@ -81,7 +81,8 @@ export default {
     background-color: #fff
     border-radius: 3vw
     .title
-      font-family: PFH
+      font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+      font-weight: bold
       font-size: 4.5vw
       line-height: 7vw
 </style>

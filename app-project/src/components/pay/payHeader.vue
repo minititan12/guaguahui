@@ -22,6 +22,7 @@ export default {
     font-size: 5vw
   
   .payHeader-wrapper >>> .van-nav-bar__title
-    font-family: PFH
+    font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+    font-weight: bold
     font-size: 4vw
 </style>

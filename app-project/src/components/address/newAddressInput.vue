@@ -137,11 +137,11 @@ export default {
 
   .addressInput-wrapper >>> .van-cell__title
     font-size: 3.6vw
-    font-family: PFB
-  
+    font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+    font-weight: bold
   .addressInput-wrapper >>> .van-field__control
     font-size: 3.5vw
-    font-family: PFM
+    font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
     color: #000
     &::placeholder
       color: #999  

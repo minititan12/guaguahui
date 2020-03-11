@@ -109,7 +109,10 @@ export default {
         margin-bottom: 2vw
         span 
           margin-top: 2vw
-          font-family: PFB
+          font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+          font-weight: bold
+          // font-family: 'Droid Sans'
+          // font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
           font-size: 3.5vw
       // .page-item
       //   width: 100%

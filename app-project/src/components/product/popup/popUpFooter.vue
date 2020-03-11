@@ -1,7 +1,7 @@
 <template>
   <div class="popup-footer">
-    <span v-if="type == 1 || type == 3" class="btn-left" @click="postCart">加入购物车</span>
-    <span v-if="type == 1 || type == 3" class="btn-right" @click="immediatePay">立即购买</span>
+    <span v-if="type == 1 || type == 3 || type == 5" class="btn-left" @click="postCart">加入购物车</span>
+    <span v-if="type == 1 || type == 3 || type == 5" class="btn-right" @click="immediatePay">立即购买</span>
     <span v-if="type == 2" class="btn-confirm" @click="groupConfirm">确认</span>
     <span v-if="type == 4" class="btn-confirm" @click="immediatePay">立即购买</span>
   </div>
@@ -232,7 +232,8 @@ export default {
     height: 12vw
     text-align: center
     font-size: 4vw
-    font-family: PFB
+    font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+    font-weight: bold
 
     .btn-left
       display: inline-block
@@ -262,7 +263,8 @@ export default {
       width: 100%
       height: 100%
       line-height: 12vw
-      font-family: PFH
+      font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+      font-weight: bold
       font-size: 4vw
       color: #fff
       background-color: #FF5756

@@ -62,7 +62,8 @@ export default {
     font-size: 5vw
   .accessCoupon-wrapper >>> .van-nav-bar__title
     font-size: 4vw
-    font-family: PFH
+    font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+    font-weight: bold
     color: #000
 
   .couponItems

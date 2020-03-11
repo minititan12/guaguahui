@@ -81,7 +81,8 @@ export default {
     width: 100%
     padding: 2vw 0
     .detailItem-title
-      font-family: PFH
+      font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+      font-weight: bold
       font-size: 3.8vw
       margin-bottom: 4vw
     .detailItems
@@ -108,7 +109,8 @@ export default {
             width: 100%
             vertical-align: middle
             font-size: 3.5vw
-            font-family: PFB
+            font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+            font-weight: bold
             line-height: 5.5vw
             text-align: center
             text-overflow: ellipsis
@@ -135,7 +137,8 @@ export default {
             width: 100%
             vertical-align: middle
             font-size: 3.5vw
-            font-family: PFB
+            font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+            font-weight: bold
             line-height: 5.5vw
             text-overflow: ellipsis
             text-align: center

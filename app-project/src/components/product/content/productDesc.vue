@@ -53,7 +53,8 @@ export default {
     overflow: hidden
     .desc-title
       margin: 2vw 3vw
-      font-family: PFH
+      font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+      font-weight: bold
       line-height: 6vw
       font-size: 4vw
     .desc-item

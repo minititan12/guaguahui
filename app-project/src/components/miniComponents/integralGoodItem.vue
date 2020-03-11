@@ -50,7 +50,8 @@ export default {
         width: 100%
         height: 5vw
         font-size: 4vw
-        font-family: PFH
+        font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+        font-weight: bold
         line-height: 5vw
         text-overflow: ellipsis
         display: -webkit-box
@@ -61,7 +62,8 @@ export default {
       padding: 0 2vw
       padding-bottom: 3vw
       box-sizing: border-box
-      font-family: PFB
+      font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+      font-weight: bold
       font-size: 3vw
       display: flex
       flex-direction: row

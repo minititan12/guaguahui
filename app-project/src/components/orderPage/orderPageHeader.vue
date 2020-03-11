@@ -56,7 +56,8 @@ export default {
   .header-wrapper >>> .van-nav-bar__title
     color: #000
     font-size: 4vw
-    font-family: PFH
+    font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+    font-weight: bold
 
   .header-wrapper >>> .van-tabs__line
     background-color: #FF5756 
@@ -64,7 +65,8 @@ export default {
   .header-wrapper >>> .van-tab
     font-size: 3.5vw
     color: #000
-    font-family: PFB
+    font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+    font-weight: bold
 
   // .header-wrapper
   //   position: absolute 

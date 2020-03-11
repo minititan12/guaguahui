@@ -75,7 +75,8 @@ export default {
       background-color: #ff5756
       color: #fff
       line-height: 12vw
-      font-family: PFB
+      font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+      font-weight: bold
       font-size: 4vw
       text-align: center
 </style>

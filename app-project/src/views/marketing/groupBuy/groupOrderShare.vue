@@ -224,7 +224,8 @@ export default {
   .groupOrderShare-wrapper >>> .van-nav-bar__title
     color: #000
     font-size: 4vw
-    font-family: PFH
+    font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+    font-weight: bold
 
   .groupOrderShare-wrapper
     width: 100%
@@ -247,7 +248,8 @@ export default {
           max-width: 70%
           .top-order
             margin-bottom: 2vw
-            font-family: PFH
+            font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+            font-weight: bold
             font-size: 3.8vw
           .top-name
             margin-bottom: 1vw
@@ -268,12 +270,14 @@ export default {
           display: flex
           align-items: center
           color: #FF5756
-          font-family: PFH
+          font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+          font-weight: bold
 
     .human-num
       width: 100%
       text-align: center
-      font-family: PFH
+      font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+      font-weight: bold
       font-size: 7vw
       margin-top: 10vw
       margin-bottom: 5vw
@@ -284,7 +288,8 @@ export default {
       flex-direction: row
       align-items: center
       font-size: 4vw
-      font-family: PFB
+      font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+      font-weight: bold
       justify-content: center
       margin-bottom: 10vw
       .text
@@ -317,7 +322,7 @@ export default {
         .icon-text
           margin-top: 3vw
           font-size: 3.5vw
-          font-family: PFM
+          font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
     
     .images
       width: 100%
@@ -335,7 +340,7 @@ export default {
       text-align: center
       font-size: 4vw
       line-height: 10vw
-      font-family: PFM
+      font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
       color: #fff
       border-radius: 5vw
 

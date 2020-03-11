@@ -106,7 +106,8 @@ export default {
     flex-direction: row
     align-items: center
     font-size: 3.8vw
-    font-family: PFM
+    // font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
+    font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
     .littleTitle-left
       width: 10vw
       height: 100%
@@ -114,7 +115,6 @@ export default {
       color: #000
       line-height: 5vw
       span 
-        font-family: PFB
         color: #FF5754
         // border-bottom: 2px solid #FF5754
     .littleTitle-right

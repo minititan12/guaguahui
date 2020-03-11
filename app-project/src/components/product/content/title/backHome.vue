@@ -27,6 +27,7 @@ export default {
     border-radius: 3vw
     overflow: hidden
     .van-cell__title
-      font-family: PFH
+      font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+      font-weight: bold
       font-size: 3.5vw
 </style>

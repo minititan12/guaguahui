@@ -163,7 +163,7 @@ export default {
           .text
             font-size: 9vw
         .condition
-          font-family: PFM
+          font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
           font-size: 3.2vw
 
     .item-right
@@ -180,7 +180,7 @@ export default {
       flex-direction: column
       justify-content: space-around
       color: #000
-      font-family: PFM
+      font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
       .right-top
         width: 100%
         display: flex
@@ -193,13 +193,15 @@ export default {
             font-size: 3.8vw
             letter-spacing: .2vw
             line-height: 4.5vw
-            font-family: PFH
+            font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+            font-weight: bold
             margin-bottom: 2vw
           .item-time
             font-size: 3.2vw
         .item-status
           color: #FF5756
-          font-family: PFB
+          font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+          font-weight: bold
           flex-shrink: 0
           margin-left: 2vw
       .van-divider

@@ -170,7 +170,8 @@ export default {
         line-height: 10vw
         vertical-align: middle
         font-size: 4vw
-        font-family: PFH
+        font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+        font-weight: bold
       .number
         display: inline-block
         line-height: 10vw

@@ -229,7 +229,8 @@ export default {
     bottom: 0
     width: 100%
     height: 12vw
-    font-family: PFB
+    font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+    font-weight: bold
     background-color: #fff
     overflow: hidden
     .pay-right

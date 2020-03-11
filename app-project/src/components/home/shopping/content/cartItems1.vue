@@ -344,7 +344,8 @@ export default {
           height: 10vw
           display: flex
           align-items: center
-          font-family: PFH
+          font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+          font-weight: bold
           font-size: 4vw
           padding-left: 11vw
           color: #000
@@ -392,12 +393,13 @@ export default {
             .item-title
               margin-bottom: 2vw
               font-size: 3.8vw
-              font-family: PFB
+              font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+              font-weight: bold
               line-height: 4.5vw
               letter-spacing: .8vw
               color: #222
             .item-desc
-              font-family: PFM
+              font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
               color: #989898
           
         .item-bottom
@@ -412,7 +414,8 @@ export default {
             line-height: 6vw
             margin-left: 11vw
             color: #fff
-            font-family: PFH
+            font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+            font-weight: bold
             background-color: #FF5756
             text-align: center
             border-radius: 3vw
@@ -441,7 +444,8 @@ export default {
               background-color: #fff
             .number-text
               margin: 0 2vw
-              font-family: PFH
+              font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+              font-weight: bold
             .number-add
               width: 7vw
               height: 7vw

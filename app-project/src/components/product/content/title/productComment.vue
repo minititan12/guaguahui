@@ -119,7 +119,8 @@ export default {
     box-sizing: border-box
     border-radius: 3vw
     .comment-top
-      font-family: PFB
+      font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+      font-weight: bold
       display: flex
       flex-direction: row
       justify-content: space-between
@@ -151,7 +152,7 @@ export default {
       margin-top: 3vw
       padding-top: 3vw
       font-size: 4vw
-      font-family: PFM
+      font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
       border-top: .01vw solid #eee
     .comment-bottom
       display: flex

@@ -34,7 +34,7 @@ export default {
       if(this.currentProductData){
         let flag = this.currentProductData.flag
 
-        if(flag == 1){
+        if(flag == 1 || flag == 5){
           if(this.currentBuyDetail){
             return this.currentBuyDetail.price
           }else{
@@ -108,7 +108,8 @@ export default {
     .header-right
       display: flex
       flex-direction: column
-      font-family: PFB
+      font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+      font-weight: bold
       .price
         font-family: hgzt
         color: #FF5756

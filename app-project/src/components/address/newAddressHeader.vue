@@ -23,6 +23,7 @@ export default {
     font-size: 5vw
   .addressHeader-wrapper >>> .van-nav-bar__title
     color: #000
-    font-family: PFH
+    font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+    font-weight: bold
     font-size: 4vw
 </style>

@@ -103,7 +103,8 @@ export default {
   .getCoupon-wrapper >>> .van-nav-bar__title
     color: #000
     font-size: 4vw
-    font-family: PFH
+    font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+    font-weight: bold
 
   .coupon-items
     position: absolute 

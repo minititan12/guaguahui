@@ -1,6 +1,6 @@
 <template>
   <div class="product-wrapper">
-    <NormalProduct v-if="type == 1"></NormalProduct>
+    <NormalProduct v-if="type == 1 || type == 5"></NormalProduct>
 
     <GroupProduct v-if="type == 2"></GroupProduct>
     

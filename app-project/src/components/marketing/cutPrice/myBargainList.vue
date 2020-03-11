@@ -94,7 +94,8 @@ export default {
       .name
         font-size 4.2vw
         height 10vw
-        font-family PFH
+        font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+        font-weight bold
         font-size 4.5vw
         letter-spacing 0.2vw
         overflow:hidden
@@ -142,7 +143,8 @@ export default {
           text-align center
           color #eb1f07
           border 1px solid #eb1f07
-          font-family PFH
+          font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+          font-weight bold
           font-size 4vw
           margin 2vw
         .share

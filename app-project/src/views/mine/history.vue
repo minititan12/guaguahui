@@ -213,7 +213,8 @@ export default {
   .history-wrapper >>> .van-nav-bar__title
     color: #000
     font-size: 4vw
-    font-family: PFH
+    font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+    font-weight: bold
 
   .history-wrapper >>> .van-nav-bar__text
     color: #444
@@ -258,7 +259,8 @@ export default {
         .goods-name
           font-size 4vw
           line-height 5vw
-          font-family PFH
+          font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+          font-weight bold
           overflow hidden
           text-overflow ellipsis
           display -webkit-box
@@ -309,7 +311,8 @@ export default {
       .no-more
         height: 15vw
         line-height: 15vw
-        font-family: PFH
+        font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+        font-weight: bold
         font-size: 4vw
   .footer
     position fixed

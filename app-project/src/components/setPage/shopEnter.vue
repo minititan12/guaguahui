@@ -391,7 +391,7 @@ export default {
     .siteEnter
       width: 100%
       margin-top: 3vw
-      font-family: PFM
+      font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
       display: flex
       flex-direction: column
       justify-content: center
@@ -414,7 +414,7 @@ export default {
           border-radius: 3vw
           border: 1px solid #FF5756
           font-size: 4vw
-          font-family: PFM
+          font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
           line-height: 6vw
           text-align: center
           color: #FF5756
@@ -423,7 +423,7 @@ export default {
       margin: 2vw auto
       position: absolute 
       bottom: 0
-      font-family: PFM
+      font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
       display: flex
       flex-direction: column
       align-items: center

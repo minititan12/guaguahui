@@ -158,7 +158,8 @@ export default {
 <style lang="stylus" scoped>
   .oderItem
     width: 94%
-    font-family: PFB
+    font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+    font-weight: bold
     margin: 3vw auto
     color: #000
     background-color: #fff
@@ -205,7 +206,7 @@ export default {
           margin: 1vw 0
           color: #444
         .oderItem-desc
-          font-family: PFM
+          font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
           color: #B9B9B9
           margin-top: 3vw
       .content-right
@@ -213,7 +214,8 @@ export default {
         flex-direction: column
         align-items: flex-end
         .right-status
-          font-family: PFH
+          font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+          font-weight: bold
           font-size: 3.5vw
           color: #FF5655
           margin-bottom: 1vw
@@ -224,7 +226,7 @@ export default {
           font-family: hgzt
         .right-number
           color: #B9B9B9
-          font-family: PFM
+          font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
 
     .oderItem-bottom
       display: flex

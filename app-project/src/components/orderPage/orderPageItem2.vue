@@ -287,7 +287,8 @@ export default {
     align-items: center
   .orderItems-wrapper >>> .van-loading__text
     color: #FF5756
-    font-family: PFH
+    font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+    font-weight: bold
 
   .orderItems-wrapper
     position: absolute
@@ -317,7 +318,8 @@ export default {
       align-items: center
       justify-content: center
       padding: 3vw 0
-      font-family: PFB
+      font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+      font-weight: bold
       .loading-img
         width: 6vw
         margin-right: 2vw
@@ -329,7 +331,8 @@ export default {
       align-items: center
       justify-content: center
       padding: 3vw 0
-      font-family: PFB
+      font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+      font-weight: bold
       .loading-img
         width: 6vw
         margin-right: 2vw

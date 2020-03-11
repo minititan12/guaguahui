@@ -100,6 +100,9 @@ export default {
         city: this.aweixin.city,
         sex: this.aweixin.sex
       }
+      // let str = JSON.stringify(postData)
+      // alert(str)
+
       bindPhone(postData)
         .then((res)=>{
           // alert('bindPhone success')

@@ -356,7 +356,8 @@ export default {
 
   .content-wrapper >>> .van-loading__text
     color: #FF5756
-    font-family: PFH
+    font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+    font-weight: bold
   .content-wrapper >>> .van-loading
     height: 15vw
     display: flex
@@ -411,7 +412,8 @@ export default {
         .no-more
           height: 15vw
           line-height: 15vw
-          font-family: PFH
+          font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+          font-weight: bold
           font-size: 4vw
 </style>
 

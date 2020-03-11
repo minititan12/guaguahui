@@ -230,10 +230,12 @@ export default {
   .GroupBuy-wrapper >>> .van-nav-bar__title
     color: #000
     font-size: 4vw
-    font-family: PFH
+    font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+    font-weight: bold
   
   .GroupBuy-wrapper >>> .van-nav-bar__text
-    font-family: PFH
+    font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+    font-weight: bold
     font-size: 3.6vw
     color: #FF5756
   
@@ -280,7 +282,8 @@ export default {
         flex-direction: row
         justify-content: center
         align-items: center
-        font-family: PFH
+        font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+        font-weight: bold
         font-size: 4vw
         .loading-img
           width: 6vw
@@ -301,7 +304,8 @@ export default {
           padding-bottom: 2vw
           .top-title
             font-size: 4vw
-            font-family: PFH
+            font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+            font-weight: bold
           .top-date
             padding: 0 2vw
             display: inline-block
@@ -322,7 +326,8 @@ export default {
             .item-middle
               margin: 2vw 0
               font-size: 3.2vw
-              font-family: PFB
+              font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+              font-weight: bold
               line-height: 5vw
               text-overflow: ellipsis
               display: -webkit-box
@@ -332,7 +337,7 @@ export default {
               overflow: hidden
               .item-icon
                 display: inline-block
-                font-family: PFM
+                font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
                 padding: 0 1vw
                 background: linear-gradient(to right,#FFD297,#FF8F05)
                 border-radius: 1vw

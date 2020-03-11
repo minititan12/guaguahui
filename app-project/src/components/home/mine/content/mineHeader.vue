@@ -155,10 +155,11 @@ export default {
         flex-direction: column
         .nickname
           font-size: 5vw
-          font-family: PFB
+          font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+          font-weight: bold
         .phone
           font-size: 3vw
-          font-family: PFM
+          font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
           margin-top: 2vw
       .middle-right
         position: relative
@@ -172,7 +173,8 @@ export default {
           border-radius: 2vw
           line-height: 5vw
           text-align: center
-          font-family: PFB
+          font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+          font-weight: bold
     .bottom
       width: 100%
       height: 15vw

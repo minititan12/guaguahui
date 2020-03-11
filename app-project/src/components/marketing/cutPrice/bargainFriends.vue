@@ -45,7 +45,8 @@ export default {
     background #f7e9e6
     border-radius 3vw
     .title
-      font-family "PFH"
+      font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+      font-weight bold
       border-left 1vw solid #000
       padding-left 2vw
       font-size 3.6vw
@@ -66,14 +67,16 @@ export default {
           width 0
           .name
             font-size 4vw
-            font-family PFH
+            font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+            font-weight bold
             line-height 5vw
           .time
             font-size 3vw
             line-height 5vw
             color #999
         .bargain-price
-          font-family PFH
+          font-family 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+          font-weight bold
           font-size 4vw
     .empty
       height 60vw
@@ -81,7 +84,7 @@ export default {
       justify-content center
       align-items center
       color #b48980
-      font-family "PFM"
+      font-family 'PingFangSC-Regular','Microsoft YaHei',sans-serif
       font-size 4vw
       text-align center
       .van-image

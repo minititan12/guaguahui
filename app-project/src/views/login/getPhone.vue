@@ -105,12 +105,15 @@ export default {
 
       bindPhone(postData)
         .then((res)=>{
-          // alert('bindPhone success')
           if(res.data.code == 1){
             if(!localStorage.hasOwnProperty('userData')){
               this.updateUserData(res.data.data)
               let userDataString = JSON.stringify(res.data.data)
               localStorage.userData = userDataString
+
+              let gghToken = JSON.stringify(res.data.data.token)
+              localStorage.setItem('gghToken',gghToken)
+              
               this.changeLoginStatus(true)
               this.changeTab(5)
               this.$router.push('/')
@@ -118,7 +121,7 @@ export default {
             }
           }else{
             this.$toast({
-              message: "请填写正确的验证码",
+              message: res.data.message,
               duration: 1200
             })
           }

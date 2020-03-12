@@ -1,7 +1,7 @@
 <template>
   <div class="homeTop-wrapper">
     <div class="home-title">
-      <div class="icon-left">
+      <div class="icon-left" @click="handleLeftClick">
         <span class="iconfont">&#xe626;</span>
       </div>
       <input 
@@ -13,7 +13,7 @@
         @blur="handleBlur"
         @keydown="handleSearch($event)"
       >
-      <span class="iconfont icon-right">&#xe64d;</span>
+      <span class="iconfont icon-right" @click="handleRightClick">&#xe64d;</span>
     </div>
     <LittleTitle></LittleTitle>
   </div>
@@ -34,17 +34,35 @@ export default {
     }
   },
   computed:{
-    ...mapState(['currentTab'])
+    ...mapState(['currentTab','login'])
   },
   methods: {
-    ...mapMutations(['changeSearchText','changeShowSearch','']),
+    ...mapMutations(['changeSearchText','changeShowSearch','changeTab']),
+    //左侧按钮点击
+    handleLeftClick(){
+      this.$toast({
+        message: '该功能还未开启',
+        duration: 1000
+      })
+    },
+    //右侧按钮点击
+    handleRightClick(){
+      if(this.login){
+        this.changeTab(3)
+      }else{
+        this.$router.push('/login')
+      }
+    },
+    //处理光标focus的时候
     handleFocus(){
       console.log('focus')
       this.icon = ''
     },
+    //处理光标blur的时候
     handleBlur(){
       this.icon = '\ue60e搜索商品'
     },
+    //处理搜索
     handleSearch(e){
       if(e.keyCode == 13){
         this.changeSearchText(this.searchText)

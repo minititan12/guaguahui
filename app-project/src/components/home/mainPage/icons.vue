@@ -111,24 +111,7 @@ export default {
           margin-top: 2vw
           font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
           font-weight: bold
-          // font-family: 'Droid Sans'
-          // font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
           font-size: 3.5vw
-      // .page-item
-      //   width: 100%
-      //   height: 40vw
-      //   .img-item
-      //     width: 20%
-      //     height: 20vw
-      //     float: left
-      //     text-align: center
-      //     span 
-      //       display: block
-      //       font-size: .25rem
-      //       color: #888
-      //   .swiper-img
-      //     width: 88%
-      //     height: 75%
 </style>
 
 

@@ -2,7 +2,7 @@ export default {
   //用户
   login: false,                //用户是否登录
   userData: {},                //用户数据
-  showAccountLogin: false,     //切换登录方式(账号登录)
+  showAccountLogin: true,     //切换登录方式(账号登录)
 
   //首页
   currentTab: 1,  //当前首页tab

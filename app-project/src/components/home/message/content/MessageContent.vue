@@ -20,7 +20,7 @@
         <div class="message">查看订单消息</div>
       </div>
       <div class="unread">
-        <div v-if="msgInfo && msgInfo[1].un_total > 0" class="num">{{msgInfo[1].un_total}}</div>
+        <div v-if="showOrderMsgCount" class="num">{{msgInfo[1].un_total}}</div>
         <van-icon name="arrow" />
       </div>
     </div>
@@ -32,7 +32,7 @@
         <div class="message">赢50元豪礼,疯狂砍价进行中</div>
       </div>
       <div class="unread">
-        <div v-if="msgInfo && msgInfo[0].un_total > 0" class="num">{{msgInfo[0].un_total}}</div>
+        <div v-if="showSystemMsgCount" class="num">{{msgInfo[0].un_total}}</div>
         <van-icon name="arrow" />
       </div>
     </div>
@@ -48,7 +48,31 @@ export default {
     }
   },
   computed: {
-    ...mapState(['messageNum'])
+    ...mapState(['messageNum']),
+    //订单未读消息计数
+    showOrderMsgCount(){
+      if(this.msgInfo){
+        if(this.msgInfo.length > 1){
+          if(this.msgInfo[1].un_total > 0){
+            return true
+          }
+        }
+      }
+
+      return false
+    },
+    //系统未读消息计数
+    showSystemMsgCount(){
+      if(this.msgInfo){
+        if(this.msgInfo.length){
+          if(this.msgInfo[0].un_total > 0){
+            return true
+          }
+        }
+      }
+
+      return false
+    }
   },
   created(){
     this.getMsgRedtotal();
@@ -60,6 +84,7 @@ export default {
     ...mapMutations(['updateUnread']),
     getMsgRedtotal(){
       getMsgRedtotal().then(res=>{
+        console.log('getMsgRedtotal',res.data)
         if(res.data.code != 1){
           this.$toast(res.data.message);
           return;

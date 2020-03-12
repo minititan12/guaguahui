@@ -26,6 +26,11 @@
           @productItemClick="handleToProduct(item.id)">
         </ProductItem>
       </div>
+
+      <div class="warn" v-if="showWarn">
+        <span class="iconfont">&#xe605;</span>
+        <span>该类目没有上架商品</span>
+      </div>
     </mescroll-vue>
   </div>
 </template>
@@ -46,6 +51,7 @@ export default {
       goodsList: [],
       active: 0,
       scrollTop: 0,
+      showWarn: false,
 
       down:{
         offset: 120,
@@ -126,16 +132,27 @@ export default {
           console.log('getBrandGoods:',res.data)
           let data = res.data
           if(page == 1){
-            setTimeout(()=>{
-              this.mescroll.endSuccess(data.data.attributes_amount.length,data.data.attributes_amount.length>=10);
-            },1000);
+            let len = data.data.attributes_amount.length
+            if(len > 0){
+              setTimeout(()=>{
+                this.mescroll.endSuccess(data.data.attributes_amount.length,data.data.attributes_amount.length>=10);
+
+                this.showWarn = false
+              },1000);
+            }else{
+              setTimeout(()=>{
+                this.mescroll.endSuccess(0,false)
+                this.showWarn = true
+              },300);
+            }
+            
           }else{
             this.mescroll.endSuccess(data.data.attributes_amount.length,data.data.attributes_amount.length>=10);	
           }
 
           if(data.code == 1){
             if(page == 1){
-              this.goodsList = [...data.data.attributes_amount];
+              this.goodsList = [...data.data.attributes_amount]
             }else{
               this.goodsList = [...this.goodsList,...data.data.attributes_amount]
             }
@@ -168,9 +185,18 @@ export default {
           console.log('searchbrandGoods:',res.data)
           let data = res.data
           if(page == 1){
-            setTimeout(()=>{
-              this.mescroll.endSuccess(data.data.length,data.data.length>=10)
-            },1000)
+            let len = data.data.length
+            if(len > 0){
+              setTimeout(()=>{
+                this.mescroll.endSuccess(data.data.length,data.data.length>=10)
+                this.showWarn = false
+              },1000)
+            }else{
+              setTimeout(()=>{
+                this.mescroll.endSuccess(0,false)
+                this.showWarn = true
+              },300)
+            }
           }else{
             this.mescroll.endSuccess(data.data.length,data.data.length>=10)
           }
@@ -203,6 +229,7 @@ export default {
     //active变化的时候
     handleActiveChange(name,title){
       //把商品列表清空
+      this.showWarn = false
       this.goodsList = []
       this.mescroll.resetUpScroll()
     }
@@ -323,6 +350,17 @@ export default {
         .no-more
           line-height: 15vw
           font-size: 4vw
+  >>> .warn
+        width: 100%
+        font-size: 5vw
+        font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+        display: flex
+        flex-direction: column
+        align-items: center
+        .iconfont
+          color: #666
+          font-size: 10vw
+          margin: 4vw 0
 </style>
 
 

@@ -1,9 +1,9 @@
 <template>
   <div>
+    <div class="header">
+      <van-nav-bar :title="title" left-arrow @click-left="handleBackClick"/>
+    </div>
     <mescroll-vue :down="down" :up="up" @init="init">
-      <van-sticky>
-        <van-nav-bar :title="title" left-arrow @click-left="handleBackClick"/>
-      </van-sticky>
       <ChangeName v-if="title == '修改会员名'"></ChangeName>
       <ChangeImg v-if="title == '修改头像'"></ChangeImg>
       <PrivatePolicy v-if="title == '隐私政策'"></PrivatePolicy>
@@ -78,12 +78,18 @@ export default {
         font-size: 4vw
         font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
         font-weight: bold
+
+  >>> .header
+        position: fixed 
+        top: 0
+        left: 0
+        width: 100%
   
   >>> .mescroll
         position: fixed
-        top: 0
+        top: 46px
         left: 0
-        height: 100%
+        height: calc(100% - 46px)
         background-color: #F6F7FB
   >>> .mescroll-upwarp
         padding: 0

@@ -22,7 +22,7 @@
             <div class="price">
               <span class="price-icon">￥</span>
               <span class="price-text">{{price}}</span>
-              <span class="price-cancel">原价: {{originPrice}}</span>
+              <span class="price-cancel">{{originPrice}}</span>
             </div>
             <div class="num">
               <span>限购{{limitNum}}件</span>

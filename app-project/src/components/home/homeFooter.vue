@@ -74,18 +74,17 @@ export default {
         this.changeShowSearch(false)
       }
 
+      if(!this.login){
+        if(index == 3 || index == 4 || index == 5){
+          this.$router.push('/login')
+          return
+        }
+      }
+
       if(this.currentTab == 1 && index == 1){
         this.updatedToTop(true)
       }else{
         this.changeTab(index)
-      }
-      if(index == 4 && !this.login){
-        this.$router.push('/login')
-        this.changeTab(1)
-      }      
-      if(index == 5 && !this.login){
-        this.$router.push('/login')
-        this.changeTab(1)
       }
     }
   },

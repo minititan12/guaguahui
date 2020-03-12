@@ -16,7 +16,7 @@
         <div class="price">
           <span class="price-icon">￥</span>
           <span class="price-text">{{price}}</span>
-          <span class="price-cancel" v-if="showCancel">原价: {{currentProductData.second_price}}</span>
+          <span class="price-cancel" v-if="showCancel">{{currentProductData.second_price}}</span>
         </div>
 
         <!-- 优惠劵 -->

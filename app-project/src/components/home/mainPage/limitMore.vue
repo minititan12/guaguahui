@@ -22,12 +22,14 @@ export default {
     //点击图片跳转限购页面
     handleTomore(){
       // console.log('查看更多')
-      this.$router.push({
-        path: '/limitBuy',
-        query: {
-          seckill_id: this.seckillData.seckill_id
-        }
-      })
+      if(this.seckillData){
+        this.$router.push({
+          path: '/limitBuy',
+          query: {
+            seckill_id: this.seckillData.seckill_id
+          }
+        })
+      }
     }
   }
 }

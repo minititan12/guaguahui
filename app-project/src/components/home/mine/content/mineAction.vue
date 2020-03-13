@@ -50,6 +50,7 @@ export default {
     },
     //处理登出
     handleLogOut(){
+      RongIMClient.getInstance().disconnect();
       this.$router.push('/login')
       localStorage.removeItem('userData')
       localStorage.removeItem('gghToken')

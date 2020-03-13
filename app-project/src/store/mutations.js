@@ -288,19 +288,28 @@ export default {
   },
 
   //客服
+  //添加消息
+  addAnswer(state, say){
+    let result = JSON.parse(JSON.stringify(state.answer))
+
+    result.push(say)
+    state.answer = result
+  },
   //获取消息
-  getAnswer(state, say) {
-    // state.answer.push(playload)
-    let answer = JSON.parse(JSON.stringify(state.answer))
-
-    if(answer.hasOwnProperty(say.shop_user_id)){
-      answer[say.shop_user_id].push(say)
+  getAnswer(state, ary) {
+    if(state.answer.length){
+      let result = JSON.parse(JSON.stringify(state.answer))
+      result = [...ary,...result]
+      state.answer = result
     }else{
-      answer[say.shop_user_id] = []
-      answer[say.shop_user_id].push(say)
+      state.answer = ary
     }
+  },
+  //更新消息
+  updateAnswer(state,ary){
+    let result = JSON.parse(JSON.stringify(ary))
 
-    state.answer = answer
+    state.answer = result
   },
 
   //获取历史消息

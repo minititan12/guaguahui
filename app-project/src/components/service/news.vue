@@ -1,49 +1,52 @@
 <template>
-  <!-- 1:文字，2：红包，3：文章 ,css:类型 -->
+  <!-- 1:文字，2：富文本,css:类型 -->
   <div v-if="renderLeft" class="left-wrapper">
-    <div class="space"></div>
     <div class="text-wrapper">
       <van-image
         class="left-img"
         round
         fit="cover"
-        width=".8rem"
-        height=".8rem"
+        width="10vw"
+        height="10vw"
         :src="leftImg"
       />
 
       <van-image
         v-if="showImg"
         fit="cover"
-        width="2rem"
-        height="2rem"
+        width="20vw"
+        height="20vw"
         :src="contentImg"
       />
       <span v-if="showText" class="text">{{data.text}}</span>
     </div>
+    <div class="space"></div>
   </div>
 
   <div v-else-if="renderRight" class="right-wrapper">
-    <div class="space"></div>
     <div class="text-wrapper">
-      <span class="text" v-if="showText">{{data.text}}</span>
-      <!-- <img :src="rightImg" alt=""> -->
-      <van-image
-        v-if="showImg"
-        fit="cover"
-        width="2rem"
-        height="2rem"
-        :src="contentImg"
-      />
+      <div class="text" v-if="showText" @click="handleToProduct">
+        <van-image
+          v-if="showImg"
+          fit="cover"
+          width="20vw"
+          height="20vw"
+          :src="contentImg"
+          class="img"
+        />
+        <span>{{data.text}}</span>
+      </div>
+
       <van-image
         class="right-img"
         round
         fit="cover"
-        width=".8rem"
-        height=".8rem"
+        width="10vw"
+        height="10vw"
         :src="rightImg"
       />
     </div>
+    <div class="space"></div>
   </div>
 </template>
 
@@ -55,7 +58,7 @@ export default {
   computed:{
     ...mapState(['userData']),
     leftImg(){
-      return 'public' + this.$route.query.shop_img
+      return this.$route.query.shop_img
     },
     rightImg(){
       if(this.userData.head_img){
@@ -89,10 +92,18 @@ export default {
       }
     },
     showText(){
-      if(this.data.type == 1){
+      if(this.data.type == 1 || this.data.type == 2){
         return true
       }else{
         return false
+      }
+    }
+  },
+  methods: {
+    handleToProduct(){
+      if(this.data.type == 2){
+        let path = this.data.url.split('#')[1]
+        this.$router.push(path)
       }
     }
   }
@@ -112,8 +123,12 @@ export default {
       justify-content: flex-start
       align-items: center
       .text
-        line-height: .6rem
-        font-size: .3rem
+        display: flex
+        flex-direction: row
+        align-items: center
+        justify-content: space-between
+        line-height: 7vw
+        font-size: 4vw
         background-color: #bbb
         border-radius: .3rem
         text-align: center
@@ -123,9 +138,9 @@ export default {
         flex-shrink: 0
         margin-right: .2rem
   .right-wrapper
-    padding: 0 .3rem
+    padding: 0 4vw
     .space
-      height: .2rem
+      height: 2vw
       width: 100%
     .text-wrapper
       width: 100%
@@ -134,15 +149,22 @@ export default {
       justify-content: flex-end
       align-items: center
       .text
+        display: flex
+        flex-direction: row
+        align-items: center
+        justify-content: space-between
         max-width: 80vw
-        line-height: .6rem
-        font-size: .3rem
+        line-height: 7vw
+        font-size: 4vw
         background-color: #F7C748
-        border-radius: .3rem
-        padding: 0 .3rem
+        border-radius: 3vw
+        padding: 1vw 3vw
         color: #000
         word-break:break-all
+        .img
+          flex-shrink: 0
+          margin-right: 2vw
       .right-img
         flex-shrink: 0
-        margin-left: .2rem
+        margin-left: 2vw
 </style>

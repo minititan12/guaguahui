@@ -11,6 +11,7 @@
 <script>
 import MessageItems from '@/components/home/message/content/messageItems'
 export default {
+  name: 'InteractiveMessage',
   components:{
     MessageItems
   },

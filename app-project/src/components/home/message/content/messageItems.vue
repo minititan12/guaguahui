@@ -3,7 +3,7 @@
     <div 
       class="shopItem" 
       v-for="item of shopItems"
-      @click="handleToService(item.shop_user_id,item.company,item.shop_img)"
+      @click="handleToService(item.id,item.nickname,item.avatar)"
     >
       <van-swipe-cell style="width: 100%">
         <div class="item-left">
@@ -12,28 +12,16 @@
             fit="cover"
             width=".8rem"
             height=".8rem"
-            :src="'public' + item.shop_img"
+            :src="item.avatar"
           />
-          <span class="text">{{item.company}}</span>
+          <span class="text">{{item.nickname}}</span>
         </div>
         
-        <span class="num" v-if="getMessageNum(item.shop_user_id)">{{getMessageNum(item.shop_user_id)}}</span>
+        <!-- <span class="num" v-if="getMessageNum(item.shop_user_id)">{{getMessageNum(item.shop_user_id)}}</span> -->
         <template slot="right">
-          <van-button @click="handleDel(item.shop_user_id)" square type="danger" text="删除" />
+          <van-button @click="handleDel(item.id)" square type="danger" text="删除" />
         </template>
       </van-swipe-cell>
-      <!-- <div class="item-left">
-        <van-image
-          class="left-img"
-          fit="cover"
-          width=".8rem"
-          height=".8rem"
-          :src="'public' + item.shop_img"
-        />
-        <span class="text">{{item.company}}</span>
-      </div>
-      
-      <span v-if="getMessageNum(item.shop_user_id)" class="num">{{getMessageNum(item.shop_user_id)}}</span> -->
     </div>
   </div>
 </template>
@@ -49,71 +37,76 @@ export default {
     }
   },
   computed:{
-    ...mapState(['userData','answer','newAnswer']),
-    shopIds(){
-      let shopIds = []
-      if(this.newAnswer){
-        for(let key in this.newAnswer){
-          shopIds.push(key)
-        }
-        return shopIds
-      }
-    }
+    ...mapState(['userData']),
   },
   methods: {
-    ...mapMutations(['addNewAnswerToAnswer','updatedMessageNum','updateNewAnswer','delNewAnswer']),
-    initMessageData(){
-      let postData = {
-        user_id: this.userData.id
+    //获取用户聊天会话数据
+    getAllChatData(){
+      let msgs = JSON.parse(localStorage.msgMap)
+      let ary = []
+      for(let key in msgs){
+        ary.push({
+          id: key,
+          ...msgs[key]
+        })
       }
-      getuserchat(postData)
-        .then((res)=>{
-          console.log('getuserchat',res.data)
-          if(res.data.code == 1){
-            let result = []
-            for(let item of res.data.data){
-              result.push({
-                company: item.company[0].company,
-                shop_img: item.company[0].shop_img,
-                shop_user_id: item.shop_user_id
-              })
-            }
-            this.shopItems = result
-            this.updateNewAnswer(res.data.data)
-          }
-        })
-        .catch((err)=>{
-          console.log('getuserchat err',err)
-        })
+      let result = ary.sort((a,b)=>{
+        return b.timestamp - a.timestamp
+      })
+
+      this.shopItems = result
     },
-    updateMessage(){
-      if(this.shopIds.length){
-        let postData = {
-          user_id: this.shopIds
+    // 删除聊天会话
+    handleDel(id){
+      this.clearUnRead(id)
+
+      //刷新下界面
+      let result = []
+      for(let obj of this.shopItems){
+        if(obj.id != id){
+          result.push(obj)
         }
-        userDetails(postData)
-          .then((res)=>{
-            console.log('userDetails',res.data)
-            if(res.data.code == 1){
-              let result = []
-              for(let item of res.data.data){
-                result.push({
-                  company: item.company,
-                  shop_img: item.shop_img,
-                  shop_user_id: item.user_id
-                })
-              }
-              this.shopItems = result
-            }
-          })
-          .catch((err)=>{
-            console.log('userDetails err:',err)
-          })
       }
+      this.shopItems = result
+      
+      //清除localStorage库存
+      let msgs = JSON.parse(localStorage.msgMap)
+      delete msgs[id]
+      let str = JSON.stringify(msgs)
+      localStorage.msgMap = str
     },
+
+    //获取所有会话未读数
+    getAllUnReadCount(){
+      RongIMClient.getInstance().getTotalUnreadCount({
+        onSuccess: function(count) {
+          console.log('获取所有会话未读消息数成功', count);
+          localStorage.setItem('unReadCount',count)
+        },
+        onError: function(error) {
+          console.log('获取所有会话未读消息数失败', error);
+        }
+      })
+    },
+
+    //清除指定会话未读数
+    clearUnRead(id){
+      var conversationType = RongIMLib.ConversationType.PRIVATE;
+      var targetId = id + '';
+      RongIMClient.getInstance().clearUnreadCount(conversationType, targetId, {
+        onSuccess: function() {
+          console.log('清除指定会话'+ id +'未读消息数成功');
+        },
+        onError: function(error) {
+          console.log('清除指定会话未读消息数失败', error);
+        }
+      });
+      this.getAllUnReadCount()
+    },
+
+    //跳转到聊天界面
     handleToService(id,shopName,shop_img){
-      this.addNewAnswerToAnswer(id)
-      this.updatedMessageNum()
+      this.clearUnRead(id)
       this.$router.push({
         path: '/service',
         query: {
@@ -123,42 +116,9 @@ export default {
         }
       })
     },
-    getMessageNum(id){
-      for(let key in this.newAnswer){
-        if(key == id){
-          return this.newAnswer[key].length
-        }
-      }
-      return false
-    },
-    handleDel(shop_user_id){
-      console.log(shop_user_id)
-      let postData = {
-        shop_user_id: shop_user_id,
-        user_id: this.userData.id
-      }
-
-      deleteshat(postData)
-        .then((res)=>{
-          console.log('deleteshat',res.data)
-          if(res.data.code == 1){
-            this.delNewAnswer(shop_user_id)
-            this.initMessageData()
-          }
-        })
-        .catch((err)=>{
-          console.log('deleteshat',err)
-        })
-    }
   },
-  watch: {
-    newAnswer(){
-      this.updateMessage()
-    }
-  },
-  mounted(){
-    this.initMessageData()
-    // this.initMessage()
+  created(){
+    this.getAllChatData()
   }
 }
 </script>

@@ -47,7 +47,7 @@ export default {
   computed: {
     ...mapState(['currentTab','login','messageNum','unread']),
     unreadNum(){
-      let num = this.messageNum;
+      let num = parseInt(localStorage.unReadCount)
       if(this.unread){
         if(this.unread[0]){
           num += this.unread[0].un_total;

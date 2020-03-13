@@ -3,17 +3,33 @@
     <van-sticky>
       <MessageHeader></MessageHeader>
     </van-sticky>
-    <MessageContent></MessageContent>
+    <MessageWrapper></MessageWrapper>
   </div>
 </template>
 
 <script>
 import MessageHeader from './content/messageHeader'
-import MessageContent from './content/MessageContent'
+import MessageWrapper from './content/messageWrapper'
 export default {
   components: {
     MessageHeader,
-    MessageContent,
+    MessageWrapper,
+  },
+  methods: {
+    getAllUnReadCount(){
+      RongIMClient.getInstance().getTotalUnreadCount({
+        onSuccess: function(count) {
+          console.log('获取所有会话未读消息数成功', count);
+          localStorage.setItem('unReadCount',count)
+        },
+        onError: function(error) {
+          console.log('获取所有会话未读消息数失败', error);
+        }
+      });
+    }
+  },
+  mounted(){
+    this.getAllUnReadCount()
   }
 }
 </script>
@@ -23,7 +39,7 @@ export default {
     position: fixed
     overflow: hidden
     top: 0
-    bottom: 1rem
+    bottom: 12vw
     left: 0
     right: 0
     background-color: #eee

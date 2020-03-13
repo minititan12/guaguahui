@@ -42,13 +42,14 @@
 import {getMsgRedtotal} from '@/utils/axios/request'
 import { mapState,mapMutations } from 'vuex'
 export default {
+  name: 'MessageWrapper',
   data(){
     return {
-      msgInfo:null
+      msgInfo:null,
+      messageNum: 0
     }
   },
   computed: {
-    ...mapState(['messageNum']),
     //订单未读消息计数
     showOrderMsgCount(){
       if(this.msgInfo){
@@ -74,14 +75,13 @@ export default {
       return false
     }
   },
-  created(){
-    this.getMsgRedtotal();
-  },
-  activated(){
-    this.getMsgRedtotal();
-  },
   methods:{
     ...mapMutations(['updateUnread']),
+    //修正互动消息数量
+    updateMessageNum(){
+      this.messageNum = parseInt(localStorage.unReadCount)
+    },
+    //获取消息数量
     getMsgRedtotal(){
       getMsgRedtotal().then(res=>{
         console.log('getMsgRedtotal',res.data)
@@ -111,7 +111,18 @@ export default {
         path: "/systemMessage"
       })      
     }
-  }
+  },
+  created(){
+    this.updateMessageNum()
+    this.getMsgRedtotal();
+  },
+  mounted(){
+    this.updateMessageNum()
+  },
+  activated(){
+    this.updateMessageNum()
+    this.getMsgRedtotal();
+  },
 }
 </script>
 <style lang="stylus" scoped>

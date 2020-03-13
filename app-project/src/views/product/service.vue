@@ -10,6 +10,7 @@
 import ServiceHeader from '../../components/service/serviceHeader'
 import ServiceFooter from '../../components/service/serviceFooter'
 import ServiceContent from '../../components/service/serviceContent'
+import { mapMutations } from 'vuex'
 export default {
   name: "Service",
   components: {
@@ -18,6 +19,7 @@ export default {
     ServiceContent
   },
   methods: {
+    ...mapMutations(['updateAnswer']),
     handleEnter(){
       this.$refs.serviceContent.enter()
     }
@@ -36,6 +38,9 @@ export default {
         }
       })
     }
+  },
+  created(){
+    this.updateAnswer([])
   }
 }
 </script>

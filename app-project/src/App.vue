@@ -33,7 +33,7 @@ import sha1 from 'sha1'
       }
     },
     methods: {
-      ...mapMutations(['getAnswer','getNewAnswer','updatedMessageNum','updateWXTicket','changeLoginStatus','updateUserData']),
+      ...mapMutations(['addAnswer','getNewAnswer','updatedMessageNum','updateWXTicket','changeLoginStatus','updateUserData']),
       //更新用户信息
       initUserData(){
         if(localStorage.hasOwnProperty('gghToken')){
@@ -145,12 +145,16 @@ import sha1 from 'sha1'
       //缓存聊天信息
       keepText(message){
         let timetamp = Date.parse(new Date())
+        let type = message.messageType == 'TextMessage' ? 1 : 2
         let postData = {
           user_id: this.userData.id,
           shop_user_id: message.senderUserId,
-          content: message.content.content,
+          content: {
+            content: message.content.content,
+          },
           attribute: 'left',
-          timetamp: timetamp
+          timetamp: timetamp,
+          message_type: type
         }
         console.log(postData)
 
@@ -159,19 +163,68 @@ import sha1 from 'sha1'
             console.log(res.data)
             if(res.data.code != 1){
               this.$toast({
-                message: '发送失败',
+                message: '缓存失败',
                 duration: 1200
               })
             }
           })
           .catch((err)=>{
             this.$toast({
-              message: '发送失败',
+              message: '缓存失败',
               duration: 1200
             })
             console.log('storagecontent err',err)
           })
       },
+
+      //获取所有会话未读数
+      getAllUnReadCount(){
+        RongIMClient.getInstance().getTotalUnreadCount({
+          onSuccess: function(count) {
+            console.log('获取所有会话未读消息数成功', count);
+            localStorage.setItem('unReadCount',count)
+          },
+          onError: function(error) {
+            console.log('获取所有会话未读消息数失败', error);
+          }
+        })
+      },
+
+      //缓存新窗口消息
+      keepLocal(msg){
+        let extra = msg.content.extra
+        let obj = {
+          nickname: extra.nickname,
+          avatar: extra.avatar,
+          timestamp: msg.receivedTime
+        }
+        //用来存储的id也是存储对象的key
+        let id = msg.senderUserId
+
+        //如果本地有存储msgMap
+        if(localStorage.msgMap){
+          let map = JSON.parse(localStorage.msgMap)
+          let match = false
+          for(let key in map){
+            if(key == id){
+              match = true
+              map[key] = obj
+            }
+          }
+
+          if(!match){
+            map[id] = obj
+          }
+
+          localStorage.msgMap = JSON.stringify(map)
+        }else{//如果本地没有存储msgMap
+          let map = {}
+          map[id] = obj
+          localStorage.msgMap = JSON.stringify(map)
+        }
+      },
+
+
       beforeIm(){
         let that = this
         // 连接状态监听器
@@ -214,13 +267,15 @@ import sha1 from 'sha1'
         RongIMClient.setOnReceiveMessageListener({
           // 接收到的消息
           onReceived: function (message) {
+            that.keepLocal(message)
+            that.getAllUnReadCount()
             // 判断消息类型
             switch(message.messageType){
               case RongIMClient.MessageType.TextMessage:
                   // message.content.content => 文字内容
                   //----------------------------重要-------把获取的消息存放在store中，全局公用homeIm.vue要使用
                   console.log('8080',message,message.content.content)
-                  let timetamp = Date.parse(new Date())
+                  that.keepText(message)
                   let say = {
                     type: 1,
                     css: 'left',
@@ -228,17 +283,12 @@ import sha1 from 'sha1'
                     message: message,
                     shop_user_id: message.senderUserId,
                     id: that.userData.id + '',
-                    timetamp: timetamp
+                    key: message.messageUId,
+                    timetamp: message.receivedTime
                   }
                   if(that.$route.name == 'service' && that.$route.query.id == message.senderUserId){
-                    console.log('in service',that.$route)
-                    that.keepText(message)
-                    that.getAnswer(say)
-                  }else{
-                    console.log('out service',that.$route)
-                    that.keepText(message)
-                    that.getNewAnswer(say)
-                    that.updatedMessageNum()
+                    console.log('in service')
+                    that.addAnswer(say)
                   }
                   break;
               case RongIMClient.MessageType.VoiceMessage:
@@ -287,7 +337,8 @@ import sha1 from 'sha1'
       //连接token
         RongIMClient.connect(that.token, {
           onSuccess: function(userId) {
-            console.log('Connect successfully. ' + userId);
+            console.log('Connect successfully:' + userId);
+            that.getAllUnReadCount()
           },
           onTokenIncorrect: function() {
             console.log('token 无效');
@@ -335,7 +386,7 @@ import sha1 from 'sha1'
     created(){
       this.initUserData()
       //融云初始化
-      RongIMLib.RongIMClient.init('mgb7ka1nmd5vg');
+      RongIMLib.RongIMClient.init('cpj2xarlch2nn');
       this.beforeIm()   //设置监听，必须先监听，再连接
     },
     mounted(){

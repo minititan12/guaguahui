@@ -1,21 +1,16 @@
 <template>
-  <div class="serviceContent-wrapper" ref="serviceContent">
-    <div class="serviceContent-content">
-      <transition name="fade">
-        <div class="content-refresh" v-show="refresh">
-          <van-loading color="#E83755" size="24px">加载中...</van-loading>
-        </div>
-      </transition>
-      <div class="blank"></div>
-      <ProductDesc v-if="showDesc" :data="descData"></ProductDesc>
-      <News v-if="currentAnswer" v-for="item of currentAnswer" :data="item" :key="item.text + item.timetamp"></News>
-      <div class="blank"></div>
-    </div>
+  <div>
+    <mescroll-vue :down="down" :up="up" @init="init">
+      <div class="serviceContent-content">
+        <ProductDesc v-if="showDesc" :data="descData" @enter="enter"></ProductDesc>
+        <News v-if="answer.length > 0" v-for="item of answer" :data="item" :key="item.key"></News>
+      </div>
+    </mescroll-vue>
   </div>
 </template>
 
 <script>
-import Bscroll from 'better-scroll'
+import MescrollVue from 'mescroll.js/mescroll.vue'
 import News from './news'
 import { mapState, mapMutations } from 'vuex'
 import ProductDesc from './productDesc'
@@ -24,16 +19,51 @@ export default {
   name:"ServiceContent",
   components: {
     News,
-    ProductDesc
+    ProductDesc,
+    MescrollVue
   },
   data(){
     return {
       refresh: false,
-      refreshTime: 0
+      refreshTime: 0,
+      down:{
+        htmlContent:'<div class="droping"><p class="downwarp-progress"></p><p class="downwarp-tip"></p></div><div class="refreshing"><p class="loading"></p><img class="loading-img" src="/public/uploads/home/load.png" alt=""><span>加载中...</span></div>',
+        inited:(mescroll, downwarp)=>{
+          mescroll.droping = downwarp.querySelector('.droping');
+          mescroll.refreshing = downwarp.querySelector('.refreshing');
+        },
+        inOffset:(mescroll)=>{
+          mescroll.droping.style.display="block";
+          mescroll.refreshing.style.display="none";
+          mescroll.droping.querySelector('.downwarp-tip').innerText = "下拉刷新";
+        },
+        outOffset:(mescroll)=>{
+          mescroll.droping.querySelector('.downwarp-tip').innerText = "释放刷新";
+        },
+        onMoving(mescroll, rate, downHight){
+          let deg = 0;
+          deg = parseInt(downHight)*4.5;
+          mescroll.droping.querySelector('.downwarp-progress').style.transform = "rotate("+ deg +"deg)";
+        },
+        showLoading:(mescroll)=>{
+          mescroll.droping.style.display="none";
+          mescroll.refreshing.style.display="block";
+        },
+        auto:false,
+        callback:(mescroll)=>{
+          if(this.answer.length > 0){
+            let timestrap = this.answer[0].timetamp
+            this.getHistoryMessage(timestrap)
+          }
+        }
+      },
+      up: {
+        use: false
+      }
     }
   },
   computed: {
-    ...mapState(['answer','userData','serviceFirstLoad']),
+    ...mapState(['answer','userData']),
     showDesc(){
       if(this.$route.query.hasOwnProperty('goods_id')){
         return true
@@ -50,144 +80,152 @@ export default {
         }
       }
     },
-    currentAnswer(){
-      if(this.answer){
-        let targetId = this.$route.query.id + ''
-        if(this.answer.hasOwnProperty(targetId)){
-          return this.answer[targetId]
-        }else{
-          return []
-        }
-      }else{
-        return []
-      }
-    }
   },
   methods: {
-    ...mapMutations(['getHistoryAnswer','addToServiceFirstLoad']),
-    handlePullingDown(){
-      let shop_id = this.$route.query.id + ''
-      let timetamp = 0
-      if(this.answer.hasOwnProperty(shop_id) && this.answer[shop_id].length > 0){
-        timetamp = this.answer[shop_id][0].timetamp
+    ...mapMutations(['getHistoryAnswer','updateAnswer']),
+    // mescroll组件初始化的回调,可获取到mescroll对象
+    init(mescroll){
+      this.mescroll = mescroll;
+    },
+
+    //输入触发滚动到最低
+    enter(){
+      this.mescroll.scrollTo(999999,100)
+    },
+
+    //获取类型
+    getType(item){
+      if(item.messageType == 'RichContentMessage'){
+        return 2
       }
-      
-      let postData = {
-        user_id: this.userData.id + '',
-        shop_user_id: shop_id,
-        timetamp: timetamp
+
+      return 1
+    },
+    //获取css方向
+    getCss(item){
+      if(item.senderUserId == item.targetId){
+        return 'left'
       }
-      getcontent(postData)
-        .then((res)=>{
-          setTimeout(()=>{
-            this.refresh = false
-          },500)
-          this.serviceScroll.finishPullDown()
-          console.log('getcontent:',res.data)
-          if(res.data.code == 1){
-            let data = {
-              historyData: res.data.data,
-              id: shop_id
-            }
-            console.log(data)
-            this.getHistoryAnswer(data)
-            console.log(2)
-            this.$nextTick(()=>{
-              this.serviceScroll.refresh()
+
+      return 'right'
+    },
+    //获取图片
+    getImg(item){
+      if(item.content.hasOwnProperty('imageUri')){
+        return item.content.imageUri
+      }
+      return ''
+    },
+    //获取url
+    getUrl(item){
+      if(item.content.hasOwnProperty('url')){
+        return item.content.url
+      }
+      return ''
+    },
+
+    //获取历史消息
+    getHistoryMessage(timestrap){
+      console.log(timestrap)
+      let status = RongIMClient.getInstance().getCurrentConnectionStatus()
+      let that = this
+
+      if(status == 0){
+        let conversationType = RongIMLib.ConversationType.PRIVATE
+        let targetId = this.$route.query.id + ''
+        let count = 5
+        let that = this
+        
+        RongIMLib.RongIMClient.getInstance().getHistoryMessages(conversationType, targetId, timestrap, count, {
+          onSuccess: function(list, hasMsg) {
+            console.log('获取历史消息成功', list);
+
+            let result = []
+            list.forEach((item)=>{
+              result.push({
+                type: that.getType(item),
+                css: that.getCss(item),
+                text: item.content.content,
+                message: item,
+                shop_user_id: item.targetId,
+                id: that.userData.id,
+                key: item.messageUId,
+                timetamp: item.sentTime,
+                img: that.getImg(item),
+                url: that.getUrl(item)
+              })
             })
+
+            result = [...result,...that.answer]
+            that.updateAnswer(result)
+            // if(!hasMsg){
+            //   that.$toast({
+            //     message: '已经没有聊天信息了',
+            //     duration: 1200
+            //   })
+            // }
+
+            setTimeout(()=>{
+              that.mescroll.endSuccess()
+            },300)
+          },
+          onError: function(error) {
+            // 请排查：单群聊消息云存储是否开通
+            console.log('获取历史消息失败', error);
+            setTimeout(()=>{
+              that.mescroll.endSuccess()
+            },300)
           }
         })
-        .catch((err)=>{
-          setTimeout(()=>{
-            this.refresh = false
-          },500)
-          this.serviceScroll.finishPullDown()
-          console.log('getcontent err',err)
-        })
+      }else{
+        setTimeout(()=>{
+          this.mescroll.endSuccess()
+        },300)
+        console.log('融云连接失败')
+      }
     },
-    initServiceScroll(){
-      let el = this.$refs.serviceContent
-      this.serviceScroll = new Bscroll(el,{
-        click: true,
-        eventPassthrough: 'horizontal',
-        pullDownRefresh: {
-          threshold: 50,
-          stop: 20
-        }
-      })
-
-      this.serviceScroll.on('pullingDown',()=>{
-        this.refresh = true
-        this.handlePullingDown()
-      })
-    },
-    enter(){
-      console.log('enter')
-      this.serviceScroll.refresh()
-      this.$nextTick(()=>{
-        this.serviceScroll.scrollTo(0,this.serviceScroll.maxScrollY)
-      })
-    }
   },
   created(){
-    let shopID = this.$route.query.id
-    if(this.serviceFirstLoad.indexOf(shopID) == -1){
-      this.handlePullingDown()
-      this.addToServiceFirstLoad(shopID)
-    }
+    this.getHistoryMessage(0)
   },
-  mounted(){
-    console.log(this.$route)
-    this.initServiceScroll()
-    // console.log(this.serviceScroll)
-    // this.serviceScroll.scrollTo(0,this.serviceScroll.maxScrollY)
-    this.serviceScroll.refresh()
-  },
-  updated(){
-    this.serviceScroll.refresh()
-  },
-  // watch: {
-  //   answer(){
-  //     console.log('answer change')
-  //     this.$nextTick(()=>{
-  //       this.serviceScroll.scrollTo(0,this.serviceScroll.maxScrollY)
-  //     })
-  //   }
-  // }
 }
 </script>
 
 <style lang="stylus" scoped>
-  .fade-enter
-    opacity: 0
-    height: 0
-  .fade-enter-active
-    transition: all .5s linear
-  // .fade-leave-active
-  //   transition: all .5s linear
-  .fade-leave-to
-    opacity: 0
-    height: 0
-
-  .serviceContent-wrapper >>> .blank
-    width: 100vw
-    height: .2rem
-  .serviceContent-wrapper
-    position: fixed 
-    top: calc(46px + .01rem)
-    bottom: calc(1rem + .01rem)
+  .mescroll
+    position: fixed
+    top: 46px
     left: 0
-    right: 0
     background-color: #F6F6F8
-    overflow: hidden
-    .serviceContent-content
-      width: 100%
-      min-height: 88vh
-      .content-refresh
+    height: calc(100% - 46px - 12vw)
+    // padding-top: 2vw
+  >>> .mescroll-upwarp
+        padding: 0
+
+  >>> .droping
+      .downwarp-tip
+        color #FF5756
+      .downwarp-progress
+        border-color #FF5756
+        border-bottom-color: transparent;
+  >>> .refreshing
         width: 100%
-        height: 40px
         display: flex
         justify-content: center
         align-items: center
-        color: red
+        color #FF5756
+        .loading
+          display inline-block
+          width 4.2vw
+          height 4.2vw
+          margin-right 2vw
+          border-radius 50%
+          border 1px solid #FF5756
+          border-bottom-color transparent
+          vertical-align middle
+          animation mescrollRotate .8s linear infinite
+        .loading-img
+          width: 6vw
+          height: 5vw
+          margin-right: 2vw
 </style>

@@ -250,6 +250,7 @@ export default {
 
   //keep-alive返回页面时
   activated(){
+    this.showWarn = false
     console.log('activated')
     if(localStorage.fromHomeToGoods == 'true'){
       if(this.currentGoodsInputValue.length){

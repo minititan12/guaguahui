@@ -28,6 +28,11 @@ export default {
   updatedToTop(state,bool){
     state.toTop = bool
   },
+  //更新未读的客服聊天消息数量
+  updatedUnReadServiceCount(state,num){
+    let n = parseInt(num)
+    state.unReadServiceCount = n
+  },
 
 
   //home

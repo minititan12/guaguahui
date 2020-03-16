@@ -5,10 +5,10 @@
         src="/public/static/message/icon_chat.png" />
       <div class="content">
         <div class="title">互动消息</div>
-        <div v-if='messageNum <= 0' class="message">暂无消息提醒</div>
+        <div v-if='unReadServiceCount <= 0' class="message">暂无消息提醒</div>
       </div>
       <div class="unread">
-        <div class="num" v-if='messageNum > 0' >{{messageNum}}</div>
+        <div class="num" v-if='unReadServiceCount > 0' >{{unReadServiceCount}}</div>
         <van-icon name="arrow" />
       </div>
     </div>
@@ -46,10 +46,10 @@ export default {
   data(){
     return {
       msgInfo:null,
-      messageNum: 0
     }
   },
   computed: {
+    ...mapState(['unReadServiceCount']),
     //订单未读消息计数
     showOrderMsgCount(){
       if(this.msgInfo){
@@ -77,10 +77,6 @@ export default {
   },
   methods:{
     ...mapMutations(['updateUnread']),
-    //修正互动消息数量
-    updateMessageNum(){
-      this.messageNum = parseInt(localStorage.unReadCount)
-    },
     //获取消息数量
     getMsgRedtotal(){
       getMsgRedtotal().then(res=>{
@@ -113,14 +109,9 @@ export default {
     }
   },
   created(){
-    this.updateMessageNum()
     this.getMsgRedtotal();
   },
-  mounted(){
-    this.updateMessageNum()
-  },
   activated(){
-    this.updateMessageNum()
     this.getMsgRedtotal();
   },
 }

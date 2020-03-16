@@ -10,6 +10,7 @@ export default {
   mainPageRefresh: false,     //首页下拉刷新
   messageNum: 0,               //首页的消息数量
   mainProductActive: 0,         //首页产品的active
+  unReadServiceCount: 0,            //首页未读消息数量
 
   //首页搜索
   searchText: "",              //首页搜索当前内容   

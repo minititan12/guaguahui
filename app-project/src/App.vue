@@ -33,7 +33,7 @@ import sha1 from 'sha1'
       }
     },
     methods: {
-      ...mapMutations(['addAnswer','getNewAnswer','updatedMessageNum','updateWXTicket','changeLoginStatus','updateUserData']),
+      ...mapMutations(['addAnswer','getNewAnswer','updatedMessageNum','updateWXTicket','changeLoginStatus','updateUserData','updatedUnReadServiceCount']),
       //更新用户信息
       initUserData(){
         if(localStorage.hasOwnProperty('gghToken')){
@@ -179,10 +179,12 @@ import sha1 from 'sha1'
 
       //获取所有会话未读数
       getAllUnReadCount(){
+        let that = this
         RongIMClient.getInstance().getTotalUnreadCount({
           onSuccess: function(count) {
             console.log('获取所有会话未读消息数成功', count);
-            localStorage.setItem('unReadCount',count)
+            // localStorage.setItem('unReadCount',count)
+            that.updatedUnReadServiceCount(count)
           },
           onError: function(error) {
             console.log('获取所有会话未读消息数失败', error);

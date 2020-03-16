@@ -40,6 +40,7 @@ export default {
     ...mapState(['userData']),
   },
   methods: {
+    ...mapMutations(['updatedUnReadServiceCount']),
     //获取用户聊天会话数据
     getAllChatData(){
       let msgs = JSON.parse(localStorage.msgMap)
@@ -78,10 +79,11 @@ export default {
 
     //获取所有会话未读数
     getAllUnReadCount(){
+      let that = this
       RongIMClient.getInstance().getTotalUnreadCount({
         onSuccess: function(count) {
           console.log('获取所有会话未读消息数成功', count);
-          localStorage.setItem('unReadCount',count)
+          that.updatedUnReadServiceCount(count)
         },
         onError: function(error) {
           console.log('获取所有会话未读消息数失败', error);

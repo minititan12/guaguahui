@@ -45,9 +45,9 @@ import {getMsgRedtotal} from '@/utils/axios/request'
 export default {
   name: 'HomeFooter',
   computed: {
-    ...mapState(['currentTab','login','messageNum','unread']),
+    ...mapState(['currentTab','login','messageNum','unread','unReadServiceCount']),
     unreadNum(){
-      let num = parseInt(localStorage.unReadCount)
+      let num = this.unReadServiceCount
       if(this.unread){
         if(this.unread[0]){
           num += this.unread[0].un_total;

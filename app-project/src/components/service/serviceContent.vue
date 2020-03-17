@@ -54,6 +54,8 @@ export default {
           if(this.answer.length > 0){
             let timestrap = this.answer[0].timetamp
             this.getHistoryMessage(timestrap)
+          }else{
+            this.getHistoryMessage(0)
           }
         }
       },
@@ -197,8 +199,9 @@ export default {
     top: 46px
     left: 0
     background-color: #F6F6F8
-    height: calc(100% - 46px - 12vw)
-    // padding-top: 2vw
+    height: calc(100% - 46px - 14vw)
+    padding-top: 2vw
+    padding-bottom: 2vw
   >>> .mescroll-upwarp
         padding: 0
 

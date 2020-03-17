@@ -89,7 +89,7 @@ export default {
     keepLocal(msg){
       let obj = {
         nickname: this.$route.query.shopName,
-        avatar: '/public'+ this.$route.query.shop_img,
+        avatar: this.$route.query.shop_img,
         timestamp: msg.sentTime
       }
       //用来存储的id也是存储对象的key

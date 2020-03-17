@@ -22,10 +22,14 @@ export default {
     getClassifyData(){
       getbrand()
         .then((res)=>{
+          console.log('brand data:',res.data)
           if(res.data.code == 1){
             console.log('getbrand:',res.data.data)
             this.initClassifyList(res.data.data)
           }
+        })
+        .catch((err)=>{
+          console.log('brand data err')
         })
     }
   },

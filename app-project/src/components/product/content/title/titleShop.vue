@@ -44,7 +44,7 @@ export default {
     ...mapState(['currentProductData']),
     shopImg(){
       if(this.currentProductData){
-        let shopImg = this.currentProductData.hasOwnProperty('shop') ? ('/public' + this.currentProductData.shop.shop_img) : ''
+        let shopImg = this.currentProductData.hasOwnProperty('shop') ? this.currentProductData.shop.shop_img : ''
         return shopImg
       }else{
         return ''

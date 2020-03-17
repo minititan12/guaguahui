@@ -52,32 +52,36 @@
       </div>
     </div>
 
-    <div class="shop-goods">
+    <div class="shop-goods" ref="shopGoodsWrapper">
+      <div class="goodItems">
+        <div class="blank"></div>
 
-      <mescroll-vue :down="down" :up="up" @init="init">
-        <div class="goodItems">
-          <ProductItem
-            v-if= "goodsList.length > 0"
-            v-for= "item of goodsList"
-            :data = "item"
-            @productItemClick="handleToProduct(item.id)"
-          >
-          </ProductItem>
+        <ProductItem
+          v-if= "goodsList.length > 0"
+          v-for= "item of goodsList"
+          :data = "item"
+          @productItemClick="handleToProduct(item.id)"
+        >
+        </ProductItem>
+
+        <div class="shop-loading" v-if="showLoading">
+          <van-loading color="#FF5756" size="24px">
+            <img class="loading-img" src="/public/uploads/home/load.png" alt="">
+            <span>加载中...</span>
+          </van-loading>
         </div>
-
-        <div class="warn" v-if="showWarn">
-          <span class="iconfont">&#xe605;</span>
-          <span class="warn-text">该店铺还未上架商品</span>
+        <div class="no-more" v-show="showNoMore">
+          <img class="loading-img" src="/public/uploads/home/load.png" alt="">
+          <span>没有更多了</span>
         </div>
-      </mescroll-vue>
-
+        <div class="blank"></div>
+      </div>
     </div>
 
   </div>
 </template>
 
 <script>
-import MescrollVue from 'mescroll.js/mescroll.vue'
 import { getshopgoods,doCollect,checkCollects } from '../../utils/axios/request'
 import Bscroll from 'better-scroll'
 import ProductItem from '../miniComponents/productItem'
@@ -85,135 +89,120 @@ import { mapState } from 'vuex'
 export default {
   name: 'ShopContent',
   components:{
-    MescrollVue,
     ProductItem
   },
   data(){
     return {
+      page: 1,
       title: '',
       active: 0,
       goodsList: [],
       id: 0,
-      is_collect: 0,
-      scrollTop: 0,
-      showWarn: false,
-      down:{
-        htmlContent:'<div class="droping"><p class="downwarp-progress"></p><p class="downwarp-tip"></p></div><div class="refreshing"><p class="loading"></p><img class="loading-img" src="/public/uploads/home/load.png" alt=""><span>加载中...</span></div>',
-        inited:(mescroll, downwarp)=>{
-          mescroll.droping = downwarp.querySelector('.droping');
-          mescroll.refreshing = downwarp.querySelector('.refreshing');
-        },
-        inOffset:(mescroll)=>{
-          mescroll.droping.style.display="block";
-          mescroll.refreshing.style.display="none";
-          mescroll.droping.querySelector('.downwarp-tip').innerText = "下拉刷新";
-        },
-        outOffset:(mescroll)=>{
-          mescroll.droping.querySelector('.downwarp-tip').innerText = "释放刷新";
-        },
-        onMoving(mescroll, rate, downHight){
-          let deg = 0;
-          deg = parseInt(downHight)*4.5;
-          mescroll.droping.querySelector('.downwarp-progress').style.transform = "rotate("+ deg +"deg)";
-        },
-        showLoading:(mescroll)=>{
-          mescroll.droping.style.display="none";
-          mescroll.refreshing.style.display="block";
-        },
-        auto:false,
-        callback:(mescroll)=>{
-          mescroll.resetUpScroll();
-        }
-      },
-      up:{
-        isBounce: false,
-        htmlNodata: '<div class="pullUpLoading"><div class="no-more"><img class="loading-img" src="/public/uploads/home/load.png" alt=""><span>没有更多了</span></div></div>',
-        htmlLoading: '<div class="pullUpLoading"><p class="loading"></p><img class="loading-img" src="/public/uploads/home/load.png" alt=""><span>加载中...</span></div>',
-        auto:true,
-        callback:this.handlePullingUp,
-        onScroll:(mescroll, y, isUp)=>{
-          this.scrollTop = y;
-        }
-      }
+      header_img: '',
+      showLoading: false,
+      showNoMore: false,
+      is_collect: 0
     }
   },
   computed:{
     ...mapState(['userData'])
   },
   methods:{
-    // mescroll组件初始化的回调,可获取到mescroll对象
-    init(mescroll){
-      this.mescroll = mescroll;
-    },
-    //提醒封装
-    handleToast(msg,type,time){
-      this.$toast({
-        message: msg,
-        type: type ? type : 'text',
-        duration: time ? time : 1200
-      })
-    },
-    //处理上拉加载
-    handlePullingUp(page){
-      if(this.mescroll){
-        this.getShopData(page.num)
-      }
-    },
     //获取商店商品数据
-    getShopData(page){
+    getShopData(type){
       let shop_id = this.$route.query.shopID
       let postData = {
         shop_id: shop_id,
-        page: page,
+        page: this.page,
         status: this.active
       }
 
       getshopgoods(postData)
         .then((res)=>{
           console.log('getshopgoods',res.data)
-          let data = res.data
-
-          if(page == 1){
-            setTimeout(()=>{
-              this.mescroll.endSuccess(data.data.length,data.data.length>=10)
-              if(data.data.length == 0){
-                this.showWarn = true
-              }
-            },1000);
-          }else{
-            this.mescroll.endSuccess(data.data.length,data.data.length>=10)
-          }
-
-          if(data.code  == 1){
+          if(res.data.code == 1){
             this.title = res.data.company.company
-            if(page == 1){
-              this.goodsList = [...data.data]
+
+            if(res.data.data.length > 0){
+              if(type == 'init'){
+                this.goodsList = [...res.data.data]
+              }else{
+                this.goodsList = [...this.goodsList,...res.data.data]
+              }
+              this.$nextTick(()=>{
+                if(this.goodsList.length > 8){
+                  this.showLoading = true
+                  this.showNoMore = false
+                  this.page = this.page + 1
+                  if(this.shopScroll){
+                    this.shopScroll.finishPullUp()
+                  }
+                }else{
+                  this.showLoading = false
+                  this.showNoMore = true
+                  if(this.shopScroll){
+                    this.shopScroll.closePullUp()
+                  }
+                }
+              })
             }else{
-              this.goodsList = [...this.goodsList,...data.data]
+              this.showLoading = false
+              this.showNoMore = true
+              if(this.shopScroll){
+                this.shopScroll.closePullUp()
+              }
             }
-          }else{
-            this.handleToast(data.message,'fail',1500)
           }
         })
         .catch((err)=>{
-          this.mescroll.endErr();
           console.log('getshopgoods err',err)
         })
+    },
+    //上拉处理函数
+    onPullingUp(){
+      console.log('pullingup')
+      this.getShopData()
+    },
+    //初始化商店产品滚动
+    initShopScroll(){
+      let el = this.$refs.shopGoodsWrapper
+      this.shopScroll = new Bscroll(el,{
+        bounce: {
+          top: false
+        },
+        pullUpLoad: {
+          threshold: 60,
+          stop: 0
+        },
+        click: true,
+        eventPassthrough: 'horizontal'
+      })
+
+      this.shopScroll.on('pullingUp',this.onPullingUp)
+
+      this.shopScroll.on('beforeScrollStart',()=>{
+        // console.log('beforeScrollStart')
+        this.shopScroll.refresh()
+      })
     },
     //切换tab
     handleChangeActive(val){
       if(this.active != val){
-        this.showWarn = false
         this.active = val
+        this.page = 1
+        this.showLoading = false
+        this.showNoMore = false
+        this.shopScroll.closePullUp()
         this.goodsList = []
-        this.mescroll.resetUpScroll()
+        this.shopScroll.scrollTo(0,0)
+        this.getShopData()
       }
     },
     //跳转商品详情页面
     handleToProduct(id){
       this.$router.push('/product?id=' + id)
     },
-    //返回上一级页面
+    //跳转上一级页面
     handleBackClick(){
       this.$router.go(-1)
     },
@@ -241,25 +230,22 @@ export default {
           console.log('doCollect',res.data)
           if(res.data.code ==1){
             if(this.is_collect == 0){
-              this.handleToast('收藏成功','success')
+              this.$toast({
+                message: '收藏成功',
+                duration: 1200,
+                type: 'success'
+              })
             }else{
-              this.handleToast('取消成功','success')
+              this.$toast({
+                message: '取消成功',
+                duration: 1200,
+                type: 'success'
+              })
             }
             this.is_collect = is_collect
-          }else{
-            if(this.is_collect == 0){
-              this.handleToast('收藏失败','success')
-            }else{
-              this.handleToast('取消失败','success')
-            }
           }
         })
         .catch((err)=>{
-          if(this.is_collect == 0){
-            this.handleToast('收藏失败','success')
-          }else{
-            this.handleToast('取消失败','success')
-          }
           console.log('doCollect err',err)
         })
     },
@@ -285,6 +271,10 @@ export default {
   },
   created(){
     this.checkCollect()
+    this.getShopData()
+  },
+  mounted(){
+    this.initShopScroll()
   },
   activated(){
     this.checkCollect()
@@ -297,14 +287,11 @@ export default {
         this.id = from.query.shopID
       }
       //从其他页面进入商店页面,比对shopID是否改变
-      if(to.name == "shop" ){
-        if(to.query.shopID != this.id){
-          this.goodsList = []
-          this.active = 0
-          this.mescroll.resetUpScroll()
-        }else{
-          this.mescroll.scrollTo(this.scrollTop,0)
-        }
+      if(to.name == "shop" && to.query.shopID != this.id){
+        this.page = 1
+        this.goodsList = []
+        this.active = 0
+        this.getShopData('init')
       }
     }
   }
@@ -312,6 +299,18 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+  .shopHeader >>> .van-tabs__nav
+    background-color: rgba(0,0,0,0)
+  .shopHeader >>> .van-tab
+    color: #fff
+  .shopHeader >>> .van-hairline--top-bottom
+    &::after
+      border-width: 0
+  .shopHeader >>> .van-tabs__line
+    background-color: #fff
+
+
+
   .shopContent-wrapper
     background-color: #F6F7FB
     .shopHeader
@@ -404,85 +403,40 @@ export default {
       bottom: 0
       overflow: hidden
       background: linear-gradient(to bottom,#310E0A , #ffffff 25%, #ffffff);
-      .mescroll
-        position: absolute 
-        top: 0
-        left: 0
-        height: 100%
-        padding-top: 1vw
-        >>> .mescroll-upwarp
-              padding: 0
-        .goodItems
+      .goodItems
+        display: flex
+        padding: 0 2vw
+        flex-direction: row
+        flex-wrap: wrap
+        justify-content: space-between
+        align-items: flex-start
+        min-height: 90vh
+        .blank
+          width: 100vw
+          height: 2vw
+        .shop-loading
+          width: 100%
           display: flex
-          padding: 0 2vw
           flex-direction: row
-          flex-wrap: wrap
-          justify-content: space-between
-          align-items: flex-start
-  
-  >>> .warn
-        color: black
-        display: flex
-        flex-direction: column
-        align-items: center
-        margin: 5vw 0
-        .iconfont
-          font-size: 10vw
-          margin-bottom: 2vw
-        .warn-text
-          font-size: 4vw
-          font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
-          font-weight: bold
-  
-  >>> .droping
-        .downwarp-tip
-          color #FF5756
-        .downwarp-progress
-          border-color #FF5756
-          border-bottom-color: transparent;
-  >>> .refreshing
-        width: 100%
-        display: flex
-        justify-content: center
-        align-items: center
-        color #FF5756
-        .loading
-          display inline-block
-          width 4.2vw
-          height 4.2vw
-          margin-right 2vw
-          border-radius 50%
-          border 1px solid #FF5756
-          border-bottom-color transparent
-          vertical-align middle
-          animation mescrollRotate .8s linear infinite
-        .loading-img
-          width: 6vw
-          height: 5vw
-          margin-right: 2vw
-        
-  >>> .pullUpLoading
-        width: 100%
-        display: flex
-        justify-content: center
-        align-items: center
-        color #FF5756
-        height 15vw
-        .loading
-          display inline-block
-          width 4.2vw
-          height 4.2vw
-          margin-right 2vw
-          border-radius 50%
-          border 1px solid #FF5756
-          border-bottom-color transparent
-          vertical-align middle
-          animation mescrollRotate .8s linear infinite
-        .loading-img
-          width: 6vw
-          height: 5vw
-          margin-right: 2vw
+          justify-content: center
+          align-items: center
+          margin: 3vw 0
+          .loading-img
+            width: 6vw
+            height: 5vw
+            margin-right: 2vw
         .no-more
-          line-height: 15vw
+          width: 100%
+          font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
+          font-weight: bold
           font-size: 4vw
+          display: flex
+          flex-direction: row
+          justify-content: center
+          align-items: center
+          margin: 3vw 0
+          .loading-img
+            width: 6vw
+            height: 5vw
+            margin-right: 2vw
 </style>

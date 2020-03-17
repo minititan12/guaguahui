@@ -16,111 +16,132 @@
       <span :class="active == 2 ? 'actived-tab': 'tab'" @click="handleChangeActive(2)">店铺</span>
     </div>
 
-    <div class="collect-items" ref="collectItems">
-      <div>
-
-        <transition name="fade">
-          <div class="collect-refresh" v-if="showRefresh">
-            <van-loading color="#FF5756" size="24px">
-              <img class="loading-img" src="/public/uploads/home/load.png" alt="">
-              <span class="text">加载中...</span>
-            </van-loading>
-          </div>
-        </transition>
-
-        <div class="blank"></div>
-
-        <!-- 商品收藏框 -->
-        <div v-if="active == 1">
-          <div class="goodCollectItem" v-for="item of collectList">
-            <van-image 
-              :src="item.cover_img" 
-              width="25vw" 
-              height="25vw" 
-              fit="contain"
-              @click="handleToProduct(item.ids)"
-            />
-            <div class="item-right">
-              <span class="title" @click="handleToProduct(item.ids)">{{item.goods_name}}</span>
-              <span class="num">{{item.total + '人收藏'}}</span>
-              <div class="right-bottom">
-                <span class="price">{{'￥' + item.price}}</span>
-                <span class="btn" @click="handleConfirmCancel(item.ids,item.flag)">取消收藏</span>
-              </div>
+    <mescroll-vue :down="down" :up="up" @init="init">
+      <!-- 商品收藏框 -->
+      <div v-if="active == 1">
+        <div class="goodCollectItem" v-for="item of collectList">
+          <van-image 
+            :src="item.cover_img" 
+            width="25vw" 
+            height="25vw" 
+            fit="contain"
+            @click="handleToProduct(item.ids)"
+          />
+          <div class="item-right">
+            <span class="title" @click="handleToProduct(item.ids)">{{item.goods_name}}</span>
+            <span class="num">{{item.total + '人收藏'}}</span>
+            <div class="right-bottom">
+              <span class="price">{{'￥' + item.price}}</span>
+              <span class="btn" @click="handleConfirmCancel(item.ids,item.flag)">取消收藏</span>
             </div>
           </div>
         </div>
-
-        <!-- 店铺收藏框 -->
-        <div v-if="active == 2">
-          <div class="shopCollectItem" v-for="item of collectList">
-            <van-image 
-              round 
-              :src="item.shop_img" 
-              width="15vw" 
-              height="15vw" 
-              fit="contain" 
-              @click="handleToShop(item.ids)"
-            />
-            <div class="item-right">
-              <div class="right-top">
-                <span class="title" @click="handleToShop(item.ids)">{{item.company}}</span>
-                <span class="btn" @click="handleConfirmCancel(item.ids,item.flag)">取消收藏</span>
-              </div>
-              
-              <span class="num">{{item.total + '人关注'}}</span>
-              <div class="imgs">
-                <van-image class="img" v-for="imgItem of item.shopinfo" :src="imgItem.cover_img" width="20vw" height="20vw" fit="contain"/>
-                <!-- <span>更多</span> -->
-              </div>
-            </div>
-          </div>
-        </div>
-
-        
-
-        <div class="loading" v-show="showLoading">
-          <van-loading color="#FF5756" size="24px">
-            <img class="loading-img" src="/public/uploads/home/load.png" alt="">
-            <span>加载中...</span>
-          </van-loading>
-        </div>
-        <div class="no-more" v-show="showNoMore">
-          <img class="loading-img" src="/public/uploads/home/load.png" alt="">
-          <span>没有更多了</span>
-        </div>
-
-        <div class="warn" v-show="showWarn">
-          <span class="iconfont">&#xe605;</span>
-          <span>没有收藏任何{{active == 1 ? '商品' : '店铺'}}</span>
-        </div>
-
       </div>
-    </div>
+
+      <!-- 店铺收藏框 -->
+      <div v-if="active == 2">
+        <div class="shopCollectItem" v-for="item of collectList">
+          <van-image 
+            round 
+            :src="item.shop_img" 
+            width="15vw" 
+            height="15vw" 
+            fit="contain" 
+            @click="handleToShop(item.ids)"
+          />
+          <div class="item-right">
+            <div class="right-top">
+              <span class="title" @click="handleToShop(item.ids)">{{item.company}}</span>
+              <span class="btn" @click="handleConfirmCancel(item.ids,item.flag)">取消收藏</span>
+            </div>
+            
+            <span class="num">{{item.total + '人关注'}}</span>
+            <div class="imgs">
+              <van-image class="img" v-for="imgItem of item.shopinfo" :src="imgItem.cover_img" width="20vw" height="20vw" fit="contain"/>
+              <!-- <span>更多</span> -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="warn" v-show="showWarn">
+        <span class="iconfont">&#xe605;</span>
+        <span class="warn-text">没有收藏任何{{active == 1 ? '商品' : '店铺'}}</span>
+      </div>
+    </mescroll-vue>
+
   </div>
 </template>
 
 <script>
+import MescrollVue from 'mescroll.js/mescroll.vue'
 import { getCollects,doCollect } from '../../utils/axios/request'
 import Bscroll from 'better-scroll'
 import { mapState } from 'vuex'
 export default {
   name: "Collect",
+  components: {
+    MescrollVue
+  },
   data(){
     return {
       active: 1,
       collectList: [],
-      page: 1,
-      showLoading: false,
-      showNoMore: false,
       showWarn: false,
-      showRefresh: false
+      scrollTop: 0,
+      down:{
+        htmlContent:'<div class="droping"><p class="downwarp-progress"></p><p class="downwarp-tip"></p></div><div class="refreshing"><p class="loading"></p><img class="loading-img" src="/public/uploads/home/load.png" alt=""><span>加载中...</span></div>',
+        inited:(mescroll, downwarp)=>{
+          mescroll.droping = downwarp.querySelector('.droping');
+          mescroll.refreshing = downwarp.querySelector('.refreshing');
+        },
+        inOffset:(mescroll)=>{
+          mescroll.droping.style.display="block";
+          mescroll.refreshing.style.display="none";
+          mescroll.droping.querySelector('.downwarp-tip').innerText = "下拉刷新";
+        },
+        outOffset:(mescroll)=>{
+          mescroll.droping.querySelector('.downwarp-tip').innerText = "释放刷新";
+        },
+        onMoving(mescroll, rate, downHight){
+          let deg = 0;
+          deg = parseInt(downHight)*4.5;
+          mescroll.droping.querySelector('.downwarp-progress').style.transform = "rotate("+ deg +"deg)";
+        },
+        showLoading:(mescroll)=>{
+          mescroll.droping.style.display="none";
+          mescroll.refreshing.style.display="block";
+        },
+        auto:false,
+        callback:(mescroll)=>{
+          mescroll.resetUpScroll();
+        }
+      },
+      up:{
+        isBounce: false,
+        htmlNodata: '<div class="pullUpLoading"><div class="no-more"><img class="loading-img" src="/public/uploads/home/load.png" alt=""><span>没有更多了</span></div></div>',
+        htmlLoading: '<div class="pullUpLoading"><p class="loading"></p><img class="loading-img" src="/public/uploads/home/load.png" alt=""><span>加载中...</span></div>',
+        auto:true,
+        callback:this.handlePullingUp,
+        onScroll:(mescroll, y, isUp)=>{
+          this.scrollTop = y;
+        }
+      },
     }
   },
   computed: {
     ...mapState(['userData']),
   },
   methods: {
+    // mescroll组件初始化的回调,可获取到mescroll对象
+    init(mescroll){
+      this.mescroll = mescroll;
+    },
+    //处理上拉加载
+    handlePullingUp(page){
+      this.getCollectList(page.num)
+    },
+    //回退
     handleBack(){
       this.$router.go(-1)
     },
@@ -142,65 +163,17 @@ export default {
         }
       })
     },
-    //初始化滚动
-    initCollectScroll(){
-      let el = this.$refs.collectItems
-      this.collectScroll = new Bscroll(el,{
-        pullDownRefresh: {
-          threshold: 50,
-          stop: 0
-        },
-        pullUpLoad: {
-          threshold: 10,
-          stop: 0
-        },
-        click: true,
-        eventPassthrough: 'horizontal'
-      })
-
-      this.collectScroll.on('beforeScrollStart',()=>{
-        this.collectScroll.refresh()
-      })
-
-      this.collectScroll.on('pullingDown',()=>{
-        console.log('pulling down')
-        this.showRefresh = true
-        this.$nextTick(()=>{
-          this.collectScroll.refresh()
-        })
-        this.initCollectData()
-        this.getCollectList('init')
-        setTimeout(()=>{
-          this.collectScroll.finishPullDown()
-          this.showRefresh = false
-          this.collectScroll.refresh()
-        },1500)
-      })
-
-      this.collectScroll.on('pullingUp',()=>{
-        console.log('pulling up')
-        this.getCollectList()
-      })
-    },
-    //初始化数据
-    initCollectData(){
-      this.page = 1
-      this.showLoading = false
-      this.showNoMore = false
-      this.showWarn = false
-    },
     //改变active
     handleChangeActive(val){
       this.active = val
-      this.initCollectData()
-      this.collectScroll.closePullUp()
+      this.showWarn = false
       this.collectList = []
-      this.getCollectList()
+      this.mescroll.resetUpScroll()
     },
     //获取收藏列表
-    getCollectList(type){
+    getCollectList(page){
       let postData = {
-        page: this.page,
+        page: page,
         flag: this.active,
         user_id: this.userData.id
       }
@@ -208,49 +181,34 @@ export default {
       getCollects(postData)
         .then((res)=>{
           console.log('getCollects',res.data)
-          if(res.data.code == 1){
-            if(res.data.data.list.length > 0){
-              if(type == 'init'){
-                this.collectList = [...res.data.data.list]
-              }else{
-                this.collectList = [...this.collectList,...res.data.data.list]
-              }
-              
-              this.page = this.page + 1
-              this.$nextTick(()=>{
-                this.collectScroll.refresh()
-                if(this.collectList.length > 9){
-                  this.showLoading = true
-                  this.showNoMore = false
-                  if(this.collectScroll){
-                    this.collectScroll.finishPullUp()
-                  }
-                }else{
-                  this.showLoading = false
-                  this.showNoMore = true
-                }
-              })
-            }else{
-              if(type == 'init'){
-                this.collectList = []
+          let data = res.data
+          if(page == 1){
+            setTimeout(()=>{
+              this.mescroll.endSuccess(data.data.list.length,data.data.list.length>=10)
+              if(data.data.list.length == 0){
                 this.showWarn = true
-              }else{
-                if(this.collectList.length > 0){
-                  this.showLoading = false
-                  this.showNoMore = true
-                  if(this.collectScroll){
-                    this.collectScroll.closePullUp()
-                  }
-                }else{
-                  this.showLoading = false
-                  this.showNoMore = false
-                  this.showWarn = true
-                }
               }
+            },1000);
+          }else{
+            this.mescroll.endSuccess(data.data.list.length,data.data.list.length>=10)
+          }
+
+          if(data.code == 1){
+            if(page == 1){
+              this.collectList = [...data.data.list]
+            }else{
+              this.collectList = [...this.collectList,...data.data.list]
             }
+          }else{
+            this.$toast({
+              message: data.message,
+              type: 'fail',
+              duration: 1500
+            })
           }
         })
         .catch((err)=>{
+          this.mescroll.endErr()
           console.log('getCollects err',err)
         })
     },
@@ -264,7 +222,7 @@ export default {
       }
 
       this.$toast({
-        message: '加载中',
+        message: '取消中',
         type: 'loading',
         duration: 1200
       })
@@ -278,8 +236,7 @@ export default {
               type: 'success',
               duration: 1200
             })
-            this.initCollectData()
-            this.getCollectList('init')
+            this.mescroll.resetUpScroll()
           }
         })
         .catch((err)=>{
@@ -301,26 +258,10 @@ export default {
         })
     }
   },
-  created(){
-    this.getCollectList()
-  },
-  mounted(){
-    this.initCollectScroll()
-  }
 }
 </script>
 
 <style lang="stylus" scoped>
-  .fade-leave
-    height: 16vw
-    opacity: 1
-  .fade-leave-active
-    transition: all .5s ease
-    // transition: opacity .5s ease
-  .fade-leave-to
-    height: 0
-    opacity: 0
-
   .collect-wrapper >>> .van-icon-arrow-left
     color: #FF5756
     font-size: 5vw
@@ -354,37 +295,15 @@ export default {
         padding-bottom: 1vw
         border-bottom: 3px solid red
 
-    .collect-items
+    .mescroll
       position: absolute 
       top: calc(46px + 10vw)
       left: 0
-      right: 0
-      bottom: 0
-      overflow: hidden
+      height: calc(100% - 2vw)
       background-color: #f5f7fa
-
-      .collect-refresh
-        width: 100%
-        display: flex
-        justify-content: center
-        background-color: #f5f7fa
-        .van-loading
-          // height: 16vw
-          display: flex
-          justify-content: center
-          align-items: center
-          .loading-img
-            width: 6vw
-            margin-right: 2vw
-          .text
-            display: inline-block
-            font-size: 3.5vw
-            line-height: 6vw
-            padding: 5vw 0
-
-      .blank
-        width: 100%
-        height: 3vw
+      padding-top: 2vw
+      >>> .mescroll-upwarp
+            padding: 0
 
       .goodCollectItem
         width: 94vw
@@ -482,38 +401,69 @@ export default {
               border: 1px solid #ddd
               box-sizing: border-box
               margin-right: 2vw
-      
-      .loading
-          width: 100%
-          display: flex
-          flex-direction: row
-          align-items: center
-          justify-content: center
-          padding: 3vw 0
-        .loading-img
-          width: 6vw
-          margin-right: 2vw
-      .no-more
+
+  >>> .droping
+        .downwarp-tip
+          color #FF5756
+        .downwarp-progress
+          border-color #FF5756
+          border-bottom-color: transparent;
+  >>> .refreshing
         width: 100%
         display: flex
-        flex-direction: row
-        align-items: center
         justify-content: center
-        padding: 3vw 0
+        align-items: center
+        color #FF5756
+        .loading
+          display inline-block
+          width 4.2vw
+          height 4.2vw
+          margin-right 2vw
+          border-radius 50%
+          border 1px solid #FF5756
+          border-bottom-color transparent
+          vertical-align middle
+          animation mescrollRotate .8s linear infinite
         .loading-img
           width: 6vw
+          height: 5vw
           margin-right: 2vw
-      .warn
+  
+  >>> .pullUpLoading
+        width: 100%
+        display: flex
+        justify-content: center
+        align-items: center
+        color #FF5756
+        height 15vw
+        .loading
+          display inline-block
+          width 4.2vw
+          height 4.2vw
+          margin-right 2vw
+          border-radius 50%
+          border 1px solid #FF5756
+          border-bottom-color transparent
+          vertical-align middle
+          animation mescrollRotate .8s linear infinite
+        .loading-img
+          width: 6vw
+          height: 5vw
+          margin-right: 2vw
+        .no-more
+          line-height: 15vw
+          font-size: 4vw
+  
+  >>> .warn
         display: flex
         flex-direction: column
         align-items: center
-        justify-content: center
-        font-size: 5vw 
-        font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
-        font-weight: bold
-        color: #000
+        margin: 5vw 0
         .iconfont
           font-size: 10vw
-          color: #FF5756
-          margin: 10vw 0 5vw 0 
+          margin-bottom: 2vw
+        .warn-text
+          font-size: 4.5vw
+          font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serifs
+          font-weight: bold
 </style>

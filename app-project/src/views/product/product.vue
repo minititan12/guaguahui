@@ -18,13 +18,13 @@
       <span class="iconfont">&#xe624;</span>
     </div>
 
-    <!-- <div class="share" v-if="is_app()" @click="openSharePopUp">
+    <div class="share" v-if="is_app()" @click="openSharePopUp">
       <span class="iconfont">&#xe61c;</span>
-    </div> -->
+    </div>
 
-    <!-- <div class="collect" v-if="showCollectIcon()" @click="handleGoodCollect">
+    <div class="collect" v-if="showCollectIcon()" @click="handleGoodCollect">
       <van-icon :class="is_collect == 0 ? 'star' : 'active-star'" name="star" />
-    </div> -->
+    </div>
 
     <div class="backToHome" v-if="!is_app()" @click="handleToHome">
       app首页

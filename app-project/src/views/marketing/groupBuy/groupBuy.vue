@@ -77,8 +77,34 @@ export default {
       todayList: [],
       groupList: [],
       scrollTop: 0,
-      down: {
-        use: false
+      down:{
+        htmlContent:'<div class="droping"><p class="downwarp-progress"></p><p class="downwarp-tip"></p></div><div class="refreshing"><p class="loading"></p><img class="loading-img" src="/public/uploads/home/load.png" alt=""><span>加载中...</span></div>',
+        inited:(mescroll, downwarp)=>{
+          mescroll.droping = downwarp.querySelector('.droping');
+          mescroll.refreshing = downwarp.querySelector('.refreshing');
+        },
+        inOffset:(mescroll)=>{
+          mescroll.droping.style.display="block";
+          mescroll.refreshing.style.display="none";
+          mescroll.droping.querySelector('.downwarp-tip').innerText = "下拉刷新";
+        },
+        outOffset:(mescroll)=>{
+          mescroll.droping.querySelector('.downwarp-tip').innerText = "释放刷新";
+        },
+        onMoving(mescroll, rate, downHight){
+          let deg = 0;
+          deg = parseInt(downHight)*4.5;
+          mescroll.droping.querySelector('.downwarp-progress').style.transform = "rotate("+ deg +"deg)";
+        },
+        showLoading:(mescroll)=>{
+          mescroll.droping.style.display="none";
+          mescroll.refreshing.style.display="block";
+        },
+        auto:false,
+        callback:(mescroll)=>{
+          this.getTodayGroupData()
+          mescroll.resetUpScroll()
+        }
       },
 
       up:{
@@ -259,8 +285,11 @@ export default {
         position: absolute 
         top: 46px
         left: 0
-        height: calc(100% - 46px)
+        height: calc(100% - 46px - 2vw)
+        padding-top: 2vw
       
+  >>> .mescroll-upwarp
+        padding: 0
   //首图
   >>> .head-img
         width: 94%
@@ -297,7 +326,8 @@ export default {
           width: 100%
           display: flex
           flex-direction: row
-          justify-content: space-around
+          justify-content: flex-start
+          padding: 0 .5%
           .bottom-item
             width: 33%
             .item-middle
@@ -333,6 +363,33 @@ export default {
               .item-originPrice
                 font-size: 3vw
                 color: #999
+  
+  >>> .droping
+        .downwarp-tip
+          color #FF5756
+        .downwarp-progress
+          border-color #FF5756
+          border-bottom-color: transparent;
+  >>> .refreshing
+        width: 100%
+        display: flex
+        justify-content: center
+        align-items: center
+        color #FF5756
+        .loading
+          display inline-block
+          width 4.2vw
+          height 4.2vw
+          margin-right 2vw
+          border-radius 50%
+          border 1px solid #FF5756
+          border-bottom-color transparent
+          vertical-align middle
+          animation mescrollRotate .8s linear infinite
+        .loading-img
+          width: 6vw
+          height: 5vw
+          margin-right: 2vw
   
   >>> .pullUpLoading
         width: 100%

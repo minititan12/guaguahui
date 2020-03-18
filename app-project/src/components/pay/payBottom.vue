@@ -142,71 +142,71 @@ export default {
 
     //提交订单
     handleCommitOrder(){
-      // let hasUserData = Object.keys(this.userData).length > 0 ? true : false
-      // let hasDefaultAddress = this.defaultAddress.code == 1 ? true : false
+      let hasUserData = Object.keys(this.userData).length > 0 ? true : false
+      let hasDefaultAddress = this.defaultAddress.code == 1 ? true : false
 
-      // if(!hasUserData){
-      //   this.$toast({
-      //     message: "请先登录",
-      //     type: "fail",
-      //     duration: 1500
-      //   })
-      //   return
-      // }
-      // if(!hasDefaultAddress){
-      //   this.$toast({
-      //     message: "请先填写默认地址",
-      //     type: "fail",
-      //     duration: 1500
-      //   })
-      //   return
-      // }
+      if(!hasUserData){
+        this.$toast({
+          message: "请先登录",
+          type: "fail",
+          duration: 1500
+        })
+        return
+      }
+      if(!hasDefaultAddress){
+        this.$toast({
+          message: "请先填写默认地址",
+          type: "fail",
+          duration: 1500
+        })
+        return
+      }
 
-      // let order_goods = this.getOrderGoods()
-      // let address = this.getAddress()
-      // let is_cart = this.getIsCart()
+      let order_goods = this.getOrderGoods()
+      let address = this.getAddress()
+      let is_cart = this.getIsCart()
 
-      // //把商品上传到服务器获取订单号
-      // let commitObject = {
-      //   user_id: this.userData.id,
-      //   order_goods: order_goods,
-      //   address: address,
-      //   is_cart: is_cart
-      // }
-      // console.log('makeOrder commitObject',commitObject)
+      //把商品上传到服务器获取订单号
+      let commitObject = {
+        user_id: this.userData.id,
+        order_goods: order_goods,
+        address: address,
+        is_cart: is_cart
+      }
+      console.log('makeOrder commitObject',commitObject)
 
-      // //上传到待支付列表
-      // makeOrder(commitObject)
-      //   .then((res)=>{
-      //     console.log('makeOrder:',res.data)
-      //     if(res.data.code == 1){
-      //       this.updatePayOrderData(res.data.data)
+      //上传到待支付列表
+      makeOrder(commitObject)
+        .then((res)=>{
+          console.log('makeOrder:',res.data)
+          if(res.data.code == 1){
+            this.updatePayOrderData(res.data.data)
 
-      //       if(this.$route.params.team_id){
-      //         let params = JSON.parse(JSON.stringify(this.$route.params))
-      //         console.log(params)
-      //         this.$router.push({
-      //           path: '/payment',
-      //           name: 'payment',
-      //           params: params
-      //         })
-      //       }else{
-      //         console.log(1)
-      //         this.$router.push({
-      //           path: '/payment'
-      //         })
-      //       }
-      //     }else{
-      //       this.$toast({
-      //         message: res.data.message,
-      //         type: 'fail',
-      //         duration: 1500
-      //       })
-      //     }
-      //   })
-      //   .catch((err)=>{
-      //     console.log('commit data err',err)
-      //   })
+            if(this.$route.params.team_id){
+              let params = JSON.parse(JSON.stringify(this.$route.params))
+              console.log(params)
+              this.$router.push({
+                path: '/payment',
+                name: 'payment',
+                params: params
+              })
+            }else{
+              console.log(1)
+              this.$router.push({
+                path: '/payment'
+              })
+            }
+          }else{
+            this.$toast({
+              message: res.data.message,
+              type: 'fail',
+              duration: 1500
+            })
+          }
+        })
+        .catch((err)=>{
+          console.log('commit data err',err)
+        })
     }
   },
   mounted(){

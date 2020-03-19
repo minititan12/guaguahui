@@ -1,7 +1,7 @@
 <template>
   <div class="download-wrapper">
     <div class="download">
-      <van-image class="download-img" width="30vw" src="http://www.gghbuy.com/public/static/images/azlogo.png"></van-image>
+      <van-image class="download-img" width="30vw" src="http://test.gghbuy.com/public/static_app/index/images/ggh.png"></van-image>
       <span class="download-text">呱呱汇 品牌特卖app</span>
       <van-button @click="handleDownload" class="download-btn" type="primary">点击下载</van-button>
       <!-- <div class="hint">
@@ -75,7 +75,7 @@ export default {
         return 
       }
 
-      window.location.href="http://www.gghbuy.com/guaguahuiapp.apk"
+      window.location.href="http://test.gghbuy.com/guaguahuiapp.apk"
       window.open()
     }
   }

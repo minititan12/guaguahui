@@ -105,7 +105,7 @@ export default {
         return {
           title: this.currentGroupData.goods_name,
           content: '呱呱汇拼团商品',
-          photo: this.currentGroupData.cover_img,
+          photo: process.env.VUE_APP_REQUEST_HOST + '/' + this.currentGroupData.cover_img,
           href: process.env.VUE_APP_SHARE_HOST + '#/groupOrderShare?team_id='+ this.currentGroupData.speelgroup_record_id
         }
       }else{
@@ -293,6 +293,18 @@ export default {
       }
     }
   },
+  beforeRouteEnter(to,from,next){
+    if(from.name == 'payment'){
+      // alert('payment')
+      next()
+    }else{
+      // alert('else')
+      next({
+        path: '/',
+        name: 'home'
+      })
+    }
+  },
   created(){
     // console.log(this.$route)
     // let a = JSON.stringify(this.$route.query)
@@ -421,7 +433,7 @@ export default {
         font-family: 'PingFangSC-Semibold','Microsoft YaHei',sans-serif
         font-weight: bold
         font-size: 7vw
-        color: #fff
+        color: #000
       .done-btn
         width: 50%
         margin: 10vw auto
@@ -432,4 +444,5 @@ export default {
         font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
         font-weight: bold
         border-radius: 5vw
+        color: #fff
 </style>

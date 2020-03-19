@@ -16,7 +16,7 @@
         <div class="price">
           <span class="price-icon">￥</span>
           <span class="price-text">{{price}}</span>
-          <span class="price-cancel">{{originPrice}}</span>
+          <span class="price-cancel">原价: {{originPrice}}</span>
         </div>
 
         <!-- 拼团 -->

@@ -29,7 +29,11 @@
 
       <div class="warn" v-if="showWarn">
         <span class="iconfont">&#xe605;</span>
-        <span>该类目没有上架商品</span>
+        <div class="text">
+          <span v-if="!showSearchWarn" class="name">{{brandName}}</span>
+          <span v-if="!showSearchWarn">没有上架商品</span>
+          <span v-if="showSearchWarn">没有搜索到对应商品</span>
+        </div>
       </div>
     </mescroll-vue>
   </div>
@@ -96,7 +100,18 @@ export default {
     }
   },
   computed:{
-    ...mapState(['currentGoodsInputValue'])
+    ...mapState(['currentGoodsInputValue']),
+    brandName(){
+      let name = this.$route.query.brand_name
+      return name
+    },
+    showSearchWarn(){
+      if(this.currentGoodsInputValue.length > 0){
+        return true
+      }else{
+        return false
+      }
+    }
   },
   
   methods: {
@@ -354,7 +369,7 @@ export default {
   >>> .warn
         width: 100%
         font-size: 5vw
-        font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+        font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
         display: flex
         flex-direction: column
         align-items: center
@@ -362,6 +377,14 @@ export default {
           color: #666
           font-size: 10vw
           margin: 4vw 0
+        .text
+          font-size: 4vw
+          .name
+            color: #FF5756
+            font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+            font-weight: bold
+            font-size: 4.5vw
+            margin-right: 2vw
 </style>
 
 

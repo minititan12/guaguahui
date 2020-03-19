@@ -1,9 +1,9 @@
 <template>
   <div class="popup-footer">
-    <span v-if="type == 1 || type == 3 || type == 5" class="btn-left" @click="postCart">加入购物车</span>
-    <span v-if="type == 1 || type == 3 || type == 5" class="btn-right" @click="immediatePay">立即购买</span>
+    <span v-if="type == 1 || type == 5" class="btn-left" @click="postCart">加入购物车</span>
+    <span v-if="type == 1 || type == 5" class="btn-right" @click="immediatePay">立即购买</span>
     <span v-if="type == 2" class="btn-confirm" @click="groupConfirm">确认</span>
-    <span v-if="type == 4" class="btn-confirm" @click="immediatePay">立即购买</span>
+    <span v-if="type == 4 || type == 3" class="btn-confirm" @click="immediatePay">立即购买</span>
   </div>
 </template>
 

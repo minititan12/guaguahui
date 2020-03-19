@@ -46,6 +46,7 @@ export const httpPost = (url,param={},headers) => {
       data:qs.stringify(param),
       headers: {
         token: localStorage.gghToken,
+        'Cache-control': 'max-age=172800',
         ...headers
       }
     })
@@ -69,6 +70,7 @@ export const httpGet = (url,param={},headers) => {
       url: url,
       headers:{
         token: localStorage.gghToken,
+        'Cache-control': 'max-age=172800',
         ...headers,
         'Content-Type':'application/x-www-form-urlencoded'
       }

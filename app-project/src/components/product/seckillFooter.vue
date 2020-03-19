@@ -16,9 +16,6 @@
     </div>
     
     <div class="btn">
-      <div class="btn-left" @click="addCart">
-        <span class="btn-title">加入购物车</span>
-      </div>
       <div class="btn-right" @click="limitedBuy">
         <span class="btn-title">立即购买</span>
       </div>
@@ -90,28 +87,6 @@ export default {
       this.openPopup()
     },
 
-    //点击加入购物车按钮
-    addCart(){
-      if(this.login){//已登录 
-        let t = new Date()
-        let hour = t.getHours()
-        let times = this.seckillData.times
-        if(times == hour){
-          setTimeout(()=>{
-            this.handleOpenPopup()
-          },200)  
-        }else{
-          this.$toast({
-            message: "未在活动时间内",
-            type: "fail",
-            duration: 1200
-          })
-        }   
-      }else{  //未登录
-        this.$router.push('/login')
-      }
-    },
-
     //点击立即购买按钮
     limitedBuy(){
       if(this.login){//已登录  
@@ -175,27 +150,20 @@ export default {
       width: 55%
       display: flex
       flex-direction: row
-      justify-content: space-around
+      justify-content: center
       align-items: center
       font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
       font-weight: bold
       font-size: 3.5vw
       line-height: 10vw
       letter-spacing: .1vw
-      .btn-left
+      .btn-right
+        width: 80%
         display: inline-block
+        text-align: center
         color: #000
         border-radius: 5vw
-        padding: 0 4vw
-        // background: linear-gradient(to right, #FEC903, #FF9506);
         background-color: #FFCF27
-      .btn-right
-        display: inline-block
-        color: #fff
-        border-radius: 5vw
-        padding: 0 4vw
-        // background: linear-gradient(to right, #FEC903, #FF9506);
-        background-color: #FF5756
 </style>
 
 

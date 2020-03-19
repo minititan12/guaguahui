@@ -120,8 +120,8 @@ export default {
       if(this.currentGroupData){
         return {
           title: this.currentGroupData.goods_name,
-          content: 'www.gghbuy.com',
-          photo: this.currentGroupData.cover_img,
+          content: '呱呱汇拼团商品',
+          photo: process.env.VUE_APP_REQUEST_HOST + '/' + this.currentGroupData.cover_img,
           href: process.env.VUE_APP_SHARE_HOST + '#/groupOrderShare?team_id=' + this.currentGroupData.group
         }
       }

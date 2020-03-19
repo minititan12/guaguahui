@@ -9,33 +9,48 @@
       </div>
     </div>
 
-    <!-- <div class="goods-wrapper" ref="goods"> -->
-    <mescroll-vue :down="down" :up="up" @init="init">
-      <div class="good-item" v-for="item of seckillGoodsList" @click="handleToProduct(item)">
+    <div class="goods-wrapper" ref="goods">
+      <div>
+        
+        <div class="blank"></div>
 
-        <van-image class="item-img" width="25vw" height="25vw" :src="item.cover_img" fit="contain"/>
+        <div class="good-item" v-for="item of seckillGoodsList" @click="handleToProduct(item)">
+          <van-image class="item-img" width="25vw" height="25vw" :src="item.cover_img" fit="contain"/>
 
-        <div class="item-right">
-          <div class="item-name">{{item.goods_name}}</div>
+          <div class="item-right">
+            <div class="item-name">{{item.goods_name}}</div>
 
-          <van-progress class="item-progress" :percentage="getPercent(item)" color="#FFD57F" stroke-width="4vw"/>
+            <van-progress class="item-progress" :percentage="getPercent(item)" color="#FFD57F" stroke-width="4vw"/>
 
-          <div class="item-bottom">
-            <div class="bottom-left">
-              <span class="item-text">秒杀价</span>
-              <div class="item-price">
-                <span class="price">￥{{item.seckill_price}}</span>
-                <span class="origin">原价:{{item.price}}</span>
+            <div class="item-bottom">
+              <div class="bottom-left">
+                <span class="item-text">秒杀价</span>
+                <div class="item-price">
+                  <span class="price">￥{{item.seckill_price}}</span>
+                  <span class="origin">原价:{{item.price}}</span>
+                </div>
+              </div>
+              <div class="item-btn">
+                <span>立即抢</span>
               </div>
             </div>
-            <div class="item-btn">
-              <span>立即抢</span>
-            </div>
           </div>
+
+        </div>
+
+        <div class="goodsList-loading" v-if="showLoading">
+          <van-loading color="#FF5756" size="24px">
+            <img class="loading-img" src="/public/uploads/home/load.png" alt="">
+            <span class="loading-text">加载中...</span>
+          </van-loading>
+        </div>
+        <div class="no-more" v-show="showNoMore">
+          <img class="loading-img" src="/public/uploads/home/load.png" alt="">
+          <span class="loading-text">没有更多了</span>
         </div>
 
       </div>
-    </mescroll-vue>
+    </div>
 
     <div class="warn-wrapper" v-if="showWarn">
       <span class="iconfont">&#xe605;</span>
@@ -56,61 +71,15 @@ export default {
   data(){
     return {
       timeList: [],
+      page: 1,
       seckillGoodsList:[],
       active: '00',
+      showLoading: false,
+      showNoMore: false,
       showWarn: false,
-      scrollTop: 0,
-      down:{
-        htmlContent:'<div class="droping"><p class="downwarp-progress"></p><p class="downwarp-tip"></p></div><div class="refreshing"><p class="loading"></p><img class="loading-img" src="/public/uploads/home/load.png" alt=""><span>加载中...</span></div>',
-        inited:(mescroll, downwarp)=>{
-          mescroll.droping = downwarp.querySelector('.droping');
-          mescroll.refreshing = downwarp.querySelector('.refreshing');
-        },
-        inOffset:(mescroll)=>{
-          mescroll.droping.style.display="block";
-          mescroll.refreshing.style.display="none";
-          mescroll.droping.querySelector('.downwarp-tip').innerText = "下拉刷新";
-        },
-        outOffset:(mescroll)=>{
-          mescroll.droping.querySelector('.downwarp-tip').innerText = "释放刷新";
-        },
-        onMoving(mescroll, rate, downHight){
-          let deg = 0;
-          deg = parseInt(downHight)*4.5;
-          mescroll.droping.querySelector('.downwarp-progress').style.transform = "rotate("+ deg +"deg)";
-        },
-        showLoading:(mescroll)=>{
-          mescroll.droping.style.display="none";
-          mescroll.refreshing.style.display="block";
-        },
-        auto:false,
-        callback:(mescroll)=>{
-          mescroll.resetUpScroll();
-        }
-      },
-      up:{
-        isBounce: false,
-        htmlNodata: '<div class="pullUpLoading"><div class="no-more"><img class="loading-img" src="/public/uploads/home/load.png" alt=""><span>没有更多了</span></div></div>',
-        htmlLoading: '<div class="pullUpLoading"><p class="loading"></p><img class="loading-img" src="/public/uploads/home/load.png" alt=""><span>加载中...</span></div>',
-        auto:true,
-        callback:this.handlePullingUp,
-        onScroll:(mescroll, y, isUp)=>{
-          this.scrollTop = y;
-        }
-      },
     }
   },
   methods: {
-    // mescroll组件初始化的回调,可获取到mescroll对象
-    init(mescroll){
-      this.mescroll = mescroll;
-    },
-
-    //处理上拉加载
-    handlePullingUp(page){
-      this.getSeckillGoodsData(page.num)
-    },
-
     //获取百分比
     getPercent(data){
       let all_stock = parseInt(data.all_stock)
@@ -120,7 +89,6 @@ export default {
 
       return result
     },
-
     
     //获取时间列的长度
     getTimeItemsWidth(){
@@ -138,7 +106,6 @@ export default {
       }
 
       this.timeList = timeList
-      this.scrollTop = 0
       this.active = timeList[0]
 
       let width = this.timeList.length * 20
@@ -156,10 +123,35 @@ export default {
       })
     },
 
+    //初始化商品列的滚动
+    initGoodsScroll(){
+      this.goodsScroll = new BScroll(this.$refs.goods,{
+        pullUpLoad: {
+          threshold: 10,
+          stop: 0
+        },
+        bounce: {
+          top: false
+        },
+        click:true,
+        eventPassthrough:'horizontal'
+      })
+
+      this.goodsScroll.on('pullingUp',()=>{
+        console.log(this.goodsScroll)
+        console.log('pulling up get')
+        this.getSeckillGoodsData()
+      })
+
+      this.goodsScroll.on('beforeScrollStart',()=>{
+        this.goodsScroll.refresh()
+      })
+    },
+
     //获取秒杀商品列表数据
-    getSeckillGoodsData(page){
+    getSeckillGoodsData(type){
       let postData = {
-        page: page,
+        page: this.page,
         times: this.active,
         seckill_id: this.$route.query.seckill_id
       }
@@ -167,35 +159,52 @@ export default {
       getSeckillGoods(postData)
         .then((res)=>{
           console.log('getSeckillGoods',res.data)
-
-          let data = res.data
-          if(page == 1){
-            setTimeout(()=>{
-              this.mescroll.endSuccess(data.data.list.length,data.data.list.length>=10)
-              if(data.data.list.length == 0){
-                this.showWarn = true
+          if(res.data.code == 1){
+            if(res.data.data.list.length > 0){//请求到的列表不为空
+              if(type == 'init'){
+                this.seckillGoodsList = [...res.data.data.list]
+              }else{
+                this.seckillGoodsList = [...this.seckillGoodsList,...res.data.data.list]
               }
-            },1000)
-          }else{
-            this.mescroll.endSuccess(data.data.list.length,data.data.list.length>=10)
-          }
 
-          if(data.code == 1){
-            if(page == 1){
-              this.seckillGoodsList = [...data.data.list]
-            }else{
-              this.seckillGoodsList = [...this.seckillGoodsList,...data.data.list]
+              this.$nextTick(()=>{
+                if(this.goodsScroll){
+                  this.goodsScroll.finishPullUp()
+                  this.goodsScroll.refresh()
+                }
+
+                if(this.seckillGoodsList.length > 9){//秒杀商品列表数量大于9
+                  this.page = this.page + 1
+                  this.showLoading = true
+                  this.showNoMore = false
+                }else{//秒杀商品列表数量小于9
+                  this.showLoading = false
+                  this.showNoMore = true
+                  if(this.goodsScroll){
+                    this.goodsScroll.closePullUp()
+                  }
+                }
+              })
+            }else{//请求到的列表为空
+              if(type == 'init'){
+                this.showWarn = true
+              }else{
+                if(this.goodsScroll){
+                  this.goodsScroll.closePullUp()
+                }
+                this.showLoading = false
+                this.showNoMore = true
+              }
             }
           }else{
             this.$toast({
-              message: data.message,
+              message: res.data.message,
               type: 'fail',
               duration: 1500
             })
           }
         })
         .catch((err)=>{
-          this.mescroll.endErr()
           console.log('getSeckillGoods err',err)
         })
     },
@@ -215,24 +224,23 @@ export default {
     changeActive(time){
       if(this.active != time){
         this.active = time
+        this.page = 1
+        this.showLoading = false
+        this.showNoMore = false
         this.showWarn = false
+        this.goodsScroll.closePullUp()
         this.seckillGoodsList = []
-        this.mescroll.resetUpScroll()
-      }else{
-        if(this.mescroll){
-          this.mescroll.scrollTo(0,0)
-        }
+        console.log('active change get')
+        this.getSeckillGoodsData('init')
       }
     }
   },
   mounted(){
     this.getTimeItemsWidth()
+    this.getSeckillGoodsData('init')
     this.initTimeScroll()
-  },
-  activated(){
-    this.getTimeItemsWidth()
-    this.initTimeScroll()
-    this.mescroll.scrollTo(this.scrollTop,0)
+    this.initGoodsScroll()
+    // console.log(this.goodsScroll)
   }
 }
 </script>
@@ -284,12 +292,42 @@ export default {
             background-color: #fff
             border-radius: 2vw
 
-  >>>.mescroll
+      .goods-wrapper
         position: absolute
         top: 12vw
+        bottom: 0
         left: 0
-        height: calc(100% - 14vw)
-        padding-top: 2vw 
+        right: 0
+        overflow: hidden
+        // background-color: red
+        .blank
+          width: 100%
+          height: 3vw
+        .goodsList-loading
+          width: 100%
+          display: flex
+          flex-direction: row
+          align-items: center
+          justify-content: center
+          padding: 3vw 0
+          font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+          font-weight: bold
+          .loading-img
+            width: 6vw
+            margin-right: 2vw
+        .no-more
+          width: 100%
+          display: flex
+          flex-direction: row
+          align-items: center
+          justify-content: center
+          padding: 3vw 0
+          font-family: 'PingFangSC-Medium','Microsoft YaHei',sans-serif
+          font-weight: bold
+          .loading-img
+            width: 6vw
+            margin-right: 2vw
+            
 
         .good-item
           background-color: #fff
@@ -351,59 +389,8 @@ export default {
                 border-radius: 4vw
                 font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
 
-  >>> .droping
-        .downwarp-tip
-          color #FF5756
-        .downwarp-progress
-          border-color #FF5756
-          border-bottom-color: transparent;
-  >>> .refreshing
-        width: 100%
-        display: flex
-        justify-content: center
-        align-items: center
-        color #FF5756
-        .loading
-          display inline-block
-          width 4.2vw
-          height 4.2vw
-          margin-right 2vw
-          border-radius 50%
-          border 1px solid #FF5756
-          border-bottom-color transparent
-          vertical-align middle
-          animation mescrollRotate .8s linear infinite
-        .loading-img
-          width: 6vw
-          height: 5vw
-          margin-right: 2vw
 
-  >>> .pullUpLoading
-        width: 100%
-        display: flex
-        justify-content: center
-        align-items: center
-        color #FF5756
-        height 15vw
-        .loading
-          display inline-block
-          width 4.2vw
-          height 4.2vw
-          margin-right 2vw
-          border-radius 50%
-          border 1px solid #FF5756
-          border-bottom-color transparent
-          vertical-align middle
-          animation mescrollRotate .8s linear infinite
-        .loading-img
-          width: 6vw
-          height: 5vw
-          margin-right: 2vw
-        .no-more
-          line-height: 15vw
-          font-size: 4vw
-
-  >>>.warn-wrapper
+      .warn-wrapper
         width: 100%
         display: flex
         flex-direction: column

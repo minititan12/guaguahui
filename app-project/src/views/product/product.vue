@@ -14,7 +14,7 @@
 
     <SharePopUp :shareData="shareData"></SharePopUp>
 
-    <div class="back" @click="back">
+    <div class="back" v-if="showBack()" @click="back">
       <span class="iconfont">&#xe624;</span>
     </div>
 
@@ -84,11 +84,11 @@ export default {
         return {
           title: this.currentProductData.goods_name,
           content: '呱呱汇商品',
-          photo: this.currentProductData.cover_img,
-          href: process.env.VUE_APP_SHARE_HOST + '#/product?id=' + this.currentProductData.id
+          photo: process.env.VUE_APP_REQUEST_HOST + '/' + this.currentProductData.cover_img,
+          href: process.env.VUE_APP_SHARE_HOST + '#/product?id=' + this.currentProductData.id + '&type=share'
         }
       }
-    }
+    },
   },
 
   methods: {
@@ -100,6 +100,14 @@ export default {
       }
       
       return false;
+    },
+
+    // 是否显示返回按钮
+    showBack(){
+      if(this.$route.query.type == 'share'){
+        return false
+      }
+      return true
     },
 
     //是否显示收藏按钮

@@ -52,7 +52,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['currentProductData']),
+    ...mapState(['currentProductData','seckillData']),
     type(){
       if(this.currentProductData){
         return this.currentProductData.flag
@@ -246,7 +246,19 @@ export default {
 
     //数量增加
     addNumber(){
-      this.number++
+      if(this.type == 3){
+        let limit = parseInt(this.seckillData.limits)
+        if(this.number < limit){
+          this.number++
+        }else{
+          this.$toast({
+            message: '该商品限购' + limit + '件',
+            duration: 1200
+          })
+        }
+      }else{
+        this.number++
+      }
     },
     //数量减少
     minusNumber(){

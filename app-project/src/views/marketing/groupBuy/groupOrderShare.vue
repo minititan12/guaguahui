@@ -83,7 +83,7 @@
 </template>
 
 <script>
-import { getShareSpellGroupDes } from '../../../utils/axios/request'
+import { getShareSpellGroupDes,login } from '../../../utils/axios/request'
 import { mapState, mapMutations } from 'vuex'
 export default {
   name: "GroupOrderShare",
@@ -97,7 +97,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['payOrderData','userData'])
+    ...mapState(['payOrderData','userData','openid','login'])
   },
   methods: {
     // handleBack(){
@@ -135,6 +135,52 @@ export default {
       }else{
         return n
       }
+    },
+    //检查openid是否在数据库存在
+    // 存在的话就拉取数据,不存在的话录入手机
+    checkOpenId(openid){
+      let postData = {
+        openid: openid,
+        type: 3
+      }
+      // let string1 = JSON.stringify(openid)
+      // alert(string1)
+      login(postData)
+        .then((res)=>{
+          // let string = JSON.stringify(res.data)
+          // alert(string)
+          console.log('login',res.data)
+          if(res.data.code == '3001'){
+            this.$router.push({
+              path: "/getPhone",
+              query: {
+                back: -1
+              }
+            })
+          }else if(res.data.code == 1){
+            let userDataString = JSON.stringify(res.data.data)
+            localStorage.userData = userDataString
+          
+            let gghToken = JSON.stringify(res.data.data.token)
+            localStorage.setItem('gghToken',gghToken)
+
+            this.updateUserData(res.data.data)
+            this.changeLoginStatus(true)
+
+            this.$router.push({
+              path: '/product',
+              query: {
+                id: this.currentGroupData.goods_id,
+                group_id: this.currentGroupData.activity_spell_group_id,
+                shop_id: this.currentGroupData.merchant_id,
+                team_id: this.currentGroupData.group
+              }
+            })
+          }
+        })
+        .catch((err)=>{
+          console.log('check openid err',err)
+        })
     },
     //获取倒计时
     getTime(){
@@ -197,6 +243,7 @@ export default {
           console.log('getShareSpellGroupDes err',err)
         })
     },
+    //加入拼团
     joinGroup(){
       this.$router.push({
         path: '/product',
@@ -207,11 +254,20 @@ export default {
           team_id: this.currentGroupData.group
         }
       })
+
+      // if(this.login){
+        
+      // }else{
+      //   if(this.openid){
+      //     this.checkOpenId(this.openid)
+      //   }
+      // }
     }
   },
   created(){
     // console.log(this.$route)
     this.getGroupData()
+    // console.log(this.openid)
   }
 }
 </script>

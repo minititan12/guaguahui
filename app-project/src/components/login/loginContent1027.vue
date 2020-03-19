@@ -202,7 +202,10 @@ export default {
           // alert(string)
           if(res.data.code == '3001'){
             this.$router.push({
-              path: "/getPhone"
+              path: "/getPhone",
+              query: {
+                back: '-2'
+              }
             })
           }else if(res.data.code == 1){
             let userDataString = JSON.stringify(res.data.data)
@@ -213,8 +216,9 @@ export default {
 
             this.updateUserData(res.data.data)
             this.changeLoginStatus(true)
-            this.changeTab(5)
-            this.$router.push('/')
+            // this.changeTab(5)
+            // this.$router.push('/')
+            this.$router.go(-1)
           }
         })
         .catch((err)=>{

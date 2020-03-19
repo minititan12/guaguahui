@@ -278,7 +278,7 @@ export default new Router({
       component: LimitBuy,
       meta:{
         index: 2,
-        keepAlive: false,
+        keepAlive: true,
         isImmersion: true,
         color: '#ffffff',
         style: 'dark'

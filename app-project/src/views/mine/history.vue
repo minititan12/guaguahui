@@ -10,12 +10,14 @@
         <span class='right-text'>{{showCheck?"完成":"管理"}}</span>
       </div>
     </van-nav-bar>
+
     <div class="content-wrapper" ref="wrapper">
       <div style="padding-top:3vw">
         <div v-show="pullDown" class="pull-down">
           <van-icon :class="{'refresh':refresh}" color="#FF5756" name="down" size="20" />
         </div>
-        <div class="history" v-for="item in historyList" :key="item.goods_id">
+
+        <div class="history" v-for="item in historyList" @click="handleToProduct(item.goods_id)" :key="item.goods_id">
           <van-checkbox v-show="showCheck" v-model="item.chose" checked-color="#ff5756"></van-checkbox>
           <van-image width="27vw" height="27vw" fit="cover" :src="item.cover_img"/>
           <div class="content">
@@ -23,6 +25,7 @@
             <div class="price">¥{{item.price}}</div>
           </div>
         </div>
+
         <div class="pullUpLoading">
           <van-loading color="#FF5756" size="24px" v-show="showLoading&&historyList.length > 9">
             <img class="loading-img" src="/public/uploads/home/load.png" alt="">
@@ -76,6 +79,16 @@ export default {
   methods: {
     handleBack(){
       this.$router.go(-1)
+    },
+    //处理跳转product页面
+    handleToProduct(id){
+      // console.log('click')
+      this.$router.push({
+        path: '/product',
+        query: {
+          id: id
+        }
+      })
     },
     manage(){
       if(!this.showCheck){

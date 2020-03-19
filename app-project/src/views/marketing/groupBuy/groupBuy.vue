@@ -78,6 +78,7 @@ export default {
       groupList: [],
       scrollTop: 0,
       down:{
+        offset: 120,
         htmlContent:'<div class="droping"><p class="downwarp-progress"></p><p class="downwarp-tip"></p></div><div class="refreshing"><p class="loading"></p><img class="loading-img" src="/public/uploads/home/load.png" alt=""><span>加载中...</span></div>',
         inited:(mescroll, downwarp)=>{
           mescroll.droping = downwarp.querySelector('.droping');
@@ -165,11 +166,9 @@ export default {
     },
     //处理返回我的页面
     handleBack(){
-      // this.changeTab(5)
-      // this.$router.push({
-      //   path: '/'
-      // })
-      this.$router.go(-1)
+      this.$router.push({
+        path: '/'
+      })
     },
     //处理右侧点击
     onClickRight(){
@@ -246,7 +245,6 @@ export default {
         query:{
           id: item.goods_id,
           group_id: item.id,
-          // shop_id: item.user_id
         }
       })
     }
@@ -355,11 +353,13 @@ export default {
                 font-size: 4vw
                 vertical-align: middle
             .item-bottom
+              display: flex
+              flex-direction: column
               .item-price
                 font-family: hgzt
                 color: #FC4E4D
                 font-size: 3.8vw
-                margin-right: 2vw
+                margin-bottom: 1vw
               .item-originPrice
                 font-size: 3vw
                 color: #999

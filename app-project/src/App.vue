@@ -79,7 +79,7 @@ import sha1 from 'sha1'
               return;
             }
             let path = pageUrl.slice(indexOf+str.length);
-            path = path.replace('&','');
+            // path = path.replace('&','');
             let base64 = btoa(path)
             let postData = {
               url: base64

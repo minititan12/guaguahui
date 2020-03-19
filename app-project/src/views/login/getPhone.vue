@@ -115,9 +115,13 @@ export default {
               localStorage.setItem('gghToken',gghToken)
               
               this.changeLoginStatus(true)
-              this.changeTab(5)
-              this.$router.push('/')
-              // this.$router.go(-1)
+              
+              let back = this.$route.query.back
+              if(back == '-1'){
+                this.$router.go(-1)
+              }else{
+                this.$router.go(-2)
+              }
             }
           }else{
             this.$toast({

@@ -216,6 +216,7 @@ export default {
         .item-bottom
           width: 100%
           display: flex
+          // flex-direction: column
           justify-content: space-between
           align-items: center
           margin: 1vw 0
@@ -225,7 +226,7 @@ export default {
             font-size: 3.6vw
             font-family: hgzt
           .item-origin
-            font-size: 2.8vw
+            font-size: 2.3vw
             color: #999
 </style>
 

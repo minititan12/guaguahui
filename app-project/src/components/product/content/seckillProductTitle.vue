@@ -22,7 +22,7 @@
             <div class="price">
               <span class="price-icon">￥</span>
               <span class="price-text">{{price}}</span>
-              <span class="price-cancel">{{originPrice}}</span>
+              <span class="price-cancel">原价: {{originPrice}}</span>
             </div>
             <div class="num">
               <span>限购{{limitNum}}件</span>
@@ -30,9 +30,9 @@
           </div>
 
           <div class="bottom-right">
-            <span class="text">距结束还剩</span>
+            <span class="text" v-if="start">距结束还剩</span>
 
-            <van-count-down :time="time">
+            <van-count-down :time="time" v-if="start">
               <template v-slot="timeData">
                 <span class="item">{{ getTwoNumber(timeData.hours) }}</span>
                 <span class="item-middle">:</span>
@@ -41,6 +41,8 @@
                 <span class="item">{{ getTwoNumber(timeData.seconds) }}</span>
               </template>
             </van-count-down>
+
+            <span v-if="!start">活动未开始</span>
           </div>
         </div>
         
@@ -89,6 +91,17 @@ export default {
 
   computed:{
     ...mapState(['currentProductData','seckillData']),
+    //是否在活动时间中
+    start(){
+      if(this.seckillData){
+        if(this.seckillData.is_ready == 1){
+          return true
+        }else{
+          return false
+        }
+      }
+    },
+
     //产品价格
     price(){
       if(this.seckillData){
@@ -122,7 +135,7 @@ export default {
       if(this.currentProductData){
         return this.currentProductData.goods_name
       }
-    }
+    },
   },
 
   methods:{
@@ -142,11 +155,11 @@ export default {
         let hour = t.getHours()
         console.log(hour)
         if(hour == this.seckillData.times){
-          console.log('1')
+          console.log('在时间段中')
           let minutes = 60 - t.getMinutes()
           this.time = minutes*60*1000
         }else{
-          console.log('2')
+          console.log('在时间段外')
           this.time = 0
         }
       }
@@ -263,10 +276,11 @@ export default {
             margin-top: 2vw
             font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
         .bottom-right
+          font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
+          font-weight: bold
           .text
             display: inline-block
             margin-bottom: 1vw
-            font-family: 'PingFangSC-Regular','Microsoft YaHei',sans-serif
           .van-count-down
             .item
               display: inline-block

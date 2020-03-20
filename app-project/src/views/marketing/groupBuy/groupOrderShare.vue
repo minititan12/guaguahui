@@ -108,6 +108,13 @@ export default {
       if(this.currentGroupData){
         let data = this.currentGroupData
         this.number = data.group_num - data.already_group_num
+        if(this.number == 0){
+          this.$dialog.alert({
+            message: '该拼团已完成',
+          }).then(()=>{
+            WeixinJSBridge.call('closeWindow')
+          })
+        }
       }
     },
     //获取开团用户头像
@@ -186,7 +193,7 @@ export default {
     getTime(){
       if(this.currentGroupData){
         let data = this.currentGroupData
-        let time = data.group_end_time
+        let time = data.group_end_time.replace(/-/g,'/')
         let t = new Date(time).getTime()
         let now = new Date().getTime()
 
@@ -231,12 +238,21 @@ export default {
       getShareSpellGroupDes(postData)
         .then((res)=>{
           console.log('getShareSpellGroupDes:',res.data)
+          // let str = JSON.stringify(res.data)
+          // let str1 = JSON.stringify(localStorage.gghToken)
+          // alert(str1)
+          // alert(str)
           if(res.data.code == 1){
             this.currentGroupData = res.data.data
-            this.getNumber()
             this.getImg()
             this.getTime()
             this.getOrderDesc()
+            this.getNumber()
+          }
+
+          if(res.data.code == '4000'){
+            localStorage.removeItem('gghToken')
+            this.getGroupData()
           }
         })
         .catch((err)=>{

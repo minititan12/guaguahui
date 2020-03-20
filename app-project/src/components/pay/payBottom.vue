@@ -182,8 +182,8 @@ export default {
           if(res.data.code == 1){
             this.updatePayOrderData(res.data.data)
 
-            if(this.$route.params.team_id){
-              let params = JSON.parse(JSON.stringify(this.$route.params))
+            if(this.$route.query.team_id){
+              let params = JSON.parse(JSON.stringify(this.$route.query))
               console.log(params)
               this.$router.push({
                 path: '/payment',

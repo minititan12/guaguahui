@@ -169,7 +169,7 @@ export default {
     getTime(){
       if(this.currentGroupData){
         let data = this.currentGroupData
-        let time = data.group_end_time
+        let time = data.group_end_time.replace(/-/g,'/')
         let t = new Date(time).getTime()
         let now = new Date().getTime()
 

@@ -39,15 +39,27 @@ export const httpPost = (url,param={},headers) => {
   if(store.state.userData){
     param.user_id = store.state.userData.id
   }
+
+  let obj = null
+  if(localStorage.gghToken){
+    obj = {
+      token: localStorage.gghToken,
+      ...headers,
+      'Content-Type':'application/x-www-form-urlencoded'
+    }
+  }else{
+    obj = {
+      ...headers,
+      'Content-Type':'application/x-www-form-urlencoded'
+    }
+  }
+
   return new Promise((resolve,reject)=>{
     axios({
       method: 'post',
       url,
       data:qs.stringify(param),
-      headers: {
-        token: localStorage.gghToken,
-        ...headers
-      }
+      headers: obj
     })
     .then(res => {
       
@@ -62,16 +74,27 @@ export const httpGet = (url,param={},headers) => {
     param.user_id = store.state.userData.id
     // param.token = localStorage.gghToken
   }
+
+  let obj = null
+  if(localStorage.gghToken){
+    obj = {
+      token: localStorage.gghToken,
+      ...headers,
+      'Content-Type':'application/x-www-form-urlencoded'
+    }
+  }else{
+    obj = {
+      ...headers,
+      'Content-Type':'application/x-www-form-urlencoded'
+    }
+  }
+  
   return new Promise((resolve,reject)=>{
     axios({
       method: 'get',
       params:param,
       url: url,
-      headers:{
-        token: localStorage.gghToken,
-        ...headers,
-        'Content-Type':'application/x-www-form-urlencoded'
-      }
+      headers: obj
     }).then(res => {
     
       resolve(res)

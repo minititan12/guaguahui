@@ -198,13 +198,11 @@ export default {
                 path: '/pay',
                 name: 'pay',
                 query: {
-                  is_cart: 2
-                },
-                params: {
+                  is_cart: 2,
                   team_id: team_id,
                   goods_id: this.$route.query.id,
                   group_id: this.$route.query.group_id
-                }
+                },
               })
             })
           }else{

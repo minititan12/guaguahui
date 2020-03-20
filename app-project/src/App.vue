@@ -388,7 +388,7 @@ import sha1 from 'sha1'
     created(){
       this.initUserData()
       //融云初始化
-      RongIMLib.RongIMClient.init('cpj2xarlch2nn');
+      RongIMLib.RongIMClient.init('pgyu6atqpmuwu');
       this.beforeIm()   //设置监听，必须先监听，再连接
     },
     mounted(){

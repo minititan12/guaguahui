@@ -8,6 +8,7 @@
     <MessageContent v-if="showMessageContent"></MessageContent>
     <MineContent v-if="showMine"></MineContent>
     <SearchGoods></SearchGoods>
+    <PrivatePolicy v-if="showPolicy"></PrivatePolicy>
     <HomeFooter></HomeFooter>
   </div>
 </template>
@@ -22,6 +23,7 @@ import SearchGoods from '../components/home/searchGoods'
 // import MessageContent from '../components/home/message/messageContent'
 // import ShoppingContent from '../components/home/shopping/shoppingContent'
 import MineContent from '../components/home/mine/mineContent'
+// import PrivatePolicy from '../components/home/privatePolicy'
 import { mapMutations, mapState } from 'vuex'
 export default {
   name: "Home",
@@ -29,6 +31,7 @@ export default {
     Homeheader,
     HomeFooter,
     HomeTop,
+    'PrivatePolicy': () => import('../components/home/privatePolicy'),
     'MainContent': () => import('../components/home/mainPage/mainContent'),
     'ClassifyContent': () => import('../components/home/classify/classifyContent'),
     'MessageContent': () => import('../components/home/message/messageContent'),
@@ -37,7 +40,7 @@ export default {
     SearchGoods
   },
   computed:{
-    ...mapState(['currentTab','openid']),
+    ...mapState(['currentTab','openid','showPolicy']),
     showContent(){
       if(this.currentTab === 1){
         return true
@@ -75,7 +78,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['updateUserData','changeLoginStatus']),
+    ...mapMutations(['updateUserData','changeLoginStatus','changeShowPolicy']),
     handleCheckOpenid(){
       if(/MicroMessenger/.test(window.navigator.userAgent)){
         if(!this.openid){
@@ -92,10 +95,29 @@ export default {
             })
         }
       }
-    }
+    },
+    //显示隐私政策提醒
+    handleShowPolicy(){
+      this.changeShowPolicy(true)
+      localStorage.setItem('loaded',true)
+    },
+    
+    //是不是在app中
+    is_app(){
+      if(typeof(plus) == 'object'){
+        return true;
+      }
+      
+      return false;
+    },
   },
   created(){
     // this.handleCheckOpenid()
+    if(this.is_app()){
+      if(typeof(localStorage.loaded) == 'undefined'){
+        this.handleShowPolicy()
+      }
+    }
   }
 };
 </script>

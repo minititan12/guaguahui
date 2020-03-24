@@ -103,7 +103,7 @@ export default {
     width: 100%
     height: 12vw
     position: fixed 
-    z-index: 999
+    z-index: 100
     bottom: 0
     background-color: #fff
     display: flex

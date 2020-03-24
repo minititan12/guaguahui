@@ -798,7 +798,7 @@ export default new Router({
       component: History,
       meta:{
         index: 2,
-        keepAlive: false,
+        keepAlive: true,
         isImmersion: true,
         color: '#ffffff',
         style: 'dark'

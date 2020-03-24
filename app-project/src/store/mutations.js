@@ -52,6 +52,10 @@ export default {
   changeMainProductActive(state,active){
     state.mainProductActive = active
   },
+  //改变显示隐私协议的状态
+  changeShowPolicy(state,bool){
+    state.showPolicy = bool
+  },
 
   //product
   //改变当前product数据

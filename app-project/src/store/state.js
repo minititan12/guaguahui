@@ -11,6 +11,7 @@ export default {
   messageNum: 0,               //首页的消息数量
   mainProductActive: 0,         //首页产品的active
   unReadServiceCount: 0,            //首页未读消息数量
+  showPolicy: false,             //显示隐私协议
 
   //首页搜索
   searchText: "",              //首页搜索当前内容   

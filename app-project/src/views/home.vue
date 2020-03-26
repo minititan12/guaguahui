@@ -113,11 +113,11 @@ export default {
   },
   created(){
     // this.handleCheckOpenid()
-    if(this.is_app()){
-      if(typeof(localStorage.loaded) == 'undefined'){
-        this.handleShowPolicy()
-      }
-    }
+    // if(this.is_app()){
+    //   if(typeof(localStorage.loaded) == 'undefined'){
+    //     this.handleShowPolicy()
+    //   }
+    // }
   }
 };
 </script>

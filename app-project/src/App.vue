@@ -44,8 +44,11 @@ import sha1 from 'sha1'
                 this.updateUserData(res.data.data)
                 localStorage.removeItem('userData')
                 localStorage.userData = JSON.stringify(res.data.data)
+                let gghToken = JSON.stringify(res.data.data.token)
+                localStorage.setItem('gghToken',gghToken)
                 this.changeLoginStatus(true)
               }else{
+                this.updateUserData(null)
                 localStorage.removeItem('userData')
                 this.changeLoginStatus(false)
               }
@@ -431,7 +434,7 @@ import sha1 from 'sha1'
         }
       },
       userData(){
-        if(this.userData.id){
+        if(this.userData){
           this.getToken()     //连接融云
         }
       }

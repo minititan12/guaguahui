@@ -62,7 +62,6 @@ export const httpPost = (url,param={},headers) => {
       headers: obj
     })
     .then(res => {
-      
       resolve(res)
     }).catch(err => {
       reject(err)
@@ -96,7 +95,6 @@ export const httpGet = (url,param={},headers) => {
       url: url,
       headers: obj
     }).then(res => {
-    
       resolve(res)
     }).catch(err => {
       reject(err)
@@ -105,16 +103,26 @@ export const httpGet = (url,param={},headers) => {
 }
 
 export const httpUpload = (url,param={},headers) => {
+  let obj = null
+  if(localStorage.gghToken){
+    obj = {
+      token: localStorage.gghToken,
+      ...headers,
+      'Content-Type':'multipart/form-data',
+    }
+  }else{
+    obj = {
+      ...headers,
+      'Content-Type':'multipart/form-data',
+    }
+  }
+
   return new Promise((resolve,reject)=>{
     axios({
       method: 'post',
       url,
       data:param,
-      headers: {
-        token: localStorage.gghToken,
-        ...headers,
-        'Content-Type':'multipart/form-data',
-      }
+      headers: obj
     }).then(res => {
       resolve(res)
     }).catch(err => {

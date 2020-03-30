@@ -14,7 +14,12 @@ export default {
   },
   //更新用户信息
   updateUserData(state,data){
-    state.userData = data
+    if(typeof(data) == 'object'){
+      let result = JSON.parse(JSON.stringify(data))
+      state.userData = result
+    }else{
+      state.userData = null
+    }
   },
   //改变主页面刷新状态
   updateRefreshStatus(state,bool){

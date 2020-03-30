@@ -15,7 +15,7 @@
 
 <script>
 import { mapState,mapMutations } from 'vuex'
-import {get_user_id,getWxcode,signpackage,storagecontent,getRongYunToken} from './utils/axios/request'
+import {getLoginStatus,getWxcode,signpackage,storagecontent,getRongYunToken} from './utils/axios/request'
 import sha1 from 'sha1'
   export default {
     name:"App",
@@ -37,27 +37,33 @@ import sha1 from 'sha1'
       //更新用户信息
       initUserData(){
         if(localStorage.hasOwnProperty('gghToken')){
-          get_user_id()
+          getLoginStatus()
             .then((res)=>{
-              console.log('get_user_id:',res.data)
+              console.log('getLoginStatus:',res.data)
               if(res.data.code == 1){
-                this.updateUserData(res.data.data)
-                localStorage.removeItem('userData')
-                localStorage.userData = JSON.stringify(res.data.data)
-                let gghToken = JSON.stringify(res.data.data.token)
-                localStorage.setItem('gghToken',gghToken)
-                this.changeLoginStatus(true)
-              }else{
+                if(localStorage.hasOwnProperty('userData')){
+                  let data = JSON.parse(localStorage.userData)
+                  this.updateUserData(data)
+                  // console.log('userdata',data)
+                  this.changeLoginStatus(true)
+                }else{
+                  this.updateUserData(null)
+                  localStorage.removeItem('gghToken')
+                  this.changeLoginStatus(false)
+                }
+              }
+              if(res.data.code == 4000){
                 this.updateUserData(null)
                 localStorage.removeItem('userData')
+                localStorage.removeItem('gghToken')
                 this.changeLoginStatus(false)
               }
             })
-            .catch((err)=>[
-              console.log('post userid err' + err)
-            ])
+            .catch((err)=>{
+              console.log('getLoginStatus err' + err)
+            })
         }else{
-          console.log('localstorage:',localStorage)
+          console.log('没有gghToken')
           this.changeLoginStatus(false)
         }
       },

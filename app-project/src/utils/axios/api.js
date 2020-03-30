@@ -31,6 +31,8 @@ export default {
   getCode: baseUrl + '/api/method/getCode',
   //绑定手机
   bindPhone: baseUrl + '/api/method/bindPhone',
+  //利用token判断登录状态
+  getLoginStatus: baseUrl + '/api/method/getLoginStatus',
 
   //确认订单(pay)页面
   //删除购物车中的对应订单

@@ -22,6 +22,11 @@ export const bindPhone = (param = {}) => {
   return httpPost(api.bindPhone,param);
 }
 
+//根据token判断登录状态
+export const getLoginStatus = (param = {}) => {
+  return httpGet(api.getLoginStatus,param);
+}
+
 //设置默认地址
 export const setAddressDefault = (param = {}) => {
   return httpPost(api.setAddressDefault,param);

@@ -43,19 +43,21 @@ export default {
     ...mapMutations(['updatedUnReadServiceCount']),
     //获取用户聊天会话数据
     getAllChatData(){
-      let msgs = JSON.parse(localStorage.msgMap)
-      let ary = []
-      for(let key in msgs){
-        ary.push({
-          id: key,
-          ...msgs[key]
+      if(localStorage.hasOwnProperty('msgMap')){
+        let msgs = JSON.parse(localStorage.msgMap)
+        let ary = []
+        for(let key in msgs){
+          ary.push({
+            id: key,
+            ...msgs[key]
+          })
+        }
+        let result = ary.sort((a,b)=>{
+          return b.timestamp - a.timestamp
         })
-      }
-      let result = ary.sort((a,b)=>{
-        return b.timestamp - a.timestamp
-      })
 
-      this.shopItems = result
+        this.shopItems = result
+      }
     },
     // 删除聊天会话
     handleDel(id){
